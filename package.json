@@ -1,0 +1,21 @@
+{
+  "name": "collab-back-end",
+  "version": "1.0.0",
+  "description": "RESTful back-end for 523 collab website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "keywords": [
+    "RESTful"
+  ],
+  "author": "Mac Watrous",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.14.12"
+  },
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
