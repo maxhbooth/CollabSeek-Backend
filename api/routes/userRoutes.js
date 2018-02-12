@@ -3,4 +3,8 @@ module.exports = function (app) {
     app.get('/create-user', function (req, res) {
         res.send('Hello world!')
     });
+
+    app.post('/login', function (req, res) {
+        res.send('Hello world!')
+    });
 };
