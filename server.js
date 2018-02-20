@@ -29,7 +29,7 @@ const client = new Client({
 client.connect();
 
 var routes = require('./api/routes/userRoutes');
-routes(app);
+routes(app,client);
 
 app.listen(port);
 
