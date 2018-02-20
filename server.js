@@ -19,6 +19,9 @@ if (testFlag == "test"){
     dbHost = process.env.POSTGRESQL_SERVICE_HOST;
     dbPort = process.env.POSTGRESQL_SERVICE_PORT;
 }
+
+var routes = require('./api/routes/userRoutes');
+
 const client = new Client({
     user: dbUser,
     host: dbHost,
@@ -26,10 +29,15 @@ const client = new Client({
     password: dbPass,
     port: dbPort
 })
-client.connect();
+client.connect(function(err){
+    if (err) {
+        console.error('db failed to connect:' +err.stack);
+        return;
+    }
+    routes(app,client);
+    
+});
 
-var routes = require('./api/routes/userRoutes');
-routes(app,client);
 
 app.listen(port);
 
