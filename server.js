@@ -36,4 +36,4 @@ app.listen(port);
 console.log('todo list RESTful API server started on: ' + port);
 
 module.exports = app;
-module.exports = { client : client};
+module.exports = client;

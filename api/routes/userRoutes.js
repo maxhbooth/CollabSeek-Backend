@@ -1,6 +1,4 @@
-var server =  require('../../server');
-var client = server.client;
-module.exports = function (app) {
+module.exports = function (app,client) {
     // set up the routes themselves
     app.get('/create-user', function (req, res) {
         client.query('SELECT NOW() as now', (dberr, dbres) => {
