@@ -1,5 +1,6 @@
 var db = require('../../database/database')
 var expressValidator = require('express-validator');
+const bcrypt = require('bcrypt');
 
 module.exports = function (app,client) {
     // set up the routes themselves
@@ -32,21 +33,37 @@ module.exports = function (app,client) {
         }
         else{
 
-             console.log('no errors');
-
             const username = req.body.username;
             const email = req.body.email;
             const password = req.body.password;
+            //const hash = bcrypt.hashSync(password);
 
-             res.send('registration complete');
-        //     // db.query('insert into users(username, email, password) \
-        //     //      values (?, ?, ?)', [username, email, password], function(dberr, dbres, fields){
-        //     //         if(dberr){
-        //     //             throw dberr;
-        //     //         }
-        //     //      });
+            bcrypt.hash(password, 10, function(err, hash) {
+                // Store hash in your password DB.
+                db.query('insert into users(username, email, password) \
+                 values ($1, $2, $3)', [username, email, hash], function(dberr, dbres, fields){
+                    if(dberr){
+                        throw dberr;
+                    }
+                    res.send('registration complete');
+                 });
+
+                });
+
+
          }
 
+    });
+
+    app.get('/emailList', function(req, res) {
+
+        db.query('SELECT * from users', (dberr, dbres) => {
+            if (dberr) {
+                throw dberr;
+            } else {
+                res.send(dbres.rows);
+            }
+        });
     });
 
     app.post('/login', function (req, res) {
