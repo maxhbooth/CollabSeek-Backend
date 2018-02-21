@@ -3,7 +3,7 @@ var db = require('../../database/database')
 module.exports = function (app,client) {
     // set up the routes themselves
     app.get('/create-user', function (req, res) {
-        client.query('SELECT NOW() as now', (dberr, dbres) => {
+        db.query('SELECT NOW() as now', (dberr, dbres) => {
             if (err) {
                 res.send('Hello world!');
             } else {
