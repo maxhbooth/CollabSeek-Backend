@@ -38,7 +38,7 @@ module.exports = function (app,client) {
             const email = req.body.email;
             const password = req.body.password;
 
-             res.send("registration complete");
+             res.send('registration complete');
         //     // db.query('insert into users(username, email, password) \
         //     //      values (?, ?, ?)', [username, email, password], function(dberr, dbres, fields){
         //     //         if(dberr){

@@ -42,8 +42,8 @@ describe('Books', () => {
           .end((err, res) => {
               
             console.log("checking tests");
-
-              res.should.have.status(200);
+            res.should.have.status(200);
+            res.text.should.be.eql('registration complete');
             done();
           });
     });
