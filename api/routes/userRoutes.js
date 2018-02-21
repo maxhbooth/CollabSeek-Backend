@@ -1,3 +1,5 @@
+var db = require('../../database/database')
+
 module.exports = function (app,client) {
     // set up the routes themselves
     app.get('/create-user', function (req, res) {
