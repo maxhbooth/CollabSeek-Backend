@@ -4,7 +4,7 @@ module.exports = function (app,client) {
     // set up the routes themselves
     app.get('/create-user', function (req, res) {
         db.query('SELECT NOW() as now', (dberr, dbres) => {
-            if (err) {
+            if (dberr) {
                 res.send('Hello world!');
             } else {
                 res.send(dbres.rows[0]);
