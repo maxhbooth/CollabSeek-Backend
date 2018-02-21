@@ -14,7 +14,7 @@ module.exports = function (app,client) {
     });
 
     app.post('/register', function(req, res) {
-
+        console.log('I ran')
         //validation
         req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4,15);
         req.checkBody('email', 'Email must be a valid email.').isEmail();
@@ -39,10 +39,10 @@ module.exports = function (app,client) {
                     if(dberr){
                         throw dberr;
                     }
-                 } )
+                 });
         }
 
-    })
+    });
 
     app.post('/login', function (req, res) {
         res.send('Hello world!')

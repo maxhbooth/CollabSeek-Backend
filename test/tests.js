@@ -11,11 +11,6 @@ let should = chai.should();
 chai.use(chaiHttp);
 //Our parent block
 describe('Books', () => {
-    // beforeEach((done) => { //Before each test we empty the database
-    //     Book.remove({}, (err) => { 
-    //        done();         
-    //     });     
-    // });
 /*
   * Test the /GET route
   */
@@ -31,5 +26,26 @@ describe('Books', () => {
             });
       });
   });
+
+  describe('/POST register', () => {
+    it('it should Post a user to register', (done) => {
+      chai.request(server)
+          .post('/register')
+          .type('form')
+          .send({
+            '_method': 'post',
+            'password': '12345',
+            'repassword': '12345',
+            'username': 'testuser',
+            'email' : 'testemail@test.email.com'
+          })
+          .end((err, res) => {
+              
+
+              res.should.have.status(200);
+            done();
+          });
+    });
+});
 
 });
