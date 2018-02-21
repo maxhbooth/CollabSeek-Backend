@@ -35,9 +35,8 @@ module.exports = function (app,client) {
 
             const username = req.body.username;
             const email = req.body.email;
-            const password = req.body.password;
-            //const hash = bcrypt.hashSync(password);
-
+            const password = req.body.password
+            
             bcrypt.hash(password, 10, function(err, hash) {
                 // Store hash in your password DB.
                 db.query('insert into users(username, email, password) \
@@ -47,15 +46,11 @@ module.exports = function (app,client) {
                     }
                     res.send('registration complete');
                  });
-
                 });
-
-
-         }
-
+            }
     });
 
-    app.get('/emailList', function(req, res) {
+    app.get('/listUsers', function(req, res) {
 
         db.query('SELECT * from users', (dberr, dbres) => {
             if (dberr) {
