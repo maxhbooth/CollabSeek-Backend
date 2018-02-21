@@ -28,6 +28,7 @@ describe('Books', () => {
   });
 
   describe('/POST register', () => {
+    var randomstring = Math.random().toString(36).substr(2, 5);
     it('it should Post a user to register', (done) => {
       chai.request(server)
           .post('/register')
@@ -36,8 +37,8 @@ describe('Books', () => {
             '_method': 'post',
             'password': '12345',
             'repassword': '12345',
-            'username': 'testuser',
-            'email' : 'testemail@test.email.com'
+            'username': 'testuser' + randomstring,
+            'email' : 'testemail' + randomstring + '@test.email.com'
           })
           .end((err, res) => {
               
