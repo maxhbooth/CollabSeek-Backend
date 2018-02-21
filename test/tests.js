@@ -41,6 +41,7 @@ describe('Books', () => {
           })
           .end((err, res) => {
               
+            console.log("checking tests");
 
               res.should.have.status(200);
             done();

@@ -16,30 +16,33 @@ module.exports = function (app,client) {
     app.post('/register', function(req, res) {
         console.log('I ran')
         //validation
-        req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4,15);
-        req.checkBody('email', 'Email must be a valid email.').isEmail();
-        req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4,50);
-        req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4,50);
-        req.checkBody('repassword', 'Passwords must match.').equals(password);
+        // req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4,15);
+        // req.checkBody('email', 'Email must be a valid email.').isEmail();
+        // req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4,50);
+        // req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4,50);
+        // req.checkBody('repassword', 'Passwords must match.').equals(password);
 
-        const errors = req.validationErrors();
+        const errors = 0; //req.validationErrors();
 
         if(errors) {
-            console.log(`errors: ${JSON.stringify(errors)}`);
+            console.log(errors);
+            //console.log(`errors: ${JSON.stringify(errors)}`);
             res.send(errors);
         }
         else{
 
-            const username = req.body.username;
-            const email = req.body.email;
-            const password = req.body.password;
+            console.log('no errors');
 
-            db.query('insert into users(username, email, password) \
-                 values (?, ?, ?)', [username, email, password], function(dberr, dbres, fields){
-                    if(dberr){
-                        throw dberr;
-                    }
-                 });
+            // const username = req.body.username;
+            // const email = req.body.email;
+            // const password = req.body.password;
+
+            // db.query('insert into users(username, email, password) \
+            //      values (?, ?, ?)', [username, email, password], function(dberr, dbres, fields){
+            //         if(dberr){
+            //             throw dberr;
+            //         }
+            //      });
         }
 
     });
