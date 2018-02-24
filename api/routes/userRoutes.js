@@ -15,9 +15,7 @@ module.exports = function (app,client) {
     });
 
     app.post('/register', function(req, res) {
-        console.log('I ran')
-        //validation
-        //console.log(req.body.username);
+
         req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4,15);
         req.checkBody('email', 'Email must be a valid email.').isEmail();
         req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4,50);
@@ -27,12 +25,10 @@ module.exports = function (app,client) {
         const errors = req.validationErrors();
 
         if(errors) {
-            console.log("found errors");
             //console.log(`errors: ${JSON.stringify(errors)}`);
-            res.send(errors);
+            res.send(`${JSON.stringify(errors)}`);
         }
         else{
-
             const username = req.body.username;
             const email = req.body.email;
             const password = req.body.password
