@@ -1,4 +1,4 @@
-const { Client } = require('pg');
+var Sequelize = require('sequelize');
 var db;
 
 var dbUser = process.env.POSTGRESQL_USER;
@@ -21,18 +21,18 @@ if (testFlag == "test"){
 
 function connectDatabase(){
     if (!db){
-        db = new Client({
-            user: dbUser,
+        db = new Sequelize(dbName, dbUser, dbPass, {
             host: dbHost,
-            database: dbName,
-            password: dbPass,
             port: dbPort,
-        });
-        db.connect(function(err){
-            if (!err){
-                console.log('Database is connected!');
-            } else {
-                console.log('Error connecting databse')
+            dialect: 'postgres',
+            pool: {
+                max: 5,
+                min: 0,
+                idle: 10000
+            },
+            "define": {
+                "createdAt": "created",
+                "updatedAt": "last_updated"
             }
         });
     }
