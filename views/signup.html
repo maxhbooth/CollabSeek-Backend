@@ -32,15 +32,34 @@
         <form action="/signup" method="post">
             <div>
                 <label>Username:</label>
+                <% if (!locals.userErrors) { %>
                 <input type="text" name="username"/>
+                <% } else { %>
+                <input type="text" name="username" value="<%=validated.username %>"/>
+                <%if (userErrors.length > 0){userErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
             </div>
             <div>
                 <label>Email:</label>
+                <% if (!locals.emailErrors) { %>
                 <input type="text" name="email"/>
+                <% } else { %>
+                <input type="text" name="email" value="<%=validated.email%>"/>
+                <%if (emailErrors.length > 0){emailErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
             </div>
             <div>
                 <label>Password:</label>
                 <input type="password" name="password"/>
+                <% if (locals.passwordErrors) { %>
+                <%if (passwordErrors.length > 0){passwordErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
             </div>
             <div>
                 <input class="btn btn-primary" type="submit" value="Sign Up"/>

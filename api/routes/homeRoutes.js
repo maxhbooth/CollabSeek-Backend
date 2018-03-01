@@ -8,7 +8,7 @@ module.exports = function (app, sessionChecker) {
 
     app.get('/dashboard', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
-            res.sendFile(__dirname + '/public/dashboard.html');
+            res.sendFile('/views/dashboard.html', {root: './'});
         } else {
             res.redirect('/login');
         }
