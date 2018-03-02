@@ -2,6 +2,8 @@ var express = require('express'),
 app = express(),
 port = process.env.PORT || 8080;
 
+require('dotenv').config();
+
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -64,8 +66,10 @@ var sessionChecker = (req, res, next) => {
 
 var userRoutes = require('./api/routes/userRoutes');
 var homeRoutes = require('./api/routes/homeRoutes');
+var profileCreationRoutes = require('./api/routes/profileCreationRoutes')
 homeRoutes(app, sessionChecker);
 userRoutes(app, sessionChecker);
+profileCreationRoutes(app, sessionChecker);
 
 app.listen(port);
 
