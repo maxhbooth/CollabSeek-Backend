@@ -2,4 +2,4 @@ Create table users(
  Id INT PRIMARY KEY NOT NULL,
  email varchar(50) NOT NULL,
  username varchar(50) UNIQUE NOT NULL, 
- password varchar(50) NOT NULL);
+ password varchar(100) NOT NULL);
