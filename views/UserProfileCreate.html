@@ -18,16 +18,44 @@
         <option value = "Undergraduate">Undergraduate</option>
     </select>
 
-    <select value ="DegreeField" style="width:200px";>
+    <select value ="degree" style="width:200px";>
         <%if (degrees.length > 0){degrees.forEach(function(degree){%>
         <option><%= degree %></option>
         <%})}%>
     </select>
 
 
-    <select multiple =2 value = "Department" sytle= "width:200px";>
-        <option>African, African American and Diaspora Studies</option>
+    <select multiple = 2 value = "department" style= "height:200px;width:200px";>
+        <%if (departments.length > 0){departments.forEach(function(department){%>
+        <option><%= department %></option>
+        <%})}%>
     </select>
+
+    <select value = "discipline" style= "height:200px;width:200px";>
+        <%if (disciplines.length > 0){disciplines.forEach(function(discipline){%>
+        <option><%= disciplines %></option>
+        <%})}%>
+    </select>
+
+    <select value = "position" style= "height:200px;width:200px";>
+        <%if (positions.length > 0){positions.forEach(function(position){%>
+        <option><%= position %></option>
+        <%})}%>
+    </select>
+
+    <select value = "facility" style= "height:200px;width:200px";>
+        <%if (facilities.length > 0){facilities.forEach(function(facility){%>
+        <option><%= facility %></option>
+        <%})}%>
+    </select>
+
+    <select value = "skill" style= "height:200px;width:200px";>
+        <%if (skills.length > 0){skills.forEach(function(skill){%>
+        <option><%= skill %></option>
+        <%})}%>
+    </select>
+
+
 </form>
 
 </body>

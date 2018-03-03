@@ -21,7 +21,7 @@ module.exports = function (app, sessionChecker) {
             //res.sendFile('/views/UserProfileCreate.html', {root: './'});
 
             degree.findAll().then(function (degrees) {
-                department.findAll().then(function (degrees) {
+                department.findAll().then(function (departments) {
                     discipline.findAll().then(function (disciplines){
                         facility.findAll().then(function (facilities){
                             position.findAll().then(function (positions){
