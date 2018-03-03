@@ -1,13 +1,6 @@
-var async = require('asyncawait/async');
-var await = require('asyncawait/await');
-
-const degree = require('../../../models/degree');
-const department = require('../../../models/department');
-const discipline = require('../../../models/discipline');
-const facility = require('../../../models/facility');
-const position = require('../../../models/position');
-const skill = require('../../../models/skill');
-const specialty = require('../../../models/specialty');
+const async = require('asyncawait/async');
+const await = require('asyncawait/await');
+//asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
 
 const profile_degree = require('../../../models/profile_degree');
 const profile_department = require('../../../models/profile_department');
@@ -15,58 +8,87 @@ const profile_facility = require('../../../models/profile_facility');
 const profile_skill = require('../../../models/profile_skill');
 const profile_specialty = require('../../../models/profile_specialty');
 
+const AttrRepository = require('./attributeRepository');
 
-const repository = function repository(){
+var profileRepository = function profileRepository(){
 
-    this.degree = degree;
-    this.department = department;
-    this.discipline = discipline;
-    this.facility = facility;
-    this.position = position;
-    this.skill = skill;
-    //this.specialty = specialty;
+    this.attrRepository = new AttrRepository();
+
+    this.profileDegree = profile_degree;
+    this.profileDepartment = profile_department;
+    this.profileFacility = profile_facility;
+    this.profileSkill = profile_skill;
 
 };
 
-repository.prototype.getDegrees = async(function () {
-    return await(this.degree.findAll()).map(degree => degree.dataValues.name)
+profileRepository.prototype.addProfileDegree = async(function (profileId, degreeName, disciplineName) {
+
+    let degreeId = await(this.attrRepository.getDegreeId(degreeName));
+    let disciplineId = await(this.attrRepository.getDegreeId(disciplineName));
+
+    this.profileFacility.create({
+        profile_id: profileId,
+        degree_id: degreeId,
+        discipline_id: disciplineId
+    })
+        .catch(error => {
+            //db errors
+            console.log(error);
+        });
+
+    return 0;
 });
 
-repository.prototype.getDepartments = async(function () {
-    return await(this.department.findAll()).map(department => department.dataValues.name)
+profileRepository.prototype.addProfileDepartment = async(function (profileId, departmentName) {
+
+    let departmentId = await(this.attrRepository.getFacilityId(departmentName));
+
+    this.profileFacility.create({
+        profile_id: profileId,
+        department_id: departmentId
+    })
+    .catch(error => {
+        //db errors
+        console.log(error);
+    });
+
+    return 0;
 });
 
-repository.prototype.getDisciplines = async(function () {
-    return await(this.discipline.findAll()).map(discipline => discipline.dataValues.name)
+profileRepository.prototype.addProfileFacily = async(function (profileId, facilityName) {
+    let facilityId = await(this.attrRepository.getFacilityId(facilityName));
+
+    this.profileFacility.create({
+        profile_id: profileId,
+        facility_id: facilityId
+    })
+    .catch(error => {
+        //db errors
+        console.log(error);
+    });
+
+    return 0;
 });
 
-repository.prototype.getFacilities = async(function () {
-    return await(this.facility.findAll()).map(facility => facility.dataValues.name)
+profileRepository.prototype.addProfileSkill = async(function (profileId, skillName) {
+    let skillId = await(this.attrRepository.getSkillId(skillName));
+
+    this.profileSkill.create({
+        profile_id: profileId,
+        skill_id: skillId
+    })
+    .catch(error => {
+        //db errors
+        console.log(error);
+    });
+
+    return 0;
 });
 
-repository.prototype.getPositions = async(function () {
-    return await(this.position.findAll()).map(position => position.dataValues.name)
-});
+profileRepository.prototype.getProfileInformation = async(function (){
 
-repository.prototype.getSkills = async(function () {
-    return await(this.skill.findAll()).map(skill => skill.dataValues.name)
-});
-
-repository.prototype.getAll = async(function () {
-    let degrees = await(this.getDegrees());
-    let departments = await(this.getDepartments());
-    let disciplines = await(this.getDisciplines());
-    let facilities = await(this.getFacilities());
-    let positions = await(this.getPositions());
-    let skills = await(this.getSkills());
-
-    return {degrees, departments, disciplines, facilities, positions, skills};
+   return 0;
 });
 
 
-// repository.prototype.getSpecialties = async(function () {
-//     return await(this.degree.findAll()).map(degree => degree.dataValues.name)
-// });
-
-
-module.exports = repository;
+module.exports = profileRepository;

@@ -1,24 +1,8 @@
-// route for Home-Page
 
-//asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
-var async = require('asyncawait/async');
-var await = require('asyncawait/await');
+//route for creating profiles
 
-const degree = require('../../models/degree');
-const department = require('../../models/department');
-const discipline = require('../../models/discipline');
-const facility = require('../../models/facility');
-const position = require('../../models/position');
-const skill = require('../../models/skill');
-const specialty = require('../../models/specialty');
-
-const profile_degree = require('../../models/profile_degree');
-const profile_department = require('../../models/profile_department');
-const profile_facility = require('../../models/profile_facility');
-const profile_skill = require('../../models/profile_skill');
-const profile_specialty = require('../../models/profile_specialty');
-
-const Repository = require('./helpers/profileRepository');
+const AttrRepository = require('./helpers/attributeRepository');
+const ProfileRepository = require('./helpers/profileRepository');
 
 module.exports = function (app, sessionChecker) {
 
@@ -27,12 +11,12 @@ module.exports = function (app, sessionChecker) {
 
            //repository
 
-           var repository = new Repository();
+           var attrRepository = new AttrRepository();
 
-           repository.getAll().then(function (models){
+           attrRepository.getAll().then(function (models){
                console.log(models);
                res.render('create-profile.html', models);
-           })
+           });
 
         } else {
             res.redirect('/login');
@@ -47,26 +31,18 @@ module.exports = function (app, sessionChecker) {
 
             const errors = req.validationErrors();
 
-            var profile_id = req.session.profile.id;
-            var degree_id = degree.findOne({where: {name: req.body.degree}});
-
             if(!errors){
-                profile_degree.create({
-                    profile_id: req.session.profile.id,
-                    degree_id: req.body.degree,
-                    discipline_id: req.body.password
-                }).catch(error => {
-                    //database error
-                    console.log(error);
-                });
+
+                var profileRepository = new ProfileRepository();
+
+
+
+
+
                 // profile_department;
                 // profile_facility;
                 // profile_skill;
                 // profile_specialty;
-
-
-            }else{
-
 
             }
 
