@@ -20,14 +20,14 @@ module.exports = sequelize.define('profile_facility', {
                 key: 'id'
             }
         },
-    created: {
-        type: Sequelize.DATEONLY,
-        allowNull: true
-    },
-    last_updated: {
-        type: Sequelize.DATEONLY,
-        allowNull: true
-    }
+        created: {
+            type: Sequelize.DATEONLY,
+            allowNull: true
+        },
+        last_updated: {
+            type: Sequelize.DATEONLY,
+            allowNull: true
+        }
     }, {
         tableName: 'profile_facility'
     });

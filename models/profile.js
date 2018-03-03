@@ -60,5 +60,5 @@ var Profile = sequelize.define('profile', {
 });
 Profile.prototype.validPassword = function (password) {
     return bcrypt.compareSync(password, this.password)
-}
+};
 module.exports = Profile;
