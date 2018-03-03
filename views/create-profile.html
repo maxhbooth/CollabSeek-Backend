@@ -14,45 +14,48 @@
     <input type="text" placeholder="First Name" required>
     <input type="text" placeholder="Last Name" required>
     <input type="text" placeholder="ONYEN" required>
-    <select value ="Position" style="width:200px";>
-        <option value = "Undergraduate">Undergraduate</option>
-    </select>
 
-    <select value ="degree" style="width:200px";>
+    <select value ="degree" style="width:200px">
+        <% if(locals.degrees){%>
         <%if (degrees.length > 0){degrees.forEach(function(degree){%>
         <option><%= degree %></option>
-        <%})}%>
+        <%})}}%>
     </select>
 
 
-    <select multiple = 2 value = "department" style= "height:200px;width:200px";>
+    <select multiple = 2 value = "department" style= "height:200px;width:200px">
+        <% if(locals.departments){%>
         <%if (departments.length > 0){departments.forEach(function(department){%>
         <option><%= department %></option>
-        <%})}%>
+        <%})}}%>
     </select>
 
-    <select value = "discipline" style= "height:200px;width:200px";>
+    <select value = "discipline" style= "height:200px;width:200px">
+        <% if(locals.disciplines){%>
         <%if (disciplines.length > 0){disciplines.forEach(function(discipline){%>
         <option><%= disciplines %></option>
-        <%})}%>
+        <%})}}%>
     </select>
 
-    <select value = "position" style= "height:200px;width:200px";>
+    <select value = "position" style= "height:200px;width:200px">
+        <% if(locals.positions){%>
         <%if (positions.length > 0){positions.forEach(function(position){%>
         <option><%= position %></option>
-        <%})}%>
+        <%})}}%>
     </select>
 
-    <select value = "facility" style= "height:200px;width:200px";>
+    <select value = "facility" style= "height:200px;width:200px">
+        <% if(locals.facilities){%>
         <%if (facilities.length > 0){facilities.forEach(function(facility){%>
         <option><%= facility %></option>
-        <%})}%>
+        <%})}}%>
     </select>
 
-    <select value = "skill" style= "height:200px;width:200px";>
+    <select value = "skill" style= "height:200px;width:200px">
+        <% if(locals.skills){%>
         <%if (skills.length > 0){skills.forEach(function(skill){%>
         <option><%= skill %></option>
-        <%})}%>
+        <%})}}%>
     </select>
 
 

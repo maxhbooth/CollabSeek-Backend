@@ -18,7 +18,7 @@ module.exports = function (app, sessionChecker) {
 
     app.get('/create-profile', (req, res) => {
        // if (req.session.profile && req.cookies.user_sid) {
-            //res.sendFile('/views/UserProfileCreate.html', {root: './'});
+            //res.sendFile('/views/create-profile.html', {root: './'});
 
             degree.findAll().then(function (degrees) {
                 department.findAll().then(function (departments) {
@@ -27,7 +27,7 @@ module.exports = function (app, sessionChecker) {
                             position.findAll().then(function (positions){
                                 skill.findAll().then(function(skills){
 
-                                    res.render('UserProfileCreate.html', {
+                                    res.render('create-profile.html', {
                                         degrees: degrees.map(degree => degree.dataValues.name),
                                         departments: departments.map(department => department.dataValues.name),
                                         disciplines: disciplines.map(discipline => discipline.dataValues.name),
