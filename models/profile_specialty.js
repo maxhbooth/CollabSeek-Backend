@@ -1,9 +1,11 @@
 /* jshint indent: 2 */
 
-module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('profile_specialty', {
+var Sequelize = require('sequelize');
+var sequelize = require('../database/database');
+
+module.exports =  sequelize.define('profile_specialty', {
         profile_id: {
-            type: DataTypes.INTEGER,
+            type: Sequelize.INTEGER,
             allowNull: true,
             references: {
                 model: 'profile',
@@ -11,14 +13,21 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         specialty_id: {
-            type: DataTypes.INTEGER,
+            type: Sequelize.INTEGER,
             allowNull: true,
             references: {
                 model: 'specialty',
                 key: 'id'
             }
+        },
+        created: {
+            type: Sequelize.DATEONLY,
+            allowNull: true
+        },
+        last_updated: {
+            type: Sequelize.DATEONLY,
+            allowNull: true
         }
     }, {
         tableName: 'profile_specialty'
     });
-};

@@ -1,65 +1,122 @@
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-    <title>User Creation</title>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
-    <!--<script src="UserAjax.js"></script>-->
-    <!--<link rel="stylesheet" type="text/css" href="UserStyle.css">-->
-
+    <title>Create Profile</title>
+    <% include templates/head.ejs%>
 
 </head>
-<body>
-<form  id= 'User' action="#" method ="post">
-
-    <input type="text" placeholder="First Name" required>
-    <input type="text" placeholder="Last Name" required>
-    <input type="text" placeholder="ONYEN" required>
-
-    <select value ="degree" style="width:200px">
-        <% if(locals.degrees){%>
-        <%if (degrees.length > 0){degrees.forEach(function(degree){%>
-        <option><%= degree %></option>
-        <%})}}%>
-    </select>
+<body class="container">
 
 
-    <select multiple = 2 value = "department" style= "height:200px;width:200px">
-        <% if(locals.departments){%>
-        <%if (departments.length > 0){departments.forEach(function(department){%>
-        <option><%= department %></option>
-        <%})}}%>
-    </select>
+    <div class="page-header">
+        <h1>Create Profile</h1>
+    </div>
 
-    <select value = "discipline" style= "height:200px;width:200px">
-        <% if(locals.disciplines){%>
-        <%if (disciplines.length > 0){disciplines.forEach(function(discipline){%>
-        <option><%= disciplines %></option>
-        <%})}}%>
-    </select>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/signup">Sign Up</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                </ul>
 
-    <select value = "position" style= "height:200px;width:200px">
-        <% if(locals.positions){%>
-        <%if (positions.length > 0){positions.forEach(function(position){%>
-        <option><%= position %></option>
-        <%})}}%>
-    </select>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/login">Log In</a></li>
+                    <li><a href="/logout">Log Out</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
 
-    <select value = "facility" style= "height:200px;width:200px">
-        <% if(locals.facilities){%>
-        <%if (facilities.length > 0){facilities.forEach(function(facility){%>
-        <option><%= facility %></option>
-        <%})}}%>
-    </select>
+<div class="container jumbotron">
+<form  id= 'User' action="#" method ="post" role="form">
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <label for="first">First Name:</label>
+            <input type="text" class="form-control" id="first" >
+        </div>
+        <div class="form-group col-sm-4">
+            <label  for="last">Last Name:</label>
+            <input type="text" class="form-control " id="last" >
+        </div>
 
-    <select value = "skill" style= "height:200px;width:200px">
-        <% if(locals.skills){%>
-        <%if (skills.length > 0){skills.forEach(function(skill){%>
-        <option><%= skill %></option>
-        <%})}}%>
-    </select>
+        <div class="form-group col-sm-4">
+            <label for="degree">Degree:</label>
+            <select id="degree" style="width:200px" class="form-control">
+                <% if(locals.degrees){%>
+                <%if (degrees.length > 0){degrees.forEach(function(degree){%>
+                <option><%= degree %></option>
+                <%})}}%>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label for="department">Department:</label>
+            <select multiple = 2 id = "department" class="form-control">
+                <% if(locals.departments){%>
+                <%if (departments.length > 0){departments.forEach(function(department){%>
+                <option><%= department %></option>
+                <%})}}%>
+            </select>
+        </div>
+    </div>
+
+    <div calss="row">
+        <div class="form-group col-sm-4">
+            <label for="discipline">Discipline:</label>
+            <select id = "discipline" class="form-control">
+                <% if(locals.disciplines){%>
+                <%if (disciplines.length > 0){disciplines.forEach(function(discipline){%>
+                <option><%= discipline %></option>
+                <%})}}%>
+            </select>
+        </div>
+
+        <div class="form-group col-sm-4">
+            <label for="position">Position:</label>
+            <select id = "position" class="form-control">
+                <% if(locals.positions){%>
+                <%if (positions.length > 0){positions.forEach(function(position){%>
+                <option><%= position %></option>
+                <%})}}%>
+            </select>
+        </div>
+
+        <div class="form-group col-sm-4">
+            <label for="facility">Facility:</label>
+            <select id = "facility" class="form-control">
+                <% if(locals.facilities){%>
+                <%if (facilities.length > 0){facilities.forEach(function(facility){%>
+                <option><%= facility %></option>
+                <%})}}%>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <label for="skill">Skill:</label>
+            <select id = "skill" class="form-control">
+                <% if(locals.skills){%>
+                <%if (skills.length > 0){skills.forEach(function(skill){%>
+                <option><%= skill %></option>
+                <%})}}%>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
 
 
 </form>
+
+</div>
 
 </body>
 </html>

@@ -1,9 +1,11 @@
 /* jshint indent: 2 */
 
-module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('profile_degree', {
+var Sequelize = require('sequelize');
+var sequelize = require('../database/database');
+
+module.exports = sequelize.define('profile_degree', {
         profile_id: {
-            type: DataTypes.INTEGER,
+            type: Sequelize.INTEGER,
             allowNull: true,
             references: {
                 model: 'profile',
@@ -11,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         degree_id: {
-            type: DataTypes.INTEGER,
+            type: Sequelize.INTEGER,
             allowNull: true,
             references: {
                 model: 'degree',
@@ -19,14 +21,21 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         discipline_id: {
-            type: DataTypes.INTEGER,
+            type: Sequelize.INTEGER,
             allowNull: true,
             references: {
                 model: 'discipline',
                 key: 'id'
+            },
+            created: {
+                type: Sequelize.DATEONLY,
+                allowNull: true
+            },
+            last_updated: {
+                type: Sequelize.DATEONLY,
+                allowNull: true
             }
         }
     }, {
         tableName: 'profile_degree'
     });
-};

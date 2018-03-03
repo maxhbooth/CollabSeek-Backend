@@ -55,7 +55,6 @@ module.exports = function (app, sessionChecker) {
                     validated: req.body
                 });
             }
-
         });
 
     app.route('/login')
