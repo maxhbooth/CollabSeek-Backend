@@ -1,19 +1,28 @@
 /* jshint indent: 2 */
 
-module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('position', {
+var Sequelize = require('sequelize');
+var sequelize = require('../database/database');
+
+module.exports = sequelize.define('position', {
         id: {
-            type: DataTypes.INTEGER,
+            type: Sequelize.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
         name: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: true,
             unique: true
+        },
+        created: {
+        type: Sequelize.DATEONLY,
+            allowNull: true
+        },
+        last_updated: {
+            type: Sequelize.DATEONLY,
+                allowNull: true
         }
     }, {
         tableName: 'position'
-    });
-};
+});
