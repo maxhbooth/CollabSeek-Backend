@@ -2,6 +2,7 @@ const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 //asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
 
+const profile = require('../../../models/profile');
 const profile_degree = require('../../../models/profile_degree');
 const profile_department = require('../../../models/profile_department');
 const profile_facility = require('../../../models/profile_facility');
@@ -18,39 +19,45 @@ var profileRepository = function profileRepository(){
     this.profileDepartment = profile_department;
     this.profileFacility = profile_facility;
     this.profileSkill = profile_skill;
+    this.profile = profile;
 
 };
 
 profileRepository.prototype.addProfileDegree = async(function (profileId, degreeName, disciplineName) {
 
     let degreeId = await(this.attrRepository.getDegreeId(degreeName));
-    let disciplineId = await(this.attrRepository.getDegreeId(disciplineName));
+    let disciplineId = await(this.attrRepository.getDisciplineId(disciplineName));
 
-    this.profileFacility.create({
-        profile_id: profileId,
-        degree_id: degreeId,
-        discipline_id: disciplineId
-    })
-        .catch(error => {
-            //db errors
-            console.log(error);
-        });
+    if(degreeId!=null && disciplineId!= null){
+        this.profileDegree.create({
+            profile_id: profileId,
+            degree_id: degreeId,
+            discipline_id: disciplineId
+        })
+            .catch(error => {
+                //db errors
+                console.log(error);
+            });
+    }
+
 
     return 0;
 });
 
 profileRepository.prototype.addProfileDepartment = async(function (profileId, departmentName) {
 
-    let departmentId = await(this.attrRepository.getFacilityId(departmentName));
+    let departmentId = await(this.attrRepository.getDepartmentId(departmentName));
 
-    this.profileFacility.create({
-        profile_id: profileId,
-        department_id: departmentId
-    })
-    .catch(error => {
-        //db errors
-        console.log(error);
-    });
+    if(departmentId != null){
+        this.profileDepartment.create({
+            profile_id: profileId,
+            department_id: departmentId
+        })
+            .catch(error => {
+                //db errors
+                console.log(error);
+            });
+    }
 
     return 0;
 });
@@ -58,14 +65,16 @@ profileRepository.prototype.addProfileDepartment = async(function (profileId, de
 profileRepository.prototype.addProfileFacily = async(function (profileId, facilityName) {
     let facilityId = await(this.attrRepository.getFacilityId(facilityName));
 
-    this.profileFacility.create({
-        profile_id: profileId,
-        facility_id: facilityId
-    })
-    .catch(error => {
-        //db errors
-        console.log(error);
-    });
+    if(facilityId !=null){
+        this.profileFacility.create({
+            profile_id: profileId,
+            facility_id: facilityId
+        })
+        .catch(error => {
+            //db errors
+            console.log(error);
+        });
+    }
 
     return 0;
 });
@@ -73,10 +82,45 @@ profileRepository.prototype.addProfileFacily = async(function (profileId, facili
 profileRepository.prototype.addProfileSkill = async(function (profileId, skillName) {
     let skillId = await(this.attrRepository.getSkillId(skillName));
 
-    this.profileSkill.create({
-        profile_id: profileId,
-        skill_id: skillId
-    })
+    if(skillId != null){
+        this.profileSkill.create({
+            profile_id: profileId,
+            skill_id: skillId
+        })
+            .catch(error => {
+                //db errors
+                console.log(error);
+            });
+    }
+
+
+    return 0;
+});
+
+profileRepository.prototype.updateProfile = async(function
+    (profileId, first, last, degreeName, departmentName, disciplineName,
+     positionName, facilityName, skills) {
+
+    this.addProfileDegree(profileId, degreeName, disciplineName);
+    this.addProfileDepartment(profileId, departmentName);
+    this.addProfileFacily(profileId, facilityName);
+
+
+    //need to work with multiple skills
+    this.addProfileSkill(profileId, skills);
+
+
+
+    let positionId = await(this.attrRepository.getPositionId(positionName));
+
+    this.profile.update({
+        first_name: first,
+        last_name: last,
+        position: positionId
+    }, {
+        where: {id: profileId},
+        returning: true,
+        plain: true})
     .catch(error => {
         //db errors
         console.log(error);
@@ -84,6 +128,11 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
 
     return 0;
 });
+
+
+
+
+
 
 profileRepository.prototype.getProfileInformation = async(function (){
 

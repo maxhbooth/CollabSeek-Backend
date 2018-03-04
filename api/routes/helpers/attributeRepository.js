@@ -57,25 +57,62 @@ repository.prototype.getAll = async(function () {
     return {degrees, departments, disciplines, facilities, positions, skills};
 });
 
+
+
 repository.prototype.getSkillId = async(function (skillName) {
-    return await(this.skill.findOne({where: {name: skillName}})).id;
+    let skill=await(this.skill.findOne({where: {name: skillName}}));
+
+    if(skill!=null){
+        return skill.id;
+    }
+    return null;
 });
 
 repository.prototype.getFacilityId = async(function (facilityName) {
-    return await(this.facility.findOne({where: {name: facilityName}})).id;
+    let facility = await(this.facility.findOne({where: {name: facilityName}}));
+
+    if(facility!=null){
+        return facility.id;
+    }
+    return null;
 });
 
 repository.prototype.getDepartmentId = async(function (departmentName) {
-    return await(this.department.findOne({where: {name: departmentName}})).id;
+    let department =  await(this.department.findOne({where: {name: departmentName}}));
+
+    if(department!=null){
+        return department.id;
+    }
+    return null;
 });
 
 repository.prototype.getDegreeId = async(function (degreeName) {
-    return await(this.degree.findOne({where: {name: degreeName}})).id;
+    let degree = await(this.degree.findOne({where: {name: degreeName}}));
+
+    if(degree!=null){
+        return degree.id;
+    }
+    return null;
 });
 
 repository.prototype.getDisciplineId = async(function (disciplineName) {
-    return await(this.discipline.findOne({where: {name: disciplineName}})).id;
+    let discipline =  await(this.discipline.findOne({where: {name: disciplineName}}));
+
+    if(discipline!=null){
+        return discipline.id;
+    }
+    return null;
 });
+
+repository.prototype.getPositionId = async(function (positionName) {
+    let position = await(this.position.findOne({where: {name: positionName}}))
+
+    if(position!=null){
+        return position.id;
+    }
+    return null;
+});
+
 
 
 module.exports = repository;

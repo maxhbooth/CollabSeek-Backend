@@ -15,20 +15,20 @@
     <% include templates/navbar.ejs%>
 
 <div class="container jumbotron">
-<form  id= 'User' action="#" method ="post" role="form">
+<form  id= 'User' action="/create-profile" method ="post" role="form">
     <div class="row">
         <div class="form-group col-sm-4">
             <label for="first">First Name:</label>
-            <input type="text" class="form-control" id="first" >
+            <input type="text" class="form-control" id="first" name="first">
         </div>
         <div class="form-group col-sm-4">
             <label  for="last">Last Name:</label>
-            <input type="text" class="form-control " id="last" >
+            <input type="text" class="form-control " id="last" name="last">
         </div>
 
         <div class="form-group col-sm-4">
             <label for="degree">Degree:</label>
-            <select id="degree" style="width:200px" class="form-control">
+            <select id="degree" name="degree" style="width:200px" class="form-control">
                 <% if(locals.degrees){%>
                 <%if (degrees.length > 0){degrees.forEach(function(degree){%>
                 <option><%= degree %></option>
@@ -39,7 +39,7 @@
     <div class="row">
         <div class="form-group col-sm-6">
             <label for="department">Department:</label>
-            <select multiple = 2 id = "department" class="form-control">
+            <select multiple = 2 id = "department" name = "department" class="form-control">
                 <% if(locals.departments){%>
                 <%if (departments.length > 0){departments.forEach(function(department){%>
                 <option><%= department %></option>
@@ -51,7 +51,7 @@
     <div calss="row">
         <div class="form-group col-sm-4">
             <label for="discipline">Discipline:</label>
-            <select id = "discipline" class="form-control">
+            <select id = "discipline" name = "discipline" class="form-control">
                 <% if(locals.disciplines){%>
                 <%if (disciplines.length > 0){disciplines.forEach(function(discipline){%>
                 <option><%= discipline %></option>
@@ -61,7 +61,7 @@
 
         <div class="form-group col-sm-4">
             <label for="position">Position:</label>
-            <select id = "position" class="form-control">
+            <select id = "position" name = "position" class="form-control">
                 <% if(locals.positions){%>
                 <%if (positions.length > 0){positions.forEach(function(position){%>
                 <option><%= position %></option>
@@ -71,7 +71,7 @@
 
         <div class="form-group col-sm-4">
             <label for="facility">Facility:</label>
-            <select id = "facility" class="form-control">
+            <select id = "facility" name="facility" class="form-control">
                 <% if(locals.facilities){%>
                 <%if (facilities.length > 0){facilities.forEach(function(facility){%>
                 <option><%= facility %></option>
@@ -84,7 +84,7 @@
     <div class="row">
         <div class="form-group col-sm-4">
             <label for="skill">Skill:</label>
-            <select id = "skill" class="form-control">
+            <select id = "skill" name="skill" class="form-control">
                 <% if(locals.skills){%>
                 <%if (skills.length > 0){skills.forEach(function(skill){%>
                 <option><%= skill %></option>
