@@ -3,6 +3,12 @@ var Sequelize = require('sequelize');
 var sequelize = require('../database/database');
 
 module.exports = sequelize.define('profile_skill', {
+        id: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
+        },
         profile_id: {
             type: Sequelize.INTEGER,
             allowNull: true,

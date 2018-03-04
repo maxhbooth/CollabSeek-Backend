@@ -29,10 +29,17 @@ profileRepository.prototype.addProfileDegree = async(function (profileId, degree
     let disciplineId = await(this.attrRepository.getDisciplineId(disciplineName));
 
     if(degreeId!=null && disciplineId!= null){
-        this.profileDegree.create({
-            profile_id: profileId,
-            degree_id: degreeId,
-            discipline_id: disciplineId
+        this.profileDegree.findOrCreate({
+            where: {
+                profile_id: profileId,
+                degree_id: degreeId,
+                discipline_id: disciplineId
+            },
+            defaults: {
+                profile_id: profileId,
+                degree_id: degreeId,
+                discipline_id: disciplineId
+            }
         })
             .catch(error => {
                 //db errors
@@ -49,9 +56,15 @@ profileRepository.prototype.addProfileDepartment = async(function (profileId, de
     let departmentId = await(this.attrRepository.getDepartmentId(departmentName));
 
     if(departmentId != null){
-        this.profileDepartment.create({
-            profile_id: profileId,
-            department_id: departmentId
+        this.profileDepartment.findOrCreate({
+            where: {
+                profile_id: profileId,
+                department_id: departmentId
+            },
+            default: {
+                profile_id: profileId,
+                department_id: departmentId
+            }
         })
             .catch(error => {
                 //db errors
@@ -66,9 +79,15 @@ profileRepository.prototype.addProfileFacily = async(function (profileId, facili
     let facilityId = await(this.attrRepository.getFacilityId(facilityName));
 
     if(facilityId !=null){
-        this.profileFacility.create({
-            profile_id: profileId,
-            facility_id: facilityId
+        this.profileFacility.findOrCreate({
+            where: {
+                profile_id: profileId,
+                facility_id: facilityId
+            },
+            default: {
+                profile_id: profileId,
+                facility_id: facilityId
+            }
         })
         .catch(error => {
             //db errors
@@ -83,9 +102,15 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
     let skillId = await(this.attrRepository.getSkillId(skillName));
 
     if(skillId != null){
-        this.profileSkill.create({
-            profile_id: profileId,
-            skill_id: skillId
+        this.profileSkill.findOrCreate({
+            where: {
+                profile_id: profileId,
+                skill_id: skillId
+            },
+            default: {
+                profile_id: profileId,
+                skill_id: skillId
+            }
         })
             .catch(error => {
                 //db errors
@@ -129,14 +154,21 @@ profileRepository.prototype.updateProfile = async(function
     return 0;
 });
 
+profileRepository.prototype.getProfileInformation = async(function (profileId){
 
+    let profile = await(this.profile.findOne({where: {id:profileId}}));
 
+    if(profile==null){
+        return null;
+    }
 
+    let skills = await(this.profileSkill.findAll({where: {profile_id:profileId}}))
+        .forEach(function(skill){if(skill==null){return null} return await(this.attrRepository.skill.findOne({where:{id: skill.skill_id}}))
+        });
+    //let departments = await(this.profileDepartment.findAll({where: {profile_id:profileId}}));
 
-
-profileRepository.prototype.getProfileInformation = async(function (){
-
-   return 0;
+   return {username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: profile.position,
+            skills: skills, department: departments};
 });
 
 
