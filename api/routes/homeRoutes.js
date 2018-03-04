@@ -4,8 +4,13 @@ const ProfileRepository = require('./helpers/profileRepository');
 
 module.exports = function (app, sessionChecker) {
     // set up the routes themselves
+
     app.get('/', sessionChecker, (req, res) => {
-        res.redirect('/login')
+        res.redirect('/welcome')
+    });
+
+    app.get('/welcome', sessionChecker, (req, res) => {
+        res.sendFile('/views/welcome.html', {root: './'});
     });
 
     app.get('/index', (req, res) => {

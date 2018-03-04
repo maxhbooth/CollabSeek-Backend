@@ -64,6 +64,8 @@ var sessionChecker = (req, res, next) => {
     }
 };
 
+app.use(express.static(__dirname + '/views'));
+
 var userRoutes = require('./api/routes/userRoutes');
 var homeRoutes = require('./api/routes/homeRoutes');
 var profileCreationRoutes = require('./api/routes/profileCreationRoutes')
