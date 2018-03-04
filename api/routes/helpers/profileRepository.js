@@ -2,6 +2,8 @@ const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 //asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
 
+const Sequelize = require('sequelize');
+
 const profile = require('../../../models/profile');
 const profile_degree = require('../../../models/profile_degree');
 const profile_department = require('../../../models/profile_department');
@@ -21,7 +23,58 @@ var profileRepository = function profileRepository(){
     this.profileSkill = profile_skill;
     this.profile = profile;
 
+    //create many-to-many relation between profile and skill.
+    this.profile.belongsToMany(
+        this.attrRepository.skill, {through: {
+                model: this.profileSkill,
+                unique: true
+            },
+            foreignKey: 'profile_id',
+            constraints: false});
+
+    this.attrRepository.skill.belongsToMany(
+        this.profile, {through: {
+                model: this.profileSkill,
+                unique: true
+            },
+            foreignKey: 'skill_id',
+        constraints: false});
+
+    this.profile.belongsToMany(
+        this.attrRepository.department, {through: {
+                model: this.profileDepartment,
+                unique: true
+            },
+            foreignKey: 'profile_id',
+            constraints: false});
+
+    this.attrRepository.department.belongsToMany(
+        this.profile, {through: {
+                model: this.profileDepartment,
+                unique: true
+            },
+            foreignKey: 'department_id',
+            constraints: false});
+
+    this.profile.belongsToMany(
+        this.attrRepository.degree, {through: {
+                model: this.profileDegree,
+                unique: true
+            },
+            foreignKey: 'profile_id',
+            constraints: false});
+
+    this.attrRepository.degree.belongsToMany(
+        this.profile, {through: {
+                model: this.profileDegree,
+                unique: true
+            },
+            foreignKey: 'degree_id',
+            constraints: false});
 };
+
+
+
 
 profileRepository.prototype.addProfileDegree = async(function (profileId, degreeName, disciplineName) {
 
@@ -118,7 +171,6 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
             });
     }
 
-
     return 0;
 });
 
@@ -133,8 +185,6 @@ profileRepository.prototype.updateProfile = async(function
 
     //need to work with multiple skills
     this.addProfileSkill(profileId, skills);
-
-
 
     let positionId = await(this.attrRepository.getPositionId(positionName));
 
@@ -162,13 +212,36 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         return null;
     }
 
-    let skills = await(this.profileSkill.findAll({where: {profile_id:profileId}}))
-        .forEach(function(skill){if(skill==null){return null} return await(this.attrRepository.skill.findOne({where:{id: skill.skill_id}}))
-        });
-    //let departments = await(this.profileDepartment.findAll({where: {profile_id:profileId}}));
+    let positionId = profile.position;
 
-   return {username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: profile.position,
-            skills: skills, department: departments};
+    let position = await(this.attrRepository.position.findOne({where:{id:positionId}}))
+
+    let skills = await(this.attrRepository.skill.findAll({
+        include: [{
+            model: this.profile,
+            where: {id: profileId},
+            through: {}
+        }]
+    }));
+
+    let departments = await(this.attrRepository.department.findAll({
+        include: [{
+            model: this.profile,
+            where: {id: profileId},
+            through: {}
+        }]
+    }));
+
+    let degrees = await(this.attrRepository.degree.findAll({
+        include: [{
+            model: this.profile,
+            where: {id: profileId},
+            through: {}
+        }]
+    }));
+
+   return {username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: position.name,
+            skills: skills, departments: departments, degrees: degrees};
 });
 
 
