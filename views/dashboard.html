@@ -28,7 +28,43 @@
 </nav>
 
 <div class="container row">
-    <h1>Hi, Welcome to your Dashboard</h1>
+    <h1>Hi,
+
+        <% if(locals.first && locals.last){%>
+        <%= first %> <%= last%>
+        <%}%>
+
+        Welcome to your Dashboard</h1>
+
+    <% if(locals.position){%>
+    <h2>position</h2>
+    <h4><%= position %></h4>
+    <%}%>
+
+
+    <% if(locals.skills){%>
+    <%if (skills.length > 0){%>
+    <h2>skills</h2>
+    <%skills.forEach(function(skill){%>
+    <h4><%= skill.name %></h4>
+    <%})}}%>
+
+    <% if(locals.degrees){%>
+    <%if (degrees.length > 0){%>
+    <h2>degrees</h2>
+    <%degrees.forEach(function(degree){%>
+    <h4><%= degree.name %></h4>
+    <%})}}%>
+
+    <% if(locals.departments){%>
+    <%if (departments.length > 0){%>
+    <h2>departments</h2>
+    <%departments.forEach(function(department){%>
+    <h4><%= department.name %></h4>
+    <%})}}%>
+
+
+
 </div>
 </body>
 </html>

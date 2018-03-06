@@ -27,7 +27,6 @@ module.exports = function (app, sessionChecker) {
 
             console.log("creating profile from post to /create-profile");
 
-
             //what should I validate??
             req.checkBody('first', "must enter a first name").notEmpty();
             req.checkBody('last', "must enter a last name").notEmpty();
@@ -36,9 +35,7 @@ module.exports = function (app, sessionChecker) {
 
             if(!errors){
 
-
                 console.log(req.session.profile);
-
 
                 let profileId = req.session.profile.id;
                 let first = req.body.first;
@@ -53,11 +50,6 @@ module.exports = function (app, sessionChecker) {
                 var profileRepository = new ProfileRepository();
                 profileRepository.updateProfile(profileId, first, last, degreeName, departmentName, disciplineName,
                     positionName, facilityName, skills);
-
-                // profile_department;
-                // profile_facility;
-                // profile_skill;
-                // profile_specialty;
 
             }
             else{
