@@ -13,34 +13,16 @@ module.exports = function (app, sessionChecker) {
         res.sendFile('/views/welcome.html', {root: './'});
     });
 
-    app.get('/index', (req, res) => {
+    app.get('/profile', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
 
             let profileRepositiory = new ProfileRepository();
 
             profileRepositiory.getProfileInformation(req.session.profile.id).then(function (models){
                 console.log(models);
-                res.render('dashboard.html', models);
+                res.render('profile.html', models);
             });
 
-            //res.sendFile('/views/dashboard.html', {root: './'});
-        } else {
-            res.redirect('/login');
-        }
-    });
-
-    app.get('/dashboard', (req, res) => {
-        if (req.session.profile && req.cookies.user_sid) {
-
-
-            // let profileRepositiory = new ProfileRepository();
-            //
-            // profileRepositiory.getProfileInformation(req.session.profile.id).then(function (models){
-            //     console.log(models);
-            //     res.render('dashboard.html', models);
-            // });
-
-            res.sendFile('/views/dashboard.html', {root: './'});
         } else {
             res.redirect('/login');
         }
