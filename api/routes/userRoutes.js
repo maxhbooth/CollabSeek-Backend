@@ -25,7 +25,7 @@ module.exports = function (app, sessionChecker) {
                 })
                     .then(profile => {
                         req.session.profile = profile.dataValues;
-                        res.redirect('/dashboard');
+                        res.redirect('/create-profile');
                     })
                     .catch(error => {
                         //database error
