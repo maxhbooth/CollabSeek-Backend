@@ -58,7 +58,7 @@ app.use((req, res, next) => {
 // middleware function to check for logged-in users
 var sessionChecker = (req, res, next) => {
     if (req.session.profile && req.cookies.user_sid) {
-        res.redirect('/dashboard');
+        res.redirect('/welcome');
     } else {
         next();
     }
