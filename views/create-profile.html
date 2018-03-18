@@ -17,7 +17,7 @@
 <form  id= 'User' action="/create-profile" method ="post" role="form">
     <div class="row">
         <div class="form-group col-sm-4">
-            <label for="first">First Name:</label>
+            <label for="first">Preferred Name:</label>
             <input type="text" class="form-control" id="first" name="first">
         </div>
         <div class="form-group col-sm-4">
@@ -52,20 +52,11 @@
             <button type="button" id="add_degree" class="btn btn-default">Add Degree</button>
         </div>
     </div>
-    <div class="row">
-        <div class="form-group col-sm-6">
-            <label for="department">Department:</label>
-            <select multiple = 2 id = "department" name = "department" class="form-control">
-                <% if(locals.departments){%>
-                <%if (departments.length > 0){departments.forEach(function(department){%>
-                <option><%= department %></option>
-                <%})}}%>
-            </select>
-        </div>
-    </div>
+
+    <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
 
     <div class="row">
-        <div class="form-group col-sm-4">
+        <div class="form-group col-sm-6">
             <label for="position">Position:</label>
             <select id = "position" name = "position" class="form-control">
                 <% if(locals.positions){%>
@@ -76,27 +67,80 @@
         </div>
     </div>
 
+    <div id="dept_set">
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label for="department">Department/Institute:</label>
+                <select id = "department" name = "department" class="form-control">
+                    <% if(locals.departments){%>
+                    <%if (departments.length > 0){departments.forEach(function(department){%>
+                    <option><%= department %></option>
+                    <%})}}%>
+                </select>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="form-group col-sm-4">
-            <label for="skill">Skill:</label>
-            <select id = "skill" name="skill" class="form-control">
-                <% if(locals.skills){%>
-                <%if (skills.length > 0){skills.forEach(function(skill){%>
-                <option><%= skill %></option>
-                <%})}}%>
-            </select>
+            <button type="button" id="add_department" class="btn btn-default">Add Department</button>
+        </div>
+    </div>
+    <div id="specialty_set">
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label for="specialty">Specialties:</label>
+                <select id = "specialty" name = "specialty" class="form-control">
+                    <% if(locals.specialties){%>
+                    <%if (specialties.length > 0){specialties.forEach(function(specialty){%>
+                    <option><%= specialty %></option>
+                    <%})}}%>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <button type="button" id="add_specialty" class="btn btn-default">Add Specialty</button>
         </div>
     </div>
 
-    <div class = "row">
+    <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+
+    <div id="skill_set">
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label for="skill">Skill:</label>
+                <select id = "skill" name="skill" class="form-control">
+                    <% if(locals.skills){%>
+                    <%if (skills.length > 0){skills.forEach(function(skill){%>
+                    <option><%= skill %></option>
+                    <%})}}%>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="form-group col-sm-4">
-            <label for="facility">Facility:</label>
-            <select id = "facility" name="facility" class="form-control">
-                <% if(locals.facilities){%>
-                <%if (facilities.length > 0){facilities.forEach(function(facility){%>
-                <option><%= facility %></option>
-                <%})}}%>
-            </select>
+            <button type="button" id="add_skill" class="btn btn-default">Add Skill</button>
+        </div>
+    </div>
+
+    <div id="facility_set">
+        <div class = "row">
+            <div class="form-group col-sm-6">
+                <label for="facility">Facility:</label>
+                <select id = "facility" name="facility" class="form-control">
+                    <% if(locals.facilities){%>
+                    <%if (facilities.length > 0){facilities.forEach(function(facility){%>
+                    <option><%= facility %></option>
+                    <%})}}%>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <button type="button" id="add_facility" class="btn btn-default">Add Facility</button>
         </div>
     </div>
 

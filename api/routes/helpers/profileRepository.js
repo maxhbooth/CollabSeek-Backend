@@ -17,6 +17,7 @@ var profileRepository = function profileRepository(){
 
     this.attrRepository = new AttrRepository();
 
+    this.profileSpecialty = profile_specialty;
     this.profileDegree = profile_degree;
     this.profileDepartment = profile_department;
     this.profileFacility = profile_facility;
@@ -24,6 +25,22 @@ var profileRepository = function profileRepository(){
     this.profile = profile;
 
     //create many-to-many relation between profile and skill.
+    this.profile.belongsToMany(
+        this.attrRepository.specialty, {through: {
+                model: this.profileSpecialty,
+                unique: true
+            },
+            foreignKey: 'profile_id',
+            constraints: false});
+
+    this.attrRepository.specialty.belongsToMany(
+        this.profile, {through: {
+                model: this.profileSpecialty,
+                unique: true
+            },
+            foreignKey: 'specialty_id',
+            constraints: false});
+
     this.profile.belongsToMany(
         this.attrRepository.skill, {through: {
                 model: this.profileSkill,
@@ -128,7 +145,30 @@ profileRepository.prototype.addProfileDepartment = async(function (profileId, de
     return 0;
 });
 
-profileRepository.prototype.addProfileFacily = async(function (profileId, facilityName) {
+profileRepository.prototype.addProfileSpecialty = async(function (profileId, specialtyName) {
+    let specialtyId = await(this.attrRepository.getSpecialtyId(specialtyName));
+
+    if(specialtyId !=null){
+        this.profileSpecialty.findOrCreate({
+            where: {
+                profile_id: profileId,
+                specialty_id: specialtyId
+            },
+            default: {
+                profile_id: profileId,
+                specialty_id: specialtyId
+            }
+        })
+            .catch(error => {
+            //db errors
+            console.log(error);
+    });
+    }
+
+    return 0;
+});
+
+profileRepository.prototype.addProfileFacility = async(function (profileId, facilityName) {
     let facilityId = await(this.attrRepository.getFacilityId(facilityName));
 
     if(facilityId !=null){
@@ -176,11 +216,12 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
 
 profileRepository.prototype.updateProfile = async(function
     (profileId, first, last, degreeName, departmentName, disciplineName,
-     positionName, facilityName, skills) {
+     positionName, facilityName, skills, specialtyName) {
 
     this.addProfileDegree(profileId, degreeName, disciplineName);
     this.addProfileDepartment(profileId, departmentName);
-    this.addProfileFacily(profileId, facilityName);
+    this.addProfileFacility(profileId, facilityName);
+    this.addProfileSpecialty(profileId, specialtyName);
 
 
     //need to work with multiple skills
@@ -240,8 +281,16 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         }]
     }));
 
+    let specialties = await(this.attrRepository.specialty.findAll({
+        include: [{
+            model: this.profile,
+            where: {id: profileId},
+            through: {}
+        }]
+    }));
+
    return {username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: position.name,
-            skills: skills, departments: departments, degrees: degrees};
+            skills: skills, departments: departments, degrees: degrees, specialties: specialties};
 });
 
 

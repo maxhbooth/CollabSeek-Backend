@@ -3,7 +3,7 @@
 var Sequelize = require('sequelize');
 var sequelize = require('../database/database')
 
-module.exports = sequelize.define('sequelize', {
+module.exports = sequelize.define('specialty', {
         id: {
             type: Sequelize.INTEGER,
             allowNull: false,

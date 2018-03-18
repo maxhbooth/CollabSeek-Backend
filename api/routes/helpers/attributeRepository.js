@@ -8,7 +8,7 @@ const discipline = require('../../../models/discipline');
 const facility = require('../../../models/facility');
 const position = require('../../../models/position');
 const skill = require('../../../models/skill');
-//const specialty = require('../../../models/specialty');
+const specialty = require('../../../models/specialty');
 
 const repository = function repository(){
 
@@ -18,7 +18,7 @@ const repository = function repository(){
     this.facility = facility;
     this.position = position;
     this.skill = skill;
-    //this.specialty = specialty;
+    this.specialty = specialty;
 
 };
 
@@ -46,9 +46,9 @@ repository.prototype.getSkills = async(function () {
     return await(this.skill.findAll()).map(skill => skill.dataValues.name)
 });
 
-/*repository.prototype.getSpecialties = async(function () {
+repository.prototype.getSpecialties = async(function () {
     return await(this.specialty.findAll()).map(specialty => specialty.dataValues.name)
-})*/
+});
 
 repository.prototype.getAll = async(function () {
     let degrees = await(this.getDegrees());
@@ -57,9 +57,9 @@ repository.prototype.getAll = async(function () {
     let facilities = await(this.getFacilities());
     let positions = await(this.getPositions());
     let skills = await(this.getSkills());
-    //let specialties = await(this.getSpecialties());
+    let specialties = await(this.getSpecialties());
 
-    return {degrees, departments, disciplines, facilities, positions, skills};
+    return {degrees, departments, disciplines, facilities, positions, skills, specialties};
 });
 
 
@@ -118,14 +118,14 @@ repository.prototype.getPositionId = async(function (positionName) {
     return null;
 });
 
-/*repository.prototype.getSpecialtyId = async(function (specialtyName) {
+repository.prototype.getSpecialtyId = async(function (specialtyName) {
     let specialty = await(this.position.findOne({where: {name: specialtyName}}))
 
     if(specialty!=null){
         return specialty.id;
     }
     return null;
-});*/
+});
 
 
 module.exports = repository;
