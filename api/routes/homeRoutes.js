@@ -9,12 +9,16 @@ module.exports = function (app, sessionChecker) {
         if (req.session.profile && req.cookies.user_sid) {
             res.sendFile('/views/homepage.html', {root: './'});
         } else {
-            res.redirect('/welcome')
+            res.sendFile('/views/welcome.html', {root: './'});
         }
     });
 
-    app.get('/welcome', sessionChecker, (req, res) => {
-        res.sendFile('/views/welcome.html', {root: './'});
+    app.get('/welcome', (req, res) => {
+        if (req.session.profile && req.cookies.user_sid) {
+            res.sendFile('/views/homepage.html', {root: './'});
+        } else {
+            res.sendFile('/views/welcome.html', {root: './'});
+        }
     });
 
     app.get('/profile', (req, res) => {
