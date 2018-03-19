@@ -47,10 +47,12 @@ html, body {
     color: whitesmoke;
     font-weight: 400;
     font-style: normal;
+    font-size: 125%;
+    text-shadow: 2px 2px 4px #000000
 }
 
 #title {
-    font-size: 200%;
+    font-size: 250%;
     font-weight: 700;
     font-style: normal;
     color: white;
@@ -87,7 +89,8 @@ html, body {
     border: none;
     padding: 6px;
     color: white;
-    font-size: 18px;
+    font-size: 22px;
+    box-shadow: 1px 1px 6px #000000;
 }
 
 #signup {
@@ -96,7 +99,8 @@ html, body {
     border: none;
     padding: 6px;
     color: white;
-    font-size: 18px;
+    font-size: 22px;
+    box-shadow: 1px 1px 6px #000000;
 }
 
 #login:hover {

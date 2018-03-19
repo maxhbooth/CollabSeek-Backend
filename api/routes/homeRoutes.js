@@ -5,8 +5,12 @@ const ProfileRepository = require('./helpers/profileRepository');
 module.exports = function (app, sessionChecker) {
     // set up the routes themselves
 
-    app.get('/', sessionChecker, (req, res) => {
-        res.redirect('/welcome')
+    app.get('/', (req, res) => {
+        if (req.session.profile && req.cookies.user_sid) {
+            res.sendFile('/views/homepage.html', {root: './'});
+        } else {
+            res.redirect('/welcome')
+        }
     });
 
     app.get('/welcome', sessionChecker, (req, res) => {
