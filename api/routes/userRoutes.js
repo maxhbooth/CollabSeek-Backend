@@ -7,6 +7,14 @@ const ProfileRepository = require('./helpers/profileRepository');
 module.exports = function (app, sessionChecker) {
     // set up the routes themselves
 
+
+    function extend(dest, src) {
+        for(var key in src) {
+            dest[key] = src[key];
+        }
+        return dest;
+    }
+
     app.route('/signup')
         .get(sessionChecker, (req, res) => {
             if (!req.session.profile && !req.cookies.user_sid){
@@ -84,17 +92,18 @@ module.exports = function (app, sessionChecker) {
                     }
                 }
 
-                // var attrRepository = new AttrRepository();
-                //
-                // attrRepository.getAll().then(function (models){
-                //     //console.log(models); tbh this is annoying rn
-                //     res.render('signup.html', models);
-                // });
-                res.render('signup.html', {
-                    userErrors: userErrors,
-                    emailErrors: emailErrors,
-                    passwordErrors: passwordErrors,
-                    validated: req.body
+                var attrRepository = new AttrRepository();
+
+                attrRepository.getAll().then(function (models){
+                    //console.log(models); tbh this is annoying rn
+
+                    var errors = {userErrors: userErrors,
+                                    emailErrors: emailErrors,
+                                    passwordErrors: passwordErrors,
+                                    validated: req.body};
+                    var data = extend(models, errors);
+                    res.render('signup.html',
+                        data );
                 });
             }
         });
