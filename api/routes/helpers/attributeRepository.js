@@ -9,6 +9,7 @@ const facility = require('../../../models/facility');
 const position = require('../../../models/position');
 const skill = require('../../../models/skill');
 const specialty = require('../../../models/specialty');
+const degree_discipline = require('../../../models/profile_degree')
 
 const repository = function repository(){
 
@@ -19,6 +20,7 @@ const repository = function repository(){
     this.position = position;
     this.skill = skill;
     this.specialty = specialty;
+    this.degree_discipline = degree_discipline;
 
 };
 
@@ -119,10 +121,28 @@ repository.prototype.getPositionId = async(function (positionName) {
 });
 
 repository.prototype.getSpecialtyId = async(function (specialtyName) {
-    let specialty = await(this.position.findOne({where: {name: specialtyName}}))
+    let specialty = await(this.specialty.findOne({where: {name: specialtyName}}))
 
     if(specialty!=null){
         return specialty.id;
+    }
+    return null;
+});
+
+repository.prototype.getDisciplineName = async(function(disciplineID) {
+    let discipline = await(this.discipline.findOne({where: {id: disciplineID}}))
+
+    if(discipline != null){
+        return discipline.name;
+    }
+    return null;
+});
+
+repository.prototype.getDegreeName = async(function(degreeID) {
+    let degree = await(this.degree.findOne({where: {id: degreeID}}))
+
+    if(degree != null){
+        return degree.name;
     }
     return null;
 });

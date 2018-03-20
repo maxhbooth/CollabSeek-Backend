@@ -41,20 +41,30 @@
 
             <% if(locals.departments){%>
             <%if (departments.length > 0){%>
-            <h3>Department: </h3>
+            <h3>Department: <small>
             <%departments.forEach(function(department){%>
-            <h3><small><%= department.name %></small></h3>
-            <%})}}%>
+            |<%=department.name %>|
+                <%})%>
+            </small></h3><%}}%>
 
-            <% if(locals.degrees){%>
-            <%if (degrees.length > 0){%>
-            <h3>Degrees: </h3>
-            <%degrees.forEach(function(degree){%>
-            <h3><small><%= degree.name %></small></h3>
-            <%})}}%>
+            <% if(locals.degrees && locals.disciplines){%>
+            <% if(degrees.length > 0){%>
+            <table class="table">
+                <thead>
+                <th><h3>Degree</h3></th>
+                <th><h3>Discipline</h3></th>
+                </thead>
+                <tbody>
+                <%for(var i = 0; i < degrees.length; i++){%>
+                <tr>
+                    <td><%= degrees[i] %></td>
+                    <td><%= disciplines[i] %></td>
+                </tr>
+                </tbody>
+            <%}}}%>
+            </table>
         </div>
     </div>
-
     <br>
     <br>
 

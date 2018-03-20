@@ -13,7 +13,7 @@ $(document).ready(function() {
         // Degree choosing section
         var deg_id = "degree" + current_degrees.toString();
         var $newdegree = $('<div class="form-group col-sm-4"></div>');
-        var $degreeselect = $('<select id=' + deg_id + ' name=' + deg_id + ' class="form-control"></select>');
+        var $degreeselect = $('<select id=' + deg_id +  ' name="degree" class="form-control"></select>');
 
         $("#degree option").each(function()
         {$degreeselect.append('<option>' + $(this).val() + '</option>');});
@@ -22,7 +22,7 @@ $(document).ready(function() {
         // Discipline choosing section
         var disc_id = "discipline" + current_degrees.toString();
         var $newdiscipline = $('<div class="form-group col-sm-4"></div>');
-        var $disciplineselect = $('<select id=' + disc_id + 'name=' + disc_id + ' class="form-control"></select>');
+        var $disciplineselect = $('<select id=' + disc_id + ' name="discipline" class="form-control"></select>');
 
         $("#discipline option").each(function()
         {$disciplineselect.append('<option>' + $(this).val() + '</option>');});
@@ -45,7 +45,7 @@ $(document).ready(function() {
         current_departments++;
         var dept_id = "department" + current_departments.toString();
         var $newdept = $('<div class="row" id="dept_set' + current_departments.toString() + '"></div>');
-        var $deptselect = $('<select id=' + dept_id + ' name=' + dept_id + ' class="form-control"></select>');
+        var $deptselect = $('<select id=' + dept_id + ' name="department" class="form-control"></select>');
 
         $("#department option").each(function()
         {$deptselect.append('<option>' + $(this).val() + '</option>');});
@@ -65,7 +65,7 @@ $(document).ready(function() {
         current_specialties++;
         var specialty_id = "specialty" + current_specialties.toString();
         var $newspecialty = $('<div class="row" id="specialty_set' + current_specialties.toString() + '"></div>');
-        var $specialtyselect = $('<select id=' + specialty_id + ' name=' + specialty_id + ' class="form-control"></select>');
+        var $specialtyselect = $('<select id=' + specialty_id + ' name="specialty" class="form-control"></select>');
 
         $("#specialty option").each(function()
         {$specialtyselect.append('<option>' + $(this).val() + '</option>');});
@@ -85,7 +85,7 @@ $(document).ready(function() {
         current_skills++;
         var skill_id = "skill" + current_skills.toString();
         var $newskill = $('<div class="row" id="skill_set' + current_skills.toString() + '"></div>');
-        var $skillselect = $('<select id=' + skill_id + ' name=' + skill_id + ' class="form-control"></select>');
+        var $skillselect = $('<select id=' + skill_id + ' name="skill" class="form-control"></select>');
 
         $("#skill option").each(function()
         {$skillselect.append('<option>' + $(this).val() + '</option>');});
@@ -105,7 +105,7 @@ $(document).ready(function() {
         current_facilities++;
         var facility_id = "skill" + current_facilities.toString();
         var $newfacility = $('<div class="row" id="facility_set' + current_facilities.toString() + '"></div>');
-        var $facilityselect = $('<select id=' + facility_id + ' name=' + facility_id + ' class="form-control"></select>');
+        var $facilityselect = $('<select id=' + facility_id + ' name="facility" class="form-control"></select>');
 
         $("#facility option").each(function()
         {$facilityselect.append('<option>' + $(this).val() + '</option>');});

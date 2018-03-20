@@ -49,13 +49,11 @@ module.exports = function (app, sessionChecker) {
                 var profileRepository = new ProfileRepository();
                 profileRepository.updateProfile(profileId, first, last, degreeName, departmentName, disciplineName,
                     positionName, facilityName, skillName, specialtyName);
-
             }
             else{
                 console.log(errors);
                 console.log('There were errors in profileCreationRoutes.js');
             }
-
         }else {
             res.redirect('/login');
         }
