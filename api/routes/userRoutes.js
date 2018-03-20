@@ -6,8 +6,6 @@ const ProfileRepository = require('./helpers/profileRepository');
 
 module.exports = function (app, sessionChecker) {
     // set up the routes themselves
-
-
     function extend(dest, src) {
         for(var key in src) {
             dest[key] = src[key];
