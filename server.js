@@ -68,11 +68,12 @@ app.use(express.static(__dirname + '/views'));
 
 var userRoutes = require('./api/routes/userRoutes');
 var homeRoutes = require('./api/routes/homeRoutes');
+var imageUploadRoutes = require('./api/routes/imageUploadRoutes');
 //var profileCreationRoutes = require('./api/routes/profileCreationRoutes')
 homeRoutes(app, sessionChecker);
 userRoutes(app, sessionChecker);
 //profileCreationRoutes(app, sessionChecker);
-
+imageUploadRoutes(app, sessionChecker);
 app.listen(port);
 
 console.log('todo list RESTful API server started on: ' + port);
