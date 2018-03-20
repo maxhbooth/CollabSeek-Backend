@@ -224,6 +224,7 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
     return 0;
 });
 
+//not using right now.
 profileRepository.prototype.updateProfile = async(function
     (profileId, first, last, degreeName, departmentName, disciplineName,
      positionName, facilityName, skills, specialtyName) {
@@ -293,6 +294,44 @@ profileRepository.prototype.updateProfile = async(function
     });
 
     return 0;
+});
+
+profileRepository.prototype.createProfile = async(function
+    (first, last, degreeName, departmentName, disciplineName,
+     positionName, facilityName, skillName, specialtyName, username, email, password) {
+
+    let positionId = await(this.attrRepository.getPositionId(positionName));
+
+
+    console.log("this is the pasword:" + password);
+
+
+    let profile = await(this.profile.create({
+        first_name: first,
+        last_name: last,
+        position: positionId,
+        username: username,
+        email: email,
+        password: password
+    }, {
+        returning: true,
+        plain: true})
+        .catch(errors => {
+            //db errors
+            console.log(errors);
+            return errors;
+        }));
+
+    let profileId = profile.id;
+    this.addProfileDegree(profileId, degreeName, disciplineName);
+    this.addProfileDepartment(profileId, departmentName);
+    this.addProfileFacility(profileId, facilityName);
+    this.addProfileSpecialty(profileId, specialtyName);
+
+    //need to work with multiple skills
+    this.addProfileSkill(profileId, skillName);
+
+    return profile;
 });
 
 profileRepository.prototype.getProfileInformation = async(function (profileId){
