@@ -303,7 +303,7 @@ profileRepository.prototype.createProfile = async(function
     let positionId = await(this.attrRepository.getPositionId(positionName));
 
 
-    console.log("this is the pasword:" + password);
+    console.log("this is the password:" + password);
 
 
     let profile = await(this.profile.create({
@@ -323,14 +323,70 @@ profileRepository.prototype.createProfile = async(function
         }));
 
     let profileId = profile.id;
-    this.addProfileDegree(profileId, degreeName, disciplineName);
-    this.addProfileDepartment(profileId, departmentName);
-    this.addProfileFacility(profileId, facilityName);
-    this.addProfileSpecialty(profileId, specialtyName);
+    var i;
+    if(Array.isArray(degreeName) && Array.isArray(disciplineName)){
+        var min = Math.min(degreeName.length, disciplineName.length);
+        for(i = 0; i < min; i++){
+            this.addProfileDegree(profileId, degreeName[i], disciplineName[i]);
+        }
+    }
+    else if(Array.isArray(degreeName) && !Array.isArray(disciplineName)){
+        this.addProfileDegree(profileId, degreeName[0], disciplineName);
+    }
+    else if(!Array.isArray(degreeName) && Array.isArray(disciplineName)){
+        this.addProfileDegree(profileId, degreeName, disciplineName[0]);
+    }
+    else{
+        this.addProfileDegree(profileId, degreeName, disciplineName);
+    }
+    if(Array.isArray(departmentName)){
+        for(i = 0; i < departmentName.length; i++){
+            this.addProfileDepartment(profileId, departmentName[i]);
+        }
+    }
+    else{
+        this.addProfileDepartment(profileId, departmentName);
+    }
+    if(Array.isArray(facilityName)){
+        for(i = 0; i < facilityName.length; i++){
+            this.addProfileFacility(profileId, facilityName[i]);
+        }
+    }
+    else{
+        this.addProfileFacility(profileId, facilityName);
+    }
+    if(Array.isArray(specialtyName)){
+        for(i = 0; i < specialtyName.length; i++){
+            this.addProfileSpecialty(profileId, specialtyName[i]);
+        }
+    }
+    else {
+        this.addProfileSpecialty(profileId, specialtyName);
+    }
 
-    //need to work with multiple skills
-    this.addProfileSkill(profileId, skillName);
+    if(Array.isArray(skillName)){
+        for(i = 0; i < skillName.length; i++){
+            this.addProfileSkill(profileId, skillName[i]);
+        }
+    }
+    else{
+        this.addProfileSkill(profileId, skillName);
+    }
 
+    let positionId = await(this.attrRepository.getPositionId(positionName));
+
+    this.profile.update({
+        first_name: first,
+        last_name: last,
+        position: positionId
+    }, {
+        where: {id: profileId},
+        returning: true,
+        plain: true})
+        .catch(error => {
+        //db errors
+        console.log(error);
+});
     return profile;
 });
 

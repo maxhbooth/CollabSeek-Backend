@@ -73,8 +73,6 @@ module.exports = function (app, sessionChecker) {
                         res.redirect('/profile');
                     });
 
-
-
             } else {
                 console.log(errors);
                 var userErrors = [];
