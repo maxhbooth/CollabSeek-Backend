@@ -33,7 +33,7 @@ module.exports = function (app, sessionChecker) {
 
             if(!errors){
 
-                console.log(req.session.profile);
+                //console.log(req.session.profile);
 
                 let profileId = req.session.profile.id;
                 let first = req.body.first;
@@ -46,7 +46,7 @@ module.exports = function (app, sessionChecker) {
                 let skillName = req.body.skill || null;
                 let specialtyName = req.body.specialty || null;
 
-                var profileRepository = new ProfileRepository();
+                const profileRepository = new ProfileRepository();
                 profileRepository.updateProfile(profileId, first, last, degreeName, departmentName, disciplineName,
                     positionName, facilityName, skillName, specialtyName);
 

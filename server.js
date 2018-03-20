@@ -68,10 +68,10 @@ app.use(express.static(__dirname + '/views'));
 
 var userRoutes = require('./api/routes/userRoutes');
 var homeRoutes = require('./api/routes/homeRoutes');
-var profileCreationRoutes = require('./api/routes/profileCreationRoutes')
+//var profileCreationRoutes = require('./api/routes/profileCreationRoutes')
 homeRoutes(app, sessionChecker);
 userRoutes(app, sessionChecker);
-profileCreationRoutes(app, sessionChecker);
+//profileCreationRoutes(app, sessionChecker);
 
 app.listen(port);
 
