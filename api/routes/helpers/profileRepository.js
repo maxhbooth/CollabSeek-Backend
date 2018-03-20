@@ -322,7 +322,6 @@ profileRepository.prototype.createProfile = async(function
             return errors;
         }));
 
-    let profileId = profile.id;
     var i;
     if(Array.isArray(degreeName) && Array.isArray(disciplineName)){
         var min = Math.min(degreeName.length, disciplineName.length);
