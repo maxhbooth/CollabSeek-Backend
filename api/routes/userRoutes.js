@@ -7,7 +7,6 @@ const ProfileRepository = require('./helpers/profileRepository');
 module.exports = function (app, sessionChecker) {
     // set up the routes themselves
 
-
     function extend(dest, src) {
         for(var key in src) {
             dest[key] = src[key];
@@ -40,7 +39,6 @@ module.exports = function (app, sessionChecker) {
             //what should I validate??
             req.checkBody('first', "Must enter a first name.").notEmpty();
             req.checkBody('last', "Must enter a last name.").notEmpty();
-
 
             const errors = req.validationErrors();
 
