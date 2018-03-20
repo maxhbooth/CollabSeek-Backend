@@ -302,9 +302,7 @@ profileRepository.prototype.createProfile = async(function
 
     let positionId = await(this.attrRepository.getPositionId(positionName));
 
-
     console.log("this is the password:" + password);
-
 
     let profile = await(this.profile.create({
         first_name: first,
@@ -371,8 +369,6 @@ profileRepository.prototype.createProfile = async(function
     else{
         this.addProfileSkill(profileId, skillName);
     }
-
-    let positionId = await(this.attrRepository.getPositionId(positionName));
 
     this.profile.update({
         first_name: first,
