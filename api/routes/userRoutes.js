@@ -72,7 +72,7 @@ module.exports = function (app, sessionChecker) {
                     res.redirect('/login');
                 } else {
                     req.session.profile = profile.dataValues;
-                    res.redirect('/homepage.html');
+                    res.redirect('/');
                 }
             });
         });

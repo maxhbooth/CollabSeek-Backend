@@ -18,6 +18,7 @@ app.engine('html', require('ejs').renderFile);
 app.use(morgan('dev'));
 // initialize body-parser to parse incoming parameters requests to req.body
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 // for validating requests
 app.use(expressValidator());
 // initialize cookie-parser to allow us access the cookies stored in the browser.
@@ -69,9 +70,12 @@ app.use(express.static(__dirname + '/views'));
 var userRoutes = require('./api/routes/userRoutes');
 var homeRoutes = require('./api/routes/homeRoutes');
 var profileCreationRoutes = require('./api/routes/profileCreationRoutes')
+var searchRoutes = require('./api/routes/searchRoutes');
 homeRoutes(app, sessionChecker);
 userRoutes(app, sessionChecker);
 profileCreationRoutes(app, sessionChecker);
+searchRoutes(app, sessionChecker);
+
 
 app.listen(port);
 

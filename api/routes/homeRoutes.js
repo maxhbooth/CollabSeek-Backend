@@ -1,13 +1,20 @@
 // route for Home-Page
 
 const ProfileRepository = require('./helpers/profileRepository');
+const AttributeRepository = require('./helpers/attributeRepository');
+
 
 module.exports = function (app, sessionChecker) {
     // set up the routes themselves
 
     app.get('/', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
-            res.sendFile('/views/homepage.html', {root: './'});
+            let attributeRepository = new AttributeRepository();
+
+            attributeRepository.getAll().then(function (models) {
+                let searchData = models.departments.concat(models.disciplines, models.facilities, models.skills, models.specialties);
+                res.render('homepage.html', {searchData: JSON.stringify(searchData)});
+            });
         } else {
             res.sendFile('/views/welcome.html', {root: './'});
         }
@@ -15,7 +22,12 @@ module.exports = function (app, sessionChecker) {
 
     app.get('/welcome', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
-            res.sendFile('/views/homepage.html', {root: './'});
+            let attributeRepository = new AttributeRepository();
+
+            attributeRepository.getAll().then(function (models) {
+                let searchData = models.departments.concat(models.disciplines, models.facilities, models.skills, models.specialties);
+                res.render('homepage.html', {searchData: JSON.stringify(searchData)});
+            });
         } else {
             res.sendFile('/views/welcome.html', {root: './'});
         }
