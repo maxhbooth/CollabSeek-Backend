@@ -319,7 +319,7 @@ profileRepository.prototype.createProfile = async(function
             console.log(errors);
             return errors;
         }));
-
+    let profileId = profile.id;
     var i;
     if(Array.isArray(degreeName) && Array.isArray(disciplineName)){
         var min = Math.min(degreeName.length, disciplineName.length);
@@ -409,7 +409,8 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         disciplines[i] = disc;
         degrees[i] = deg;
     }
-
+    console.log(degrees);
+    console.log(disciplines);
     let skills = await(this.attrRepository.skill.findAll({
         include: [{
             model: this.profile,

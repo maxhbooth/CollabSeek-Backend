@@ -35,4 +35,18 @@ module.exports = function (app, sessionChecker) {
             res.redirect('/login');
         }
     });
+    app.get('/edit-profile', (req, res) => {
+        if (req.session.profile && req.cookies.user_sid) {
+
+        let profileRepositiory = new ProfileRepository();
+
+        profileRepositiory.getProfileInformation(req.session.profile.id).then(function (models){
+            console.log(models);
+            res.render('edit-profile.html', models);
+        });
+
+    }else {
+        res.redirect('/login');
+    }
+});
 };

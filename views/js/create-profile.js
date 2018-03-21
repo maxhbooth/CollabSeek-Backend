@@ -5,6 +5,28 @@ $(document).ready(function() {
     var current_skills = 1;
     var current_facilities = 1;
 
+    // Add select functionality
+    var disciplines = [];
+    $("#discipline option").each(function()
+        {disciplines.push($(this).val());});
+    var specialties = [];
+    $("#specialty option").each(function()
+        {specialties.push($(this).val());});
+    var skills = [];
+    $("#skill option").each(function()
+        {skills.push($(this).val());});
+    var departments = [];
+    $("#department option").each(function()
+        {departments.push($(this).val());});
+    var facilities = [];
+    $("#facility option").each(function(){
+        facilities.push($(this).val());});
+    $('#discipline').editableSelect();
+    $('#specialty').editableSelect();
+    $('#skill').editableSelect();
+    $('#department').editableSelect();
+    $('#facility').editableSelect();
+
     // Degree and discipline handling
     $("#add_degree").click(function(e){ //on add input button click
         current_degrees++;
@@ -24,8 +46,8 @@ $(document).ready(function() {
         var $newdiscipline = $('<div class="form-group col-sm-4"></div>');
         var $disciplineselect = $('<select id=' + disc_id + ' name="discipline" class="form-control"></select>');
 
-        $("#discipline option").each(function()
-        {$disciplineselect.append('<option>' + $(this).val() + '</option>');});
+        disciplines.forEach(function(discipline)
+        {$disciplineselect.append('<option>' + discipline + '</option>');});
         $newdiscipline.append($disciplineselect);
 
         // Wrap up
@@ -33,6 +55,7 @@ $(document).ready(function() {
         $newdegreeset.append($newdiscipline);
         $newdegreeset.append('<button type="button" id="degreedelete" class="btn btn-default">Delete</button>');
         $("#degree_set").append($newdegreeset);
+        $('#' + disc_id).editableSelect();
     })
 
     $(document).on('click', '#degreedelete', function () {
@@ -47,12 +70,13 @@ $(document).ready(function() {
         var $newdept = $('<div class="row" id="dept_set' + current_departments.toString() + '"></div>');
         var $deptselect = $('<select id=' + dept_id + ' name="department" class="form-control"></select>');
 
-        $("#department option").each(function()
-        {$deptselect.append('<option>' + $(this).val() + '</option>');});
+        departments.forEach(function(department)
+            {$deptselect.append('<option>' + department + '</option>');});
         $newdept.append($('<div class="form-group col-sm-6"></div>').append($deptselect));
 
         $newdept.append('<button type="button" id="deptdelete" class="btn btn-default">Delete</button>');
         $("#dept_set").append($newdept);
+        $('#' + dept_id).editableSelect();
     })
 
     $(document).on('click', '#deptdelete', function () {
@@ -67,12 +91,13 @@ $(document).ready(function() {
         var $newspecialty = $('<div class="row" id="specialty_set' + current_specialties.toString() + '"></div>');
         var $specialtyselect = $('<select id=' + specialty_id + ' name="specialty" class="form-control"></select>');
 
-        $("#specialty option").each(function()
-        {$specialtyselect.append('<option>' + $(this).val() + '</option>');});
+        specialties.forEach(function(specialty)
+            {$specialtyselect.append('<option>' + specialty + '</option>');});
         $newspecialty.append($('<div class="form-group col-sm-6"></div>').append($specialtyselect));
 
         $newspecialty.append('<button type="button" id="specialtydelete" class="btn btn-default">Delete</button>');
         $("#specialty_set").append($newspecialty);
+        $('#' + specialty_id).editableSelect();
     })
 
     $(document).on('click', '#specialtydelete', function () {
@@ -87,12 +112,13 @@ $(document).ready(function() {
         var $newskill = $('<div class="row" id="skill_set' + current_skills.toString() + '"></div>');
         var $skillselect = $('<select id=' + skill_id + ' name="skill" class="form-control"></select>');
 
-        $("#skill option").each(function()
-        {$skillselect.append('<option>' + $(this).val() + '</option>');});
+        skills.forEach(function(skill)
+        {$skillselect.append('<option>' + skill + '</option>');});
         $newskill.append($('<div class="form-group col-sm-6"></div>').append($skillselect));
 
         $newskill.append('<button type="button" id="skilldelete" class="btn btn-default">Delete</button>');
         $("#skill_set").append($newskill);
+        $('#' + skill_id).editableSelect();
     })
 
     $(document).on('click', '#skilldelete', function () {
@@ -107,12 +133,13 @@ $(document).ready(function() {
         var $newfacility = $('<div class="row" id="facility_set' + current_facilities.toString() + '"></div>');
         var $facilityselect = $('<select id=' + facility_id + ' name="facility" class="form-control"></select>');
 
-        $("#facility option").each(function()
-        {$facilityselect.append('<option>' + $(this).val() + '</option>');});
+        facilities.forEach(function(facility)
+        {$facilityselect.append('<option>' + facility + '</option>');});
         $newfacility.append($('<div class="form-group col-sm-6"></div>').append($facilityselect));
 
         $newfacility.append('<button type="button" id="facilitydelete" class="btn btn-default">Delete</button>');
         $("#facility_set").append($newfacility);
+        $('#' + facility_id).editableSelect();
     })
 
     $(document).on('click', '#facilitydelete', function () {
