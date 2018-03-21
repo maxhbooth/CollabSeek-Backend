@@ -19,6 +19,4 @@ module.exports = function (app) {
             res.redirect('/welcome');        }
     });
 
-
-
 };
