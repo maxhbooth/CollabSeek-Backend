@@ -25,7 +25,7 @@ const repository = function repository(){
 };
 
 repository.prototype.getDegrees = async(function () {
-    return await(this.degree.findAll()).map(degree => degree.dataValues.name)
+    return await(this.degree.findAll()).map(degree => degree.dataValues.name);
 });
 
 repository.prototype.getDepartments = async(function () {
@@ -147,5 +147,12 @@ repository.prototype.getDegreeName = async(function(degreeID) {
     return null;
 });
 
+repository.prototype.getProfileIDByDepartment = async(function(departmentName){
+   let deptID = this.getDepartmentId(departmentName);
+   if(deptID!=null){
+
+   }
+   return null;
+});
 
 module.exports = repository;
