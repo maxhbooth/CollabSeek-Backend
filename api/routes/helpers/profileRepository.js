@@ -409,8 +409,7 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         disciplines[i] = disc;
         degrees[i] = deg;
     }
-    console.log(degrees);
-    console.log(disciplines);
+
     let skills = await(this.attrRepository.skill.findAll({
         include: [{
             model: this.profile,

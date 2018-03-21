@@ -77,48 +77,39 @@
             <div class="well well-sm">
                 <h3>Specialties</h3>
             </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="well well-sm">
-                <h3>Skills</h3>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="well well-sm">
-                <h3>Facilities</h3>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
             <% if(locals.specialties){%>
+            <%if (specialties.length > 0){%>
             <div class="well well-sm">
-                <%if (specialties.length > 0){%>
                 <%specialties.forEach(function(specialty){%>
                 <p><%= specialty.name %></p>
                 <%})}}%>
             </div>
         </div>
         <div class="col-sm-4">
-            <% if(locals.skills){%>
             <div class="well well-sm">
-                <%if (skills.length > 0){%>
+                <h3>Skills</h3>
+            </div>
+            <% if(locals.skills){%>
+            <%if (skills.length > 0){%>
+            <div class="well well-sm">
                 <%skills.forEach(function(skill){%>
                 <p><%= skill.name %></p>
                 <%})}}%>
             </div>
         </div>
         <div class="col-sm-4">
-            <% if(locals.facilities){%>
             <div class="well well-sm">
-                <%if (facilities.length > 0){%>
+                <h3>Facilities</h3>
+            </div>
+            <% if(locals.facilities){%>
+            <%if (facilities.length > 0){%>
+            <div class="well well-sm">
                 <%facilities.forEach(function(facility){%>
                 <p><%= facility.name %></p>
                 <%})}}%>
             </div>
         </div>
     </div>
-
 </div>
 </body>
 </html>
