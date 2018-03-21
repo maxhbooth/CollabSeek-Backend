@@ -34,7 +34,7 @@ module.exports = function (app, sessionChecker) {
             let fuzzyResult = fuzzyDepartments.concat(fuzzyDisciplines, fuzzyFacilities, fuzzySkills, fuzzySpecialities);
 
             fuzzyResult.sort(function (a, b) {
-                return a.score - b.score;
+                return b.score - a.score;
             }); //sort by least score
 
             //Match first and last
