@@ -33,36 +33,47 @@
     <div class="jumbotron">
         <form id= 'User' action="/signup" method="post">
             <div>
-                <label>Username:</label>
+                <label for="username">Username:</label>
                 <% if (!locals.userErrors) { %>
-                <input type="text" name="username"/>
+                <input type="text" class="form-control" name="username" id="username"/>
                 <% } else { %>
-                <input type="text" name="username" value="<%=validated.username %>"/>
+                <input type="text" name="username" class="form-control" value="<%=validated.username %>"/>
                 <%if (userErrors.length > 0){userErrors.forEach(function(error){%>
                 <div><%= error %></div>
                 <%})}%>
                 <% } %>
             </div>
             <div>
-                <label>Email:</label>
+                <label for="email">Email:</label>
                 <% if (!locals.emailErrors) { %>
-                <input type="text" name="email"/>
+                <input type="text" class="form-control" name="email" id="email"/>
                 <% } else { %>
-                <input type="text" name="email" value="<%=validated.email%>"/>
+                <input type="text" class="form-control" name="email" value="<%=validated.email%>"/>
                 <%if (emailErrors.length > 0){emailErrors.forEach(function(error){%>
                 <div><%= error %></div>
                 <%})}%>
                 <% } %>
             </div>
             <div>
-                <label>Password:</label>
-                <input type="password" name="password"/>
+                <label for="password">Password:</label>
+                <input class="form-control" type="password" name="password" id="password"/>
                 <% if (locals.passwordErrors) { %>
                 <%if (passwordErrors.length > 0){passwordErrors.forEach(function(error){%>
                 <div><%= error %></div>
                 <%})}%>
                 <% } %>
             </div>
+            <div>
+                <label for="passwordconfirm">Retype Password:</label>
+                <input class="form-control" type="password" name="password" id="passwordconfirm"/>
+                <% if (locals.passwordErrors) { %>
+                <%if (passwordErrors.length > 0){passwordErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
+            </div>
+
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
 
             <div class="row">
                 <div class="form-group col-sm-4">
