@@ -439,22 +439,11 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
             skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
 });
 
-profileRepository.prototype.getProfileIDByDepartment = async(function(departmentName){
-    let deptID = await(this.attrRepository.getDepartmentId(departmentName));
 
-    if(deptID!=null){
-        let profiles = await(this.profileDepartment.findAll({
-                where: {department_id: deptID}
-        }));
-        var profile_ids = [];
-        for(var i = 0; i < profiles.length; i++){
-            profile_ids.push(profiles[i].dataValues.profile_id);
-        };
-        console.log(profile_ids);
-        return profile_ids;
-    }
-    return null;
-});
+/* getProfileIDBy___ functions added 3/22 by AC
+    returns array of ints that correspond to profile IDs
+    did basic testing here and console appears to be logging proper ids based on info in database
+*/
 
 profileRepository.prototype.getProfileIDByDepartment = async(function(departmentName){
     let deptID = await(this.attrRepository.getDepartmentId(departmentName));
