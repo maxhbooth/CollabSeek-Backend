@@ -112,7 +112,7 @@ repository.prototype.getDisciplineId = async(function (disciplineName) {
 });
 
 repository.prototype.getPositionId = async(function (positionName) {
-    let position = await(this.position.findOne({where: {name: positionName}}))
+    let position = await(this.position.findOne({where: {name: positionName}}));
 
     if(position!=null){
         return position.id;
@@ -121,7 +121,7 @@ repository.prototype.getPositionId = async(function (positionName) {
 });
 
 repository.prototype.getSpecialtyId = async(function (specialtyName) {
-    let specialty = await(this.specialty.findOne({where: {name: specialtyName}}))
+    let specialty = await(this.specialty.findOne({where: {name: specialtyName}}));
 
     if(specialty!=null){
         return specialty.id;
@@ -130,7 +130,7 @@ repository.prototype.getSpecialtyId = async(function (specialtyName) {
 });
 
 repository.prototype.getDisciplineName = async(function(disciplineID) {
-    let discipline = await(this.discipline.findOne({where: {id: disciplineID}}))
+    let discipline = await(this.discipline.findOne({where: {id: disciplineID}}));
 
     if(discipline != null){
         return discipline.name;
@@ -139,7 +139,7 @@ repository.prototype.getDisciplineName = async(function(disciplineID) {
 });
 
 repository.prototype.getDegreeName = async(function(degreeID) {
-    let degree = await(this.degree.findOne({where: {id: degreeID}}))
+    let degree = await(this.degree.findOne({where: {id: degreeID}}));
 
     if(degree != null){
         return degree.name;
@@ -147,12 +147,5 @@ repository.prototype.getDegreeName = async(function(degreeID) {
     return null;
 });
 
-repository.prototype.getProfileIDByDepartment = async(function(departmentName){
-   let deptID = this.getDepartmentId(departmentName);
-   if(deptID!=null){
-
-   }
-   return null;
-});
 
 module.exports = repository;

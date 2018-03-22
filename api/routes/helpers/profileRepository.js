@@ -426,22 +426,6 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         }]
     }));
 
-    // let degrees = await(this.attrRepository.degree.findAll({
-    //     include: [{
-    //         model: this.profile,
-    //         where: {id: profileId},
-    //         through: {}
-    //     }]
-    // }));
-    //
-    // let disciplines = await(this.attrRepository.discipline.findAll({
-    //     include: [{
-    //         model: this.profile,
-    //         where: {id: profileId},
-    //         through: {}
-    //     }]
-    // }));
-
     let specialties = await(this.attrRepository.specialty.findAll({
         include: [{
             model: this.profile,
@@ -453,6 +437,108 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
 
    return {username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: position.name,
             skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+});
+
+profileRepository.prototype.getProfileIDByDepartment = async(function(departmentName){
+    let deptID = await(this.attrRepository.getDepartmentId(departmentName));
+
+    if(deptID!=null){
+        let profiles = await(this.profileDepartment.findAll({
+                where: {department_id: deptID}
+        }));
+        var profile_ids = [];
+        for(var i = 0; i < profiles.length; i++){
+            profile_ids.push(profiles[i].dataValues.profile_id);
+        };
+        console.log(profile_ids);
+        return profile_ids;
+    }
+    return null;
+});
+
+profileRepository.prototype.getProfileIDByDepartment = async(function(departmentName){
+    let deptID = await(this.attrRepository.getDepartmentId(departmentName));
+
+    if(deptID!=null){
+        let profiles = await(this.profileDepartment.findAll({
+            where: {department_id: deptID}
+        }));
+        var profile_ids = [];
+        for(var i = 0; i < profiles.length; i++){
+            profile_ids.push(profiles[i].dataValues.profile_id);
+        };
+        console.log(profile_ids);
+        return profile_ids;
+    }
+    return null;
+});
+
+profileRepository.prototype.getProfileIDBySpecialty = async(function(specialtyName){
+    let specialtyID = await(this.attrRepository.getSpecialtyId(specialtyName));
+
+    if(specialtyID!=null){
+        let profiles = await(this.profileSpecialty.findAll({
+            where: {specialty_id: specialtyID}
+        }));
+        var profile_ids = [];
+        for(var i = 0; i < profiles.length; i++){
+            profile_ids.push(profiles[i].dataValues.profile_id);
+        };
+        console.log(profile_ids);
+        return profile_ids;
+    }
+    return null;
+});
+
+profileRepository.prototype.getProfileIDBySkill = async(function(skillName){
+    let skillID = await(this.attrRepository.getSkillId(skillName));
+
+    if(skillID!=null){
+        let profiles = await(this.profileSkill.findAll({
+            where: {skill_id: skillID}
+        }));
+        var profile_ids = [];
+        for(var i = 0; i < profiles.length; i++){
+            profile_ids.push(profiles[i].dataValues.profile_id);
+        };
+        console.log(profile_ids);
+        return profile_ids;
+    }
+    return null;
+});
+
+profileRepository.prototype.getProfileIDByFacility = async(function(facilityName){
+    let facilityID = await(this.attrRepository.getFacilityId(facilityName));
+
+    if(facilityID!=null){
+        let profiles = await(this.profileFacility.findAll({
+            where: {facility_id: facilityID}
+        }));
+        var profile_ids = [];
+        for(var i = 0; i < profiles.length; i++){
+            profile_ids.push(profiles[i].dataValues.profile_id);
+        };
+        console.log(profile_ids);
+        return profile_ids;
+    }
+    return null;
+});
+
+profileRepository.prototype.getProfileIDByDiscipline = async(function(disciplineName){
+    let disciplineID = await(this.attrRepository.getDisciplineId(disciplineName));
+
+    if(disciplineID!=null){
+        let profiles = await(this.degree_discipline.findAll({
+            where: {discipline_id: disciplineID}
+        }));
+        var profile_ids = [];
+        for(var i = 0; i < profiles.length; i++){
+            profile_ids.push(profiles[i].dataValues.profile_id);
+        };
+        console.log(profile_ids);
+        return profile_ids;
+    }
+    return null;
 });
 
 
