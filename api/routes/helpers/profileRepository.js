@@ -72,41 +72,11 @@ var profileRepository = function profileRepository(){
             },
             foreignKey: 'department_id',
             constraints: false});
-
-    // this.profile.belongsToMany(
-    //     this.attrRepository.degree, {through: {
-    //             model: this.profileDegree,
-    //             unique: true
-    //         },
-    //         foreignKey: 'profile_id',
-    //         constraints: false});
-    //
-    // this.attrRepository.degree.belongsToMany(
-    //     this.profile, {through: {
-    //             model: this.profileDegree,
-    //             unique: true
-    //         },
-    //         foreignKey: 'degree_id',
-    //         constraints: false});
-    //
-    // this.profile.belongsToMany(
-    //     this.attrRepository.discipline, {through: {
-    //             model: this.profileDegree,
-    //             unique: true
-    //         },
-    //         foreignKey: 'profile_id',
-    //         constraints: false});
-    //
-    // this.attrRepository.discipline.belongsToMany(
-    //     this.profile, {through: {
-    //             model: this.profileDegree,
-    //             unique: true
-    //         },
-    //         foreignKey: 'discipline_id',
-    //         constraints: false});
 };
 
-
+// =====================================================================================================================
+// ADD ATTRIBUTE TO PROFILE
+// =====================================================================================================================
 profileRepository.prototype.addProfileDegree = async(function (profileId, degreeName, disciplineName) {
         let degreeId = await(this.attrRepository.getDegreeId(degreeName));
         let disciplineId = await(this.attrRepository.getDisciplineId(disciplineName));
@@ -132,9 +102,7 @@ profileRepository.prototype.addProfileDegree = async(function (profileId, degree
 });
 
 profileRepository.prototype.addProfileDepartment = async(function (profileId, departmentName) {
-
     let departmentId = await(this.attrRepository.getDepartmentId(departmentName));
-
     if(departmentId != null){
         this.profileDepartment.findOrCreate({
             where: {
@@ -150,6 +118,28 @@ profileRepository.prototype.addProfileDepartment = async(function (profileId, de
                 //db errors
                 console.log(error);
             });
+    }
+    return 0;
+});
+
+profileRepository.prototype.addProfileFacility = async(function (profileId, facilityName) {
+    let facilityId = await(this.attrRepository.getFacilityId(facilityName));
+
+    if(facilityId !=null){
+        this.profileFacility.findOrCreate({
+            where: {
+                profile_id: profileId,
+                facility_id: facilityId
+            },
+            default: {
+                profile_id: profileId,
+                facility_id: facilityId
+            }
+        })
+            .catch(error => {
+            //db errors
+            console.log(error);
+    });
     }
 
     return 0;
@@ -178,29 +168,6 @@ profileRepository.prototype.addProfileSpecialty = async(function (profileId, spe
     return 0;
 });
 
-profileRepository.prototype.addProfileFacility = async(function (profileId, facilityName) {
-    let facilityId = await(this.attrRepository.getFacilityId(facilityName));
-
-    if(facilityId !=null){
-        this.profileFacility.findOrCreate({
-            where: {
-                profile_id: profileId,
-                facility_id: facilityId
-            },
-            default: {
-                profile_id: profileId,
-                facility_id: facilityId
-            }
-        })
-        .catch(error => {
-            //db errors
-            console.log(error);
-        });
-    }
-
-    return 0;
-});
-
 profileRepository.prototype.addProfileSkill = async(function (profileId, skillName) {
     let skillId = await(this.attrRepository.getSkillId(skillName));
 
@@ -224,7 +191,96 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
     return 0;
 });
 
-//not using right now.
+
+// =====================================================================================================================
+// REMOVE ATTRIBUTE FROM PROFILE
+// =====================================================================================================================
+profileRepository.prototype.removeProfileDegree = async(function (profileId, degreeName, disciplineName) {
+    let degreeId = await(this.attrRepository.getDegreeId(degreeName));
+    let disciplineId = await(this.attrRepository.getDisciplineId(disciplineName));
+    if(degreeId!=null && disciplineId!= null) {
+        this.profileDegree.destroy({
+            where: {
+                profile_id: profileId,
+                degree_id: degreeId,
+                discipline_id: disciplineId
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
+profileRepository.prototype.removeProfileDepartment = async(function (profileID, departmentName){
+    let departmentID = await(this.attrRepository.getDepartmentId(departmentName));
+    if(departmentID != null){
+        this.profileDepartment.destroy({
+            where: {
+                profile_id: profileID,
+                department_id: departmentID
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
+profileRepository.prototype.removeProfileFacility = async(function (profileID, facilityName){
+    let facilityID = await(this.attrRepository.getFacilityId(facilityName));
+    if(facilityID != null){
+        this.profileFacility.destroy({
+            where: {
+                profile_id: profileID,
+                facility_id: facilityID
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
+profileRepository.prototype.removeProfileSkill = async(function (profileID, skillName){
+    let skillID = await(this.attrRepository.getSkillId(skillName));
+    if(skillID != null){
+        this.profileSkill.destroy({
+            where: {
+                profile_id: profileID,
+                skill_id: skillID
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
+profileRepository.prototype.removeProfileSpecialty = async(function (profileID, specialtyName){
+    let specialtyID = await(this.attrRepository.getSpecialtyId(specialtyName));
+    if(specialtyID != null){
+        this.profileSpecialty.destroy({
+            where: {
+                profile_id: profileID,
+                specialty_id: specialtyID
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
+// =====================================================================================================================
+// METHODS FOR ENTIRE PROFILE
+// =====================================================================================================================
+// TODO fix update profile method
 profileRepository.prototype.updateProfile = async(function
     (profileId, first, last, degreeName, departmentName, disciplineName,
      positionName, facilityName, skills, specialtyName) {
@@ -301,8 +357,6 @@ profileRepository.prototype.createProfile = async(function
      positionName, facilityName, skillName, specialtyName, username, email, password) {
 
     let positionId = await(this.attrRepository.getPositionId(positionName));
-
-    console.log("this is the password:" + password);
 
     let profile = await(this.profile.create({
         first_name: first,
@@ -439,10 +493,29 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
             skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
 });
 
+profileRepository.prototype.deleteProfile = async(function(profileID){
+    let profile = await(this.profile.findOne({where: {id:profileId}}));
+    if(profile != null){
+        this.profile.destroy({
+            where: {
+                profile_id: profileID,
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
 
-/* getProfileIDBy___ functions added 3/22 by AC
-    returns array of ints that correspond to profile IDs
-    did basic testing here and console appears to be logging proper ids based on info in database
+});
+
+
+// =====================================================================================================================
+// GET PROFILE IDS WITH CERTAIN ATTRIBUTE
+// =====================================================================================================================
+/*  Added 3/22 by AC
+    Returns array of ints that correspond to profile IDs
+    Did basic testing here and console appears to be logging proper ids based on info in database
 */
 
 profileRepository.prototype.getProfileIDByDepartment = async(function(departmentName){

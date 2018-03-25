@@ -24,6 +24,10 @@ const repository = function repository(){
 
 };
 
+// =====================================================================================================================
+// GET ALL FUNCTIONS
+// =====================================================================================================================
+
 repository.prototype.getDegrees = async(function () {
     return await(this.degree.findAll()).map(degree => degree.dataValues.name);
 });
@@ -65,21 +69,14 @@ repository.prototype.getAll = async(function () {
 });
 
 
+// =====================================================================================================================
+// GET ID BY NAME FUNCTIONS
+// =====================================================================================================================
+repository.prototype.getDegreeId = async(function (degreeName) {
+    let degree = await(this.degree.findOne({where: {name: degreeName}}));
 
-repository.prototype.getSkillId = async(function (skillName) {
-    let skill=await(this.skill.findOne({where: {name: skillName}}));
-
-    if(skill!=null){
-        return skill.id;
-    }
-    return null;
-});
-
-repository.prototype.getFacilityId = async(function (facilityName) {
-    let facility = await(this.facility.findOne({where: {name: facilityName}}));
-
-    if(facility!=null){
-        return facility.id;
+    if(degree!=null){
+        return degree.id;
     }
     return null;
 });
@@ -93,20 +90,20 @@ repository.prototype.getDepartmentId = async(function (departmentName) {
     return null;
 });
 
-repository.prototype.getDegreeId = async(function (degreeName) {
-    let degree = await(this.degree.findOne({where: {name: degreeName}}));
-
-    if(degree!=null){
-        return degree.id;
-    }
-    return null;
-});
-
 repository.prototype.getDisciplineId = async(function (disciplineName) {
     let discipline =  await(this.discipline.findOne({where: {name: disciplineName}}));
 
     if(discipline!=null){
         return discipline.id;
+    }
+    return null;
+});
+
+repository.prototype.getFacilityId = async(function (facilityName) {
+    let facility = await(this.facility.findOne({where: {name: facilityName}}));
+
+    if(facility!=null){
+        return facility.id;
     }
     return null;
 });
@@ -120,11 +117,42 @@ repository.prototype.getPositionId = async(function (positionName) {
     return null;
 });
 
+repository.prototype.getSkillId = async(function (skillName) {
+    let skill=await(this.skill.findOne({where: {name: skillName}}));
+
+    if(skill!=null){
+        return skill.id;
+    }
+    return null;
+});
+
 repository.prototype.getSpecialtyId = async(function (specialtyName) {
     let specialty = await(this.specialty.findOne({where: {name: specialtyName}}));
 
     if(specialty!=null){
         return specialty.id;
+    }
+    return null;
+});
+
+
+// =====================================================================================================================
+// GET NAME BY ID FUNCTIONS
+// =====================================================================================================================
+repository.prototype.getDegreeName = async(function(degreeID) {
+    let degree = await(this.degree.findOne({where: {id: degreeID}}));
+
+    if(degree != null){
+        return degree.name;
+    }
+    return null;
+});
+
+repository.prototype.getDepartmentName = async(function(departmentID) {
+    let department = await(this.department.findOne({where: {id: departmentID}}));
+
+    if(department != null){
+        return department.name;
     }
     return null;
 });
@@ -138,11 +166,29 @@ repository.prototype.getDisciplineName = async(function(disciplineID) {
     return null;
 });
 
-repository.prototype.getDegreeName = async(function(degreeID) {
-    let degree = await(this.degree.findOne({where: {id: degreeID}}));
+repository.prototype.getFacilityName = async(function(facilityID) {
+    let facility = await(this.facility.findOne({where: {id: facilityID}}));
 
-    if(degree != null){
-        return degree.name;
+    if(facility != null){
+        return facility.name;
+    }
+    return null;
+});
+
+repository.prototype.getSkillName = async(function(skillID) {
+    let skill = await(this.skill.findOne({where: {id: skillID}}));
+
+    if(skill != null){
+        return skill.name;
+    }
+    return null;
+});
+
+repository.prototype.getSpecialtyName = async(function(specialtyID) {
+    let specialty = await(this.specialty.findOne({where: {id: specialtyID}}));
+
+    if(specialty != null){
+        return specialty.name;
     }
     return null;
 });
