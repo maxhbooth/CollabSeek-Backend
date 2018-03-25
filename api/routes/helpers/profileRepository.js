@@ -193,6 +193,21 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
 
 
 // =====================================================================================================================
+// UPDATE ATTRIBUTE OF PROFILE
+// =====================================================================================================================
+profileRepository.prototype.updatePosition = async(function(profileID, positionName){
+    let positionId = await(this.attrRepository.getPositionId(positionName));
+    this.profile.update({position: positionId},
+        {where: {id: profileID}}).catch(error => {
+        console.log(error);
+        });
+}
+
+//profileRepository.prototype.updateFirstName = async(function()){}); //TODO
+//profileRepository.prototype.updateLastName = async(function()){}); //TODO
+
+
+// =====================================================================================================================
 // REMOVE ATTRIBUTE FROM PROFILE
 // =====================================================================================================================
 profileRepository.prototype.removeProfileDegree = async(function (profileId, degreeName, disciplineName) {
@@ -521,16 +536,18 @@ profileRepository.prototype.deleteProfile = async(function(profileID){
 profileRepository.prototype.getProfileIDByDepartment = async(function(departmentName){
     let deptID = await(this.attrRepository.getDepartmentId(departmentName));
 
-    if(deptID!=null){
+    if(deptID != null){
         let profiles = await(this.profileDepartment.findAll({
             where: {department_id: deptID}
         }));
         var profile_ids = [];
-        for(var i = 0; i < profiles.length; i++){
-            profile_ids.push(profiles[i].dataValues.profile_id);
-        };
-        console.log(profile_ids);
-        return profile_ids;
+        if(profiles != null){
+            for(var i = 0; i < profiles.length; i++){
+                profile_ids.push(profiles[i].dataValues.profile_id);
+            }
+            console.log(profile_ids);
+            return profile_ids;
+        }
     }
     return null;
 });
@@ -543,11 +560,13 @@ profileRepository.prototype.getProfileIDBySpecialty = async(function(specialtyNa
             where: {specialty_id: specialtyID}
         }));
         var profile_ids = [];
-        for(var i = 0; i < profiles.length; i++){
-            profile_ids.push(profiles[i].dataValues.profile_id);
-        };
-        console.log(profile_ids);
-        return profile_ids;
+        if(profiles != null) {
+            for (var i = 0; i < profiles.length; i++) {
+                profile_ids.push(profiles[i].dataValues.profile_id);
+            }
+            console.log(profile_ids);
+            return profile_ids;
+        }
     }
     return null;
 });
@@ -560,11 +579,13 @@ profileRepository.prototype.getProfileIDBySkill = async(function(skillName){
             where: {skill_id: skillID}
         }));
         var profile_ids = [];
-        for(var i = 0; i < profiles.length; i++){
-            profile_ids.push(profiles[i].dataValues.profile_id);
-        };
-        console.log(profile_ids);
-        return profile_ids;
+        if(profiles != null) {
+            for (var i = 0; i < profiles.length; i++) {
+                profile_ids.push(profiles[i].dataValues.profile_id);
+            }
+            console.log(profile_ids);
+            return profile_ids;
+        }
     }
     return null;
 });
@@ -577,11 +598,13 @@ profileRepository.prototype.getProfileIDByFacility = async(function(facilityName
             where: {facility_id: facilityID}
         }));
         var profile_ids = [];
-        for(var i = 0; i < profiles.length; i++){
-            profile_ids.push(profiles[i].dataValues.profile_id);
-        };
-        console.log(profile_ids);
-        return profile_ids;
+        if(profiles != null) {
+            for (var i = 0; i < profiles.length; i++) {
+                profile_ids.push(profiles[i].dataValues.profile_id);
+            }
+            console.log(profile_ids);
+            return profile_ids;
+        }
     }
     return null;
 });
@@ -590,18 +613,41 @@ profileRepository.prototype.getProfileIDByDiscipline = async(function(discipline
     let disciplineID = await(this.attrRepository.getDisciplineId(disciplineName));
 
     if(disciplineID!=null){
-        let profiles = await(this.degree_discipline.findAll({
+        let profiles = await(this.attrRepository.degree_discipline.findAll({
             where: {discipline_id: disciplineID}
         }));
         var profile_ids = [];
-        for(var i = 0; i < profiles.length; i++){
-            profile_ids.push(profiles[i].dataValues.profile_id);
-        };
-        console.log(profile_ids);
-        return profile_ids;
+        if(profiles != null) {
+            for (var i = 0; i < profiles.length; i++) {
+                profile_ids.push(profiles[i].dataValues.profile_id);
+            }
+            console.log(profile_ids);
+            return profile_ids;
+        }
     }
     return null;
 });
 
+profileRepository.prototype.getProfileIDByFirstName = async(function(firstName){
+    let profiles = await(this.profile.findAll({
+        attributes: ['id'],
+        where: {first_name: firstName}
+    }));
+    if(profiles != null) {
+        return profiles;
+    }
+    return null;
+});
+
+profileRepository.prototype.getProfileIDByLastName = async(function(lastName){
+    let profiles = await(this.profile.findAll({
+        attributes: ['id'],
+        where: {last_name: lastName}
+    }));
+    if(profiles != null) {
+        return profiles;
+    }
+    return null;
+});
 
 module.exports = profileRepository;
