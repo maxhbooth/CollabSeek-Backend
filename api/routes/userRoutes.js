@@ -32,7 +32,7 @@ module.exports = function (app, sessionChecker) {
         .post((req, res) => {
             req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4, 15);
             req.checkBody('email', 'Email must be a valid email.').isEmail();
-            req.checkBody('email', 'Email must be from 4 to 50 characters').len(4, 50);
+            req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
             //req.checkBody('repassword', 'Passwords must match.').equals(req.body.password);
 
@@ -43,8 +43,6 @@ module.exports = function (app, sessionChecker) {
             const errors = req.validationErrors();
 
             if (!errors) {
-
-                console.log("this is req.body.password" + req.body.password);
 
                 let username = req.body.username;
                 let email = req.body.email;

@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Profile</title>
+    <title>My Profile</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/my-profile.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/my-profile.css">
 </head>
 <body class="container">
 <div class="page-header">
-    <h1>Edit Profile</h1>
+    <h1>My Profile</h1>
 </div>
 
 <nav class="navbar navbar-default">
@@ -15,7 +20,6 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="/">Home</a></li>
-                <li><a href="/profile">Profile</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -28,19 +32,41 @@
 <div class="container row">
     <div class="row">
         <div class="col-sm-4">
-            <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
-            <h3>Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h3>
+            <img src="resources/profile-icon.png" class="rounded mx-auto d-block">
+            <form method="get" action="/upload-image">
+                <div class="text-left">
+                    <button type="submit" class="btn btn-default">Change Picture</button>
+                </div>
+            </form>
+            <h3 class="text-left">Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h3>
         </div>
         <div class="col-sm-8">
             <% if(locals.position){%>
-            <h3>Position: <small><%= position %></small></h3>
+            <div class="well well-sm">
+                <h4 id="position-show" display="none">Position: <small><%= position %></small></h4>
+                <div id="position-edit" display="block">
+                    <form method="post" action="/update-position">
+                        <label for="position">Position:</label>
+                        <select id = "position" name = "position" class="form-control">
+                            <% if(locals.positions){%>
+                            <%if (positions.length > 0){positions.forEach(function(position){%>
+                            <option><%= position %></option>
+                            <%})}}%>
+                        </select>
+                        <button type="submit" class="btn btn-default">Save</button>
+                    </form>
+                </div>
+                <button id="edit-position" class="icon-button pull-right">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+            </div>
             <%}%>
 
             <% if(locals.departments){%>
             <%if (departments.length > 0){%>
             <h3>Department: <small>
                 <%departments.forEach(function(department){%>
-                |<%=department.name %>|
+                <%=department.name %>
                 <%})%>
             </small></h3><%}}%>
 
@@ -48,8 +74,8 @@
             <% if(degrees.length > 0){%>
             <table class="table">
                 <thead>
-                <th><h3>Degree</h3></th>
-                <th><h3>Discipline</h3></th>
+                <th><h3 class="text-left">Degree</h3></th>
+                <th><h3 class="text-left">Discipline</h3></th>
                 </thead>
                 <tbody>
                 <%for(var i = 0; i < degrees.length; i++){%>
@@ -78,7 +104,7 @@
         </div>
         <div class="col-sm-4">
             <div class="well well-sm">
-                <h3>Facilities <span class="glyphicon glyphicon-pencil"></span></h3>
+                <h3>Facilities <span class="glyphicon glyphicon-pencil pull-right"></span></h3>
             </div>
         </div>
     </div>

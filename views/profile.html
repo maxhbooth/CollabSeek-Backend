@@ -2,13 +2,12 @@
 <head>
     <title>Profile</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/profile.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body class="container">
 <div class="jumbotron text-center">
-    <h2> Welcome to Your Profile, <% if(locals.first && locals.last){%>
+    <h2><% if(locals.first && locals.last){%>
         <%= first %> <%= last%>
         <%}%></h2>
 </div>
@@ -19,7 +18,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="/">Home</a></li>
-                <li><a href="/edit-profile">Edit Profile</a></li>
+                <li><a href="/my-profile">Profile</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -32,15 +31,14 @@
 <div class="container row">
     <div class="row">
         <div class="col-sm-4">
-            <img src="/profile-image" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
-            <form method="get" action="/upload-image">
-                <button type="submit">change profile picture</button>
-            </form>
-            <h3>Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h3>
+            <img src="resources/profile-icon.png" class="rounded mx-auto d-block">
+            <h3 class="text-left">Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h3>
         </div>
         <div class="col-sm-8">
             <% if(locals.position){%>
-            <h3>Position: <small><%= position %></small></h3>
+            <div class="well well-sm">
+                <h4>Position: <small><%= position %></small></h4>
+            </div>
             <%}%>
 
             <% if(locals.departments){%>
@@ -84,7 +82,6 @@
                 <p><%= specialty.name %></p>
                 <%})}}%>
             </div>
-        </div>
         <div class="col-sm-4">
             <div class="well well-sm">
                 <h3>Skills</h3>

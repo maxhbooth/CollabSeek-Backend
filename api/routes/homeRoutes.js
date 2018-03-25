@@ -47,14 +47,20 @@ module.exports = function (app, sessionChecker) {
             res.redirect('/login');
         }
     });
-    app.get('/edit-profile', (req, res) => {
+    app.get('/my-profile', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
 
         let profileRepositiory = new ProfileRepository();
+        let attrRepository = new AttrRepository();
+
+        attrRepository.getAll().then(function (models){
+            //console.log(models); tbh this is annoying rn
+            res.render('signup.html', models);
+        });
 
         profileRepositiory.getProfileInformation(req.session.profile.id).then(function (models){
             console.log(models);
-            res.render('edit-profile.html', models);
+            res.render('my-profile.html', models);
         });
 
     }else {
