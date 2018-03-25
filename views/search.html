@@ -104,6 +104,36 @@
         </small></h3><%}%>
     </div>
     <%}%>
+
+    <% if(locals.firstNameProfiles){%>
+    <div>
+        <% if (firstNameProfiles.length > 0){%>
+        <h3>By First Name: <small>
+            <%firstNameProfiles.forEach(function(profile){%>
+            <div>
+                |<%=profile.first %><%=profile.last%>|
+                |<%=profile.position %>|
+                |<%=profile.departments[0].name %>|
+            </div>
+            <%})%>
+        </small></h3><%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.lastNameProfiles){%>
+    <div>
+        <% if (lastNameProfiles.length > 0){%>
+        <h3>By Last Name: <small>
+            <%lastNameProfiles.forEach(function(profile){%>
+            <div>
+                |<%=profile.first %><%=profile.last%>|
+                |<%=profile.position %>|
+                |<%=profile.departments[0].name %>|
+            </div>
+            <%})%>
+        </small></h3><%}%>
+    </div>
+    <%}%>
 </div>
 </body>
 </html>

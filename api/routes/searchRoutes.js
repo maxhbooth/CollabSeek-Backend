@@ -43,6 +43,8 @@ module.exports = function (app, sessionChecker) {
             let facilityProfiles = [];
             let skillProfiles = [];
             let specialtyProfiles = [];
+            let lastNameProfiles = [];
+            let firstNameProfiles = [];
 
             var count = 0;
             if (fuzzyDepartments.length == 0){
@@ -127,23 +129,65 @@ module.exports = function (app, sessionChecker) {
                                 specialtyProfiles = specialtyProfiles.concat(profile);
                             }
                             count++;
-                            if (count > fuzzySpecialities.length - 1) doneNonName();
+                            if (count > fuzzySpecialities.length - 1) getFirstName();
                         });
                     });
                 }
             }
 
-            function doneNonName(){
+            let querySplit = query.split(" ");
+
+            function getFirstName(){
+                profileRepository.getProfileIDByFirstName(querySplit[0]).then(function(id) {
+                    if (id.length == 0 || id == null){
+                        getLastName();
+                    }
+                    count = 0;
+                    for(var i = 0; i<id.length; ++i) {
+                        profileRepository.getProfileInformation(id[i]).then(function (profile) {
+                            if (profile != null) {
+                                firstNameProfiles = firstNameProfiles.concat(profile);
+                            }
+                            count++;
+                            if (count > id.length - 1) getLastName();
+
+                        });
+                    }
+                });
+
+            }
+            function getLastName(){
+
+                profileRepository.getProfileIDByLastName(querySplit[0]).then(function(id) {
+                    if (id.length == 0 || id == null){
+                        doneSearch();
+                    }
+                    count = 0;
+                    for(var i = 0; i<id.length; ++i) {
+                        profileRepository.getProfileInformation(id[i]).then(function (profile) {
+                            if (profile != null) {
+                                lastNameProfiles = lastNameProfiles.concat(profile);
+                            }
+                            count++;
+                            if (count > id.length - 1) doneSearch();
+
+                        });
+                    }
+                });
+            }
+
+            function doneSearch(){
                 //res.send(fuzzyDepartments);
-                res.render('search.html',
-                    {
+                res.render('search.html', {
                         pastQuery: query,
+                        firstNameProfiles: firstNameProfiles,
+                        lastNameProfiles: lastNameProfiles,
                         departmentProfiles: departmentProfiles,
                         disciplineProfiles: disciplineProfiles,
                         facilityProfiles: facilityProfiles,
                         skillProfiles: skillProfiles,
                         specialtyProfiles: specialtyProfiles
-                    });
+                });
             }
 
             //Match first and last
