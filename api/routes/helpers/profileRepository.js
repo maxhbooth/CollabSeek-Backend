@@ -517,7 +517,7 @@ profileRepository.prototype.getProfileIDByDiscipline = async(function(discipline
     let disciplineID = await(this.attrRepository.getDisciplineId(disciplineName));
 
     if(disciplineID!=null){
-        let profiles = await(this.degree_discipline.findAll({
+        let profiles = await(this.attrRepository.degree_discipline.findAll({
             where: {discipline_id: disciplineID}
         }));
         var profile_ids = [];
