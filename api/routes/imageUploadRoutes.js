@@ -1,5 +1,6 @@
-var path = require('path'),
-    fs = require('fs');
+const path = require('path');
+const fs = require('fs');
+const db = require('../../database/database');
 
 module.exports = function (app) {
     // set up the routes themselves
@@ -13,7 +14,12 @@ module.exports = function (app) {
     app.post('/upload-image', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
             //save image somewhere i can find it.
-            
+
+            db.connect();
+            db.query('insert into profile_image(profile_id, image) values('
+                + req.session.profile.id + ',' + req.files.imageUpload+  ')');
+            db.end();
+
             res.redirect('/profile');
         } else {
             res.redirect('/welcome');        }
