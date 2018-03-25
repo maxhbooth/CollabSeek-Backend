@@ -1,0 +1,139 @@
+<html>
+<head>
+    <title>Login Here</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body class="container">
+<div class="page-header">
+    <h1>Search</h1>
+</div>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">Profile</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div>
+    <% if (locals.pastQuery){%>
+    <h5>You searched for: <b><%=pastQuery%></b></h5>
+    <%}%>
+
+    <% if(locals.departmentProfiles){%>
+        <div>
+            <% if (departmentProfiles.length > 0){%>
+            <h3>By Department: <small>
+                <%departmentProfiles.forEach(function(profile){%>
+                <div>
+                    |<%=profile.first %><%=profile.last%>|
+                    |<%=profile.position %>|
+                    |<%=profile.departments[0].name %>|
+                </div>
+                <%})%>
+            </small></h3><%}%>
+        </div>
+    <%}%>
+
+    <% if(locals.disciplineProfiles){%>
+    <div>
+        <% if (disciplineProfiles.length > 0){%>
+        <h3>By Department: <small>
+            <%disciplineProfiles.forEach(function(profile){%>
+            <div>
+                |<%=profile.first %><%=profile.last%>|
+                |<%=profile.position %>|
+                |<%=profile.departments[0].name %>|
+            </div>
+            <%})%>
+        </small></h3><%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.facilityProfiles){%>
+    <div>
+        <% if (facilityProfiles.length > 0){%>
+        <h3>By Department: <small>
+            <%facilityProfiles.forEach(function(profile){%>
+            <div>
+                |<%=profile.first %><%=profile.last%>|
+                |<%=profile.position %>|
+                |<%=profile.departments[0].name %>|
+            </div>
+            <%})%>
+        </small></h3><%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.skillProfiles){%>
+    <div>
+        <% if (skillProfiles.length > 0){%>
+        <h3>By Skill: <small>
+            <%skillProfiles.forEach(function(profile){%>
+            <div>
+                |<%=profile.first %> <%=profile.last%>|
+                |<%=profile.position %>|
+                |<%=profile.departments[0].name %>|
+            </div>
+            <%})%>
+        </small></h3><%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.specialtyProfiles){%>
+    <div>
+        <% if (specialtyProfiles.length > 0){%>
+        <h3>By Department: <small>
+            <%specialtyProfiles.forEach(function(profile){%>
+            <div>
+                |<%=profile.first %><%=profile.last%>|
+                |<%=profile.position %>|
+                |<%=profile.departments[0].name %>|
+            </div>
+            <%})%>
+        </small></h3><%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.firstNameProfiles){%>
+    <div>
+        <% if (firstNameProfiles.length > 0){%>
+        <h3>By First Name: <small>
+            <%firstNameProfiles.forEach(function(profile){%>
+            <div>
+                |<%=profile.first %><%=profile.last%>|
+                |<%=profile.position %>|
+                |<%=profile.departments[0].name %>|
+            </div>
+            <%})%>
+        </small></h3><%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.lastNameProfiles){%>
+    <div>
+        <% if (lastNameProfiles.length > 0){%>
+        <h3>By Last Name: <small>
+            <%lastNameProfiles.forEach(function(profile){%>
+            <div>
+                |<%=profile.first %><%=profile.last%>|
+                |<%=profile.position %>|
+                |<%=profile.departments[0].name %>|
+            </div>
+            <%})%>
+        </small></h3><%}%>
+    </div>
+    <%}%>
+</div>
+</body>
+</html>

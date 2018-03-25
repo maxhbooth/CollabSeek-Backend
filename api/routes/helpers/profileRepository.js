@@ -201,7 +201,7 @@ profileRepository.prototype.updatePosition = async(function(profileID, positionN
         {where: {id: profileID}}).catch(error => {
         console.log(error);
         });
-}
+});
 
 //profileRepository.prototype.updateFirstName = async(function()){}); //TODO
 //profileRepository.prototype.updateLastName = async(function()){}); //TODO
