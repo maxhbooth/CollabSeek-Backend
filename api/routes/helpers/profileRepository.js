@@ -631,7 +631,7 @@ profileRepository.prototype.getProfileIDByDiscipline = async(function(discipline
 profileRepository.prototype.getProfileIDByFirstName = async(function(firstName){
     let profiles = await(this.profile.findAll({
         attributes: ['id'],
-        where: {first_name: firstName}
+        where: sequelize.where(sequelize.fn('lower', sequelize.col('first_name')), sequelize.fn('lower', firstName))
     }));
     if(profiles != null) {
         return profiles;
@@ -642,7 +642,7 @@ profileRepository.prototype.getProfileIDByFirstName = async(function(firstName){
 profileRepository.prototype.getProfileIDByLastName = async(function(lastName){
     let profiles = await(this.profile.findAll({
         attributes: ['id'],
-        where: {last_name: lastName}
+        where: sequelize.where(sequelize.fn('lower', sequelize.col('last_name')), sequelize.fn('lower', lastName))
     }));
     if(profiles != null) {
         return profiles;
