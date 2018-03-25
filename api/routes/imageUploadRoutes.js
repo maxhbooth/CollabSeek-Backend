@@ -19,4 +19,8 @@ module.exports = function (app) {
             res.redirect('/welcome');        }
     });
 
+    app.get('/profile-image', function (req,res){
+       res.sendFile('/views/resources/profile-icon.png', {root: './'});
+
+    });
 };
