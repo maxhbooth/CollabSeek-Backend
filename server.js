@@ -9,16 +9,16 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var morgan = require('morgan');
 var expressValidator = require('express-validator');
+// var fileUpload = require('express-fileupload');
 
 app.engine('html', require('ejs').renderFile);
-
-
 
 // set morgan to log info about our requests for development use.
 app.use(morgan('dev'));
 // initialize body-parser to parse incoming parameters requests to req.body
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+// app.use(fileUpload());
 // for validating requests
 app.use(expressValidator());
 // initialize cookie-parser to allow us access the cookies stored in the browser.

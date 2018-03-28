@@ -48,6 +48,18 @@ var profile = sequelize.define('profile', {
             model: 'position',
             key: 'id'
         }
+    }, //add hidden_token and confirmed user//
+    confirmed_user :{
+        type: Sequelize.BOOLEAN,
+        allowNull :false,
+    },
+    hidden_token:{
+        type: Sequelize.STRING,
+        allowNull :true
+    },
+    imagepath: {
+        type: Sequelize.STRING,
+        allowNull: true
     }
 }, {
     hooks: {

@@ -1,7 +1,6 @@
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 //asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
-
 const Sequelize = require('sequelize');
 
 const profile = require('../../../models/profile');
@@ -74,6 +73,7 @@ var profileRepository = function profileRepository(){
             constraints: false});
 };
 
+
 // =====================================================================================================================
 // ADD ATTRIBUTE TO PROFILE
 // =====================================================================================================================
@@ -95,7 +95,7 @@ profileRepository.prototype.addProfileDegree = async(function (profileId, degree
                     })
                     .catch(error => {
                     //db errors
-                    console.log(error);
+                    //console.log(error);
                     });
         }
     return 0;
@@ -295,6 +295,17 @@ profileRepository.prototype.removeProfileSpecialty = async(function (profileID, 
     return 0;
 });
 
+profileRepository.prototype.addImage = async(function(profileId, imagePath){
+
+    this.profile.update(
+        {imagepath : imagePath},
+        {where : {id : profileId}}
+    );
+
+    return 0;
+});
+
+//not using right now.
 // =====================================================================================================================
 // METHODS FOR ENTIRE PROFILE
 // =====================================================================================================================
@@ -680,5 +691,6 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
     }
     return null;
 });
+
 
 module.exports = profileRepository;

@@ -1,6 +1,6 @@
 var db = require('../../database/database');
 var Profile = require('../../models/profile');
-
+var randomstring = require('randomstring');
 const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
 
@@ -41,6 +41,16 @@ module.exports = function (app, sessionChecker) {
             req.checkBody('last', "Must enter a last name.").notEmpty();
 
             const errors = req.validationErrors();
+             //create string token
+           const hidden_token = randomstring.generate();
+           //save in database something like profile.secretToken = hiddent token
+            profile.hidden_token = hidden_token;
+
+            //flag account as inactive so profile.user_confirm = false; should already be un active, disallow login for
+            //user who aren't confirmed
+
+
+
 
             if (!errors) {
 
@@ -115,12 +125,25 @@ module.exports = function (app, sessionChecker) {
                     res.redirect('/login');
                 } else if (!profile.validPassword(password)) {
                     res.redirect('/login');
-                } else {
+                }
+                //check to see if profile has been activated return error message  //
+                // else if(!profile.user_confirm){
+                //     return done(null, false, {message:'Verify Your account by going to your email'});
+                else {
                     req.session.profile = profile.dataValues;
                     res.redirect('/');
                 }
             });
         });
+    // ROUTING FOR verify page
+    const isNotAuth = (res,req,next) =>{
+
+    };
+    app.route('/verify')
+        .get(isNotAuth,(req,res) =>{
+       res.render('verify.html');
+    })
+
 
     app.get('/logout', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
