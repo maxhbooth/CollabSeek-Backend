@@ -11,8 +11,6 @@ const profile_facility = require('../../../models/profile_facility');
 const profile_skill = require('../../../models/profile_skill');
 const profile_specialty = require('../../../models/profile_specialty');
 
-const image = require('../../../models/image');
-
 const AttrRepository = require('./attributeRepository');
 
 var profileRepository = function profileRepository(){
@@ -25,7 +23,6 @@ var profileRepository = function profileRepository(){
     this.profileFacility = profile_facility;
     this.profileSkill = profile_skill;
     this.profile = profile;
-    this.image = image;
 
 
     //create many-to-many relation between profile and skill.
@@ -228,14 +225,10 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
     return 0;
 });
 
-profileRepository.prototype.addImage = async(function(profileId, image){
-
-    let imageData = await(this.image.create({
-        image: image
-    }));
+profileRepository.prototype.addImage = async(function(profileId, imagePath){
 
     this.profile.update(
-        {image_id : imageData.id},
+        {imagepath : imagePath},
         {where : {id : profileId}}
     );
 
@@ -453,8 +446,11 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
     }));
 
 
+
+
    return {username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: position.name,
-            skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+            imagePath: profile.imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties,
+                disciplines: disciplines};
 });
 
 

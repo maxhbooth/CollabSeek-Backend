@@ -18,18 +18,20 @@ module.exports = function (app) {
         }
     });
 
-
     app.post('/upload-image', (req, res) => {
 
         if (req.session.profile && req.cookies.user_sid) {
 
+            const profileId = req.session.profile.id;
+
+            var profileRepository = new ProfileRepository();
+
             const storage = multer.diskStorage({
                 destination: function(req, file, callback) {
-                    callback(null, 'Images')
+                    callback(null, 'views\\Images')
                 },
                 filename: function(req, file, callback) {
-                    console.log(file);
-                    callback(null, "ProfileImage_"+req.session.profile.id+ path.extname(file.originalname))
+                    callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
                 }
             });
 
@@ -40,9 +42,12 @@ module.exports = function (app) {
                         console.log(ext);
                         if (ext.toLowerCase() !== '.png' && ext.toLowerCase() !== '.jpg'
                             && ext.toLowerCase() !== '.gif' && ext.toLowerCase() !== '.jpeg') {
-                                //res.render('upload-image.html',{errors: "Expected an Image."});
                                 return callback(new Error('Expected an image.'))
                         }
+                        //add image to database then!
+
+                        profileRepository.addImage(profileId,  "ProfileImage_" + profileId + ext);
+
                         callback(null, true)
                     }
             }).single('imageUpload');
@@ -53,7 +58,6 @@ module.exports = function (app) {
                 }
             });
 
-            var profilePath = path.join(__dirname, "../../Images/ProfileImage_"+req.session.profile.id+".jpg");
 
             //resizing the input image.
             // im.resize({
@@ -65,10 +69,11 @@ module.exports = function (app) {
             //     if (err) throw err;
             //     console.log('resize complete.');
             // });
-            gm( profilePath).resize(200, 200).write(profilePath, function (err) {
-                if (!err) console.log('TOTALLY WORKED')
-                else console.log(err);
-            });
+
+            // gm( profilePath).resize(200, 200).write(profilePath, function (err) {
+            //     if (!err) console.log('TOTALLY WORKED')
+            //     else console.log(err);
+            // });
 
             // gm( targetPath).resize(null, 50) .write(path.resolve('./public/assets/images/upload/new.jpg'),
             //     function (err) { if (!err) console.log('done'); });
@@ -85,13 +90,16 @@ module.exports = function (app) {
         //"ProfileImage_"+req.session.profile.id+ path.extname(file.originalname)
         //var profilePath = "/Images/ProfileImage_"+req.session.profile.id+".jpg";
         //path.join(__dirname, '../templates')
+
         var profilePath = path.join(__dirname, "../../Images/ProfileImage_"+req.session.profile.id+".jpg");
 
         if (fs.existsSync(profilePath)) {
 
+            res.setHeader('Content-Type', 'image/jpg');
             res.sendFile("Images/ProfileImage_"+req.session.profile.id+".jpg", {root: './'});
         }
         //res.sendFile(profilePath);
+        res.setHeader('Content-Type', 'image/jpg');
         res.sendFile('/views/resources/profile-icon.png', {root: './'});
 
     });

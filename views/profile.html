@@ -32,9 +32,17 @@
 <div class="container row">
     <div class="row">
         <div class="col-sm-4">
-            <img src="/profile-image" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+            <!--<img src="/profile-image" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">-->
+
+            <% if(locals.imagePath){%>
+                <img src="Images/<%=imagePath%>" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+            <%} else {%>
+                <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+            <%}%>
+
+
             <form method="get" action="/upload-image">
-                <button type="submit">change profile picture</button>
+                <button class="btn btn-default" style="display: block; margin: 0 auto;" type="submit">change profile picture</button>
             </form>
             <h3>Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h3>
         </div>

@@ -49,13 +49,9 @@ var Profile = sequelize.define('profile', {
             key: 'id'
         }
     },
-    image_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-            model: 'image',
-            key: 'id'
-        }
+    imagepath: {
+        type: Sequelize.STRING,
+        allowNull: true
     }
 }, {
     hooks: {
