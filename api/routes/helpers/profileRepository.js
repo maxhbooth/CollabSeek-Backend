@@ -1,7 +1,7 @@
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 //asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
-
+const nodemailer = require('nodemailer');
 const Sequelize = require('sequelize');
 
 const profile = require('../../../models/profile');
@@ -73,6 +73,7 @@ var profileRepository = function profileRepository(){
             foreignKey: 'department_id',
             constraints: false});
 };
+
 
 // =====================================================================================================================
 // ADD ATTRIBUTE TO PROFILE
