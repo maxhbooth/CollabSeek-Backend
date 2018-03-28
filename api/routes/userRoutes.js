@@ -127,9 +127,9 @@ module.exports = function (app, sessionChecker) {
                     res.redirect('/login');
                 }
                 //check to see if profile has been activated return error message  //
-                else if(!profile.user_confirm){
-                    return done(null, false, {message:'Verify Your account by going to your email'});
-                }else {
+                // else if(!profile.user_confirm){
+                //     return done(null, false, {message:'Verify Your account by going to your email'});
+                else {
                     req.session.profile = profile.dataValues;
                     res.redirect('/');
                 }
