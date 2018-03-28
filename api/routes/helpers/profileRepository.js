@@ -518,7 +518,7 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
     }));
 
 
-   return {username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: position.name,
+   return {id: profileId, username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: position.name,
             imagePath: profile.imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties,
                 disciplines: disciplines};
 });
