@@ -70,37 +70,10 @@ module.exports = function (app) {
             //     console.log('resize complete.');
             // });
 
-            // gm( profilePath).resize(200, 200).write(profilePath, function (err) {
-            //     if (!err) console.log('TOTALLY WORKED')
-            //     else console.log(err);
-            // });
-
-            // gm( targetPath).resize(null, 50) .write(path.resolve('./public/assets/images/upload/new.jpg'),
-            //     function (err) { if (!err) console.log('done'); });
             res.redirect('/profile');
         } else {
             res.redirect('/login');
         }
-
-
-
-    });
-
-    app.get('/profile-image', function (req,res){
-        //"ProfileImage_"+req.session.profile.id+ path.extname(file.originalname)
-        //var profilePath = "/Images/ProfileImage_"+req.session.profile.id+".jpg";
-        //path.join(__dirname, '../templates')
-
-        var profilePath = path.join(__dirname, "../../Images/ProfileImage_"+req.session.profile.id+".jpg");
-
-        if (fs.existsSync(profilePath)) {
-
-            res.setHeader('Content-Type', 'image/jpg');
-            res.sendFile("Images/ProfileImage_"+req.session.profile.id+".jpg", {root: './'});
-        }
-        //res.sendFile(profilePath);
-        res.setHeader('Content-Type', 'image/jpg');
-        res.sendFile('/views/resources/profile-icon.png', {root: './'});
 
     });
 };
