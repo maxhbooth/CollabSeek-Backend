@@ -518,10 +518,10 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
             }]
         }));
         profiles[j] = {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
-            skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+            imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
         if(profile.length == 1){
             return {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
-                skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+                imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
         }
     }
    return profiles;
