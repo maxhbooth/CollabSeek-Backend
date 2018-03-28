@@ -58,12 +58,12 @@ module.exports = function (app) {
                 }
             });
 
-            var pathTemp = path.join(__dirname, "..\\..\\views\\images\\ProfileImage_11.JPG");
-            im.convert([pathTemp, '-resize', '200x200', pathTemp],
-                function(err, stdout){
-                    if (err) throw err;
-                    console.log('stdout:', stdout);
-            });
+            // var pathTemp = path.join(__dirname, "..\\..\\views\\images\\ProfileImage_11.JPG");
+            // im.convert([pathTemp, '-resize', '200x200', pathTemp],
+            //     function(err, stdout){
+            //         if (err) throw err;
+            //         console.log('stdout:', stdout);
+            // });
 
             //resizing the input image.
             // im.resize({
@@ -76,7 +76,7 @@ module.exports = function (app) {
             //     console.log('resize complete.');
             // });
 
-            res.redirect('/profile');
+            res.redirect('/my-profile');
         } else {
             res.redirect('/login');
         }
