@@ -72,7 +72,7 @@ module.exports = function (app, sessionChecker) {
         if (req.session.profile && req.cookies.user_sid) {
 
         let profileRepositiory = new ProfileRepository();
-        let attrRepository = new AttrRepository();
+        let attrRepository = new AttributeRepository();
 
         attrRepository.getAll().then(function (models){
             //return {degrees, departments, disciplines, facilities, positions, skills, specialties};
