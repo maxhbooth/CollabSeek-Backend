@@ -49,8 +49,8 @@ var profile = sequelize.define('profile', {
             key: 'id'
         }
     },
-    image_id: {
-        type: Sequelize.INTEGER,
+    imagepath: {
+        type: Sequelize.STRING,
         allowNull: true
     }
 }, {

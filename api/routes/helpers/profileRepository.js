@@ -95,7 +95,7 @@ profileRepository.prototype.addProfileDegree = async(function (profileId, degree
                     })
                     .catch(error => {
                     //db errors
-                    console.log(error);
+                    //console.log(error);
                     });
         }
     return 0;
@@ -295,6 +295,17 @@ profileRepository.prototype.removeProfileSpecialty = async(function (profileID, 
     return 0;
 });
 
+profileRepository.prototype.addImage = async(function(profileId, imagePath){
+
+    this.profile.update(
+        {imagepath : imagePath},
+        {where : {id : profileId}}
+    );
+
+    return 0;
+});
+
+//not using right now.
 // =====================================================================================================================
 // METHODS FOR ENTIRE PROFILE
 // =====================================================================================================================
@@ -508,7 +519,8 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
 
 
    return {username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: position.name,
-            skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+            imagePath: profile.imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties,
+                disciplines: disciplines};
 });
 
 profileRepository.prototype.deleteProfile = async(function(profileID){
@@ -675,5 +687,6 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
     }
     return null;
 });
+
 
 module.exports = profileRepository;
