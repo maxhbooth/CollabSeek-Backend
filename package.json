@@ -13,7 +13,7 @@
   "author": "Mac Watrous",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^1.11.0",
+    "nodemon": "^1.11.0"
   },
   "dependencies": {
     "asyncawait": "^1.0.6",
