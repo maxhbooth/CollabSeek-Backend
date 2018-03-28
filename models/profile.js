@@ -48,6 +48,14 @@ var Profile = sequelize.define('profile', {
             model: 'position',
             key: 'id'
         }
+    },
+    image_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+            model: 'image',
+            key: 'id'
+        }
     }
 }, {
     hooks: {

@@ -11,6 +11,8 @@ const profile_facility = require('../../../models/profile_facility');
 const profile_skill = require('../../../models/profile_skill');
 const profile_specialty = require('../../../models/profile_specialty');
 
+const image = require('../../../models/image');
+
 const AttrRepository = require('./attributeRepository');
 
 var profileRepository = function profileRepository(){
@@ -23,6 +25,8 @@ var profileRepository = function profileRepository(){
     this.profileFacility = profile_facility;
     this.profileSkill = profile_skill;
     this.profile = profile;
+    this.image = image;
+
 
     //create many-to-many relation between profile and skill.
     this.profile.belongsToMany(
@@ -125,7 +129,7 @@ profileRepository.prototype.addProfileDegree = async(function (profileId, degree
                     })
                     .catch(error => {
                     //db errors
-                    console.log(error);
+                    //console.log(error);
                     });
         }
     return 0;
@@ -148,7 +152,7 @@ profileRepository.prototype.addProfileDepartment = async(function (profileId, de
         })
             .catch(error => {
                 //db errors
-                console.log(error);
+                //console.log(error);
             });
     }
 
@@ -171,7 +175,7 @@ profileRepository.prototype.addProfileSpecialty = async(function (profileId, spe
         })
             .catch(error => {
             //db errors
-            console.log(error);
+            //console.log(error);
     });
     }
 
@@ -194,7 +198,7 @@ profileRepository.prototype.addProfileFacility = async(function (profileId, faci
         })
         .catch(error => {
             //db errors
-            console.log(error);
+            //console.log(error);
         });
     }
 
@@ -217,9 +221,23 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
         })
             .catch(error => {
                 //db errors
-                console.log(error);
+                //console.log(error);
             });
     }
+
+    return 0;
+});
+
+profileRepository.prototype.addImage = async(function(profileId, image){
+
+    let imageData = await(this.image.create({
+        image: image
+    }));
+
+    this.profile.update(
+        {image_id : imageData.id},
+        {where : {id : profileId}}
+    );
 
     return 0;
 });
@@ -290,7 +308,7 @@ profileRepository.prototype.updateProfile = async(function
         plain: true})
     .catch(error => {
         //db errors
-        console.log(error);
+        //console.log(error);
     });
 
     return 0;
@@ -316,7 +334,7 @@ profileRepository.prototype.createProfile = async(function
         plain: true})
         .catch(errors => {
             //db errors
-            console.log(errors);
+            //console.log(errors);
             return errors;
         }));
     let profileId = profile.id;
@@ -380,7 +398,7 @@ profileRepository.prototype.createProfile = async(function
         plain: true})
         .catch(error => {
         //db errors
-        console.log(error);
+        //console.log(error);
 });
     return profile;
 });
@@ -456,7 +474,7 @@ profileRepository.prototype.getProfileIDByDepartment = async(function(department
         for(var i = 0; i < profiles.length; i++){
             profile_ids.push(profiles[i].dataValues.profile_id);
         };
-        console.log(profile_ids);
+        //console.log(profile_ids);
         return profile_ids;
     }
     return null;
@@ -473,7 +491,7 @@ profileRepository.prototype.getProfileIDBySpecialty = async(function(specialtyNa
         for(var i = 0; i < profiles.length; i++){
             profile_ids.push(profiles[i].dataValues.profile_id);
         };
-        console.log(profile_ids);
+        //console.log(profile_ids);
         return profile_ids;
     }
     return null;
@@ -490,7 +508,7 @@ profileRepository.prototype.getProfileIDBySkill = async(function(skillName){
         for(var i = 0; i < profiles.length; i++){
             profile_ids.push(profiles[i].dataValues.profile_id);
         };
-        console.log(profile_ids);
+        //console.log(profile_ids);
         return profile_ids;
     }
     return null;
@@ -507,7 +525,7 @@ profileRepository.prototype.getProfileIDByFacility = async(function(facilityName
         for(var i = 0; i < profiles.length; i++){
             profile_ids.push(profiles[i].dataValues.profile_id);
         };
-        console.log(profile_ids);
+        //console.log(profile_ids);
         return profile_ids;
     }
     return null;
@@ -524,11 +542,12 @@ profileRepository.prototype.getProfileIDByDiscipline = async(function(discipline
         for(var i = 0; i < profiles.length; i++){
             profile_ids.push(profiles[i].dataValues.profile_id);
         };
-        console.log(profile_ids);
+        //console.log(profile_ids);
         return profile_ids;
     }
     return null;
 });
+
 
 
 module.exports = profileRepository;
