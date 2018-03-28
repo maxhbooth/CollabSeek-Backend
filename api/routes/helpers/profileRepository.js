@@ -631,10 +631,14 @@ profileRepository.prototype.getProfileIDByDiscipline = async(function(discipline
 profileRepository.prototype.getProfileIDByFirstName = async(function(firstName){
     let profiles = await(this.profile.findAll({
         attributes: ['id'],
-        where: sequelize.where(sequelize.fn('lower', sequelize.col('first_name')), sequelize.fn('lower', firstName))
+        where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('profile.first_name')), Sequelize.fn('lower', firstName))
     }));
+    var profile_ids = [];
     if(profiles != null) {
-        return profiles;
+        for (var i = 0; i < profiles.length; i++) {
+            profile_ids.push(profiles[i].dataValues.id);
+        }
+        return profile_ids;
     }
     return null;
 });
@@ -642,10 +646,14 @@ profileRepository.prototype.getProfileIDByFirstName = async(function(firstName){
 profileRepository.prototype.getProfileIDByLastName = async(function(lastName){
     let profiles = await(this.profile.findAll({
         attributes: ['id'],
-        where: sequelize.where(sequelize.fn('lower', sequelize.col('last_name')), sequelize.fn('lower', lastName))
+        where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('profile.last_name')), Sequelize.fn('lower', lastName))
     }));
+    var profile_ids = [];
     if(profiles != null) {
-        return profiles;
+        for (var i = 0; i < profiles.length; i++) {
+            profile_ids.push(profiles[i].dataValues.id);
+        }
+        return profile_ids;
     }
     return null;
 });
