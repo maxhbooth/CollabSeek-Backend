@@ -470,57 +470,61 @@ profileRepository.prototype.createProfile = async(function
 
 profileRepository.prototype.getProfileInformation = async(function (profileId){
 
-    let profile = await(this.profile.findOne({where: {id:profileId}}));
-
+    let profile = await(this.profile.findAll({where: {id:profileId}}));
     if(profile==null){
         return null;
     }
+    var profiles = [];
+    for(var j = 0; j < profile.length; j++){
+        let ID = profile[j].id;
+        let positionId = profile[j].position;
 
-    let positionId = profile.position;
+        let position = await(this.attrRepository.position.findOne({where:{id:positionId}}))
 
-    let position = await(this.attrRepository.position.findOne({where:{id:positionId}}))
+        let degrees_set = await(this.attrRepository.degree_discipline.findAll({
+            where: {profile_id: ID}
+        }));
 
-    let degrees_set = await(this.attrRepository.degree_discipline.findAll({
-        where: {profile_id: profileId}
-    }));
+        var disciplines = [];
+        var degrees = [];
+        for(var i = 0; i < degrees_set.length; i++){
+            let disc = await(this.attrRepository.getDisciplineName(degrees_set[i].dataValues.discipline_id));
+            let deg = await(this.attrRepository.getDegreeName(degrees_set[i].dataValues.degree_id));
+            disciplines[i] = disc;
+            degrees[i] = deg;
+        }
 
-    var disciplines = [];
-    var degrees = [];
-    for(var i = 0; i < degrees_set.length; i++){
-        let disc = await(this.attrRepository.getDisciplineName(degrees_set[i].dataValues.discipline_id));
-        let deg = await(this.attrRepository.getDegreeName(degrees_set[i].dataValues.degree_id));
-        disciplines[i] = disc;
-        degrees[i] = deg;
+        let skills = await(this.attrRepository.skill.findAll({
+            include: [{
+                model: this.profile,
+                where: {id: ID},
+                through: {}
+            }]
+        }));
+
+        let departments = await(this.attrRepository.department.findAll({
+            include: [{
+                model: this.profile,
+                where: {id: ID},
+                through: {}
+            }]
+        }));
+
+        let specialties = await(this.attrRepository.specialty.findAll({
+            include: [{
+                model: this.profile,
+                where: {id: ID},
+                through: {}
+            }]
+        }));
+        profiles[j] = {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
+            skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+        if(profile.length == 1){
+            return {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
+                skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+        }
     }
-
-    let skills = await(this.attrRepository.skill.findAll({
-        include: [{
-            model: this.profile,
-            where: {id: profileId},
-            through: {}
-        }]
-    }));
-
-    let departments = await(this.attrRepository.department.findAll({
-        include: [{
-            model: this.profile,
-            where: {id: profileId},
-            through: {}
-        }]
-    }));
-
-    let specialties = await(this.attrRepository.specialty.findAll({
-        include: [{
-            model: this.profile,
-            where: {id: profileId},
-            through: {}
-        }]
-    }));
-
-
-   return {id: profileId, username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: position.name,
-            imagePath: profile.imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties,
-                disciplines: disciplines};
+   return profiles;
 });
 
 profileRepository.prototype.deleteProfile = async(function(profileID){
