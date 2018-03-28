@@ -1,7 +1,6 @@
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 //asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
-const nodemailer = require('nodemailer');
 const Sequelize = require('sequelize');
 
 const profile = require('../../../models/profile');

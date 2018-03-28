@@ -143,9 +143,8 @@ module.exports = function (app, sessionChecker) {
         .get(isNotAuth,(req,res) =>{
        res.render('verify.html');
     })
-        .post(async (res, req, next) =>{
 
-        });
+
     app.get('/logout', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
             res.clearCookie('user_sid');
