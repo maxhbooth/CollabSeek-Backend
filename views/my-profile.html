@@ -45,7 +45,7 @@
             <div class="well well-sm clearfix">
                 <div id="position-show" style="display: block;"><h4>Position: <small><%= position %></small></h4></div>
                 <div id="position-edit" style="display: none;">
-                    <form method="post" class="form-inline" action="/update-position">
+                    <form method="post" action="/update-position" class="form-inline">
                         <label for="position"><h4>Position: </h4></label>
                         <select id="position" name="position" class="form-control">
                             <% if(locals.all_positions){%>

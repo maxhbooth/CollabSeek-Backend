@@ -5,15 +5,24 @@ const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
 
 module.exports = function (app, sessionChecker) {
+    app.get('/update-position', (req, res) => {
+        if (req.session.profile && req.cookies.user_sid) {
+            res.redirect('/my-profile');
+        }else {
+            res.redirect('/login');
+        }
+    });
 
-    app.route('/update-position').post((req, res) => {
+    app.post('/update-position', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
             let positionName = req.body.position;
-
-            const profileRepository = new ProfileRepository();
+            console.log(positionName);
+            profileRepository = new ProfileRepository();
             profileRepository.updatePosition(positionName, req.session.profile.profile_id);
             console.log(positionName);
-    }else {
-        res.redirect('/welcome');        }
+            res.redirect('/my-profile');
+        }else {
+            res.redirect('/welcome');
+        }
     });
 };
