@@ -20,6 +20,8 @@
     "bcrypt": "^1.0.3",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
     "cli": "^1.0.1",
     "cookie-parser": "^1.4.3",
     "dotenv": "^5.0.1",

@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt');
 var Sequelize = require('sequelize');
 var sequelize = require('../database/database');
 
-var Profile = sequelize.define('profile', {
+var profile = sequelize.define('profile', {
     id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -12,17 +12,17 @@ var Profile = sequelize.define('profile', {
         autoIncrement: true
     },
     first_name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(30),
         allowNull: true
     },
     last_name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(30),
         allowNull: true
     },
     username: {
         type: Sequelize.STRING,
         unique: true,
-        allowNull: false
+        allowNull: true
     },
     email: {
         type: Sequelize.STRING,
@@ -68,7 +68,7 @@ var Profile = sequelize.define('profile', {
     },
     tableName: 'profile'
 });
-Profile.prototype.validPassword = function (password) {
+profile.prototype.validPassword = function (password) {
     return bcrypt.compareSync(password, this.password)
 };
-module.exports = Profile;
+module.exports = profile;

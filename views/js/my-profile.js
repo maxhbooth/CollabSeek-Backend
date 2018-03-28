@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $("#edit-position").click(function(e){
+    $("#edit-position1").click(function(e){
         var edit = document.getElementById("position-edit");
         var show = document.getElementById("position-show");
         if (show.style.display === "none") {
