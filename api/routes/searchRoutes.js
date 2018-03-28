@@ -208,6 +208,7 @@ module.exports = function (app, sessionChecker) {
                         });
                     });
                 }
+                else doneSearch();
             }
 
             function doneSearch(){
