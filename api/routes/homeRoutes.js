@@ -39,7 +39,7 @@ module.exports = function (app, sessionChecker) {
             let profileRepositiory = new ProfileRepository();
 
             profileRepositiory.getProfileInformation(req.session.profile.id).then(function (models){
-                console.log(models);
+                //console.log(models);
                 res.render('profile.html', models);
             });
 
@@ -54,7 +54,7 @@ module.exports = function (app, sessionChecker) {
             let profileRepositiory = new ProfileRepository();
 
             profileRepositiory.getProfileInformation(id).then(function (models){
-                console.log(models);
+                //console.log(models);
                 if(models != null){
                     res.render('profile.html', models);
                 }
@@ -74,24 +74,15 @@ module.exports = function (app, sessionChecker) {
         let profileRepositiory = new ProfileRepository();
         let attrRepository = new AttributeRepository();
 
-        attrRepository.getAll().then(function (models){
-            //return {degrees, departments, disciplines, facilities, positions, skills, specialties};
-
-            let searchData = models.departments.concat(models.disciplines, models.facilities, models.skills, models.specialties);
-            console.log(searchData);
-            res.send(searchData);
-            res.render('signup.html', models);
-        });
-
         profileRepositiory.getProfileInformation(req.session.profile.id).then(function (models){
-            console.log(models);
             attrRepository.getAll().then(function (attributes){
-
-            })
-            res.render('my-profile.html', models);
+                models.all_departments = attributes.departments;
+                models.all_positions = attributes.positions;
+                res.render('my-profile.html', models);
+            });
         });
 
-    }else {
+    } else {
         res.redirect('/login');
     }
 });

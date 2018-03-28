@@ -48,7 +48,7 @@
     <% if(locals.disciplineProfiles){%>
     <div>
         <% if (disciplineProfiles.length > 0){%>
-        <h3>By Department: <small>
+        <h3>By Discipline: <small>
             <%disciplineProfiles.forEach(function(profile){%>
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
@@ -63,7 +63,7 @@
     <% if(locals.facilityProfiles){%>
     <div>
         <% if (facilityProfiles.length > 0){%>
-        <h3>By Department: <small>
+        <h3>By Facility: <small>
             <%facilityProfiles.forEach(function(profile){%>
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
@@ -93,7 +93,7 @@
     <% if(locals.specialtyProfiles){%>
     <div>
         <% if (specialtyProfiles.length > 0){%>
-        <h3>By Department: <small>
+        <h3>By Specialty: <small>
             <%specialtyProfiles.forEach(function(profile){%>
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
@@ -138,7 +138,7 @@
     <% if(locals.fullNameProfiles){%>
     <div>
         <% if (fullNameProfiles.length > 0){%>
-        <h3>By Last Name: <small>
+        <h3>By Full Name: <small>
             <%fullNameProfiles.forEach(function(profile){%>
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
