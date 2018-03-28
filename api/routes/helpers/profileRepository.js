@@ -634,10 +634,14 @@ profileRepository.prototype.getProfileIDByDiscipline = async(function(discipline
 profileRepository.prototype.getProfileIDByFirstName = async(function(firstName){
     let profiles = await(this.profile.findAll({
         attributes: ['id'],
-        where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('first_name')), Sequelize.fn('lower', firstName))
+        where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('profile.first_name')), Sequelize.fn('lower', firstName))
     }));
+    var profile_ids = [];
     if(profiles != null) {
-        return profiles;
+        for (var i = 0; i < profiles.length; i++) {
+            profile_ids.push(profiles[i].dataValues.id);
+        }
+        return profile_ids;
     }
     return null;
 });
@@ -645,11 +649,14 @@ profileRepository.prototype.getProfileIDByFirstName = async(function(firstName){
 profileRepository.prototype.getProfileIDByLastName = async(function(lastName){
     let profiles = await(this.profile.findAll({
         attributes: ['id'],
-        where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('last_name')), Sequelize.fn('lower', lastName))
+        where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('profile.last_name')), Sequelize.fn('lower', lastName))
     }));
+    var profile_ids = [];
     if(profiles != null) {
-        return profiles;
-    }
+        for (var i = 0; i < profiles.length; i++) {
+            profile_ids.push(profiles[i].dataValues.id);
+        }
+        return profile_ids;    }
     return null;
 });
 
@@ -659,8 +666,12 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
         where: Sequelize.where(Sequelize.fn('concat', Sequelize.col('first_name'), ' ', Sequelize.col('last_name')),
             {like: '%' + name + '%'})
         }));
+    var profile_ids = [];
     if(profiles != null) {
-        return profiles;
+        for (var i = 0; i < profiles.length; i++) {
+            profile_ids.push(profiles[i].dataValues.id);
+        }
+        return profile_ids;
     }
     return null;
 });

@@ -45,6 +45,7 @@ module.exports = function (app, sessionChecker) {
             let specialtyProfiles = [];
             let lastNameProfiles = [];
             let firstNameProfiles = [];
+            let fullNameProfiles = [];
 
             var count = 0;
             if (fuzzyDepartments.length == 0){
@@ -120,7 +121,7 @@ module.exports = function (app, sessionChecker) {
             function getSpecialties(){
                 count = 0;
                 if (fuzzySpecialities.length == 0){
-                    doneNonName();
+                    getFirstName();
                 }
                 for (var i = 0; i < fuzzySpecialities.length; ++i){
                     profileRepository.getProfileIDBySpecialty(fuzzySpecialities[i].target).then(function(id) {
@@ -135,10 +136,8 @@ module.exports = function (app, sessionChecker) {
                 }
             }
 
-            let querySplit = query.split(" ");
-
             function getFirstName(){
-                profileRepository.getProfileIDByFirstName(querySplit[0]).then(function(id) {
+                profileRepository.getProfileIDByFirstName(query).then(function(id) {
                     if (id.length == 0 || id == null){
                         getLastName();
                     }
@@ -158,9 +157,9 @@ module.exports = function (app, sessionChecker) {
             }
             function getLastName(){
 
-                profileRepository.getProfileIDByLastName(querySplit[0]).then(function(id) {
+                profileRepository.getProfileIDByLastName(query).then(function(id) {
                     if (id.length == 0 || id == null){
-                        doneSearch();
+                        getFirstAndLast();
                     }
                     count = 0;
                     for(var i = 0; i<id.length; ++i) {
@@ -169,11 +168,47 @@ module.exports = function (app, sessionChecker) {
                                 lastNameProfiles = lastNameProfiles.concat(profile);
                             }
                             count++;
-                            if (count > id.length - 1) doneSearch();
-
+                            if (count > id.length - 1) getFirstAndLast();
                         });
                     }
                 });
+            }
+
+            function getFirstAndLast(){
+                var splitQuery = query.split(' ');
+                if (splitQuery.length >= 2) {
+                    profileRepository.getProfileIDByFirstName(splitQuery[0]).then(function(id){
+                        if (id.length == 0){
+                            doneSearch();
+                        }
+                        profileRepository.getProfileIDByLastName(splitQuery[1]).then(function(id2){
+                            if (id2.length == 0){
+                                doneSearch();
+                            }
+                            let searchIds = [];
+                            for(var i in id){
+                                if (id2.indexOf(id[i]) > -1) {
+                                    searchIds.push(id[i]);
+                                }
+                            }
+                            if (searchIds.length >= 1) {
+                                count = 0;
+                                for (var i = 0; i < searchIds.length; ++i) {
+                                    profileRepository.getProfileInformation(searchIds[i]).then(function (profile) {
+                                        if (profile != null) {
+                                            fullNameProfiles = fullNameProfiles.concat(profile);
+                                        }
+                                        count++;
+                                        if (count > searchIds.length - 1) doneSearch();
+                                    });
+                                }
+                            } else {
+                                doneSearch();
+                            }
+                        });
+                    });
+                }
+                else doneSearch();
             }
 
             function doneSearch(){
@@ -182,6 +217,7 @@ module.exports = function (app, sessionChecker) {
                         pastQuery: query,
                         firstNameProfiles: firstNameProfiles,
                         lastNameProfiles: lastNameProfiles,
+                        fullNameProfiles: fullNameProfiles,
                         departmentProfiles: departmentProfiles,
                         disciplineProfiles: disciplineProfiles,
                         facilityProfiles: facilityProfiles,
