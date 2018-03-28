@@ -180,10 +180,12 @@ module.exports = function (app, sessionChecker) {
                     profileRepository.getProfileIDByFirstName(splitQuery[0]).then(function(id){
                         if (id.length == 0){
                             doneSearch();
+                            return;
                         }
                         profileRepository.getProfileIDByLastName(splitQuery[1]).then(function(id2){
                             if (id2.length == 0){
                                 doneSearch();
+                                return;
                             }
                             let searchIds = [];
                             for(var i in id){
