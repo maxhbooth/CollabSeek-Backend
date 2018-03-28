@@ -47,19 +47,47 @@ module.exports = function (app, sessionChecker) {
             res.redirect('/login');
         }
     });
+
+    app.get('/profile/:id', (req, res) => {
+        if (req.session.profile && req.cookies.user_sid) {
+            var id = req.params.id;
+            let profileRepositiory = new ProfileRepository();
+
+            profileRepositiory.getProfileInformation(id).then(function (models){
+                console.log(models);
+                if(models != null){
+                    res.render('profile.html', models);
+                }
+                else{
+                    res.render('404.html');
+                }
+            });
+
+    }else {
+        res.redirect('/login');
+    }
+});
+
     app.get('/my-profile', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
 
         let profileRepositiory = new ProfileRepository();
-        let attrRepository = new AttrRepository();
+        let attrRepository = new AttributeRepository();
 
         attrRepository.getAll().then(function (models){
-            //console.log(models); tbh this is annoying rn
+            //return {degrees, departments, disciplines, facilities, positions, skills, specialties};
+
+            let searchData = models.departments.concat(models.disciplines, models.facilities, models.skills, models.specialties);
+            console.log(searchData);
+            res.send(searchData);
             res.render('signup.html', models);
         });
 
         profileRepositiory.getProfileInformation(req.session.profile.id).then(function (models){
             console.log(models);
+            attrRepository.getAll().then(function (attributes){
+
+            })
             res.render('my-profile.html', models);
         });
 

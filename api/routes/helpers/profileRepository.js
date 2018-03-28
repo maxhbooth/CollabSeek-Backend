@@ -1,7 +1,6 @@
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 //asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
-
 const Sequelize = require('sequelize');
 
 const profile = require('../../../models/profile');
@@ -74,6 +73,7 @@ var profileRepository = function profileRepository(){
             constraints: false});
 };
 
+
 // =====================================================================================================================
 // ADD ATTRIBUTE TO PROFILE
 // =====================================================================================================================
@@ -95,7 +95,7 @@ profileRepository.prototype.addProfileDegree = async(function (profileId, degree
                     })
                     .catch(error => {
                     //db errors
-                    console.log(error);
+                    //console.log(error);
                     });
         }
     return 0;
@@ -197,10 +197,13 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
 // =====================================================================================================================
 profileRepository.prototype.updatePosition = async(function(profileID, positionName){
     let positionId = await(this.attrRepository.getPositionId(positionName));
-    this.profile.update({position: positionId},
-        {where: {id: profileID}}).catch(error => {
-        console.log(error);
-        });
+    this.profile.update(
+        {position: positionId},
+        {where: {id: profileID}}
+        );
+        //.catch(error => {
+        //console.log(error);
+        //});
 });
 
 //profileRepository.prototype.updateFirstName = async(function()){}); //TODO
@@ -292,6 +295,17 @@ profileRepository.prototype.removeProfileSpecialty = async(function (profileID, 
     return 0;
 });
 
+profileRepository.prototype.addImage = async(function(profileId, imagePath){
+
+    this.profile.update(
+        {imagepath : imagePath},
+        {where : {id : profileId}}
+    );
+
+    return 0;
+});
+
+//not using right now.
 // =====================================================================================================================
 // METHODS FOR ENTIRE PROFILE
 // =====================================================================================================================
@@ -505,7 +519,8 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
 
 
    return {username: profile.username, first: profile.first_name, last: profile.last_name, email: profile.email, position: position.name,
-            skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+            imagePath: profile.imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties,
+                disciplines: disciplines};
 });
 
 profileRepository.prototype.deleteProfile = async(function(profileID){
@@ -653,9 +668,25 @@ profileRepository.prototype.getProfileIDByLastName = async(function(lastName){
         for (var i = 0; i < profiles.length; i++) {
             profile_ids.push(profiles[i].dataValues.id);
         }
+        return profile_ids;    }
+    return null;
+});
+
+profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
+    let profiles = await(this.profile.findAll({
+        attributes: ['id'],
+        where: Sequelize.where(Sequelize.fn('concat', Sequelize.col('first_name'), ' ', Sequelize.col('last_name')),
+            {like: '%' + name + '%'})
+        }));
+    var profile_ids = [];
+    if(profiles != null) {
+        for (var i = 0; i < profiles.length; i++) {
+            profile_ids.push(profiles[i].dataValues.id);
+        }
         return profile_ids;
     }
     return null;
 });
+
 
 module.exports = profileRepository;

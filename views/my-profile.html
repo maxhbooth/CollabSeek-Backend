@@ -42,12 +42,12 @@
         </div>
         <div class="col-sm-8">
             <% if(locals.position){%>
-            <div class="well well-sm">
-                <h4 id="position-show" display="none">Position: <small><%= position %></small></h4>
-                <div id="position-edit" display="block">
-                    <form method="post" action="/update-position">
-                        <label for="position">Position:</label>
-                        <select id = "position" name = "position" class="form-control">
+            <div class="well well-sm clearfix">
+                <div id="position-show" style="display: block;"><h4>Position: <small><%= position %></small></h4></div>
+                <div id="position-edit" style="display: none;">
+                    <form method="post" class="form-inline" action="/update-position">
+                        <label for="position"><h4>Position: </h4></label>
+                        <select id="position" name="position" class="form-control">
                             <% if(locals.positions){%>
                             <%if (positions.length > 0){positions.forEach(function(position){%>
                             <option><%= position %></option>
@@ -56,7 +56,7 @@
                         <button type="submit" class="btn btn-default">Save</button>
                     </form>
                 </div>
-                <button id="edit-position" class="icon-button pull-right">
+                <button id="edit-position" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </button>
             </div>
