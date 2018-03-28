@@ -197,10 +197,13 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
 // =====================================================================================================================
 profileRepository.prototype.updatePosition = async(function(profileID, positionName){
     let positionId = await(this.attrRepository.getPositionId(positionName));
-    this.profile.update({position: positionId},
-        {where: {id: profileID}}).catch(error => {
-        console.log(error);
-        });
+    this.profile.update(
+        {position: positionId},
+        {where: {id: profileID}}
+        );
+        //.catch(error => {
+        //console.log(error);
+        //});
 });
 
 //profileRepository.prototype.updateFirstName = async(function()){}); //TODO
@@ -631,7 +634,7 @@ profileRepository.prototype.getProfileIDByDiscipline = async(function(discipline
 profileRepository.prototype.getProfileIDByFirstName = async(function(firstName){
     let profiles = await(this.profile.findAll({
         attributes: ['id'],
-        where: sequelize.where(sequelize.fn('lower', sequelize.col('first_name')), sequelize.fn('lower', firstName))
+        where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('first_name')), Sequelize.fn('lower', firstName))
     }));
     if(profiles != null) {
         return profiles;
@@ -642,8 +645,20 @@ profileRepository.prototype.getProfileIDByFirstName = async(function(firstName){
 profileRepository.prototype.getProfileIDByLastName = async(function(lastName){
     let profiles = await(this.profile.findAll({
         attributes: ['id'],
-        where: sequelize.where(sequelize.fn('lower', sequelize.col('last_name')), sequelize.fn('lower', lastName))
+        where: Sequelize.where(Sequelize.fn('lower', Sequelize.col('last_name')), Sequelize.fn('lower', lastName))
     }));
+    if(profiles != null) {
+        return profiles;
+    }
+    return null;
+});
+
+profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
+    let profiles = await(this.profile.findAll({
+        attributes: ['id'],
+        where: Sequelize.where(Sequelize.fn('concat', Sequelize.col('first_name'), ' ', Sequelize.col('last_name')),
+            {like: '%' + name + '%'})
+        }));
     if(profiles != null) {
         return profiles;
     }

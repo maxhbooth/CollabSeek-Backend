@@ -26,7 +26,7 @@ module.exports = function (app, sessionChecker) {
                 });
 
             }else {
-                res.redirect('/profile');
+                res.redirect('/my-profile');
             }
         })
         .post((req, res) => {
@@ -66,7 +66,7 @@ module.exports = function (app, sessionChecker) {
                             console.log(profile.errors);
                         }
                         req.session.profile = profile.dataValues;
-                        res.redirect('/profile');
+                        res.redirect('/my-profile');
                     });
 
             } else {

@@ -47,16 +47,32 @@ module.exports = function (app, sessionChecker) {
             res.redirect('/login');
         }
     });
+
+    app.get('/profile/:id', (req, res) => {
+        if (req.session.profile && req.cookies.user_sid) {
+            var id = req.params.id;
+            let profileRepositiory = new ProfileRepository();
+
+            profileRepositiory.getProfileInformation(id).then(function (models){
+                console.log(models);
+                res.render('profile.html', models);
+            });
+
+    }else {
+        res.redirect('/login');
+    }
+});
+
     app.get('/my-profile', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
 
         let profileRepositiory = new ProfileRepository();
-        let attrRepository = new AttrRepository();
+        //let attrRepository = new AttrRepository();
 
-        attrRepository.getAll().then(function (models){
+        //attrRepository.getAll().then(function (models){
             //console.log(models); tbh this is annoying rn
-            res.render('signup.html', models);
-        });
+        //    res.render('signup.html', models);
+        //});
 
         profileRepositiory.getProfileInformation(req.session.profile.id).then(function (models){
             console.log(models);
