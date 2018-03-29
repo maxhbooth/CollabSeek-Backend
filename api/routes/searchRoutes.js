@@ -1,10 +1,67 @@
 fuzzysort = require('fuzzysort');
+const async = require('asyncawait/async');
+const await = require('asyncawait/await');
 
 const ProfileRepository = require('./helpers/profileRepository');
 const AttributeRepository = require('./helpers/attributeRepository');
 
 
 module.exports = function (app, sessionChecker) {
+    let profileRepository = new ProfileRepository();
+
+    app.get('/advanced-search', (req,res) => {
+        var attrRepository = new AttributeRepository();
+
+        attrRepository.getAll().then(function (models){
+            console.log(models);
+            models.degrees.sort();
+            models.departments.sort();
+            models.disciplines.sort();
+            models.facilities.sort();
+            models.positions.sort();
+            models.skills.sort();
+            models.specialties.sort();
+            models.degrees.unshift("");
+            models.departments.unshift("");
+            models.disciplines.unshift("");
+            models.facilities.unshift("");
+            models.positions.unshift("");
+            models.skills.unshift("");
+            models.specialties.unshift("");
+            res.render('advanced-search.html',models);
+        });
+    });
+
+    app.post('/advanced-search', (req,res) => {
+        if (req.body.first != ''){
+
+        }
+        if (req.body.last != ''){
+
+        }
+        if (req.body.degree != ''){
+
+        }
+        if (req.body.discipline != ''){
+
+        }
+        if (req.body.position != ''){
+
+        }
+        if (req.body.department != ''){
+
+        }
+        if (req.body.specialty != ''){
+
+        }
+        if (req.body.skill != ''){
+
+        }
+        if (req.body.facility != ''){
+
+        }
+    });
+
     app.get('/searchData', (req, res) => {
         let attributeRepository = new AttributeRepository();
 
@@ -18,221 +75,229 @@ module.exports = function (app, sessionChecker) {
     });
 
     app.post('/search', (req, res) => {
-        console.dir('body: ' + JSON.stringify(req.body));
-        let query = req.body.query;
-        let attributeRepository = new AttributeRepository();
-        let profileRepository = new ProfileRepository();
+        if (req.session.profile && req.cookies.user_sid) {
+            console.dir('body: ' + JSON.stringify(req.body));
+            let query = req.body.query;
+            let attributeRepository = new AttributeRepository();
 
-        attributeRepository.getAll().then(function (models) {
-            //return {degrees, departments, disciplines, facilities, positions, skills, specialties};
+            attributeRepository.getAll().then(function (models) {
+                //return {degrees, departments, disciplines, facilities, positions, skills, specialties};
 
-            let fuzzyDepartments = fuzzysort.go(query, models.departments);
-            let fuzzyDisciplines = fuzzysort.go(query, models.disciplines);
-            let fuzzyFacilities = fuzzysort.go(query, models.facilities);
-            let fuzzySkills = fuzzysort.go(query, models.skills);
-            let fuzzySpecialities = fuzzysort.go(query, models.specialties);
+                let fuzzyDepartments = fuzzysort.go(query, models.departments);
+                let fuzzyDisciplines = fuzzysort.go(query, models.disciplines);
+                let fuzzyFacilities = fuzzysort.go(query, models.facilities);
+                let fuzzySkills = fuzzysort.go(query, models.skills);
+                let fuzzySpecialities = fuzzysort.go(query, models.specialties);
 
-            let fuzzyResult = fuzzyDepartments.concat(fuzzyDisciplines, fuzzyFacilities, fuzzySkills, fuzzySpecialities);
+                let departments = fuzzyDepartments.map(a => a.target);
+                let disciplines = fuzzyDisciplines.map(a => a.target);
+                let facilities = fuzzyFacilities.map(a => a.target);
+                let skills = fuzzySkills.map(a => a.target);
+                let specialities = fuzzySpecialities.map(a => a.target);
 
-            fuzzyResult.sort(function (a, b) {
-                return b.score - a.score;
-            }); //sort by least score
+                // let fuzzyResult = fuzzyDepartments.concat(fuzzyDisciplines, fuzzyFacilities, fuzzySkills, fuzzySpecialities);
+                //
+                // fuzzyResult.sort(function (a, b) {
+                //     return b.score - a.score;
+                // }); //sort by least score
 
-            let departmentProfiles = [];
-            let disciplineProfiles = [];
-            let facilityProfiles = [];
-            let skillProfiles = [];
-            let specialtyProfiles = [];
-            let lastNameProfiles = [];
-            let firstNameProfiles = [];
-            let fullNameProfiles = [];
+                let departmentProfiles = [];
+                let disciplineProfiles = [];
+                let facilityProfiles = [];
+                let skillProfiles = [];
+                let specialtyProfiles = [];
+                let lastNameProfiles = [];
+                let firstNameProfiles = [];
+                let fullNameProfiles = [];
 
-            var count = 0;
-            if (fuzzyDepartments.length == 0){
-                getDisciplines();
-            }
-            for (var i = 0; i < fuzzyDepartments.length; ++i){
+                var compoundOP = async(function() {
 
-                profileRepository.getProfileIDByDepartment(fuzzyDepartments[i].target).then(function(id) {
-                    profileRepository.getProfileInformation(id).then(function(profile) {
-                        if (profile!=null){
-                            departmentProfiles = departmentProfiles.concat(profile);
-                        }
-                        count++;
-                        if (count > fuzzyDepartments.length - 1) getDisciplines();
-                    });
-                });
-            }
-            
-            function getDisciplines(){
-                count = 0;
-                if (fuzzyDisciplines.length == 0){
-                    getFacilities();
-                }
-                for (var i = 0; i < fuzzyDisciplines.length; ++i){
-                    profileRepository.getProfileIDByDiscipline(fuzzyDisciplines[i].target).then(function(id) {
-                        profileRepository.getProfileInformation(id).then(function(profile) {
-                            if (profile!=null) {
-                                disciplineProfiles = disciplineProfiles.concat(profile);
-                            }
-                            count++;
-                            if (count > fuzzyDisciplines.length - 1) getFacilities();
-                        });
-                    });
-                }
-            }
-
-            function getFacilities(){
-                count = 0;
-                if (fuzzyFacilities.length == 0){
-                    getSkills();
-                }
-                for (var i = 0; i < fuzzyFacilities.length; ++i){
-                    profileRepository.getProfileIDByFacility(fuzzyFacilities[i].target).then(function(id) {
-                        profileRepository.getProfileInformation(id).then(function(profile) {
-                            if (profile!=null) {
-                                facilityProfiles = facilityProfiles.concat(profile);
-                            }
-                            count++;
-                            if (count > fuzzyFacilities.length - 1) getSkills();
-                        });
-                    });
-                }
-            }
-
-            function getSkills(){
-                count = 0;
-                if (fuzzySkills.length == 0){
-                    getSpecialties();
-                }
-                for (var i = 0; i < fuzzySkills.length; ++i){
-                    profileRepository.getProfileIDBySkill(fuzzySkills[i].target).then(function(id) {
-                        profileRepository.getProfileInformation(id).then(function(profile) {
-                            if (profile!=null) {
-                                skillProfiles = skillProfiles.concat(profile);
-                            }
-                            count++;
-                            if (count > fuzzySkills.length - 1) getSpecialties();
-                        });
-                    });
-                }
-            }
-
-            function getSpecialties(){
-                count = 0;
-                if (fuzzySpecialities.length == 0){
-                    getFirstName();
-                }
-                for (var i = 0; i < fuzzySpecialities.length; ++i){
-                    profileRepository.getProfileIDBySpecialty(fuzzySpecialities[i].target).then(function(id) {
-                        profileRepository.getProfileInformation(id).then(function(profile) {
-                            if (profile!=null) {
-                                specialtyProfiles = specialtyProfiles.concat(profile);
-                            }
-                            count++;
-                            if (count > fuzzySpecialities.length - 1) getFirstName();
-                        });
-                    });
-                }
-            }
-
-            function getFirstName(){
-                profileRepository.getProfileIDByFirstName(query).then(function(id) {
-                    if (id.length == 0 || id == null){
-                        getLastName();
-                    }
-                    count = 0;
-                    for(var i = 0; i<id.length; ++i) {
-                        profileRepository.getProfileInformation(id[i]).then(function (profile) {
-                            if (profile != null) {
-                                firstNameProfiles = firstNameProfiles.concat(profile);
-                            }
-                            count++;
-                            if (count > id.length - 1) getLastName();
-
-                        });
-                    }
+                    let response = await([getDepartments(departments),getDisciplines(disciplines),getFacilities(facilities),getSkills(skills),getSpecialties(specialities), getFirstName(query),getLastName(query), getFirstAndLast(query)]);
+                    return response;
+                    //console.log(response);
                 });
 
-            }
-            function getLastName(){
-
-                profileRepository.getProfileIDByLastName(query).then(function(id) {
-                    if (id.length == 0 || id == null){
-                        getFirstAndLast();
-                    }
-                    count = 0;
-                    for(var i = 0; i<id.length; ++i) {
-                        profileRepository.getProfileInformation(id[i]).then(function (profile) {
-                            if (profile != null) {
-                                lastNameProfiles = lastNameProfiles.concat(profile);
-                            }
-                            count++;
-                            if (count > id.length - 1) getFirstAndLast();
-                        });
-                    }
-                });
-            }
-
-            function getFirstAndLast(){
-                var splitQuery = query.split(' ');
-                if (splitQuery.length >= 2) {
-                    profileRepository.getProfileIDByFirstName(splitQuery[0]).then(function(id){
-                        if (id.length == 0){
-                            doneSearch();
-                            return;
-                        }
-                        profileRepository.getProfileIDByLastName(splitQuery[1]).then(function(id2){
-                            if (id2.length == 0){
-                                doneSearch();
-                                return;
-                            }
-                            let searchIds = [];
-                            for(var i in id){
-                                if (id2.indexOf(id[i]) > -1) {
-                                    searchIds.push(id[i]);
-                                }
-                            }
-                            if (searchIds.length >= 1) {
-                                count = 0;
-                                for (var i = 0; i < searchIds.length; ++i) {
-                                    profileRepository.getProfileInformation(searchIds[i]).then(function (profile) {
-                                        if (profile != null) {
-                                            fullNameProfiles = fullNameProfiles.concat(profile);
-                                        }
-                                        count++;
-                                        if (count > searchIds.length - 1) doneSearch();
-                                    });
-                                }
-                            } else {
-                                doneSearch();
-                            }
-                        });
-                    });
-                }
-                else doneSearch();
-            }
-
-            function doneSearch(){
-                //res.send(fuzzyDepartments);
-                res.render('search.html', {
+                compoundOP().then(function (result) {
+                    console.log(result);
+                    res.render('search.html', {
                         pastQuery: query,
-                        firstNameProfiles: firstNameProfiles,
-                        lastNameProfiles: lastNameProfiles,
-                        fullNameProfiles: fullNameProfiles,
-                        departmentProfiles: departmentProfiles,
-                        disciplineProfiles: disciplineProfiles,
-                        facilityProfiles: facilityProfiles,
-                        skillProfiles: skillProfiles,
-                        specialtyProfiles: specialtyProfiles
+                        departmentProfiles: result[0],
+                        disciplineProfiles: result[1],
+                        facilityProfiles: result[2],
+                        skillProfiles: result[3],
+                        specialtyProfiles: result[4],
+                        firstNameProfiles: result[5],
+                        lastNameProfiles: result[6],
+                        fullNameProfiles: result[7]
+                    });
                 });
-            }
 
-            //Match first and last
-            //Match last
-            //Match first
-            //console.log(searchData);
-            //res.send(fuzzyResult);
-        });
+                // Promise.all(promises).then(function() {
+                //
+                // });
+
+            });
+        } else {
+            res.redirect('/login');
+        }
+    });
+
+    let getDepartments = async(function (departments){
+        var count = 0;
+        let departmentProfiles = [];
+        if (departments.length == 0){
+            return [];
+        }
+        for (var i = 0; i < departments.length; ++i){
+            let id = await(profileRepository.getProfileIDByDepartment(departments[i]))
+            let profile = await(profileRepository.getProfileInformation(id));
+            if (profile!=null){
+                departmentProfiles = departmentProfiles.concat(profile);
+            }
+            count++;
+            if (count > departments.length - 1) return departmentProfiles;
+        }
+    });
+
+    let getDisciplines = async(function (disciplines){
+        var count = 0;
+        let disciplineProfiles = [];
+
+        if (disciplines.length == 0){
+            return [];
+        }
+        for (var i = 0; i < disciplines.length; ++i){
+            let id = await(profileRepository.getProfileIDByDiscipline(disciplines[i]))
+            let profile = await(profileRepository.getProfileInformation(id));
+            if (profile!=null) {
+                disciplineProfiles = disciplineProfiles.concat(profile);
+            }
+            count++;
+            if (count > disciplines.length - 1) return disciplineProfiles;
+        }
+    });
+
+    let getFacilities = async(function (facilities){
+        var count = 0;
+        let facilityProfiles = [];
+
+        if (facilities.length == 0){
+            return [];
+        }
+        for (var i = 0; i < facilities.length; ++i){
+            let id = await(profileRepository.getProfileIDByDiscipline(facilities[i]))
+            let profile = await(profileRepository.getProfileInformation(id));
+            if (profile!=null) {
+                facilityProfiles = facilityProfiles.concat(profile);
+            }
+            count++;
+            if (count > facilities.length - 1) return facilityProfiles;
+        }
+    });
+
+    let getSkills = async(function (skills){
+        var count = 0;
+        let skillProfiles = [];
+
+        if (skills.length == 0){
+            return [];
+        }
+        for (var i = 0; i < skills.length; ++i){
+            let id = await(profileRepository.getProfileIDByDiscipline(skills[i]))
+            let profile = await(profileRepository.getProfileInformation(id));
+            if (profile!=null) {
+                skillProfiles = skillProfiles.concat(profile);
+            }
+            count++;
+            if (count > skills.length - 1) return skillProfiles;
+        }
+    });
+
+    let getSpecialties = async(function (specialties){
+        var count = 0;
+        let specialtyProfiles = [];
+
+        if (specialties.length == 0){
+            return [];
+        }
+        for (var i = 0; i < specialties.length; ++i){
+            let id = await(profileRepository.getProfileIDByDiscipline(specialties[i]))
+            let profile = await(profileRepository.getProfileInformation(id));
+            if (profile!=null) {
+                specialtyProfiles = specialtyProfiles.concat(profile);
+            }
+            count++;
+            if (count > specialties.length - 1) return specialtyProfiles;
+        }
+    });
+
+    let getFirstName = async(function (query){
+        let firstNameProfiles = [];
+        let id = await(profileRepository.getProfileIDByFirstName(query));
+        if (id.length == 0 || id == null){
+            return [];
+        }
+        let count = 0;
+        for(var i = 0; i<id.length; ++i) {
+            let profile = await(profileRepository.getProfileInformation(id[i]));
+            if (profile != null) {
+                firstNameProfiles = firstNameProfiles.concat(profile);
+            }
+            count++;
+            if (count > id.length - 1) return firstNameProfiles;
+        }
+    });
+
+    let getLastName = async (function (query){
+        let lastNameProfiles = [];
+        let id = await(profileRepository.getProfileIDByLastName(query));
+        if (id.length == 0 || id == null){
+            return [];
+        }
+        let count = 0;
+        for(var i = 0; i<id.length; ++i) {
+            let profile = await(profileRepository.getProfileInformation(id[i]));
+            if (profile != null) {
+                lastNameProfiles = lastNameProfiles.concat(profile);
+            }
+            count++;
+            if (count > id.length - 1) return lastNameProfiles;
+        }
+    });
+
+    let getFirstAndLast = async(function (query){
+        let fullNameProfiles = [];
+        var splitQuery = query.split(' ');
+        if (splitQuery.length >= 2) {
+            let id = await(profileRepository.getProfileIDByFirstName(splitQuery[0]));
+            if (id.length == 0){
+                return [];
+            }
+            let id2 = await(profileRepository.getProfileIDByLastName(splitQuery[1]));
+            if (id2.length == 0){
+                return [];
+            }
+            let searchIds = [];
+            for(var i in id){
+                if (id2.indexOf(id[i]) > -1) {
+                    searchIds.push(id[i]);
+                }
+            }
+            if (searchIds.length >= 1) {
+                let count = 0;
+                for (var i = 0; i < searchIds.length; ++i) {
+                    let profile = await(profileRepository.getProfileInformation(searchIds[i]));
+                    if (profile != null) {
+                        fullNameProfiles = fullNameProfiles.concat(profile);
+                    }
+                    count++;
+                    if (count > searchIds.length - 1) return fullNameProfiles;
+
+                }
+            } else {
+                return [];
+            }
+        }
+        else return [];
     });
 };
