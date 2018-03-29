@@ -9,20 +9,28 @@ module.exports = function (app, sessionChecker) {
         if (req.session.profile && req.cookies.user_sid) {
             res.redirect('/my-profile');
         }else {
-            res.redirect('/login');
+            res.redirect('/welcome');
         }
     });
 
     app.post('/update-position', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
             let positionName = req.body.position;
-            console.log(positionName);
             profileRepository = new ProfileRepository();
-            profileRepository.updatePosition(positionName, req.session.profile.profile_id);
-            console.log(positionName);
-            res.redirect('/my-profile');
+            profileRepository.updatePosition(req.session.profile.id, positionName).then(function(){res.redirect('/my-profile')});
         }else {
             res.redirect('/welcome');
         }
     });
+
+    app.post('/update-name', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+        profileRepository = new ProfileRepository();
+        profileRepository.updateName(req.session.profile.id, req.body.first, req.body.last).then(function(){res.redirect('/my-profile')});
+        }
+        else{
+            res.redirect('/welcome');
+        }
+    });
+
 };
