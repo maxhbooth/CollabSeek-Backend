@@ -200,14 +200,16 @@ profileRepository.prototype.updatePosition = async(function(profileID, positionN
     this.profile.update(
         {position: positionId},
         {where: {id: profileID}}
-        );
-        //.catch(error => {
-        //console.log(error);
-        //});
+        ).catch(error => {
+        console.log(error);});
 });
 
-//profileRepository.prototype.updateFirstName = async(function()){}); //TODO
-//profileRepository.prototype.updateLastName = async(function()){}); //TODO
+profileRepository.prototype.updateName = async(function(profileID, firstName, lastName){
+    this.profile.update(
+        {first_name: firstName, last_name: lastName},
+        {where: {id: profileID}}
+    ).catch(error => {console.log(error);});
+});
 
 
 // =====================================================================================================================
@@ -518,10 +520,10 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
             }]
         }));
         profiles[j] = {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
-            skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+            imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
         if(profile.length == 1){
             return {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
-                skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+                imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
         }
     }
    return profiles;
@@ -691,6 +693,5 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
     }
     return null;
 });
-
 
 module.exports = profileRepository;

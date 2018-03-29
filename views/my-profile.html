@@ -32,26 +32,53 @@
 <div class="container row">
     <div class="row">
         <div class="col-sm-4">
-            <img src="resources/profile-icon.png" class="rounded mx-auto d-block">
+            <% if(locals.imagePath){%>
+            <img src="Images/<%=imagePath%>" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+            <%} else {%>
+            <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+            <%}%>
+
             <form method="get" action="/upload-image">
-                <div class="text-left">
-                    <button type="submit" class="btn btn-default">Change Picture</button>
-                </div>
+                <button class="btn btn-default" style="display: block; margin: 0 auto;" type="submit">change profile picture</button>
             </form>
             <h3 class="text-left">Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h3>
         </div>
         <div class="col-sm-8">
+            <div class="well well-sm clearfix">
+                <div id="name-show" style="display: block;"><h4><%=first%> <%=last%></h4></div>
+                <div id="name-edit" style="display: none;">
+                    <form method="post" action="/update-name" class="form-inline">
+                        <div class="form-group col-sm-4">
+                            <label for="first">Preferred Name:</label>
+                            <input type="text" class="form-control" id="first" name="first" value="<%=first%>">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label  for="last">Last Name:</label>
+                            <input type="text" class="form-control" id="last" name="last" value="<%=last%>">
+                        </div>
+                        <button type="submit" class="btn btn-default">Save</button>
+                    </form>
+                </div>
+                <button id="edit-name" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+            </div>
+
+
             <% if(locals.position){%>
             <div class="well well-sm clearfix">
                 <div id="position-show" style="display: block;"><h4>Position: <small><%= position %></small></h4></div>
                 <div id="position-edit" style="display: none;">
-                    <form method="post" class="form-inline" action="/update-position">
+                    <form method="post" action="/update-position" class="form-inline">
                         <label for="position"><h4>Position: </h4></label>
                         <select id="position" name="position" class="form-control">
                             <% if(locals.all_positions){%>
                             <%if (locals.all_positions.length > 0){locals.all_positions.forEach(function(pos){%>
+                            <%if (locals.position == pos){%>
+                            <option selected><%= pos %></option>
+                            <%}else{%>
                             <option><%= pos %></option>
-                            <%})}}%>
+                            <%}})}}%>
                         </select>
                         <button type="submit" class="btn btn-default">Save</button>
                     </form>
