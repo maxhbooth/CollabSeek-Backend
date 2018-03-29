@@ -41,6 +41,9 @@
             <h3>Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h3>
         </div>
         <div class="col-sm-8">
+            <% if(locals.intro){%>
+            <h3><%= intro %></h3>
+            <%}%>
             <% if(locals.position){%>
             <div class="well well-sm">
                 <h4>Position: <small><%= position %></small></h4>

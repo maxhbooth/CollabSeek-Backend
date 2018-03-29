@@ -71,6 +71,22 @@ var profileRepository = function profileRepository(){
             },
             foreignKey: 'department_id',
             constraints: false});
+
+    this.profile.belongsToMany(
+        this.attrRepository.facility, {through: {
+                model: this.profileFacility,
+                unique: true
+            },
+            foreignKey: 'profile_id',
+            constraints: false});
+
+    this.attrRepository.facility.belongsToMany(
+        this.profile, {through: {
+                model: this.profileFacility,
+                unique: true
+            },
+            foreignKey: 'facility_id',
+            constraints: false});
 };
 
 
@@ -147,7 +163,6 @@ profileRepository.prototype.addProfileFacility = async(function (profileId, faci
 
 profileRepository.prototype.addProfileSpecialty = async(function (profileId, specialtyName) {
     let specialtyId = await(this.attrRepository.getSpecialtyId(specialtyName));
-
     if(specialtyId !=null){
         this.profileSpecialty.findOrCreate({
             where: {
@@ -207,6 +222,13 @@ profileRepository.prototype.updatePosition = async(function(profileID, positionN
 profileRepository.prototype.updateName = async(function(profileID, firstName, lastName){
     this.profile.update(
         {first_name: firstName, last_name: lastName},
+        {where: {id: profileID}}
+    ).catch(error => {console.log(error);});
+});
+
+profileRepository.prototype.updateIntro = async(function(profileID, intro){
+    this.profile.update(
+        {intro: intro},
         {where: {id: profileID}}
     ).catch(error => {console.log(error);});
 });
@@ -481,7 +503,7 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         let ID = profile[j].id;
         let positionId = profile[j].position;
 
-        let position = await(this.attrRepository.position.findOne({where:{id:positionId}}))
+        let position = await(this.attrRepository.position.findOne({where:{id:positionId}}));
 
         let degrees_set = await(this.attrRepository.degree_discipline.findAll({
             where: {profile_id: ID}
@@ -519,11 +541,23 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
                 through: {}
             }]
         }));
-        profiles[j] = {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
-            imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+
+        let facilities = await(this.attrRepository.facility.findAll({
+            include: [{
+                model: this.profile,
+                where: {id: ID},
+                through: {}
+            }]
+        }));
+        profiles[j] = {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name,
+            email: profile[j].email, position: position.name, imagePath: profile[j].imagepath, skills: skills,
+            departments: departments, degrees: degrees, specialties: specialties,
+            disciplines: disciplines, intro: profile[j].intro, facilities: facilities};
         if(profile.length == 1){
-            return {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
-                imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+            return {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name,
+                email: profile[j].email, position: position.name, imagePath: profile[j].imagepath, skills: skills,
+                departments: departments, degrees: degrees, specialties: specialties,
+                disciplines: disciplines, intro: profile[j].intro, facilities: facilities};
         }
     }
    return profiles;
