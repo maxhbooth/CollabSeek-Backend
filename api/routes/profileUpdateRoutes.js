@@ -35,6 +35,44 @@ module.exports = function (app, sessionChecker) {
         }
     });
 
+    app.post('/delete-department/:department', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+        profileRepository = new ProfileRepository();
+        profileRepository.removeProfileDepartment(req.session.profile.id, req.params.department).then(function(){res.redirect('/my-profile')});
+    }else{
+        res.redirect('/welcome');
+    }
+});
+
+    app.post('/add-department', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+        profileRepository = new ProfileRepository();
+        profileRepository.addProfileDepartment(req.session.profile.id, req.body.department).then(function(){res.redirect('/my-profile')});
+    }else{
+        res.redirect('/welcome');
+    }
+});
+
+    app.post('/delete-degree/:degree/:discipline', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+            profileRepository = new ProfileRepository();
+            profileRepository.removeProfileDegree(req.session.profile.id, req.params.degree, req.params.discipline).then(function(){res.redirect('/my-profile')});
+        }else{
+            res.redirect('/welcome');
+        }
+    });
+
+
+    app.post('/add-degree', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+            console.log(req.body.degree);
+            console.log(req.body.discipline);
+            profileRepository = new ProfileRepository();
+            profileRepository.addProfileDegree(req.session.profile.id, req.body.degree, req.body.discipline).then(function(){res.redirect('/my-profile')});
+        }else{
+            res.redirect('/welcome');
+        }
+});
     app.post('/delete-specialty/:specialty', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
             profileRepository = new ProfileRepository();
@@ -45,7 +83,6 @@ module.exports = function (app, sessionChecker) {
     });
 
     app.post('/add-specialty', (req, res) => {
-        console.log(req.body.specialty);
         if(req.session.profile && req.cookies.user_sid){
         profileRepository = new ProfileRepository();
         profileRepository.addProfileSpecialty(req.session.profile.id, req.body.specialty).then(function(){res.redirect('/my-profile')});

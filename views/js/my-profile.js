@@ -1,9 +1,18 @@
 $(document).ready(function(){
 
-    $('#skill').editableSelect();
-    $('#specialty').editableSelect();
-    $('#facility').editableSelect();
-
+    // TODO this breaks back end
+    //$('#skill').editableSelect();
+    //$('#specialty').editableSelect();
+    //$('#facility').editableSelect();
+    // TODO this does not work idk why
+    $("#edit-degrees1").click(function(e){
+        $("#degrees-edit").style.display = "block";
+        $("#degrees-show").style.display = "none";
+    });
+    $("#edit-degrees2").click(function(e){
+        document.getElementById("degrees-edit").style.display = "none";
+        document.getElementById("degrees-show").style.display = "block";
+    });
 
     $("#edit-position").click(function(e){
         var edit = document.getElementById("position-edit");

@@ -81,6 +81,8 @@ module.exports = function (app, sessionChecker) {
                 models.all_skills = attributes.skills;
                 models.all_specialties = attributes.specialties;
                 models.all_facilities = attributes.facilities;
+                models.all_degrees = attributes.degrees;
+                models.all_disciplines = attributes.disciplines;
                 res.render('my-profile.html', models);
             });
         });
