@@ -588,6 +588,24 @@ profileRepository.prototype.deleteProfile = async(function(profileID){
     Did basic testing here and console appears to be logging proper ids based on info in database
 */
 
+profileRepository.prototype.getProfileIDByPosition = async(function(positionName){
+    let position_id = await(this.attrRepository.getPositionId(positionName));
+
+    if(position_id != null){
+        let profiles = await(this.profile.findAll({
+            where: {position_id: position_id}
+        }));
+        var profile_ids = [];
+        if(profiles != null){
+            for(var i = 0; i < profiles.length; i++){
+                profile_ids.push(profiles[i].dataValues.profile_id);
+            }
+            return profile_ids;
+        }
+    }
+    return null;
+});
+
 profileRepository.prototype.getProfileIDByDepartment = async(function(departmentName){
     let deptID = await(this.attrRepository.getDepartmentId(departmentName));
 
