@@ -60,6 +60,10 @@ var profile = sequelize.define('profile', {
     imagepath: {
         type: Sequelize.STRING,
         allowNull: true
+    },
+    intro: {
+        type: Sequelize.TEXT,
+        allowNull:true
     }
 }, {
     hooks: {
