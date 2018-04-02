@@ -191,6 +191,24 @@
         </small></h3><%}%>
     </div>
     <%}%>
+
+    <% if(locals.byClosestMatchProfiles){%>
+    <div>
+        <% if (byClosestMatchProfiles.length > 0){%>
+        <h3>By Closest Match: <small>
+            <%byClosestMatchProfiles.forEach(function(profile){%>
+            <div>
+                |<%=profile.first %>&nbsp;<%=profile.last%>|
+                |<%=profile.position %>|
+                <% if (profile.departments.length > 0) {%>
+                |<%=profile.departments[0].name %>|
+                <%}%>
+                |<a href="/profile/<%=profile.id%>">Profile</a>|
+            </div>
+            <%})%>
+        </small></h3><%}%>
+    </div>
+    <%}%>
 </div>
 </body>
 </html>

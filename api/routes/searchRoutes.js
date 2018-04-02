@@ -85,24 +85,23 @@ module.exports = function (app, sessionChecker) {
                     }
                 }
                 let concatResponse = [];
-                concatResponse = concatResponse.concat(response[0],response[1],response[2],response[3],response[4],response[5],response[6],response[7],response[8])
+                concatResponse = concatResponse.concat(response[0],response[1],response[2],response[3],response[4],response[5],response[6],response[7],response[8]);
                 return concatResponse;
             });
 
             compoundOP().then(function (result) {
-                sortByFrequency(result);
-
-                console.log(result);
-                res.render('search.html', {
-                    departmentProfiles: result
-                    /*disciplineProfiles: result[1],
-                    facilityProfiles: result[2],
-                    skillProfiles: result[3],
-                    specialtyProfiles: result[4],
-                    positionProfiles: result[5],
-                    firstNameProfiles: result[6],
-                    lastNameProfiles: result[7],
-                    fullNameProfiles: result[8]*/
+                result = filter_array(result);
+                result = sortByFrequency(result);
+                profileRepository.getProfileInformation(result).then(function (profiles) {
+                    let orderedProfileArray = [];
+                    let profileIds = profiles.map(a => a.id);
+                    for (let i = 0; i<result.length; i++){
+                        let endPlace = result.indexOf(profileIds[i]);
+                        orderedProfileArray[endPlace] = profiles[i]
+                    }
+                    res.render('search.html', {
+                        byClosestMatchProfiles: orderedProfileArray
+                    });
                 });
             });
         });
@@ -268,7 +267,6 @@ module.exports = function (app, sessionChecker) {
         }
         for (var i = 0; i < positions.length; ++i){
             let id = await(profileRepository.getProfileIDByPosition(positions[i]));
-            //console.log(id);
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
                 positionProfiles = positionProfiles.concat(profile);
@@ -345,5 +343,22 @@ module.exports = function (app, sessionChecker) {
         return uniques.sort(function(a, b) {
             return frequency[b] - frequency[a];
         });
+    }
+
+    function filter_array(test_array) {
+        let index = -1;
+        const arr_length = test_array ? test_array.length : 0;
+        let resIndex = -1;
+        const result = [];
+
+        while (++index < arr_length) {
+            const value = test_array[index];
+
+            if (value) {
+                result[++resIndex] = value;
+            }
+        }
+
+        return result;
     }
 };
