@@ -30,7 +30,6 @@ module.exports = function (app, sessionChecker) {
             }
         })
         .post((req, res) => {
-            req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4, 15);
             req.checkBody('email', 'Email must be a valid email.').isEmail();
             req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
@@ -49,12 +48,7 @@ module.exports = function (app, sessionChecker) {
             //flag account as inactive so profile.user_confirm = false; should already be un active, disallow login for
             //user who aren't confirmed
 
-
-
-
             if (!errors) {
-
-                let username = req.body.username;
                 let email = req.body.email;
                 let password = req.body.password;
 
@@ -70,7 +64,7 @@ module.exports = function (app, sessionChecker) {
 
                 const profileRepository = new ProfileRepository();
                 profileRepository.createProfile(first, last, degreeName, departmentName, disciplineName,
-                    positionName, facilityName, skillName, specialtyName, username, email, password)
+                    positionName, facilityName, skillName, specialtyName, email, password)
                     .then(profile => {
                         if(!profile.errors){
                             console.log(profile.errors);
@@ -81,13 +75,9 @@ module.exports = function (app, sessionChecker) {
 
             } else {
                 console.log(errors);
-                var userErrors = [];
                 var emailErrors = [];
                 var passwordErrors = [];
                 for (var i = 0; i < errors.length; i++) {
-                    if (errors[i].param === 'username') {
-                        userErrors.push(errors[i].msg);
-                    }
                     if (errors[i].param === 'email') {
                         emailErrors.push(errors[i].msg);
                     }
@@ -101,8 +91,7 @@ module.exports = function (app, sessionChecker) {
                 attrRepository.getAll().then(function (models){
                     //console.log(models); tbh this is annoying rn
 
-                    var errors = {userErrors: userErrors,
-                                    emailErrors: emailErrors,
+                    var errors = {emailErrors: emailErrors,
                                     passwordErrors: passwordErrors,
                                     validated: req.body};
                     var data = extend(models, errors);
@@ -117,10 +106,10 @@ module.exports = function (app, sessionChecker) {
             res.sendFile('/views/login.html', {root: './'});
         })
         .post((req, res) => {
-            var username = req.body.username,
+            var email = req.body.email,
                 password = req.body.password;
 
-            Profile.findOne({where: {username: username}}).then(function (profile) {
+            Profile.findOne({where: {email: email}}).then(function (profile) {
                 if (!profile) {
                     res.redirect('/login');
                 } else if (!profile.validPassword(password)) {

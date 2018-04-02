@@ -407,7 +407,7 @@ profileRepository.prototype.updateProfile = async(function
 
 profileRepository.prototype.createProfile = async(function
     (first, last, degreeName, departmentName, disciplineName,
-     positionName, facilityName, skillName, specialtyName, username, email, password) {
+     positionName, facilityName, skillName, specialtyName, email, password) {
 
     let positionId = await(this.attrRepository.getPositionId(positionName));
 
@@ -415,7 +415,6 @@ profileRepository.prototype.createProfile = async(function
         first_name: first,
         last_name: last,
         position: positionId,
-        username: username,
         email: email,
         password: password
     }, {
@@ -549,12 +548,12 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
                 through: {}
             }]
         }));
-        profiles[j] = {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name,
+        profiles[j] = {id: ID, first: profile[j].first_name, last: profile[j].last_name,
             email: profile[j].email, position: position.name, imagePath: profile[j].imagepath, skills: skills,
             departments: departments, degrees: degrees, specialties: specialties,
             disciplines: disciplines, intro: profile[j].intro, facilities: facilities};
         if(profile.length == 1){
-            return {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name,
+            return {id: ID, first: profile[j].first_name, last: profile[j].last_name,
                 email: profile[j].email, position: position.name, imagePath: profile[j].imagepath, skills: skills,
                 departments: departments, degrees: degrees, specialties: specialties,
                 disciplines: disciplines, intro: profile[j].intro, facilities: facilities};

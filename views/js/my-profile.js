@@ -4,6 +4,7 @@ $(document).ready(function(){
     //$('#skill').editableSelect();
     //$('#specialty').editableSelect();
     //$('#facility').editableSelect();
+    //$('#department').editableSelect();
     // TODO this does not work idk why
 
     $("#edit-departments1").click(function(e){
