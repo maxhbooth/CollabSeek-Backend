@@ -109,15 +109,15 @@
             </div>
             <%}%>
 
-            <div class="well well-sm clearfix" id="departments-show" style="display: none;">
-            <% if(locals.departments){%>
-            <%if (departments.length > 0){%>
+            <div class="well well-sm clearfix" id="departments-show" style="display: block;">
                 <table class="table">
                     <thead>
                     <th><h4>Department</h4></th>
                     <th><h4><button id="edit-departments1" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
                         <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
                     </thead>
+                    <% if(locals.departments){%>
+                    <%if (departments.length > 0){%>
                     <tbody>
                         <%departments.forEach(function(department){%>
                         <tr>
@@ -130,16 +130,16 @@
                 </table>
             </div>
 
-            <div class="well well-sm clearfix" id="departments-edit" style="display: block;">
+            <div class="well well-sm clearfix" id="departments-edit" style="display: none;">
                 <table class="table">
                     <thead>
                     <th><h4>Department</h4></th>
                     <th><h4><button id="edit-departments2" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
                         <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
                     </thead>
+                    <tbody>
                     <% if(locals.departments){%>
                     <%if (departments.length > 0){%>
-                    <tbody>
                     <%departments.forEach(function(department){%>
                     <form method="post" action="/delete-department/<%=department.name%>" class="form-inline">
                         <tr>
@@ -148,7 +148,7 @@
                                 <span class="glyphicon glyphicon-minus"></span></button></td>
                         </tr>
                     </form>
-                    <%})%>
+                    <%})}}%>
                     <form method="post" action="/add-department" class="form-inline">
                         <tr>
                             <td><select id="department" name="department" class="form-control">
@@ -161,18 +161,19 @@
                                 <span class="glyphicon glyphicon-plus"></span></button></td>
                         </tr>
                     </form>
-                    <%}}%>
                     </tbody>
                 </table>
             </div>
 
-            <div class="well well-sm clearfix" id="degrees_show" style="display: none;">
+            <div class="well well-sm clearfix" id="degrees-show" style="display: block">
                 <table class="table">
                     <thead>
                     <th><h4 class="text-left">Degree</h4></th>
                     <th><h4 class="text-left">Discipline</h4></th>
+
                     <th><h4><button id="edit-degrees1" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
                         <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
+
                     </thead>
                     <% if(locals.degrees && locals.disciplines){%>
                     <% if(degrees.length > 0){%>
@@ -188,7 +189,7 @@
                 </table>
             </div>
 
-            <div class="well well-sm cleafix" id="degrees_edit" style="display: block;">
+            <div class="well well-sm cleafix" id="degrees-edit" style="display: none;">
                 <table class="table">
                     <thead>
                     <th><h4 class="text-left">Degree</h4></th>

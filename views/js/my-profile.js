@@ -4,11 +4,24 @@ $(document).ready(function(){
     //$('#skill').editableSelect();
     //$('#specialty').editableSelect();
     //$('#facility').editableSelect();
+    //$('#department').editableSelect();
     // TODO this does not work idk why
-    $("#edit-degrees1").click(function(e){
-        $("#degrees-edit").style.display = "block";
-        $("#degrees-show").style.display = "none";
+
+    $("#edit-departments1").click(function(e){
+        document.getElementById("departments-edit").style.display = "block";
+        document.getElementById("departments-show").style.display = "none";
     });
+
+    $("#edit-departments2").click(function(e){
+        document.getElementById("departments-edit").style.display = "none";
+        document.getElementById("departments-show").style.display = "block";
+    });
+
+    $("#edit-degrees1").click(function(e){
+        document.getElementById("degrees-edit").style.display = "block";
+        document.getElementById("degrees-show").style.display = "none";
+    });
+
     $("#edit-degrees2").click(function(e){
         document.getElementById("degrees-edit").style.display = "none";
         document.getElementById("degrees-show").style.display = "block";
@@ -21,7 +34,7 @@ $(document).ready(function(){
             show.style.display = "block";
             edit.style.display = "none";
         } else {
-            edit.style.display = "block"
+            edit.style.display = "block";
             show.style.display = "none";
         }
     });
