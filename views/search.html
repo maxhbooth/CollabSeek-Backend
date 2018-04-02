@@ -38,7 +38,9 @@
                 <div>
                     |<%=profile.first %>&nbsp;<%=profile.last%>|
                     |<%=profile.position %>|
+                    <% if (profile.departments.length > 0) {%>
                     |<%=profile.departments[0].name %>|
+                    <%}%>
                     |<a href="/profile/<%=profile.id%>">Profile</a>|
                 </div>
                 <%})%>
@@ -54,7 +56,9 @@
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
                 |<%=profile.position %>|
+                <% if (profile.departments.length > 0) {%>
                 |<%=profile.departments[0].name %>|
+                <%}%>
                 |<a href="/profile/<%=profile.id%>">Profile</a>|
             </div>
             <%})%>
@@ -70,7 +74,9 @@
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
                 |<%=profile.position %>|
-                |<%=profile.departments[0].name %>|                |<a href="/profile/<%=profile.id%>">Profile</a>|
+                <% if (profile.departments.length > 0) {%>
+                |<%=profile.departments[0].name %>|
+                <%}%>              |<a href="/profile/<%=profile.id%>">Profile</a>|
                 |<a href="/profile/<%=profile.id%>">Profile</a>|
             </div>
             <%})%>
@@ -86,7 +92,9 @@
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
                 |<%=profile.position %>|
+                <% if (profile.departments.length > 0) {%>
                 |<%=profile.departments[0].name %>|
+                <%}%>
                 |<a href="/profile/<%=profile.id%>">Profile</a>|
             </div>
             <%})%>
@@ -102,7 +110,27 @@
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
                 |<%=profile.position %>|
+                <% if (profile.departments.length > 0) {%>
                 |<%=profile.departments[0].name %>|
+                <%}%>
+                |<a href="/profile/<%=profile.id%>">Profile</a>|
+            </div>
+            <%})%>
+        </small></h3><%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.positionProfiles){%>
+    <div>
+        <% if (positionProfiles.length > 0){%>
+        <h3>By Position: <small>
+            <%positionProfiles.forEach(function(profile){%>
+            <div>
+                |<%=profile.first %>&nbsp;<%=profile.last%>|
+                |<%=profile.position %>|
+                <% if (profile.departments.length > 0) {%>
+                |<%=profile.departments[0].name %>|
+                <%}%>
                 |<a href="/profile/<%=profile.id%>">Profile</a>|
             </div>
             <%})%>
@@ -118,7 +146,9 @@
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
                 |<%=profile.position %>|
+                <% if (profile.departments.length > 0) {%>
                 |<%=profile.departments[0].name %>|
+                <%}%>
                 |<a href="/profile/<%=profile.id%>">Profile</a>|
             </div>
             <%})%>
@@ -134,7 +164,9 @@
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
                 |<%=profile.position %>|
+                <% if (profile.departments.length > 0) {%>
                 |<%=profile.departments[0].name %>|
+                <%}%>
                 |<a href="/profile/<%=profile.id%>">Profile</a>|
             </div>
             <%})%>
@@ -150,7 +182,9 @@
             <div>
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
                 |<%=profile.position %>|
-                |<%=profile.departments[0].name %>|
+                <% if (profile.departments.length > 0) {%>
+                    |<%=profile.departments[0].name %>|
+                <%}%>
                 |<a href="/profile/<%=profile.id%>">Profile</a>|
             </div>
             <%})%>

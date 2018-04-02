@@ -593,12 +593,12 @@ profileRepository.prototype.getProfileIDByPosition = async(function(positionName
 
     if(position_id != null){
         let profiles = await(this.profile.findAll({
-            where: {position_id: position_id}
+            where: {position: position_id}
         }));
         var profile_ids = [];
         if(profiles != null){
             for(var i = 0; i < profiles.length; i++){
-                profile_ids.push(profiles[i].dataValues.profile_id);
+                profile_ids.push(profiles[i].dataValues.id);
             }
             return profile_ids;
         }
