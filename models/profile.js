@@ -51,7 +51,7 @@ var profile = sequelize.define('profile', {
     }, //add hidden_token and confirmed user//
     confirmed_user :{
         type: Sequelize.BOOLEAN,
-        allowNull :false,
+        allowNull :false
     },
     hidden_token:{
         type: Sequelize.STRING,
@@ -70,6 +70,12 @@ var profile = sequelize.define('profile', {
     },
     tableName: 'profile'
 });
+profile.prototype.isConfirmedUser = function(){
+    return profile.confirmed_user;
+};
+profile.prototype.setHiddenToken= function(hidden_token){
+    profile.hidden_token = hidden_token;
+};
 profile.prototype.validPassword = function (password) {
     return bcrypt.compareSync(password, this.password)
 };

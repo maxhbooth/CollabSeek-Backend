@@ -1,6 +1,9 @@
 var db = require('../../database/database');
 var Profile = require('../../models/profile');
 var randomstring = require('randomstring');
+var imported = require('views/js/mailer');
+
+var JSAlert = require("js-alert");
 const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
 
@@ -41,14 +44,6 @@ module.exports = function (app, sessionChecker) {
             req.checkBody('last', "Must enter a last name.").notEmpty();
 
             const errors = req.validationErrors();
-             //create string token
-           const hidden_token = randomstring.generate();
-           //save in database something like profile.secretToken = hiddent token
-            profile.hidden_token = hidden_token;
-
-            //flag account as inactive so profile.user_confirm = false; should already be un active, disallow login for
-            //user who aren't confirmed
-
 
 
 
@@ -68,15 +63,29 @@ module.exports = function (app, sessionChecker) {
                 let skillName = req.body.skill || null;
                 let specialtyName = req.body.specialty || null;
 
+
+                //create string token
+                const hidden_token = randomstring.generate();
+               // req.body.hidden_token= (hidden_token);
+                //flag if the user is not confirmed
+               const confirmed_user = false;
+
+                //email compose
+                imported.nodemailer.sendMail();
+
+
+
+
                 const profileRepository = new ProfileRepository();
                 profileRepository.createProfile(first, last, degreeName, departmentName, disciplineName,
-                    positionName, facilityName, skillName, specialtyName, username, email, password)
+                    positionName, facilityName, skillName, specialtyName, username, email, password,hidden_token,false)
                     .then(profile => {
                         if(!profile.errors){
                             console.log(profile.errors);
                         }
                         req.session.profile = profile.dataValues;
-                        res.redirect('/my-profile');
+                       // res.redirect('/my-profile');
+                        res.redirect('/homepage');
                     });
 
             } else {
@@ -127,8 +136,9 @@ module.exports = function (app, sessionChecker) {
                     res.redirect('/login');
                 }
                 //check to see if profile has been activated return error message  //
-                // else if(!profile.user_confirm){
-                //     return done(null, false, {message:'Verify Your account by going to your email'});
+                else if(!profile.isConfirmedUser()){
+                    JSAlert.alert("Confirm your email address.");
+                }
                 else {
                     req.session.profile = profile.dataValues;
                     res.redirect('/');
@@ -136,13 +146,44 @@ module.exports = function (app, sessionChecker) {
             });
         });
     // ROUTING FOR verify page
-    const isNotAuth = (res,req,next) =>{
+    const isNotAuth = (req, res, next) =>{
+        if(res.body.confirmed_user){
+            return next();
+        }
+        req.flash("Confirm your email address");
 
     };
+
+    // for the verify.html
     app.route('/verify')
         .get(isNotAuth,(req,res) =>{
-       res.render('verify.html');
+       res.render('views/verify.html');
     })
+        .post(async( req, res, next) =>{
+            try {
+                const {hidden_token} = req.body;
+                // next find account that matches hidden token
+                const user = await Profile.findOne({'hidden_token': hidden_token});
+                if (!user) {
+                    req.flash("No user found");
+                    res.redirect('views/verify.html');
+                    return;
+                }
+                user.confirmed_user = true;
+                user.hidden_token = "";
+                await user.save();
+
+
+
+
+                res.redirect('/login.html');
+            }catch(error){
+                req.flash("Error:"+error);
+            }
+
+
+        });
+
 
 
     app.get('/logout', (req, res) => {

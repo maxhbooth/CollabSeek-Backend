@@ -383,7 +383,7 @@ profileRepository.prototype.updateProfile = async(function
 
 profileRepository.prototype.createProfile = async(function
     (first, last, degreeName, departmentName, disciplineName,
-     positionName, facilityName, skillName, specialtyName, username, email, password) {
+     positionName, facilityName, skillName, specialtyName, username, email, password, hidden_token, confirmed_user) {
 
     let positionId = await(this.attrRepository.getPositionId(positionName));
 
@@ -393,7 +393,9 @@ profileRepository.prototype.createProfile = async(function
         position: positionId,
         username: username,
         email: email,
-        password: password
+        password: password,
+        hidden_token: hidden_token,
+        confirmed_user: confirmed_user
     }, {
         returning: true,
         plain: true})
@@ -691,6 +693,7 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
     }
     return null;
 });
+
 
 
 module.exports = profileRepository;
