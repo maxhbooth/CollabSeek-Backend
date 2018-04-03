@@ -30,6 +30,7 @@ module.exports = function (app, sessionChecker) {
             }
         })
         .post((req, res) => {
+            req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4, 15);
             req.checkBody('email', 'Email must be a valid email.').isEmail();
             req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
@@ -40,6 +41,9 @@ module.exports = function (app, sessionChecker) {
             req.checkBody('last', "Must enter a last name.").notEmpty();
 
             const errors = req.validationErrors();
+
+
+
              //create string token
            const hidden_token = randomstring.generate();
            //save in database something like profile.secretToken = hiddent token
@@ -49,6 +53,8 @@ module.exports = function (app, sessionChecker) {
             //user who aren't confirmed
 
             if (!errors) {
+
+                let username = req.body.username;
                 let email = req.body.email;
                 let password = req.body.password;
 
@@ -62,22 +68,41 @@ module.exports = function (app, sessionChecker) {
                 let skillName = req.body.skill || null;
                 let specialtyName = req.body.specialty || null;
 
+
+                //create string token
+                const hidden_token = randomstring.generate();
+               // req.body.hidden_token= (hidden_token);
+                //flag if the user is not confirmed
+               const confirmed_user = false;
+
+                //email compose
+                imported.nodemailer.sendMail();
+
+
+
+
                 const profileRepository = new ProfileRepository();
                 profileRepository.createProfile(first, last, degreeName, departmentName, disciplineName,
-                    positionName, facilityName, skillName, specialtyName, email, password)
+                    positionName, facilityName, skillName, specialtyName, username, email, password,hidden_token,false)
                     .then(profile => {
                         if(!profile.errors){
                             console.log(profile.errors);
                         }
                         req.session.profile = profile.dataValues;
-                        res.redirect('/my-profile');
+                       // res.redirect('/my-profile');
+                        res.redirect('/homepage');
                     });
 
-            } else {
+            }
+            else {
                 console.log(errors);
+                var userErrors = [];
                 var emailErrors = [];
                 var passwordErrors = [];
                 for (var i = 0; i < errors.length; i++) {
+                    if (errors[i].param === 'username') {
+                        userErrors.push(errors[i].msg);
+                    }
                     if (errors[i].param === 'email') {
                         emailErrors.push(errors[i].msg);
                     }
@@ -91,9 +116,10 @@ module.exports = function (app, sessionChecker) {
                 attrRepository.getAll().then(function (models){
                     //console.log(models); tbh this is annoying rn
 
-                    var errors = {emailErrors: emailErrors,
-                                    passwordErrors: passwordErrors,
-                                    validated: req.body};
+                    var errors = {userErrors: userErrors,
+                        emailErrors: emailErrors,
+                        passwordErrors: passwordErrors,
+                        validated: req.body};
                     var data = extend(models, errors);
                     res.render('signup.html',
                         data );
@@ -116,8 +142,9 @@ module.exports = function (app, sessionChecker) {
                     res.redirect('/login');
                 }
                 //check to see if profile has been activated return error message  //
-                // else if(!profile.user_confirm){
-                //     return done(null, false, {message:'Verify Your account by going to your email'});
+                else if(!profile.isConfirmedUser()){
+                    JSAlert.alert("Confirm your email address.");
+                }
                 else {
                     req.session.profile = profile.dataValues;
                     res.redirect('/');
@@ -128,10 +155,37 @@ module.exports = function (app, sessionChecker) {
     const isNotAuth = (res,req,next) =>{
 
     };
+
+    // for the verify.html
     app.route('/verify')
         .get(isNotAuth,(req,res) =>{
-       res.render('verify.html');
+       res.render('views/verify.html');
     })
+        .post(async( req, res, next) =>{
+            try {
+                const {hidden_token} = req.body;
+                // next find account that matches hidden token
+                const user = await Profile.findOne({'hidden_token': hidden_token});
+                if (!user) {
+                    req.flash("No user found");
+                    res.redirect('views/verify.html');
+                    return;
+                }
+                user.confirmed_user = true;
+                user.hidden_token = "";
+                await user.save();
+
+
+
+
+                res.redirect('/login.html');
+            }catch(error){
+                req.flash("Error:"+error);
+            }
+
+
+        });
+
 
 
     app.get('/logout', (req, res) => {

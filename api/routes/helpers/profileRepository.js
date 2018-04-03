@@ -163,6 +163,7 @@ profileRepository.prototype.addProfileFacility = async(function (profileId, faci
 
 profileRepository.prototype.addProfileSpecialty = async(function (profileId, specialtyName) {
     let specialtyId = await(this.attrRepository.getSpecialtyId(specialtyName));
+
     if(specialtyId !=null){
         this.profileSpecialty.findOrCreate({
             where: {
@@ -215,23 +216,14 @@ profileRepository.prototype.updatePosition = async(function(profileID, positionN
     this.profile.update(
         {position: positionId},
         {where: {id: profileID}}
-        ).catch(error => {
-        console.log(error);});
+        );
+        //.catch(error => {
+        //console.log(error);
+        //});
 });
 
-profileRepository.prototype.updateName = async(function(profileID, firstName, lastName){
-    this.profile.update(
-        {first_name: firstName, last_name: lastName},
-        {where: {id: profileID}}
-    ).catch(error => {console.log(error);});
-});
-
-profileRepository.prototype.updateIntro = async(function(profileID, intro){
-    this.profile.update(
-        {intro: intro},
-        {where: {id: profileID}}
-    ).catch(error => {console.log(error);});
-});
+//profileRepository.prototype.updateFirstName = async(function()){}); //TODO
+//profileRepository.prototype.updateLastName = async(function()){}); //TODO
 
 
 // =====================================================================================================================
@@ -407,7 +399,7 @@ profileRepository.prototype.updateProfile = async(function
 
 profileRepository.prototype.createProfile = async(function
     (first, last, degreeName, departmentName, disciplineName,
-     positionName, facilityName, skillName, specialtyName, email, password) {
+     positionName, facilityName, skillName, specialtyName, username, email, password, hidden_token, confirmed_user) {
 
     let positionId = await(this.attrRepository.getPositionId(positionName));
 
@@ -415,8 +407,11 @@ profileRepository.prototype.createProfile = async(function
         first_name: first,
         last_name: last,
         position: positionId,
+        username: username,
         email: email,
-        password: password
+        password: password,
+        hidden_token: hidden_token,
+        confirmed_user: confirmed_user
     }, {
         returning: true,
         plain: true})
@@ -502,7 +497,7 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         let ID = profile[j].id;
         let positionId = profile[j].position;
 
-        let position = await(this.attrRepository.position.findOne({where:{id:positionId}}));
+        let position = await(this.attrRepository.position.findOne({where:{id:positionId}}))
 
         let degrees_set = await(this.attrRepository.degree_discipline.findAll({
             where: {profile_id: ID}
@@ -540,23 +535,11 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
                 through: {}
             }]
         }));
-
-        let facilities = await(this.attrRepository.facility.findAll({
-            include: [{
-                model: this.profile,
-                where: {id: ID},
-                through: {}
-            }]
-        }));
-        profiles[j] = {id: ID, first: profile[j].first_name, last: profile[j].last_name,
-            email: profile[j].email, position: position.name, imagePath: profile[j].imagepath, skills: skills,
-            departments: departments, degrees: degrees, specialties: specialties,
-            disciplines: disciplines, intro: profile[j].intro, facilities: facilities};
+        profiles[j] = {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
+            imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
         if(profile.length == 1){
-            return {id: ID, first: profile[j].first_name, last: profile[j].last_name,
-                email: profile[j].email, position: position.name, imagePath: profile[j].imagepath, skills: skills,
-                departments: departments, degrees: degrees, specialties: specialties,
-                disciplines: disciplines, intro: profile[j].intro, facilities: facilities};
+            return {id: ID, username: profile[j].username, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
+                imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
         }
     }
    return profiles;
@@ -744,5 +727,7 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
     }
     return null;
 });
+
+
 
 module.exports = profileRepository;
