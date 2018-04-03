@@ -151,13 +151,13 @@
                     <%})}}%>
                     <form method="post" action="/add-department" class="form-inline">
                         <tr>
-                            <td><select id="department" name="department" class="form-control">
+                            <td><select id="department" name="department" class="js-example-basic-single js-states form-control" style="width:95%;">
                                 <% if(locals.all_departments){%>
                                 <%if (all_departments.length > 0){all_departments.forEach(function(department){%>
                                 <option><%=department%></option>
                                 <%})}}%>
                             </select></td>
-                            <td><button type="submit" class="icon-button" style="display: inline-flex;">
+                            <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
                                 <span class="glyphicon glyphicon-plus"></span></button></td>
                         </tr>
                     </form>
@@ -205,26 +205,26 @@
                             <tr>
                                 <td><%= degrees[i] %></td>
                                 <td><%= disciplines[i] %></td>
-                                <td><button type="submit" class="icon-button" style="display: inline-flex;">
+                                <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
                                     <span class="glyphicon glyphicon-minus"></span></button></td>
                             </tr>
                         </form>
                         <%}}}%>
                         <form method="post" action="/add-degree" class="form-inline">
                             <tr>
-                                <td><select id="degree" name="degree" class="form-control">
+                                <td><select id="degree" name="degree" class="js-example-basic-single js-states form-control" style="width:95%;">
                                     <% if(locals.all_degrees){%>
                                     <%if (all_degrees.length > 0){all_degrees.forEach(function(degree){%>
                                     <option><%=degree%></option>
                                     <%})}}%>
                                 </select></td>
-                                <td><select id="discipline" name="discipline" class="form-control">
+                                <td><select id="discipline" name="discipline" class="js-example-basic-single js-states form-control" style="width:95%;">
                                     <% if(locals.all_disciplines){%>
                                     <%if (all_disciplines.length > 0){all_disciplines.forEach(function(discipline){%>
                                     <option><%=discipline%></option>
                                     <%})}}%>
                                 </select></td>
-                                <td><button type="submit" class="icon-button" style="display: inline-flex;">
+                                <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
                                     <span class="glyphicon glyphicon-plus"></span></button></td>
                             </tr>
                         </form>
@@ -275,20 +275,20 @@
                 <form method="post" action="/delete-specialty/<%=specialty.name%>" class="form-inline">
                     <tr>
                     <td><%=specialty.name %></td>
-                    <td><button type="submit" class="icon-button" style="display: inline-flex;">
+                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
                         <span class="glyphicon glyphicon-minus"></span></button></td>
                     </tr>
                 </form>
                 <%})}}%>
                 <form method="post" action="/add-specialty" class="form-inline">
                     <tr>
-                        <td><select id="specialty" name="specialty" class="form-control">
+                        <td><select id="specialty" name="specialty" class="js-example-basic-single js-states form-control" style="width:95%;">
                             <% if(locals.all_specialties){%>
                             <%if (all_specialties.length > 0){all_specialties.forEach(function(specialty){%>
                             <option><%=specialty%></option>
                             <%})}}%>
                         </select></td>
-                        <td><button type="submit" class="icon-button" style="display: inline-flex;">
+                        <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
                             <span class="glyphicon glyphicon-plus"></span></button></td>
                     </tr>
                 </form>
@@ -320,20 +320,20 @@
                 <form method="post" action="/delete-skill/<%=skill.name%>" class="form-inline">
                     <tr>
                     <td><%= skill.name %></td>
-                    <td><button type="submit" class="icon-button" style="display: inline-flex;">
+                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
                         <span class="glyphicon glyphicon-minus"></span></button></td>
                     </tr>
                 </form>
                 <%})}}%>
                 <form method="post" action="/add-skill" class="form-inline">
                 <tr>
-                    <td><select id="skill" name="skill" class="form-control">
+                    <td><select id="skill" name="skill" class="js-example-basic-single js-states form-control" style="width:95%;">
                         <% if(locals.all_skills){%>
                         <%if (all_skills.length > 0){all_skills.forEach(function(skill){%>
                         <option><%=skill %></option>
                         <%})}}%>
                     </select></td>
-                    <td><button type="submit" class="icon-button" style="display: inline-flex;">
+                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
                         <span class="glyphicon glyphicon-plus"></span></button></td>
                 </tr>
                 </form>
@@ -358,26 +358,26 @@
         <div id="facilities-edit" style="display: none;" class="col-sm-4">
             <% if(locals.facilities){%>
             <div class="well well-sm">
-                <table><tbody>
+                <table class="table"><tbody>
                 <%if (facilities.length > 0){%>
                 <%facilities.forEach(function(facility){%>
                 <form method="post" action="/delete-facility/<%=facility.name%>" class="form-inline">
                 <tr>
                 <td><%= facility.name %></td>
-                    <td><button type="submit" class="icon-button" style="display: inline-flex;">
+                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
                         <span class="glyphicon glyphicon-minus"></span></button></td>
                 </tr>
                 </form>
                 <%})}}%>
                 <form method="post" action="/add-facility" class="form-inline">
                     <tr>
-                        <td><select id="facility" name="facility" class="form-control">
+                        <td><select id="facility" name="facility" class="js-example-basic-single js-states form-control" style="width:95%;">
                             <% if(locals.all_facilities){%>
                             <%if (all_facilities.length > 0){all_facilities.forEach(function(facility){%>
                             <option><%=facility%></option>
                             <%})}}%>
                         </select></td>
-                        <td><button type="submit" class="icon-button" style="display: inline-flex;">
+                        <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
                             <span class="glyphicon glyphicon-plus"></span></button></td>
                     </tr>
                 </form>
