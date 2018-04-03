@@ -5,7 +5,7 @@ $(document).ready(function(){
     //$('#specialty').editableSelect();
     //$('#facility').editableSelect();
     //$('#department').editableSelect();
-    // TODO this does not work idk why
+    //$('#discipline').editableSelect();
 
     $("#edit-departments1").click(function(e){
         document.getElementById("departments-edit").style.display = "block";

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>My Profile</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="//rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.js"></script>
-    <link href="//rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript" src="js/my-profile.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -292,6 +292,12 @@
                             <span class="glyphicon glyphicon-plus"></span></button></td>
                     </tr>
                 </form>
+                <form action="/create-new-specialty">
+                    <tr>
+                        <td><a class="btn btn-default" href="/create-specialty">Add Specialty Not In List</a></td>
+                        <td></td>
+                    </tr>
+                </form>
                 </tbody></table>
             </div>
         </div>
@@ -331,6 +337,12 @@
                         <span class="glyphicon glyphicon-plus"></span></button></td>
                 </tr>
                 </form>
+                <form action="/create-new-skill">
+                    <tr>
+                        <td><a class="btn btn-default" href="/create-skill">Add Skill Not In List</a></td>
+                        <td></td>
+                    </tr>
+                </form>
                 </tbody></table>
             </div>
         </div>
@@ -367,6 +379,12 @@
                         </select></td>
                         <td><button type="submit" class="icon-button" style="display: inline-flex;">
                             <span class="glyphicon glyphicon-plus"></span></button></td>
+                    </tr>
+                </form>
+                <form action="/create-new-facility">
+                    <tr>
+                        <td><a class="btn btn-default" href="/create-facility">Add Facility Not In List</a></td>
+                        <td></td>
                     </tr>
                 </form>
                 </tbody></table>
