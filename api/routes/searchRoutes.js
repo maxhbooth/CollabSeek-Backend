@@ -42,13 +42,14 @@ module.exports = function (app, sessionChecker) {
             let specialities = [];
             let skills = [];
             let facilities = [];
+            let positions = [];
 
             if (req.body.discipline != '') {
                 let fuzzyDisciplines = fuzzysort.go(req.body.discipline, models.disciplines);
                 disciplines = fuzzyDisciplines.map(a => a.target);
             }
             if (req.body.position != '') {
-
+                positions = positions.concat(req.body.position);
             }
             if (req.body.department != '') {
                 let fuzzyDepartments = fuzzysort.go(req.body.department, models.departments);
@@ -59,7 +60,7 @@ module.exports = function (app, sessionChecker) {
                 specialities = fuzzySpecialities.map(a => a.target);
             }
             if (req.body.skill != '') {
-                let fuzzySkills = fuzzysort.go(query, models.skills);
+                let fuzzySkills = fuzzysort.go(req.body.skill, models.skills);
                 skills = fuzzySkills.map(a => a.target);
             }
             if (req.body.facility != '') {
@@ -72,31 +73,35 @@ module.exports = function (app, sessionChecker) {
             var compoundOP = async(function() {
                 if (req.body.first == ''){
                     if (req.body.last == ''){
-                        response = await([getDepartments(departments),getDisciplines(disciplines),getFacilities(facilities),getSkills(skills),getSpecialties(specialities), [],[], []]);
+                        response = await([profileRepository.getProfileIDByDepartment(departments),profileRepository.getProfileIDByDiscipline(disciplines),profileRepository.getProfileIDByFacility(facilities),profileRepository.getProfileIDBySkill(skills),profileRepository.getProfileIDBySpecialty(specialities), profileRepository.getProfileIDByPosition(positions), [],[], []]);
                     } else {
-                        response = await([getDepartments(departments),getDisciplines(disciplines),getFacilities(facilities),getSkills(skills),getSpecialties(specialities), [],getLastName(req.body.last), []]);
+                        response = await([profileRepository.getProfileIDByDepartment(departments),profileRepository.getProfileIDByDiscipline(disciplines),profileRepository.getProfileIDByFacility(facilities),profileRepository.getProfileIDBySkill(skills),profileRepository.getProfileIDBySpecialty(specialities), profileRepository.getProfileIDByPosition(positions),[],profileRepository.getProfileIDByLastName(req.body.last), []]);
                     }
                 } else {
                     if (req.body.last == ''){
-                        response = await([getDepartments(departments),getDisciplines(disciplines),getFacilities(facilities),getSkills(skills),getSpecialties(specialities), getFirstName(req.body.first),[], []]);
+                        response = await([profileRepository.getProfileIDByDepartment(departments),profileRepository.getProfileIDByDiscipline(disciplines),profileRepository.getProfileIDByFacility(facilities),profileRepository.getProfileIDBySkill(skills),profileRepository.getProfileIDBySpecialty(specialities), profileRepository.getProfileIDByPosition(positions), profileRepository.getProfileIDByFirstName(req.body.first),[], []]);
                     } else {
-                        response = await([getDepartments(departments),getDisciplines(disciplines),getFacilities(facilities),getSkills(skills),getSpecialties(specialities), [],[], getFirstAndLast(req.body.first + " " + req.body.last)]);
+                        response = await([profileRepository.getProfileIDByDepartment(departments),profileRepository.getProfileIDByDiscipline(disciplines),profileRepository.getProfileIDByFacility(facilities),profileRepository.getProfileIDBySkill(skills),profileRepository.getProfileIDBySpecialty(specialities), profileRepository.getProfileIDByPosition(positions), [],[], profileRepository.getProfileIDByFirstLastName(req.body.first + " " + req.body.last)]);
                     }
                 }
-                return response;
+                let concatResponse = [];
+                concatResponse = concatResponse.concat(response[0],response[1],response[2],response[3],response[4],response[5],response[6],response[7],response[8]);
+                return concatResponse;
             });
 
             compoundOP().then(function (result) {
-                console.log(result);
-                res.render('search.html', {
-                    departmentProfiles: result[0],
-                    disciplineProfiles: result[1],
-                    facilityProfiles: result[2],
-                    skillProfiles: result[3],
-                    specialtyProfiles: result[4],
-                    firstNameProfiles: result[5],
-                    lastNameProfiles: result[6],
-                    fullNameProfiles: result[7]
+                result = filter_array(result);
+                result = sortByFrequency(result);
+                profileRepository.getProfileInformation(result).then(function (profiles) {
+                    let orderedProfileArray = [];
+                    let profileIds = profiles.map(a => a.id);
+                    for (let i = 0; i<result.length; i++){
+                        let endPlace = result.indexOf(profileIds[i]);
+                        orderedProfileArray[endPlace] = profiles[i]
+                    }
+                    res.render('search.html', {
+                        byClosestMatchProfiles: orderedProfileArray
+                    });
                 });
             });
         });
@@ -207,7 +212,7 @@ module.exports = function (app, sessionChecker) {
             return [];
         }
         for (var i = 0; i < facilities.length; ++i){
-            let id = await(profileRepository.getProfileIDByDiscipline(facilities[i]))
+            let id = await(profileRepository.getProfileIDByFacility(facilities[i]))
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
                 facilityProfiles = facilityProfiles.concat(profile);
@@ -225,7 +230,7 @@ module.exports = function (app, sessionChecker) {
             return [];
         }
         for (var i = 0; i < skills.length; ++i){
-            let id = await(profileRepository.getProfileIDByDiscipline(skills[i]))
+            let id = await(profileRepository.getProfileIDBySkill(skills[i]))
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
                 skillProfiles = skillProfiles.concat(profile);
@@ -243,13 +248,31 @@ module.exports = function (app, sessionChecker) {
             return [];
         }
         for (var i = 0; i < specialties.length; ++i){
-            let id = await(profileRepository.getProfileIDByDiscipline(specialties[i]))
+            let id = await(profileRepository.getProfileIDBySpecialty(specialties[i]))
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
                 specialtyProfiles = specialtyProfiles.concat(profile);
             }
             count++;
             if (count > specialties.length - 1) return specialtyProfiles;
+        }
+    });
+
+    let getPositions = async(function (positions){
+        var count = 0;
+        let positionProfiles = [];
+
+        if (positions.length == 0){
+            return [];
+        }
+        for (var i = 0; i < positions.length; ++i){
+            let id = await(profileRepository.getProfileIDByPosition(positions[i]));
+            let profile = await(profileRepository.getProfileInformation(id));
+            if (profile!=null) {
+                positionProfiles = positionProfiles.concat(profile);
+            }
+            count++;
+            if (count > positions.length - 1) return positionProfiles;
         }
     });
 
@@ -307,4 +330,35 @@ module.exports = function (app, sessionChecker) {
             return [];
         }
     });
+
+    function sortByFrequency(array) {
+        var frequency = {};
+
+        array.forEach(function(value) { frequency[value] = 0; });
+
+        var uniques = array.filter(function(value) {
+            return ++frequency[value] == 1;
+        });
+
+        return uniques.sort(function(a, b) {
+            return frequency[b] - frequency[a];
+        });
+    }
+
+    function filter_array(test_array) {
+        let index = -1;
+        const arr_length = test_array ? test_array.length : 0;
+        let resIndex = -1;
+        const result = [];
+
+        while (++index < arr_length) {
+            const value = test_array[index];
+
+            if (value) {
+                result[++resIndex] = value;
+            }
+        }
+
+        return result;
+    }
 };
