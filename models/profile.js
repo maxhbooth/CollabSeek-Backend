@@ -19,11 +19,6 @@ var profile = sequelize.define('profile', {
         type: Sequelize.STRING(30),
         allowNull: true
     },
-    username: {
-        type: Sequelize.STRING,
-        unique: true,
-        allowNull: true
-    },
     email: {
         type: Sequelize.STRING,
         unique: true,
@@ -60,6 +55,10 @@ var profile = sequelize.define('profile', {
     imagepath: {
         type: Sequelize.STRING,
         allowNull: true
+    },
+    intro: {
+        type: Sequelize.TEXT,
+        allowNull:true
     }
 }, {
     hooks: {

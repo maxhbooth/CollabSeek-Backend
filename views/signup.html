@@ -35,17 +35,6 @@
     <div class="jumbotron">
         <form id= 'User' action="/signup" method="post">
             <div>
-                <label for="username">Username:</label>
-                <% if (!locals.userErrors) { %>
-                <input type="text" class="form-control" name="username" id="username"/>
-                <% } else { %>
-                <input type="text" name="username" class="form-control" value="<%=validated.username %>"/>
-                <%if (userErrors.length > 0){userErrors.forEach(function(error){%>
-                <div><%= error %></div>
-                <%})}%>
-                <% } %>
-            </div>
-            <div>
                 <label for="email">Email:</label>
                 <% if (!locals.emailErrors) { %>
                 <input type="text" class="form-control" name="email" id="email"/>

@@ -71,6 +71,22 @@ var profileRepository = function profileRepository(){
             },
             foreignKey: 'department_id',
             constraints: false});
+
+    this.profile.belongsToMany(
+        this.attrRepository.facility, {through: {
+                model: this.profileFacility,
+                unique: true
+            },
+            foreignKey: 'profile_id',
+            constraints: false});
+
+    this.attrRepository.facility.belongsToMany(
+        this.profile, {through: {
+                model: this.profileFacility,
+                unique: true
+            },
+            foreignKey: 'facility_id',
+            constraints: false});
 };
 
 
@@ -553,6 +569,24 @@ profileRepository.prototype.deleteProfile = async(function(profileID){
     Returns array of ints that correspond to profile IDs
     Did basic testing here and console appears to be logging proper ids based on info in database
 */
+
+profileRepository.prototype.getProfileIDByPosition = async(function(positionName){
+    let position_id = await(this.attrRepository.getPositionId(positionName));
+
+    if(position_id != null){
+        let profiles = await(this.profile.findAll({
+            where: {position: position_id}
+        }));
+        var profile_ids = [];
+        if(profiles != null){
+            for(var i = 0; i < profiles.length; i++){
+                profile_ids.push(profiles[i].dataValues.id);
+            }
+            return profile_ids;
+        }
+    }
+    return null;
+});
 
 profileRepository.prototype.getProfileIDByDepartment = async(function(departmentName){
     let deptID = await(this.attrRepository.getDepartmentId(departmentName));

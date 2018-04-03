@@ -1,9 +1,6 @@
 var db = require('../../database/database');
 var Profile = require('../../models/profile');
 var randomstring = require('randomstring');
-var imported = require('views/js/mailer');
-
-var JSAlert = require("js-alert");
 const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
 
@@ -47,6 +44,14 @@ module.exports = function (app, sessionChecker) {
 
 
 
+             //create string token
+           const hidden_token = randomstring.generate();
+           //save in database something like profile.secretToken = hiddent token
+            profile.hidden_token = hidden_token;
+
+            //flag account as inactive so profile.user_confirm = false; should already be un active, disallow login for
+            //user who aren't confirmed
+
             if (!errors) {
 
                 let username = req.body.username;
@@ -88,7 +93,8 @@ module.exports = function (app, sessionChecker) {
                         res.redirect('/homepage');
                     });
 
-            } else {
+            }
+            else {
                 console.log(errors);
                 var userErrors = [];
                 var emailErrors = [];
@@ -111,9 +117,9 @@ module.exports = function (app, sessionChecker) {
                     //console.log(models); tbh this is annoying rn
 
                     var errors = {userErrors: userErrors,
-                                    emailErrors: emailErrors,
-                                    passwordErrors: passwordErrors,
-                                    validated: req.body};
+                        emailErrors: emailErrors,
+                        passwordErrors: passwordErrors,
+                        validated: req.body};
                     var data = extend(models, errors);
                     res.render('signup.html',
                         data );
@@ -126,10 +132,10 @@ module.exports = function (app, sessionChecker) {
             res.sendFile('/views/login.html', {root: './'});
         })
         .post((req, res) => {
-            var username = req.body.username,
+            var email = req.body.email,
                 password = req.body.password;
 
-            Profile.findOne({where: {username: username}}).then(function (profile) {
+            Profile.findOne({where: {email: email}}).then(function (profile) {
                 if (!profile) {
                     res.redirect('/login');
                 } else if (!profile.validPassword(password)) {
@@ -146,11 +152,7 @@ module.exports = function (app, sessionChecker) {
             });
         });
     // ROUTING FOR verify page
-    const isNotAuth = (req, res, next) =>{
-        if(res.body.confirmed_user){
-            return next();
-        }
-        req.flash("Confirm your email address");
+    const isNotAuth = (res,req,next) =>{
 
     };
 

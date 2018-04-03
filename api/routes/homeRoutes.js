@@ -78,6 +78,11 @@ module.exports = function (app, sessionChecker) {
             attrRepository.getAll().then(function (attributes){
                 models.all_departments = attributes.departments;
                 models.all_positions = attributes.positions;
+                models.all_skills = attributes.skills;
+                models.all_specialties = attributes.specialties;
+                models.all_facilities = attributes.facilities;
+                models.all_degrees = attributes.degrees;
+                models.all_disciplines = attributes.disciplines;
                 res.render('my-profile.html', models);
             });
         });
