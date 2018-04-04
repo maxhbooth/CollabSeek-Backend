@@ -216,14 +216,23 @@ profileRepository.prototype.updatePosition = async(function(profileID, positionN
     this.profile.update(
         {position: positionId},
         {where: {id: profileID}}
-        );
-        //.catch(error => {
-        //console.log(error);
-        //});
+    ).catch(error => {
+        console.log(error);});
 });
 
-//profileRepository.prototype.updateFirstName = async(function()){}); //TODO
-//profileRepository.prototype.updateLastName = async(function()){}); //TODO
+profileRepository.prototype.updateName = async(function(profileID, firstName, lastName){
+    this.profile.update(
+        {first_name: firstName, last_name: lastName},
+        {where: {id: profileID}}
+    ).catch(error => {console.log(error);});
+});
+
+profileRepository.prototype.updateIntro = async(function(profileID, intro){
+    this.profile.update(
+        {intro: intro},
+        {where: {id: profileID}}
+    ).catch(error => {console.log(error);});
+});
 
 
 // =====================================================================================================================
@@ -325,78 +334,6 @@ profileRepository.prototype.addImage = async(function(profileId, imagePath){
 // =====================================================================================================================
 // METHODS FOR ENTIRE PROFILE
 // =====================================================================================================================
-// TODO fix update profile method
-profileRepository.prototype.updateProfile = async(function
-    (profileId, first, last, degreeName, departmentName, disciplineName,
-     positionName, facilityName, skills, specialtyName) {
-    var i;
-    if(Array.isArray(degreeName) && Array.isArray(disciplineName)){
-        var min = Math.min(degreeName.length, disciplineName.length);
-        for(i = 0; i < min; i++){
-            this.addProfileDegree(profileId, degreeName[i], disciplineName[i]);
-        }
-    }
-    else if(Array.isArray(degreeName) && !Array.isArray(disciplineName)){
-        this.addProfileDegree(profileId, degreeName[0], disciplineName);
-    }
-    else if(!Array.isArray(degreeName) && Array.isArray(disciplineName)){
-        this.addProfileDegree(profileId, degreeName, disciplineName[0]);
-    }
-    else{
-        this.addProfileDegree(profileId, degreeName, disciplineName);
-    }
-    if(Array.isArray(departmentName)){
-        for(i = 0; i < departmentName.length; i++){
-            this.addProfileDepartment(profileId, departmentName[i]);
-        }
-    }
-    else{
-        this.addProfileDepartment(profileId, departmentName);
-    }
-    if(Array.isArray(facilityName)){
-        for(i = 0; i < facilityName.length; i++){
-            this.addProfileFacility(profileId, facilityName[i]);
-        }
-    }
-    else{
-        this.addProfileFacility(profileId, facilityName);
-    }
-    if(Array.isArray(specialtyName)){
-        for(i = 0; i < specialtyName.length; i++){
-            this.addProfileSpecialty(profileId, specialtyName[i]);
-        }
-    }
-    else {
-        this.addProfileSpecialty(profileId, specialtyName);
-    }
-
-    if(Array.isArray(skills)){
-        for(i = 0; i < skills.length; i++){
-            this.addProfileSkill(profileId, skills[i]);
-        }
-    }
-    else{
-        this.addProfileSkill(profileId, skills);
-    }
-
-    let positionId = await(this.attrRepository.getPositionId(positionName));
-
-    this.profile.update({
-        first_name: first,
-        last_name: last,
-        position: positionId
-    }, {
-        where: {id: profileId},
-        returning: true,
-        plain: true})
-    .catch(error => {
-        //db errors
-        console.log(error);
-    });
-
-    return 0;
-});
-
 profileRepository.prototype.createProfile = async(function
     (first, last, degreeName, departmentName, disciplineName,
      positionName, facilityName, skillName, specialtyName, email, password, hidden_token, confirmed_user) {
@@ -407,7 +344,6 @@ profileRepository.prototype.createProfile = async(function
         first_name: first,
         last_name: last,
         position: positionId,
-      //  username: username,
         email: email,
         password: password,
         hidden_token: hidden_token,
@@ -470,21 +406,9 @@ profileRepository.prototype.createProfile = async(function
     else{
         this.addProfileSkill(profileId, skillName);
     }
-
-    this.profile.update({
-        first_name: first,
-        last_name: last,
-        position: positionId
-    }, {
-        where: {id: profileId},
-        returning: true,
-        plain: true})
-        .catch(error => {
-        //db errors
-        console.log(error);
-});
     return profile;
 });
+
 
 profileRepository.prototype.getProfileInformation = async(function (profileId){
 
@@ -561,15 +485,9 @@ profileRepository.prototype.deleteProfile = async(function(profileID){
 
 });
 
-
 // =====================================================================================================================
 // GET PROFILE IDS WITH CERTAIN ATTRIBUTE
 // =====================================================================================================================
-/*  Added 3/22 by AC
-    Returns array of ints that correspond to profile IDs
-    Did basic testing here and console appears to be logging proper ids based on info in database
-*/
-
 profileRepository.prototype.getProfileIDByPosition = async(function(positionName){
     let position_id = await(this.attrRepository.getPositionId(positionName));
 
@@ -727,7 +645,5 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
     }
     return null;
 });
-
-
 
 module.exports = profileRepository;

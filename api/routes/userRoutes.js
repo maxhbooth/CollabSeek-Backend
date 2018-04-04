@@ -1,7 +1,7 @@
 var db = require('../../database/database');
 var Profile = require('../../models/profile');
 var randomstring = require('randomstring');
-//const await = require('asyncawait/await');
+const await = require('asyncawait/await');
 var nodemailer = require('nodemailer');
 const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
@@ -32,11 +32,10 @@ module.exports = function (app, sessionChecker) {
             }
         })
         .post((req, res) => {
-            //req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4, 15);
             req.checkBody('email', 'Email must be a valid email.').isEmail();
             req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
-            req.checkBody('passwordconfirm', 'Passwords must match.').equals(req.body.password);
+            //req.checkBody('confirmpassword', 'Passwords must match.').equals(req.body.password);
 
             //what should I validate??
             req.checkBody('first', "Must enter a first name.").notEmpty();
@@ -44,14 +43,9 @@ module.exports = function (app, sessionChecker) {
 
             const errors = req.validationErrors();
 
-
             if (!errors) {
-
-
-              //  let username = req.body.username;
                 let email = req.body.email;
                 let password = req.body.password;
-
                 let first = req.body.first;
                 let last = req.body.last;
                 let degreeName = req.body.degree;
@@ -61,18 +55,13 @@ module.exports = function (app, sessionChecker) {
                 let facilityName = req.body.facility || null;
                 let skillName = req.body.skill || null;
                 let specialtyName = req.body.specialty || null;
-
-
-                //create string token
-                const hidden_token = randomstring.generate();
-               // req.body.hidden_token= (hidden_token);
-                //flag if the user is not confirmed
-               const confirmed_user = false;
+                let hidden_token = randomstring.generate();
+                let confirmed_user = false;
 
                 //email compose
                 const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
                     'Please verify you email by typing i the following hidden token <br/>' +
-                    '<b>Token: {hidden_token}:</b>'+hidden_token +
+                    '<b>Token: {hidden_token}:</b>'+ hidden_token +
                     '<br/> in the following link ' +
                     '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
 
@@ -86,54 +75,36 @@ module.exports = function (app, sessionChecker) {
                             user: 'marcussw@cs.unc.edu',
                             pass: 'kebab*heels1'
                         }
-
                     });
                     let mailOptions = {
                         from: '"Fred Foo 👻" <marcussw@cs.unc.edu>', // sender address
                         to: email, // list of receivers
-                        subject: 'Hello Verify your email address', // Subject line
+                        subject: 'CollabSeek Verification', // Subject line
                         text: 'Hello', // plain text body
                         html: html // html body
                     };
-
-// send mail with defined transport object
+                    // send mail with defined transport object
                     transporter.sendMail(mailOptions, (error, info) => {
                         if (error) {
-                            return console.log(error);
+                            console.log(error);
+                            return;
                         }
                         console.log('Message sent: %s', info.messageId);
                         // Preview only available when sending through an Ethereal account
                         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
                         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
                     });
-
                 });
-
-
-
-
-
-
-
-
-
-
-
-                const profileRepository = new ProfileRepository();
+                var profileRepository = new ProfileRepository();
                 profileRepository.createProfile(first, last, degreeName, departmentName, disciplineName,
-                    positionName, facilityName, skillName, specialtyName, email, password,hidden_token,confirmed_user)
+                    positionName, facilityName, skillName, specialtyName, email, password, hidden_token, confirmed_user)
                     .then(profile => {
                         if(!profile.errors){
                             console.log(profile.errors);
                         }
                         req.session.profile = profile.dataValues;
                         res.redirect('verify.html');
-                      // res.redirect('/verify');
-                        //res.redirect('/homepage');
                     });
-
             }
             else {
                 console.log(errors);
@@ -141,9 +112,6 @@ module.exports = function (app, sessionChecker) {
                 var emailErrors = [];
                 var passwordErrors = [];
                 for (var i = 0; i < errors.length; i++) {
-                    // if (errors[i].param === 'username') {
-                    //     userErrors.push(errors[i].msg);
-                    // }
                     if (errors[i].param === 'email') {
                         emailErrors.push(errors[i].msg);
                     }
@@ -151,12 +119,8 @@ module.exports = function (app, sessionChecker) {
                         passwordErrors.push(errors[i].msg);
                     }
                 }
-
                 var attrRepository = new AttrRepository();
-
                 attrRepository.getAll().then(function (models){
-                    //console.log(models); tbh this is annoying rn
-
                     var errors = {userErrors: userErrors,
                         emailErrors: emailErrors,
                         passwordErrors: passwordErrors,
@@ -175,17 +139,18 @@ module.exports = function (app, sessionChecker) {
         .post((req, res) => {
             var email = req.body.email,
                 password = req.body.password;
-            var userConfirmed = req.body.confirmed_user;
-
             Profile.findOne({where: {email: email}}).then(function (profile) {
-                console.log(profile.confirmed_user);
+                let userConfirmed = profile.confirmed_user;
+                console.log("LOGIN");
+                console.log(userConfirmed);
+                console.log(profile.email);
                 if (!profile) {
                     res.redirect('/login');
                 } else if (!profile.validPassword(password)) {
                     res.redirect('/login');
                 }
                 //check to see if profile has been activated return error message  //
-                else if(!profile.confirmed_user){
+                else if(!userConfirmed){
                     console.log("Confirm your email address.");
                     res.redirect('/verify');
                 }
@@ -200,28 +165,28 @@ module.exports = function (app, sessionChecker) {
     app.route('/verify')
         .get(sessionChecker,(req,res) =>{
             res.sendFile('/views/verify.html', {root: './'});
-    })
-        .post(async(req, res) =>{
-            try {
-                const {hidden_token} = req.body;
+        })
+        .post(async( req, res) =>{
+            try{
+                var hidden_token = req.body.token;
+                console.log(hidden_token);
                 // next find account that matches hidden token
-                var user = await Profile.findOne({'hidden_token': hidden_token});
-                if (!user) {
-                    req.flash("No user found");
-                    res.redirect('/verify');
-                    return;
-                }
-                //change the user's properties if pass the hidden token
-                user.confirmed_user= true;
-                user.hidden_token = "";
-                await user.save();
-                res.redirect('/login');
+                Profile.findOne({where:{'hidden_token': hidden_token}}).then(function(user) {
+                    if (!user) {
+                        console.log("No user found");
+                        res.redirect('/verify');
+                        return;
+                    }
+                    //change the user's properties if pass
+                    console.log(user.email);
+                    console.log(user.confirmed_user);
+                    user.confirmed_user = true;
+                    user.hidden_token = "";
+                    user.save().then(res.redirect('/login'));
+                });
             }catch(error){
-
-                req.flash("Error:"+error);
+                console.log("Error:"+error);
             }
-
-
         });
 
 
