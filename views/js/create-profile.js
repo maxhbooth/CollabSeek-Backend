@@ -21,11 +21,13 @@ $(document).ready(function() {
     var facilities = [];
     $("#facility option").each(function(){
         facilities.push($(this).val());});
-    $('#discipline').editableSelect();
-    $('#specialty').editableSelect();
-    $('#skill').editableSelect();
-    $('#department').editableSelect();
-    $('#facility').editableSelect();
+    $('#discipline').select2();
+    $('#specialty').select2();
+    $('#skill').select2();
+    $('#department').select2();
+    $('#facility').select2();
+    $('#degree').select2();
+    $('#position').select2();
 
     // Degree and discipline handling
     $("#add_degree").click(function(e){ //on add input button click
