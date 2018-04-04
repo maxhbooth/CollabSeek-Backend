@@ -117,81 +117,52 @@
                     </select>
                 </div>
             </div>
-
-            <div id="dept_set">
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                        <label for="department">Department/Institute:</label>
-                        <select id = "department" name = "department" class="js-example-basic-single js-states form-control">
-                            <% if(locals.departments){%>
-                            <%if (departments.length > 0){departments.forEach(function(department){%>
-                            <option><%= department %></option>
-                            <%})}}%>
-                        </select>
-                    </div>
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label for="department">Department/Institute:</label>
+                    <select id="department" name="department" class="js-example-basic-single js-states form-control" multiple="multiple">
+                        <% if(locals.departments){%>
+                        <%if (departments.length > 0){departments.forEach(function(department){%>
+                        <option><%= department %></option>
+                        <%})}}%>
+                    </select>
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-sm-4">
-                    <button type="button" id="add_department" class="btn btn-default">Add Department</button>
-                </div>
-            </div>
-            <div id="specialty_set">
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                        <label for="specialty">Specialties:</label>
-                        <select id = "specialty" name = "specialty" class="form-control">
-                            <% if(locals.specialties){%>
-                            <%if (specialties.length > 0){specialties.forEach(function(specialty){%>
-                            <option><%= specialty %></option>
-                            <%})}}%>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-4">
-                    <button type="button" id="add_specialty" class="btn btn-default">Add Specialty</button>
+                <div class="form-group col-sm-12">
+                    <label for="specialty">Specialties:</label>
+                    <select id = "specialty" name = "specialty" class="js-example-basic-single js-states form-control" multiple="multiple">
+                        <% if(locals.specialties){%>
+                        <%if (specialties.length > 0){specialties.forEach(function(specialty){%>
+                        <option><%= specialty %></option>
+                        <%})}}%>
+                    </select>
                 </div>
             </div>
 
             <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
 
-            <div id="skill_set">
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                        <label for="skill">Skill:</label>
-                        <select id = "skill" name="skill" class="js-example-basic-single js-states form-control">
-                            <% if(locals.skills){%>
-                            <%if (skills.length > 0){skills.forEach(function(skill){%>
-                            <option><%= skill %></option>
-                            <%})}}%>
-                        </select>
-                    </div>
-                </div>
-            </div>
             <div class="row">
-                <div class="form-group col-sm-4">
-                    <button type="button" id="add_skill" class="btn btn-default">Add Skill</button>
+                <div class="form-group col-sm-12">
+                    <label for="skill">Skill:</label>
+                    <select id = "skill" name="skill" class="js-example-basic-single js-states form-control" multiple="multiple">
+                        <% if(locals.skills){%>
+                        <%if (skills.length > 0){skills.forEach(function(skill){%>
+                        <option><%= skill %></option>
+                        <%})}}%>
+                    </select>
                 </div>
             </div>
 
-            <div id="facility_set">
-                <div class = "row">
-                    <div class="form-group col-sm-12">
-                        <label for="facility">Facility:</label>
-                        <select id = "facility" name="facility" class="js-example-basic-single js-states form-control">
-                            <% if(locals.facilities){%>
-                            <%if (facilities.length > 0){facilities.forEach(function(facility){%>
-                            <option><%= facility %></option>
-                            <%})}}%>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-4">
-                    <button type="button" id="add_facility" class="btn btn-default">Add Facility</button>
+            <div class = "row">
+                <div class="form-group col-sm-12">
+                    <label for="facility">Facility:</label>
+                    <select id = "facility" name="facility" class="js-example-basic-single js-states form-control" multiple="multiple">
+                        <% if(locals.facilities){%>
+                        <%if (facilities.length > 0){facilities.forEach(function(facility){%>
+                        <option><%= facility %></option>
+                        <%})}}%>
+                    </select>
                 </div>
             </div>
 

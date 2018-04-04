@@ -30,11 +30,10 @@ module.exports = function (app, sessionChecker) {
             }
         })
         .post((req, res) => {
-            req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4, 15);
             req.checkBody('email', 'Email must be a valid email.').isEmail();
             req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
-            req.checkBody('confirmpassword', 'Passwords must match.').equals(req.body.password);
+            //req.checkBody('confirmpassword', 'Passwords must match.').equals(req.body.password);
 
             //what should I validate??
             req.checkBody('first', "Must enter a first name.").notEmpty();
@@ -46,8 +45,8 @@ module.exports = function (app, sessionChecker) {
 
              //create string token
            const hidden_token = randomstring.generate();
-           //save in database something like profile.secretToken = hiddent token
-            profile.hidden_token = hidden_token;
+           //save in database something like profile.secretToken = hidden token
+            //profile.hidden_token = hidden_token;
 
             //flag account as inactive so profile.user_confirm = false; should already be un active, disallow login for
             //user who aren't confirmed
@@ -76,7 +75,7 @@ module.exports = function (app, sessionChecker) {
                const confirmed_user = false;
 
                 //email compose
-                imported.nodemailer.sendMail();
+                //imported.nodemailer.sendMail();
 
 
 
@@ -142,9 +141,9 @@ module.exports = function (app, sessionChecker) {
                     res.redirect('/login');
                 }
                 //check to see if profile has been activated return error message  //
-                else if(!profile.isConfirmedUser()){
-                    JSAlert.alert("Confirm your email address.");
-                }
+                //else if(!profile.isConfirmedUser()){
+                //    JSAlert.alert("Confirm your email address.");
+                //}
                 else {
                     req.session.profile = profile.dataValues;
                     res.redirect('/');

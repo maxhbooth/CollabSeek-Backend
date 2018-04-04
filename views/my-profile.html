@@ -347,8 +347,8 @@
             </div>
         </div>
         <div id="facilities-show" style="display: block;" class="col-sm-4">
-            <% if(locals.facilities){%>
             <div class="well well-sm">
+                <% if(locals.facilities){%>
                 <%if (facilities.length > 0){%>
                 <%facilities.forEach(function(facility){%>
                 <p><%= facility.name %></p>
@@ -356,8 +356,8 @@
             </div>
         </div>
         <div id="facilities-edit" style="display: none;" class="col-sm-4">
-            <% if(locals.facilities){%>
             <div class="well well-sm">
+                <% if(locals.facilities){%>
                 <table class="table"><tbody>
                 <%if (facilities.length > 0){%>
                 <%facilities.forEach(function(facility){%>

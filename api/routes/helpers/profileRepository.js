@@ -561,15 +561,9 @@ profileRepository.prototype.deleteProfile = async(function(profileID){
 
 });
 
-
 // =====================================================================================================================
 // GET PROFILE IDS WITH CERTAIN ATTRIBUTE
 // =====================================================================================================================
-/*  Added 3/22 by AC
-    Returns array of ints that correspond to profile IDs
-    Did basic testing here and console appears to be logging proper ids based on info in database
-*/
-
 profileRepository.prototype.getProfileIDByPosition = async(function(positionName){
     let position_id = await(this.attrRepository.getPositionId(positionName));
 
@@ -727,7 +721,5 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
     }
     return null;
 });
-
-
 
 module.exports = profileRepository;
