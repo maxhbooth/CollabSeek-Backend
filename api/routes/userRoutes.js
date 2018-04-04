@@ -1,6 +1,8 @@
 var db = require('../../database/database');
 var Profile = require('../../models/profile');
 var randomstring = require('randomstring');
+//const await = require('asyncawait/await');
+var mailer = require('../../views/js/mailer');
 const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
 
@@ -43,15 +45,6 @@ module.exports = function (app, sessionChecker) {
             const errors = req.validationErrors();
 
 
-
-             //create string token
-           const hidden_token = randomstring.generate();
-           //save in database something like profile.secretToken = hiddent token
-            profile.hidden_token = hidden_token;
-
-            //flag account as inactive so profile.user_confirm = false; should already be un active, disallow login for
-            //user who aren't confirmed
-
             if (!errors) {
 
                 let username = req.body.username;
@@ -76,7 +69,15 @@ module.exports = function (app, sessionChecker) {
                const confirmed_user = false;
 
                 //email compose
-                imported.nodemailer.sendMail();
+                const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
+                    'Please verify you email by typing i the following hidden token <br/>' +
+                    '<b>Token: {hidden_token}:</b>' +
+                    '<br/> in the following link ' +
+                    '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
+
+                //send the email
+              mailer.sendEmail('marcussw@live.unc.edu', email, 'Please verify your email',html);
+
 
 
 
