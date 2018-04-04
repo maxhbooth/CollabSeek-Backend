@@ -178,13 +178,14 @@ module.exports = function (app, sessionChecker) {
             var userConfirmed = req.body.confirmed_user;
 
             Profile.findOne({where: {email: email}}).then(function (profile) {
+                console.log(profile.confirmed_user);
                 if (!profile) {
                     res.redirect('/login');
                 } else if (!profile.validPassword(password)) {
                     res.redirect('/login');
                 }
                 //check to see if profile has been activated return error message  //
-                else if(!userConfirmed){
+                else if(!profile.confirmed_user){
                     console.log("Confirm your email address.");
                     res.redirect('/verify');
                 }
@@ -200,19 +201,19 @@ module.exports = function (app, sessionChecker) {
         .get(sessionChecker,(req,res) =>{
             res.sendFile('/views/verify.html', {root: './'});
     })
-        .post(async( req, res, next) =>{
+        .post(async(req, res) =>{
             try {
                 const {hidden_token} = req.body;
                 // next find account that matches hidden token
-                const user = await Profile.findOne({'hidden_token': hidden_token});
+                var user = await Profile.findOne({'hidden_token': hidden_token});
                 if (!user) {
                     req.flash("No user found");
                     res.redirect('/verify');
                     return;
                 }
-                //change the user's properties if pass
-                req.body.confirmed_user = true;
-                req.body.hidden_token = "";
+                //change the user's properties if pass the hidden token
+                user.confirmed_user= true;
+                user.hidden_token = "";
                 await user.save();
                 res.redirect('/login');
             }catch(error){
