@@ -2,7 +2,7 @@ var db = require('../../database/database');
 var Profile = require('../../models/profile');
 var randomstring = require('randomstring');
 //const await = require('asyncawait/await');
-var mailer = require('../../views/js/mailer');
+var nodemailer = require('nodemailer');
 const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
 
@@ -32,11 +32,11 @@ module.exports = function (app, sessionChecker) {
             }
         })
         .post((req, res) => {
-            req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4, 15);
+            //req.checkBody('username', 'Username must be between 4 and 15 characters.').len(4, 15);
             req.checkBody('email', 'Email must be a valid email.').isEmail();
             req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
-            req.checkBody('confirmpassword', 'Passwords must match.').equals(req.body.password);
+            req.checkBody('passwordconfirm', 'Passwords must match.').equals(req.body.password);
 
             //what should I validate??
             req.checkBody('first', "Must enter a first name.").notEmpty();
@@ -47,7 +47,8 @@ module.exports = function (app, sessionChecker) {
 
             if (!errors) {
 
-                let username = req.body.username;
+
+              //  let username = req.body.username;
                 let email = req.body.email;
                 let password = req.body.password;
 
@@ -71,12 +72,50 @@ module.exports = function (app, sessionChecker) {
                 //email compose
                 const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
                     'Please verify you email by typing i the following hidden token <br/>' +
-                    '<b>Token: {hidden_token}:</b>' +
+                    '<b>Token: {hidden_token}:</b>'+hidden_token +
                     '<br/> in the following link ' +
                     '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
 
-                //send the email
-              mailer.sendEmail('marcussw@live.unc.edu', email, 'Please verify your email',html);
+                nodemailer.createTestAccount((err, account) => {
+                    // create reusable transporter object using the default SMTP transport
+                    let transporter = nodemailer.createTransport({
+                        host: 'smtp.gmail.com',
+                        port: 465,
+                        secure: true,
+                        auth: {
+                            user: 'marcussw@cs.unc.edu',
+                            pass: 'kebab*heels1'
+                        }
+
+                    });
+                    let mailOptions = {
+                        from: '"Fred Foo 👻" <marcussw@cs.unc.edu>', // sender address
+                        to: email, // list of receivers
+                        subject: 'Hello Verify your email address', // Subject line
+                        text: 'Hello', // plain text body
+                        html: html // html body
+                    };
+
+// send mail with defined transport object
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            return console.log(error);
+                        }
+                        console.log('Message sent: %s', info.messageId);
+                        // Preview only available when sending through an Ethereal account
+                        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+                        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+                    });
+
+                });
+
+
+
+
+
+
 
 
 
@@ -84,14 +123,15 @@ module.exports = function (app, sessionChecker) {
 
                 const profileRepository = new ProfileRepository();
                 profileRepository.createProfile(first, last, degreeName, departmentName, disciplineName,
-                    positionName, facilityName, skillName, specialtyName, username, email, password,hidden_token,false)
+                    positionName, facilityName, skillName, specialtyName, email, password,hidden_token,confirmed_user)
                     .then(profile => {
                         if(!profile.errors){
                             console.log(profile.errors);
                         }
                         req.session.profile = profile.dataValues;
-                       // res.redirect('/my-profile');
-                        res.redirect('/homepage');
+                        res.redirect('verify.html');
+                      // res.redirect('/verify');
+                        //res.redirect('/homepage');
                     });
 
             }
@@ -101,9 +141,9 @@ module.exports = function (app, sessionChecker) {
                 var emailErrors = [];
                 var passwordErrors = [];
                 for (var i = 0; i < errors.length; i++) {
-                    if (errors[i].param === 'username') {
-                        userErrors.push(errors[i].msg);
-                    }
+                    // if (errors[i].param === 'username') {
+                    //     userErrors.push(errors[i].msg);
+                    // }
                     if (errors[i].param === 'email') {
                         emailErrors.push(errors[i].msg);
                     }
@@ -135,6 +175,7 @@ module.exports = function (app, sessionChecker) {
         .post((req, res) => {
             var email = req.body.email,
                 password = req.body.password;
+            var userConfirmed = req.body.confirmed_user;
 
             Profile.findOne({where: {email: email}}).then(function (profile) {
                 if (!profile) {
@@ -143,24 +184,21 @@ module.exports = function (app, sessionChecker) {
                     res.redirect('/login');
                 }
                 //check to see if profile has been activated return error message  //
-                else if(!profile.isConfirmedUser()){
-                    JSAlert.alert("Confirm your email address.");
+                else if(!userConfirmed){
+                    console.log("Confirm your email address.");
+                    res.redirect('/verify');
                 }
                 else {
                     req.session.profile = profile.dataValues;
-                    res.redirect('/');
+                    res.redirect('/my-profile');
                 }
             });
         });
     // ROUTING FOR verify page
-    const isNotAuth = (res,req,next) =>{
 
-    };
-
-    // for the verify.html
     app.route('/verify')
-        .get(isNotAuth,(req,res) =>{
-       res.render('views/verify.html');
+        .get(sessionChecker,(req,res) =>{
+            res.sendFile('/views/verify.html', {root: './'});
     })
         .post(async( req, res, next) =>{
             try {
@@ -169,18 +207,16 @@ module.exports = function (app, sessionChecker) {
                 const user = await Profile.findOne({'hidden_token': hidden_token});
                 if (!user) {
                     req.flash("No user found");
-                    res.redirect('views/verify.html');
+                    res.redirect('/verify');
                     return;
                 }
-                user.confirmed_user = true;
-                user.hidden_token = "";
+                //change the user's properties if pass
+                req.body.confirmed_user = true;
+                req.body.hidden_token = "";
                 await user.save();
-
-
-
-
-                res.redirect('/login.html');
+                res.redirect('/login');
             }catch(error){
+
                 req.flash("Error:"+error);
             }
 
