@@ -45,9 +45,6 @@ module.exports = function (app, sessionChecker) {
 
 
             if (!errors) {
-
-
-              //  let username = req.body.username;
                 let email = req.body.email;
                 let password = req.body.password;
 
@@ -110,16 +107,6 @@ module.exports = function (app, sessionChecker) {
 
                 });
 
-
-
-
-
-
-
-
-
-
-
                 const profileRepository = new ProfileRepository();
                 profileRepository.createProfile(first, last, degreeName, departmentName, disciplineName,
                     positionName, facilityName, skillName, specialtyName, email, password,hidden_token,confirmed_user)
@@ -140,9 +127,6 @@ module.exports = function (app, sessionChecker) {
                 var emailErrors = [];
                 var passwordErrors = [];
                 for (var i = 0; i < errors.length; i++) {
-                    // if (errors[i].param === 'username') {
-                    //     userErrors.push(errors[i].msg);
-                    // }
                     if (errors[i].param === 'email') {
                         emailErrors.push(errors[i].msg);
                     }

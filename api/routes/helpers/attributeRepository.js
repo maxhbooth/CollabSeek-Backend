@@ -10,7 +10,7 @@ const position = require('../../../models/position');
 const skill = require('../../../models/skill');
 const specialty = require('../../../models/specialty');
 const degree_discipline = require('../../../models/profile_degree');
-const specialty_tree = require('../../models/specialty_tree')
+//const specialty_tree = require('../../models/specialty_tree')
 
 const repository = function repository(){
 
