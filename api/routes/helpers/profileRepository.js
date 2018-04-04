@@ -344,7 +344,6 @@ profileRepository.prototype.createProfile = async(function
         first_name: first,
         last_name: last,
         position: positionId,
-      //  username: username,
         email: email,
         password: password,
         hidden_token: hidden_token,
@@ -407,21 +406,9 @@ profileRepository.prototype.createProfile = async(function
     else{
         this.addProfileSkill(profileId, skillName);
     }
-
-    this.profile.update({
-        first_name: first,
-        last_name: last,
-        position: positionId
-    }, {
-        where: {id: profileId},
-        returning: true,
-        plain: true})
-        .catch(error => {
-        //db errors
-        console.log(error);
-});
     return profile;
 });
+
 
 profileRepository.prototype.getProfileInformation = async(function (profileId){
 
