@@ -23,6 +23,7 @@
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
     "cli": "^1.0.1",
+    "codeceptjs": "1.0.3",
     "cookie-parser": "^1.4.3",
     "dotenv": "^5.0.1",
     "ejs": "^2.5.7",
@@ -40,8 +41,8 @@
     "passport-local": "^1.0.0",
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
-    "randomstring": "^1.1.5",
     "popper.js": "^1.14.1",
+    "randomstring": "^1.1.5",
     "sequelize": "^4.34.0",
     "sequelize-file": "^0.3.0"
   }
