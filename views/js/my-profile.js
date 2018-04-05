@@ -1,11 +1,12 @@
 $(document).ready(function(){
 
     // TODO this breaks back end
-    //$('#skill').editableSelect();
-    //$('#specialty').editableSelect();
-    //$('#facility').editableSelect();
-    //$('#department').editableSelect();
-    // TODO this does not work idk why
+    $('#skill').select2();
+    $('#specialty').select2();
+    $('#facility').select2();
+    $('#department').select2();
+    $('#discipline').select2();
+    $('#degree').select2();
 
     $("#edit-departments1").click(function(e){
         document.getElementById("departments-edit").style.display = "block";
