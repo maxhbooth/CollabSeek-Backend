@@ -35,7 +35,7 @@ module.exports = function (app, sessionChecker) {
             req.checkBody('email', 'Email must be a valid email.').isEmail();
             req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
-            //req.checkBody('confirmpassword', 'Passwords must match.').equals(req.body.password);
+            req.checkBody('password', 'Passwords must match.').equals(req.body.passwordconfirm);
 
             //what should I validate??
             req.checkBody('first', "Must enter a first name.").notEmpty();
