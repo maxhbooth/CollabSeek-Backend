@@ -165,7 +165,7 @@ module.exports = function (app, sessionChecker) {
         .get(sessionChecker,(req,res) =>{
             res.sendFile('/views/verify.html', {root: './'});
         })
-        .post((req, res, next) =>{
+        .post(async( req, res) =>{
             try{
                 var hidden_token = req.body.token;
                 console.log(hidden_token);
@@ -177,6 +177,8 @@ module.exports = function (app, sessionChecker) {
                         return;
                     }
                     //change the user's properties if pass
+                    console.log(user.email);
+                    console.log(user.confirmed_user);
                     user.confirmed_user = true;
                     user.hidden_token = "";
                     user.save().then(res.redirect('/login'));
