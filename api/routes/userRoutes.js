@@ -155,7 +155,7 @@ module.exports = function (app, sessionChecker) {
                 }
                 else {
                     req.session.profile = profile.dataValues;
-                    res.redirect('/my-profile');
+                    res.redirect('/');
                 }
             });
         });

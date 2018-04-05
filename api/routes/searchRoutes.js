@@ -111,17 +111,6 @@ module.exports = function (app, sessionChecker) {
         });
     });
 
-    app.get('/searchData', (req, res) => {
-        let attributeRepository = new AttributeRepository();
-
-        attributeRepository.getAll().then(function (models) {
-            //return {degrees, departments, disciplines, facilities, positions, skills, specialties};
-            let searchData = models.departments.concat(models.disciplines, models.facilities, models.skills, models.specialties);
-            console.log(searchData);
-            res.send(searchData);
-        });
-    });
-
     app.post('/search', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
             console.dir('body: ' + JSON.stringify(req.body));
