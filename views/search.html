@@ -39,7 +39,7 @@
                     |<%=profile.first %>&nbsp;<%=profile.last%>|
                     |<%=profile.position %>|
                     <% if (profile.departments.length > 0) {%>
-                    |<%=profile.departments[0].name %>|
+                        |<%=profile.departments[0].name %>|
                     <%}%>
                     |<a href="/profile/<%=profile.id%>">Profile</a>|
                 </div>
@@ -57,7 +57,7 @@
                 |<%=profile.first %>&nbsp;<%=profile.last%>|
                 |<%=profile.position %>|
                 <% if (profile.departments.length > 0) {%>
-                |<%=profile.departments[0].name %>|
+                    |<%=profile.departments[0].name %>|
                 <%}%>
                 |<a href="/profile/<%=profile.id%>">Profile</a>|
             </div>
@@ -76,7 +76,7 @@
                 |<%=profile.position %>|
                 <% if (profile.departments.length > 0) {%>
                 |<%=profile.departments[0].name %>|
-                <%}%>              |<a href="/profile/<%=profile.id%>">Profile</a>|
+                <%}%>
                 |<a href="/profile/<%=profile.id%>">Profile</a>|
             </div>
             <%})%>

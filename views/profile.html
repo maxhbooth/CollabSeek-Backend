@@ -4,6 +4,25 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <script src="js/load-image.all.min.js"></script>
+
+    <script>
+        var imageUrl = "Images/<%=imagePath%>";
+        loadImage(
+            imageUrl,
+            function (img) {
+                if(img.type === "error") {
+                    console.log("Error loading image " + imageUrl);
+                } else {
+                    document.getElementById("imageDiv").appendChild(img);
+                }
+            },
+            {maxWidth: 200,
+                orientation: true}
+        );
+    </script>
+
 </head>
 <body class="container">
 <div class="jumbotron text-center">
@@ -32,8 +51,8 @@
     <div class="row">
         <div class="col-sm-4">
             <% if(locals.imagePath){%>
-
-                <img src="../Images/<%=imagePath%>" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+            <div id = "imageDiv"  style="text-align: center">
+            </div>
             <%} else {%>
                 <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
             <%}%>

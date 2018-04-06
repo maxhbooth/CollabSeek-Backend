@@ -9,12 +9,13 @@ module.exports = function (app, sessionChecker) {
 
     app.get('/', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
-            let attributeRepository = new AttributeRepository();
+            //let attributeRepository = new AttributeRepository();
 
-            attributeRepository.getAll().then(function (models) {
-                let searchData = models.departments.concat(models.disciplines, models.facilities, models.skills, models.specialties);
-                res.render('homepage.html', {searchData: JSON.stringify(searchData)});
-            });
+            //attributeRepository.getAll().then(function (models) {
+               // let searchData = models.departments.concat(models.disciplines, models.facilities, models.skills, models.specialties);
+                //res.render('homepage.html', {searchData: JSON.stringify(searchData)});
+            res.render('homepage.html');
+            //});
         } else {
             res.sendFile('/views/welcome.html', {root: './'});
         }
