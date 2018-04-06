@@ -119,23 +119,14 @@ module.exports = function (app, sessionChecker) {
     app.get('/create-specialty', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
 
-        let profileRepositiory = new ProfileRepository();
         let attrRepository = new AttributeRepository();
 
-        profileRepositiory.getProfileInformation(req.session.profile.id).then(function (models){
-            attrRepository.getAll().then(function (attributes){
-                models.all_departments = attributes.departments;
-                models.all_positions = attributes.positions;
-                models.all_skills = attributes.skills;
-                models.all_specialties = attributes.specialties;
-                models.all_facilities = attributes.facilities;
-                models.all_degrees = attributes.degrees;
-                models.all_disciplines = attributes.disciplines;
-                res.render('create-specialty.html', models);
-            });
+        attrRepository.getSpecialtiesTree().then(function (specialty){
+            var models = {"specialty": specialty};
+            console.log(models)
+            res.render('create-specialty.html', models);
         });
-
-    } else {
+        } else {
         res.redirect('/login');
     }
 });

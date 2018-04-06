@@ -10,10 +10,13 @@ module.exports = sequelize.define('specialty', {
             primaryKey: true,
             autoIncrement: true
         },
+        parent_id: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+        },
         name: {
             type: Sequelize.STRING,
-            allowNull: true,
-            unique: true
+            allowNull: true
         },
         created: {
             type: Sequelize.DATEONLY,
