@@ -124,7 +124,7 @@ module.exports = function (app, sessionChecker) {
 
         attrRepository.getSpecialtiesTree().then(function (specialty){
             var models = {"specialty": specialty};
-            console.log(models)
+            console.log(models);
             res.render('create-specialty.html', models);
         });
         } else {

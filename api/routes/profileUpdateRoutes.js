@@ -86,6 +86,15 @@ module.exports = function (app, sessionChecker) {
         if(req.session.profile && req.cookies.user_sid){
         profileRepository = new ProfileRepository();
         profileRepository.addProfileSpecialty(req.session.profile.id, req.body.specialty).then(function(){res.redirect('/my-profile')});
+        }else{
+        res.redirect('/welcome');
+        }
+    });
+
+    app.post('/add-new-specialty', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+        attrRepository = new AttrRepository();
+        attrRepository.addNewSpecialty(req.body.specialty, req.body.parent).then(function(){res.redirect('/create-specialty')}); //TODO
     }else{
         res.redirect('/welcome');
     }
