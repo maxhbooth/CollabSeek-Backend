@@ -1,6 +1,5 @@
 $(document).ready(function() {
     var current_degrees = 1;
-    var current_skills = 1;
 
     // Add select functionality
     var disciplines = [];
@@ -43,7 +42,7 @@ $(document).ready(function() {
         $newdegreeset.append($newdiscipline);
         $newdegreeset.append('<button type="button" id="degreedelete" class="btn btn-default">Delete</button>');
         $("#degree_set").append($newdegreeset);
-        $('#' + disc_id).editableSelect();
+        $('#' + disc_id).select2();
     })
 
     $(document).on('click', '#degreedelete', function () {

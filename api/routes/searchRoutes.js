@@ -10,26 +10,30 @@ module.exports = function (app, sessionChecker) {
     let profileRepository = new ProfileRepository();
 
     app.get('/advanced-search', (req,res) => {
-        var attrRepository = new AttributeRepository();
+        if (req.session.profile && req.cookies.user_sid) {
+            var attrRepository = new AttributeRepository();
 
-        attrRepository.getAll().then(function (models){
-            console.log(models);
-            models.degrees.sort();
-            models.departments.sort();
-            models.disciplines.sort();
-            models.facilities.sort();
-            models.positions.sort();
-            models.skills.sort();
-            models.specialties.sort();
-            models.degrees.unshift("");
-            models.departments.unshift("");
-            models.disciplines.unshift("");
-            models.facilities.unshift("");
-            models.positions.unshift("");
-            models.skills.unshift("");
-            models.specialties.unshift("");
-            res.render('advanced-search.html',models);
-        });
+            attrRepository.getAll().then(function (models) {
+                console.log(models);
+                models.degrees.sort();
+                models.departments.sort();
+                models.disciplines.sort();
+                models.facilities.sort();
+                models.positions.sort();
+                models.skills.sort();
+                models.specialties.sort();
+                models.degrees.unshift("");
+                models.departments.unshift("");
+                models.disciplines.unshift("");
+                models.facilities.unshift("");
+                models.positions.unshift("");
+                models.skills.unshift("");
+                models.specialties.unshift("");
+                res.render('advanced-search.html', models);
+            });
+        } else {
+            res.redirect('/login');
+        }
     });
 
     app.post('/advanced-search', (req,res) => {
@@ -104,17 +108,6 @@ module.exports = function (app, sessionChecker) {
                     });
                 });
             });
-        });
-    });
-
-    app.get('/searchData', (req, res) => {
-        let attributeRepository = new AttributeRepository();
-
-        attributeRepository.getAll().then(function (models) {
-            //return {degrees, departments, disciplines, facilities, positions, skills, specialties};
-            let searchData = models.departments.concat(models.disciplines, models.facilities, models.skills, models.specialties);
-            console.log(searchData);
-            res.send(searchData);
         });
     });
 

@@ -35,7 +35,7 @@ module.exports = function (app, sessionChecker) {
             req.checkBody('email', 'Email must be a valid email.').isEmail();
             req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
-            //req.checkBody('confirmpassword', 'Passwords must match.').equals(req.body.password);
+            req.checkBody('password', 'Passwords must match.').equals(req.body.passwordconfirm);
 
             //what should I validate??
             req.checkBody('first', "Must enter a first name.").notEmpty();
@@ -60,8 +60,8 @@ module.exports = function (app, sessionChecker) {
 
                 //email compose
                 const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
-                    'Please verify you email by typing i the following hidden token <br/>' +
-                    '<b>Token: {hidden_token}:</b>'+ hidden_token +
+                    'Please verify you email by typing in the following hidden token <br/>' +
+                    '<b>Token:</b>'+ hidden_token +
                     '<br/> in the following link ' +
                     '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
 
@@ -92,7 +92,6 @@ module.exports = function (app, sessionChecker) {
                         console.log('Message sent: %s', info.messageId);
                         // Preview only available when sending through an Ethereal account
                         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
                     });
                 });
                 var profileRepository = new ProfileRepository();
@@ -156,7 +155,7 @@ module.exports = function (app, sessionChecker) {
                 }
                 else {
                     req.session.profile = profile.dataValues;
-                    res.redirect('/my-profile');
+                    res.redirect('/');
                 }
             });
         });
