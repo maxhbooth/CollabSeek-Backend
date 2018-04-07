@@ -166,7 +166,7 @@ module.exports = function (app, sessionChecker) {
         .get(sessionChecker,(req,res) =>{
             res.sendFile('/views/verify.html', {root: './'});
         })
-        .post(( req, res) =>{
+        .post(async( req, res) =>{
             try{
                 var hidden_token = req.body.token;
                 console.log(hidden_token);
