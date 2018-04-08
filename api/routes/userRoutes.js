@@ -198,4 +198,11 @@ module.exports = function (app, sessionChecker) {
             res.redirect('/login');
         }
     });
+
+    app.get('/deleteTest', (req,res) => {
+        var profileRepository = new ProfileRepository();
+        Profile.findOne({where: {email: 'macwatro@cs.unc.edu'}}).then(function (profile) {
+            profileRepository.deleteProfile(profile.id)
+        });
+    });
 };

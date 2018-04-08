@@ -49,27 +49,68 @@ module.exports = function (app, sessionChecker) {
             let positions = [];
 
             if (req.body.discipline != '') {
-                let fuzzyDisciplines = fuzzysort.go(req.body.discipline, models.disciplines);
-                disciplines = fuzzyDisciplines.map(a => a.target);
+                let disciplineArray = [];
+                disciplineArray = disciplineArray.concat(req.body.disciplines);
+                disciplineArray.forEach(function (discipline){
+                    if (discipline == ''){
+                        return;
+                    }
+                    let fuzzyDisciplines = fuzzysort.go(discipline, models.disciplines);
+                    disciplines = disciplines.concat(fuzzyDisciplines.map(a => a.target));
+                });
             }
             if (req.body.position != '') {
-                positions = positions.concat(req.body.position);
+                let positionArray = [];
+                positionArray = positionArray.concat(req.body.positions);
+                positionArray.forEach(function (position){
+                    if (position == ''){
+                        return;
+                    }
+                    let fuzzyPositions = fuzzysort.go(position, models.positions);
+                    positions = positions.concat(fuzzyPositions.map(a => a.target));
+                });
             }
             if (req.body.department != '') {
-                let fuzzyDepartments = fuzzysort.go(req.body.department, models.departments);
-                departments = fuzzyDepartments.map(a => a.target);
+                let departmentArray = [];
+                departmentArray = departmentArray.concat(req.body.departments);
+                departmentArray.forEach(function (department){
+                    if (department == ''){
+                        return;
+                    }
+                    let fuzzyDepartments = fuzzysort.go(department, models.departments);
+                    departments = departments.concat(fuzzyDepartments.map(a => a.target));
+                });
             }
             if (req.body.specialty != '') {
-                let fuzzySpecialities = fuzzysort.go(req.body.specialty, models.specialties);
-                specialities = fuzzySpecialities.map(a => a.target);
+                let specialityArray = [];
+                specialityArray = specialityArray.concat(req.body.specialties);
+                specialityArray.forEach(function (specialty){
+                    if (specialty == ''){
+                        return;
+                    }
+                    let fuzzySpecialties = fuzzysort.go(specialty, models.specialties);
+                    specialities = specialities.concat(fuzzySpecialties.map(a => a.target));
+                });
             }
             if (req.body.skill != '') {
-                let fuzzySkills = fuzzysort.go(req.body.skill, models.skills);
-                skills = fuzzySkills.map(a => a.target);
+                req.body.skill.forEach(function (skill){
+                    if (skill == ''){
+                        return;
+                    }
+                    let fuzzySkills = fuzzysort.go(skill, models.skills);
+                    skills = skills.concat(fuzzySkills.map(a => a.target));
+                });
             }
             if (req.body.facility != '') {
-                let fuzzyFacilities = fuzzysort.go(req.body.facility, models.facilities);
-                facilities = fuzzyFacilities.map(a => a.target);
+                let facilityArray = [];
+                facilityArray = facilityArray.concat(req.body.facilities);
+                facilityArray.forEach(function (facility){
+                    if (facility == ''){
+                        return;
+                    }
+                    let fuzzyFacilities = fuzzysort.go(facility, models.facilities);
+                    facilities = facilities.concat(fuzzyFacilities.map(a => a.target));
+                });
             }
 
             let response;
@@ -77,15 +118,15 @@ module.exports = function (app, sessionChecker) {
             var compoundOP = async(function() {
                 if (req.body.first == ''){
                     if (req.body.last == ''){
-                        response = await([profileRepository.getProfileIDByDepartment(departments),profileRepository.getProfileIDByDiscipline(disciplines),profileRepository.getProfileIDByFacility(facilities),profileRepository.getProfileIDBySkill(skills),profileRepository.getProfileIDBySpecialty(specialities), profileRepository.getProfileIDByPosition(positions), [],[], []]);
+                        response = await([getDepartmentsIDOnly(departments),getDisciplinesIDOnly(disciplines),getFacilitiesIDOnly(facilities),getSkillsIDOnly(skills),getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions), [],[], []]);
                     } else {
-                        response = await([profileRepository.getProfileIDByDepartment(departments),profileRepository.getProfileIDByDiscipline(disciplines),profileRepository.getProfileIDByFacility(facilities),profileRepository.getProfileIDBySkill(skills),profileRepository.getProfileIDBySpecialty(specialities), profileRepository.getProfileIDByPosition(positions),[],profileRepository.getProfileIDByLastName(req.body.last), []]);
+                        response = await([getDepartmentsIDOnly(departments),getDisciplinesIDOnly(disciplines),getFacilitiesIDOnly(facilities),getSkillsIDOnly(skills),getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions),[],profileRepository.getProfileIDByLastName(req.body.last), []]);
                     }
                 } else {
                     if (req.body.last == ''){
-                        response = await([profileRepository.getProfileIDByDepartment(departments),profileRepository.getProfileIDByDiscipline(disciplines),profileRepository.getProfileIDByFacility(facilities),profileRepository.getProfileIDBySkill(skills),profileRepository.getProfileIDBySpecialty(specialities), profileRepository.getProfileIDByPosition(positions), profileRepository.getProfileIDByFirstName(req.body.first),[], []]);
+                        response = await([getDepartmentsIDOnly(departments),getDisciplinesIDOnly(disciplines),getFacilitiesIDOnly(facilities),getSkillsIDOnly(skills),getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions), profileRepository.getProfileIDByFirstName(req.body.first),[], []]);
                     } else {
-                        response = await([profileRepository.getProfileIDByDepartment(departments),profileRepository.getProfileIDByDiscipline(disciplines),profileRepository.getProfileIDByFacility(facilities),profileRepository.getProfileIDBySkill(skills),profileRepository.getProfileIDBySpecialty(specialities), profileRepository.getProfileIDByPosition(positions), [],[], profileRepository.getProfileIDByFirstLastName(req.body.first + " " + req.body.last)]);
+                        response = await([getDepartmentsIDOnly(departments),getDisciplinesIDOnly(disciplines),getFacilitiesIDOnly(facilities),getSkillsIDOnly(skills),getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions), [],[], profileRepository.getProfileIDByFirstLastName(req.body.first + " " + req.body.last)]);
                     }
                 }
                 let concatResponse = [];
@@ -120,11 +161,11 @@ module.exports = function (app, sessionChecker) {
             attributeRepository.getAll().then(function (models) {
                 //return {degrees, departments, disciplines, facilities, positions, skills, specialties};
 
-                let fuzzyDepartments = fuzzysort.go(query, models.departments);
-                let fuzzyDisciplines = fuzzysort.go(query, models.disciplines);
-                let fuzzyFacilities = fuzzysort.go(query, models.facilities);
-                let fuzzySkills = fuzzysort.go(query, models.skills);
-                let fuzzySpecialities = fuzzysort.go(query, models.specialties);
+                let fuzzyDepartments = fuzzysort.go(query, models.departments, {threshold: -999});
+                let fuzzyDisciplines = fuzzysort.go(query, models.disciplines, {threshold: -999});
+                let fuzzyFacilities = fuzzysort.go(query, models.facilities, {threshold: -999});
+                let fuzzySkills = fuzzysort.go(query, models.skills, {threshold: -999});
+                let fuzzySpecialities = fuzzysort.go(query, models.specialties, {threshold: -999});
 
                 let departments = fuzzyDepartments.map(a => a.target);
                 let disciplines = fuzzyDisciplines.map(a => a.target);
@@ -162,6 +203,86 @@ module.exports = function (app, sessionChecker) {
         }
     });
 
+    let getDepartmentsIDOnly = async(function (departments){
+        var count = 0;
+        let departmentProfileIds = [];
+        if (departments.length == 0){
+            return [];
+        }
+        for (var i = 0; i < departments.length; ++i){
+            let id = await(profileRepository.getProfileIDByDepartment(departments[i]));
+            if (id !=null){
+                departmentProfileIds = departmentProfileIds.concat(id);
+            }
+            count++;
+            if (count > departments.length - 1) return departmentProfileIds;
+        }
+    });
+
+    let getDisciplinesIDOnly = async(function (disciplines){
+        var count = 0;
+        let disciplineProfileIds = [];
+        if (disciplines.length == 0){
+            return [];
+        }
+        for (var i = 0; i < disciplines.length; ++i){
+            let id = await(profileRepository.getProfileIDByDiscipline(disciplines[i]));
+            if (id !=null){
+                disciplineProfileIds = disciplineProfileIds.concat(id);
+            }
+            count++;
+            if (count > disciplines.length - 1) return disciplineProfileIds;
+        }
+    });
+
+    let getFacilitiesIDOnly = async(function (facilities){
+        var count = 0;
+        let facilityProfileIds = [];
+        if (facilities.length == 0){
+            return [];
+        }
+        for (var i = 0; i < facilities.length; ++i){
+            let id = await(profileRepository.getProfileIDByFacility(facilities[i]));
+            if (id !=null){
+                facilityProfileIds = facilityProfileIds.concat(id);
+            }
+            count++;
+            if (count > facilities.length - 1) return facilityProfileIds;
+        }
+    });
+
+    let getSkillsIDOnly = async(function (skills){
+        var count = 0;
+        let skillProfileIds = [];
+        if (skills.length == 0){
+            return [];
+        }
+        for (var i = 0; i < skills.length; ++i){
+            let id = await(profileRepository.getProfileIDBySkill(skills[i]));
+            if (id !=null){
+                skillProfileIds = skillProfileIds.concat(id);
+            }
+            count++;
+            if (count > skills.length - 1) return skillProfileIds;
+        }
+    });
+
+    let getSpecialtiesIDOnly = async(function (specialties){
+        var count = 0;
+        let specialtyProfileIds = [];
+        if (specialties.length == 0){
+            return [];
+        }
+        for (var i = 0; i < specialties.length; ++i){
+            let id = await(profileRepository.getProfileIDBySpecialty(specialties[i]));
+            if (id !=null){
+                specialtyProfileIds = specialtyProfileIds.concat(id);
+            }
+            count++;
+            if (count > specialties.length - 1) return specialtyProfileIds;
+        }
+    });
+
     let getDepartments = async(function (departments){
         var count = 0;
         let departmentProfiles = [];
@@ -169,9 +290,12 @@ module.exports = function (app, sessionChecker) {
             return [];
         }
         for (var i = 0; i < departments.length; ++i){
-            let id = await(profileRepository.getProfileIDByDepartment(departments[i]))
+            let id = await(profileRepository.getProfileIDByDepartment(departments[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null){
+                profile.forEach(function(singleProfile) {
+                   singleProfile.matchedQuery = departments[i];
+                });
                 departmentProfiles = departmentProfiles.concat(profile);
             }
             count++;
@@ -187,9 +311,12 @@ module.exports = function (app, sessionChecker) {
             return [];
         }
         for (var i = 0; i < disciplines.length; ++i){
-            let id = await(profileRepository.getProfileIDByDiscipline(disciplines[i]))
+            let id = await(profileRepository.getProfileIDByDiscipline(disciplines[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
+                profile.forEach(function(singleProfile) {
+                    singleProfile.matchedQuery = disciplines[i];
+                });
                 disciplineProfiles = disciplineProfiles.concat(profile);
             }
             count++;
@@ -205,9 +332,12 @@ module.exports = function (app, sessionChecker) {
             return [];
         }
         for (var i = 0; i < facilities.length; ++i){
-            let id = await(profileRepository.getProfileIDByFacility(facilities[i]))
+            let id = await(profileRepository.getProfileIDByFacility(facilities[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
+                profile.forEach(function(singleProfile) {
+                    singleProfile.matchedQuery = facilities[i];
+                });
                 facilityProfiles = facilityProfiles.concat(profile);
             }
             count++;
@@ -226,6 +356,9 @@ module.exports = function (app, sessionChecker) {
             let id = await(profileRepository.getProfileIDBySkill(skills[i]))
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
+                profile.forEach(function(singleProfile) {
+                    singleProfile.matchedQuery = skills[i];
+                });
                 skillProfiles = skillProfiles.concat(profile);
             }
             count++;
@@ -241,9 +374,12 @@ module.exports = function (app, sessionChecker) {
             return [];
         }
         for (var i = 0; i < specialties.length; ++i){
-            let id = await(profileRepository.getProfileIDBySpecialty(specialties[i]))
+            let id = await(profileRepository.getProfileIDBySpecialty(specialties[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
+                profile.forEach(function(singleProfile) {
+                    singleProfile.matchedQuery = specialties[i];
+                });
                 specialtyProfiles = specialtyProfiles.concat(profile);
             }
             count++;
@@ -262,6 +398,9 @@ module.exports = function (app, sessionChecker) {
             let id = await(profileRepository.getProfileIDByPosition(positions[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
+                profile.forEach(function(singleProfile) {
+                    singleProfile.matchedQuery = positions[i];
+                });
                 positionProfiles = positionProfiles.concat(profile);
             }
             count++;

@@ -18,3 +18,15 @@ Scenario('Test log in with wrong password', (I) => {
     I.click('Log In');
     I.see('Log In');
 });
+
+
+Scenario('Test successful sign up but no email verification', (I) => {
+    I.amOnPage('/login');
+    I.fillField('email', 'macwatro@cs.unc.edu');
+    I.fillField('password', 'testtest');
+    I.click('Sign Up');
+    let user = yield I.sendGetRequest('/checkTestCreated');
+    I.waitForValue(user.created, "Test account created");
+    I.amOnPage('/profile');
+    I.see('Log In');
+});
