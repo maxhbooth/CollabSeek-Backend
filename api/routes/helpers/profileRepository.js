@@ -336,7 +336,7 @@ profileRepository.prototype.addImage = async(function(profileId, imagePath){
 // =====================================================================================================================
 profileRepository.prototype.createProfile = async(function
     (first, last, degreeName, departmentName, disciplineName,
-     positionName, facilityName, skillName, specialtyName, email, password, hidden_token, confirmed_user) {
+     positionName, facilityName, skillName, specialtyName, email, password, hidden_token, confirmed_user,password_token) {
 
     let positionId = await(this.attrRepository.getPositionId(positionName));
 
@@ -347,6 +347,7 @@ profileRepository.prototype.createProfile = async(function
         email: email,
         password: password,
         hidden_token: hidden_token,
+        password_token: password_token,
         confirmed_user: confirmed_user
     }, {
         returning: true,

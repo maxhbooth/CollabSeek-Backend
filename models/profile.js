@@ -52,6 +52,10 @@ var profile = sequelize.define('profile', {
         type: Sequelize.STRING,
         allowNull :true
     },
+    password_token:{
+        type: Sequelize.STRING,
+        allowNull:true
+    },
     imagepath: {
         type: Sequelize.STRING,
         allowNull: true

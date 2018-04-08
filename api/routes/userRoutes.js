@@ -56,6 +56,7 @@ module.exports = function (app, sessionChecker) {
                 let skillName = req.body.skill || null;
                 let specialtyName = req.body.specialty || null;
                 let hidden_token = randomstring.generate();
+                let password_token = randomstring.generate();
                 let confirmed_user = false;
 
                 //email compose
@@ -63,7 +64,7 @@ module.exports = function (app, sessionChecker) {
                     'Please verify you email by typing in the following hidden token <br/>' +
                     '<b>Token:</b>'+ hidden_token +
                     '<br/> in the following link ' +
-                    '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
+                    '<a href ="http://localhost:8080/verify/'+hidden_token +'">click here</a>';
 
                 nodemailer.createTestAccount((err, account) => {
                     // create reusable transporter object using the default SMTP transport
@@ -96,13 +97,13 @@ module.exports = function (app, sessionChecker) {
                 });
                 var profileRepository = new ProfileRepository();
                 profileRepository.createProfile(first, last, degreeName, departmentName, disciplineName,
-                    positionName, facilityName, skillName, specialtyName, email, password, hidden_token, confirmed_user)
+                    positionName, facilityName, skillName, specialtyName, email, password, hidden_token, confirmed_user, password_token)
                     .then(profile => {
                         if(!profile.errors){
                             console.log(profile.errors);
                         }
                         req.session.profile = profile.dataValues;
-                        res.redirect('verify.html');
+                        res.redirect('/login');
                     });
             }
             else {
@@ -151,7 +152,7 @@ module.exports = function (app, sessionChecker) {
                 //check to see if profile has been activated return error message  //
                 else if(!userConfirmed){
                     console.log("Confirm your email address.");
-                    res.redirect('/verify');
+                   req.flash("Confirm your email address");
                 }
                 else {
                     req.session.profile = profile.dataValues;
@@ -159,33 +160,86 @@ module.exports = function (app, sessionChecker) {
                 }
             });
         });
-    // ROUTING FOR verify page
 
-    app.route('/verify')
-        .get(sessionChecker,(req,res) =>{
-            res.sendFile('/views/verify.html', {root: './'});
-        })
-        .post(async( req, res) =>{
-            try{
-                var hidden_token = req.body.token;
-                console.log(hidden_token);
-                // next find account that matches hidden token
-                Profile.findOne({where:{'hidden_token': hidden_token}}).then(function(user) {
-                    if (!user) {
-                        console.log("No user found");
-                        res.redirect('/verify');
-                        return;
-                    }
-                    //change the user's properties if pass
-                    console.log(user.email);
-                    console.log(user.confirmed_user);
-                    user.confirmed_user = true;
-                    user.hidden_token = "";
+    ////////////////////////////ROUTING FOR RESET PASSWORD PAGE /////////////////////////////////
+    app.route('/resetpassword')
+        .get(sessionChecker, (req,res) =>{
+            res.sendFile('/views/resetpassword.html', {root: './'});
+            })
+        .post((req,res) =>{
+            var email = req.body.email;
+            Profile.findOne({where: {email: email}}).then(function (profile) {
+             if(!profile){
+                 req.flash("Not a valid user");
+                 res.redirect('/login');
+             }
+             else {
+                 let  password_token = profile.password_token;
+                 const html = 'Greetings, <br/>'+
+                     '<a href ="http://localhost:8080/changepassword/'+password_token +'">click here</a>';
+                 nodemailer.createTestAccount((err, account) => {
+                     // create reusable transporter object using the default SMTP transport
+                     let transporter = nodemailer.createTransport({
+                         host: 'smtp.gmail.com',
+                         port: 465,
+                         secure: true,
+                         auth: {
+                             user: 'marcussw@cs.unc.edu',
+                             pass: 'kebab*heels1'
+                         }
+                     });
+                     let mailOptions = {
+                         from: '"Fred Foo 👻" <marcussw@cs.unc.edu>', // sender address
+                         to: email, // list of receivers
+                         subject: 'Password change', // Subject line
+                         text: 'Hello', // plain text body
+                         html: html // html body
+                     };
+                     // send mail with defined transport object
+                     transporter.sendMail(mailOptions, (error, info) => {
+                         if (error) {
+                             console.log(error);
+                             return;
+                         }
+                         console.log('Message sent: %s', info.messageId);
+                         // Preview only available when sending through an Ethereal account
+                         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                     });
+                 });
+                 res.redirect('/login');
+
+
+
+
+             }
+            });
+
+
+        });
+    app.route('/changepassword')
+        .get()
+        .post(sessionChecker,(req,res) =>{
+            req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
+            req.checkBody('new_password', 'Password must be between 8 to 50 characters.').len(4, 50);
+            req.checkBody('new_password', 'Passwords must match.').equals(req.body.confirm_password);
+            var email = req.body.email;
+            Profile.findOne({where:{'email': email}}).then(function(user) {
+                if(!user){
+
+                }
+                else {
+
+                    const salt = bcrypt.genSaltSync();
+                    var pass = bcrypt.hashSync(req.body.new_password, salt);
+                    user.password = pass;
                     user.save().then(res.redirect('/login'));
-                });
-            }catch(error){
-                console.log("Error:"+error);
-            }
+
+
+                }
+            });
+
+
+
         });
 
 
