@@ -33,15 +33,19 @@ module.exports = function (app, sessionChecker) {
         })
         .post((req, res) => {
             req.checkBody('email', 'Email must be a valid email.').isEmail();
-            req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
+            req.checkBody('email', 'Email must be from 8 to 50 characters.').len(8, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Passwords must match.').equals(req.body.passwordconfirm);
 
-            //what should I validate??
+
             req.checkBody('first', "Must enter a first name.").notEmpty();
             req.checkBody('last', "Must enter a last name.").notEmpty();
 
-            const errors = req.validationErrors();
+            let errors = req.validationErrors();
+
+            if(!req.body.email.endsWith("unc.edu") ){
+                errors.push({msg:"Email must end with unc.edu", param:"email"});
+            }
 
             if (!errors) {
                 let email = req.body.email;
