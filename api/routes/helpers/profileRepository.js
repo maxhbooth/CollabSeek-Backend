@@ -184,6 +184,27 @@ profileRepository.prototype.addProfileSpecialty = async(function (profileId, spe
     return 0;
 });
 
+profileRepository.prototype.addProfileSpecialtyById = async(function (profileId, specialtyId) {
+    if(specialtyId !=null){
+        this.profileSpecialty.findOrCreate({
+            where: {
+                profile_id: profileId,
+                specialty_id: specialtyId
+            },
+            default: {
+                profile_id: profileId,
+                specialty_id: specialtyId
+            }
+        })
+            .catch(error => {
+            //db errors
+            console.log(error);
+    });
+    }
+
+    return 0;
+});
+
 profileRepository.prototype.addProfileSkill = async(function (profileId, skillName) {
     let skillId = await(this.attrRepository.getSkillId(skillName));
 
@@ -483,6 +504,21 @@ profileRepository.prototype.deleteProfile = async(function(profileID){
     }
     return 0;
 
+});
+
+profileRepository.prototype.getSpecialtiesIDs = async(function(profileID){
+    let specialties = await(this.attrRepository.specialty.findAll({
+        include: [{
+            model: this.profile,
+            where: {id: profileID},
+            through: {}
+        }]
+    }));
+    var specialties_return = [];
+    for(var i = 0; i < specialties.length; i++){
+        specialties_return.push(specialties[i].dataValues.id);
+    }
+    return specialties_return;
 });
 
 // =====================================================================================================================

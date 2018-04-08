@@ -2,7 +2,7 @@ $(document).ready(function() {
     var _queryTreeSort = function(options) {
         var cfi, e, i, id, o, pid, rfi, ri, thisid, _i, _j, _len, _len1, _ref, _ref1;
         id = options.id || "id";
-        pid = options.parentid || "parentid";
+        pid = options.parent_id || "parent_id";
         ri = [];
         rfi = {};
         cfi = {};
@@ -36,7 +36,7 @@ $(document).ready(function() {
     var _makeTree = function(options) {
         var children, e, id, o, pid, temp, _i, _len, _ref;
         id = options.id || "id";
-        pid = options.parentid || "parentid";
+        pid = options.parent_id || "parent_id";
         children = options.children || "children";
         temp = {};
         o = [];
@@ -65,21 +65,61 @@ $(document).ready(function() {
     var database_data = (JSON.parse($("#test").text()));
     var sorted = _queryTreeSort({q:database_data});
     var tree_data = _makeTree({q:sorted});
-    console.log(tree_data);
-    $('#tree').tree({
-        uiLibrary: "bootstrap",
+    var tree = $('#tree').tree({
+        primaryKey: 'id',
         dataSource: tree_data,
-        primaryKey: "id",
-        checkboxes: true,
         cascadeCheck: false,
-        border: true,
-        selectionType: "single"
+        checkboxes: true,
+        uiLibrary: 'bootstrap'
     });
-    // $('#btnSave').on('click', function () {
-    //     var checkedIds = tree.getCheckedNodes();
-    //     $.ajax({ url: '/Locations/SaveCheckedNodes', data: { checkedIds: checkedIds }, method: 'POST' })
-    //         .fail(function () {
-    //             alert('Failed to save.');
-    //         });
-    // });
+    var spec_ids = ($("#test2").text());
+    var spec_ints = spec_ids.split(",");
+    for(var i = 0; i < spec_ints.length; i++) {
+        var node_id = parseInt(spec_ints[i], 10);
+        tree.check(tree.getNodeById(node_id));
+        while(tree.getDataById(node_id).parent_id !== 0){
+            node_id = tree.getDataById(node_id).parent_id;
+            tree.expand(tree.getNodeById(node_id));
+        }
+    }
+
+
+    $("#add_other_specialty").click(function(e){
+        var result = tree.getSelections();
+        if(result.length === 0){
+            alert("Please select a parent category!");
+        }
+        else if(result.length > 1){
+            alert("Please select only one parent category!")
+        }
+        // else if( !$("other_specialty").val()){
+        //     alert("Please fill in the field name!")
+        // }
+        else {
+            var data = {specialty: $("#other_specialty").val(), parent:result[0]};
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: '/add-new-specialty/'
+            });
+        }
+    });
+
+    tree.on('checkboxChange', function (e, $node, record, state) {
+        if(state === "unchecked"){
+            var url = '/delete-specialty/' + record.text + "/";
+            alert(url);
+            $.ajax({
+                type: 'POST',
+                url: url
+            });
+        }
+        else if (state ==="checked"){
+            $.ajax({
+                type: 'POST',
+                url: '/add-specialty/' + record.id + "/"
+            });
+        }
+    });
 });

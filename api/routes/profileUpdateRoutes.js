@@ -20,8 +20,7 @@ module.exports = function (app, sessionChecker) {
         if(req.session.profile && req.cookies.user_sid){
         profileRepository = new ProfileRepository();
         profileRepository.updateName(req.session.profile.id, req.body.first, req.body.last).then(function(){res.redirect('/my-profile')});
-        }
-        else{
+        }else{
             res.redirect('/welcome');
         }
     });
@@ -75,6 +74,7 @@ module.exports = function (app, sessionChecker) {
 });
     app.post('/delete-specialty/:specialty', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
+            console.log("\n\n" + req.params.specialty + "\n\n");
             profileRepository = new ProfileRepository();
             profileRepository.removeProfileSpecialty(req.session.profile.id, req.params.specialty).then(function(){res.redirect('/my-profile')});
         }else{
@@ -91,14 +91,32 @@ module.exports = function (app, sessionChecker) {
         }
     });
 
-    app.post('/add-new-specialty', (req, res) => {
+    app.post('/add-specialty/:id', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
-        attrRepository = new AttrRepository();
-        attrRepository.addNewSpecialty(req.body.specialty, req.body.parent).then(function(){res.redirect('/create-specialty')}); //TODO
+        profileRepository = new ProfileRepository();
+        profileRepository.addProfileSpecialtyById(req.session.profile.id, req.params.id).then(function(){res.redirect('/my-profile')});
     }else{
         res.redirect('/welcome');
     }
+});
+
+    app.post('/add-new-specialty', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+            var attrRepository = new AttrRepository();
+            attrRepository.addNewSpecialty(req.body.specialty, req.body.parent).then(function(){res.redirect('/create-specialty/')});
+        }else{
+            res.redirect('/welcome');
+        }
     });
+
+    app.post('/add-new-specialty-root', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+        attrRepository = new AttrRepository();
+        attrRepository.addNewSpecialty(req.body.root_specialty, 0).then(function(){res.redirect('/create-specialty')});
+    }else{
+        res.redirect('/welcome');
+    }
+});
 
     app.post('/delete-skill/:skill', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
@@ -111,7 +129,7 @@ module.exports = function (app, sessionChecker) {
 
     app.post('/add-skill', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
-        profileRepository = new ProfileRepository();
+        var profileRepository = new ProfileRepository();
         profileRepository.addProfileSkill(req.session.profile.id, req.body.skill).then(function(){res.redirect('/my-profile')});
     }else{
         res.redirect('/welcome');

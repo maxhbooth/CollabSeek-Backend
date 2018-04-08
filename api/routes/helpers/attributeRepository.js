@@ -202,7 +202,9 @@ repository.prototype.getSpecialtyName = async(function(specialtyID) {
 // ADD TO DATABASE
 // =====================================================================================================================
 
-repository.prototype.addNewSpecialty = async(function(specialtyName))
+repository.prototype.addNewSpecialty = async(function(specialtyName, parentID){
+    let specialty = await(this.specialty.create({name: specialtyName, parent_id: parentID}, {plain: true}));
+});
 
 
 module.exports = repository;

@@ -121,16 +121,18 @@ module.exports = function (app, sessionChecker) {
         if (req.session.profile && req.cookies.user_sid) {
 
         let attrRepository = new AttributeRepository();
-
         attrRepository.getSpecialtiesTree().then(function (specialty){
-            var models = {"specialty": specialty};
-            console.log(models);
-            res.render('create-specialty.html', models);
+            let profileRepository = new ProfileRepository();
+            profileRepository.getSpecialtiesIDs(req.session.profile.id).then(function(ids){
+                var models = {specialty: specialty, ids: ids};
+                console.log(models.ids);
+                res.render('create-specialty.html', models);
+            });
         });
         } else {
-        res.redirect('/login');
-    }
-});
+            res.redirect('/login');
+        }
+    });
 
     app.get('/create-facility', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
