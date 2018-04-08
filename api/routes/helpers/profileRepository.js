@@ -276,6 +276,15 @@ profileRepository.prototype.updateIntro = async(function(profileID, intro){
     ).catch(error => {console.log(error);});
 });
 
+profileRepository.prototype.addImage = async(function(profileId, imagePath){
+
+    this.profile.update(
+        {imagepath : imagePath},
+        {where : {id : profileId}}
+    );
+
+    return 0;
+});
 
 // =====================================================================================================================
 // REMOVE ATTRIBUTE FROM PROFILE
@@ -392,15 +401,6 @@ profileRepository.prototype.removeProfileSpecialtyById = async(function(profileI
     return 0;
 });
 
-profileRepository.prototype.addImage = async(function(profileId, imagePath){
-
-    this.profile.update(
-        {imagepath : imagePath},
-        {where : {id : profileId}}
-    );
-
-    return 0;
-});
 
 //not using right now.
 // =====================================================================================================================
@@ -422,12 +422,13 @@ profileRepository.prototype.createProfile = async(function
         confirmed_user: confirmed_user
     }, {
         returning: true,
-        plain: true})
-        .catch(errors => {
-            //db errors
-            console.log(errors);
-            return errors;
-        }));
+        plain: true}).catch(errors => {
+
+            errors.errors.forEach(function(error){//only actually catches first error
+            throw new Error(error.message);
+        });
+    }));
+
     let profileId = profile.id;
     var i;
     if(Array.isArray(degreeName) && Array.isArray(disciplineName)){

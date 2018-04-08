@@ -2,9 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 const multer = require('multer');
-const im = require('imagemagick');
-const gm = require('gm');
-
+var Jimp = require("jimp");
 const ProfileRepository = require('./helpers/profileRepository');
 
 module.exports = function (app) {
@@ -56,25 +54,20 @@ module.exports = function (app) {
                 if(err){
                     //there was an error uploading!
                 }
+                else{
+                    var profilePath = path.join(__dirname, "..\\..\\views\\images\\ProfileImage_"
+                        + profileId + path.extname(req.file.originalname));
+                    // resize image
+                    Jimp.read(profilePath, function (err, picture) {
+                        if (err) throw err;
+
+                        picture.resize(200, Jimp.AUTO)
+                            .quality(60) // set JPEG quality
+                            .exifRotate()
+                            .write(profilePath); // save
+                    });
+                }
             });
-
-            // var pathTemp = path.join(__dirname, "..\\..\\views\\images\\ProfileImage_11.JPG");
-            // im.convert([pathTemp, '-resize', '200x200', pathTemp],
-            //     function(err, stdout){
-            //         if (err) throw err;
-            //         console.log('stdout:', stdout);
-            // });
-
-            //resizing the input image.
-            // im.resize({
-            //     srcPath: profilePath,
-            //     dstPath: profilePath,
-            //     height:   200,
-            //     width: 200
-            // }, function(err, stdout, stderr){
-            //     if (err) throw err;
-            //     console.log('resize complete.');
-            // });
 
             res.redirect('/my-profile');
         } else {

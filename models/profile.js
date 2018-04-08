@@ -21,7 +21,9 @@ var profile = sequelize.define('profile', {
     },
     email: {
         type: Sequelize.STRING,
-        unique: true,
+        unique: {
+            msg: 'Email has already been taken.'
+        },
         allowNull: false
     },
     password: {

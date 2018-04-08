@@ -33,15 +33,19 @@ module.exports = function (app, sessionChecker) {
         })
         .post((req, res) => {
             req.checkBody('email', 'Email must be a valid email.').isEmail();
-            req.checkBody('email', 'Email must be from 4 to 50 characters.').len(4, 50);
+            req.checkBody('email', 'Email must be from 8 to 50 characters.').len(8, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Passwords must match.').equals(req.body.passwordconfirm);
 
-            //what should I validate??
+
             req.checkBody('first', "Must enter a first name.").notEmpty();
             req.checkBody('last', "Must enter a last name.").notEmpty();
 
-            const errors = req.validationErrors();
+            let errors = req.validationErrors();
+
+            if(!req.body.email.endsWith("unc.edu") ){
+                errors.push({msg:"Email must end with unc.edu", param:"email"});
+            }
 
             if (!errors) {
                 let email = req.body.email;
@@ -58,51 +62,61 @@ module.exports = function (app, sessionChecker) {
                 let hidden_token = randomstring.generate();
                 let confirmed_user = false;
 
-                //email compose
-                const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
-                    'Please verify you email by typing in the following hidden token <br/>' +
-                    '<b>Token:</b>'+ hidden_token +
-                    '<br/> in the following link ' +
-                    '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
-
-                nodemailer.createTestAccount((err, account) => {
-                    // create reusable transporter object using the default SMTP transport
-                    let transporter = nodemailer.createTransport({
-                        host: 'smtp.gmail.com',
-                        port: 465,
-                        secure: true,
-                        auth: {
-                            user: 'marcussw@cs.unc.edu',
-                            pass: 'kebab*heels1'
-                        }
-                    });
-                    let mailOptions = {
-                        from: '"Fred Foo 👻" <marcussw@cs.unc.edu>', // sender address
-                        to: email, // list of receivers
-                        subject: 'CollabSeek Verification', // Subject line
-                        text: 'Hello', // plain text body
-                        html: html // html body
-                    };
-                    // send mail with defined transport object
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            console.log(error);
-                            return;
-                        }
-                        console.log('Message sent: %s', info.messageId);
-                        // Preview only available when sending through an Ethereal account
-                        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                    });
-                });
                 var profileRepository = new ProfileRepository();
                 profileRepository.createProfile(first, last, degreeName, departmentName, disciplineName,
                     positionName, facilityName, skillName, specialtyName, email, password, hidden_token, confirmed_user)
-                    .then(profile => {
-                        if(!profile.errors){
-                            console.log(profile.errors);
-                        }
+                    .then(profile => {//code is skipped if error is thrown in profile repository
+                        //email compose
+                        const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
+                            'Please verify you email by typing in the following hidden token <br/>' +
+                            '<b>Token:</b>'+ hidden_token +
+                            '<br/> in the following link ' +
+                            '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
+
+                        nodemailer.createTestAccount((err, account) => {
+                            // create reusable transporter object using the default SMTP transport
+                            let transporter = nodemailer.createTransport({
+                                host: 'smtp.gmail.com',
+                                port: 465,
+                                secure: true,
+                                auth: {
+                                    user: 'marcussw@cs.unc.edu',
+                                    pass: 'kebab*heels1'
+                                }
+                            });
+                            let mailOptions = {
+                                from: '"Fred Foo 👻" <marcussw@cs.unc.edu>', // sender address
+                                to: email, // list of receivers
+                                subject: 'CollabSeek Verification', // Subject line
+                                text: 'Hello', // plain text body
+                                html: html // html body
+                            };
+                            // send mail with defined transport object
+                            transporter.sendMail(mailOptions, (error, info) => {
+                                if (error) {
+                                    console.log(error);
+                                    return;
+                                }
+                                console.log('Message sent: %s', info.messageId);
+                                // Preview only available when sending through an Ethereal account
+                                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                            });
+                        });
+
                         req.session.profile = profile.dataValues;
                         res.redirect('verify.html');
+                    })
+                    .catch(profile_errors =>{
+
+                        var attrRepository = new AttrRepository();
+                        attrRepository.getAll().then(function (models){
+                            var errors = {userErrors: [profile_errors],
+                                validated: req.body};
+                            var data = extend(models, errors);
+                            res.render('signup.html',
+                                data );
+                        });
+
                     });
             }
             else {
@@ -114,8 +128,11 @@ module.exports = function (app, sessionChecker) {
                     if (errors[i].param === 'email') {
                         emailErrors.push(errors[i].msg);
                     }
-                    if (errors[i].param === 'password') {
+                    else if (errors[i].param === 'password') {
                         passwordErrors.push(errors[i].msg);
+                    }
+                    else{
+                        userErrors.push(errors[i].msg);
                     }
                 }
                 var attrRepository = new AttrRepository();
