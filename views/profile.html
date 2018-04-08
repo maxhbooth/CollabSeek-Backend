@@ -14,6 +14,7 @@
             function (img) {
                 if(img.type === "error") {
                     console.log("Error loading image " + imageUrl);
+                    document.getElementById("imagediv").appendChild("resources/profile-icon.png");
                 } else {
                     document.getElementById("imageDiv").appendChild(img);
                 }
