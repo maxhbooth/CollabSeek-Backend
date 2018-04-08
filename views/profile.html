@@ -5,15 +5,20 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <script src="js/load-image.all.min.js"></script>
+    <script src="../js/load-image.all.min.js"></script>
 
     <script>
-        var imageUrl = "Images/<%=imagePath%>";
+        var imageUrl = "../Images/<%=imagePath%>";
         loadImage(
             imageUrl,
             function (img) {
                 if(img.type === "error") {
                     console.log("Error loading image " + imageUrl);
+
+                    var icon = document.createElement("IMG");
+
+                    icon.src = "../resources/profile-icon.png";
+                    document.getElementById("imageDiv").appendChild(icon);
                 } else {
                     document.getElementById("imageDiv").appendChild(img);
                 }
@@ -54,7 +59,7 @@
             <div id = "imageDiv"  style="text-align: center">
             </div>
             <%} else {%>
-                <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+                <img src="../resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
             <%}%>
 
             <h3>Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h3>

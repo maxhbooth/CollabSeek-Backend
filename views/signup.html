@@ -35,6 +35,12 @@
     <div class="jumbotron">
         <form id= 'User' action="/signup" method="post">
             <div>
+                <% if (locals.userErrors) { %>
+                <%if (userErrors.length > 0){userErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
+
                 <label for="email">Email:</label>
                 <% if (!locals.emailErrors) { %>
                 <input type="text" class="form-control" name="email" id="email"/>
@@ -123,6 +129,9 @@
                     </select>
                 </div>
             </div>
+
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+
             <div class="row">
                 <div class="form-group col-sm-12">
                     <label for="specialty">Specialties:</label>
@@ -135,11 +144,10 @@
                 </div>
             </div>
 
-            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
 
             <div class="row">
                 <div class="form-group col-sm-12">
-                    <label for="skill">Skill:</label>
+                    <label for="skill">Skills:</label>
                     <select id = "skill" name="skill" class="js-example-basic-single js-states form-control" multiple="multiple">
                         <% if(locals.skills){%>
                         <%if (skills.length > 0){skills.forEach(function(skill){%>
@@ -151,7 +159,7 @@
 
             <div class = "row">
                 <div class="form-group col-sm-12">
-                    <label for="facility">Facility:</label>
+                    <label for="facility">Facilities/Resources:</label>
                     <select id = "facility" name="facility" class="js-example-basic-single js-states form-control" multiple="multiple">
                         <% if(locals.facilities){%>
                         <%if (facilities.length > 0){facilities.forEach(function(facility){%>

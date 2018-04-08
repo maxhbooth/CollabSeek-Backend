@@ -70,13 +70,17 @@ app.use(express.static(__dirname + '/views'));
 var userRoutes = require('./api/routes/userRoutes');
 var homeRoutes = require('./api/routes/homeRoutes');
 var imageUploadRoutes = require('./api/routes/imageUploadRoutes');
-var profileUpdateRoutes = require('./api/routes/profileUpdateRoutes')
+var profileUpdateRoutes = require('./api/routes/profileUpdateRoutes');
 var searchRoutes = require('./api/routes/searchRoutes');
+var addAttributeRoutes = require('./api/routes/addAttributeRoutes');
+var deleteAttributeRoutes = require('./api/routes/deleteAttributeRoutes');
 homeRoutes(app, sessionChecker);
 userRoutes(app, sessionChecker);
 imageUploadRoutes(app, sessionChecker);
 profileUpdateRoutes(app, sessionChecker);
 searchRoutes(app, sessionChecker);
+addAttributeRoutes(app, sessionChecker);
+deleteAttributeRoutes(app, sessionChecker);
 
 
 app.listen(port);

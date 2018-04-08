@@ -22,6 +22,10 @@ module.exports = sequelize.define('skill', {
         last_updated: {
             type: Sequelize.DATEONLY,
                 allowNull: true
+        },
+        parent_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
         }
     }, {
         tableName: 'skill'
