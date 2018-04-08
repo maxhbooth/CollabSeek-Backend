@@ -70,7 +70,8 @@ $(document).ready(function() {
         dataSource: tree_data,
         cascadeCheck: false,
         checkboxes: true,
-        uiLibrary: 'bootstrap'
+        uiLibrary: 'bootstrap',
+        border: true
     });
     var spec_ids = ($("#test2").text());
     var spec_ints = spec_ids.split(",");
@@ -83,6 +84,22 @@ $(document).ready(function() {
         }
     }
 
+    $("#expand_all").click(function(e){
+        tree.expandAll();
+    });
+    $("#collapse_all").click(function(e){
+        tree.collapseAll();
+    });
+    $("#expand_mine").click(function(e){
+        for(var i = 0; i < spec_ints.length; i++) {
+            var node_id = parseInt(spec_ints[i], 10);
+            tree.check(tree.getNodeById(node_id));
+            while(tree.getDataById(node_id).parent_id !== 0){
+                node_id = tree.getDataById(node_id).parent_id;
+                tree.expand(tree.getNodeById(node_id));
+            }
+        }
+    });
 
     $("#add_other_specialty").click(function(e){
         var result = tree.getSelections();
@@ -109,7 +126,6 @@ $(document).ready(function() {
     tree.on('checkboxChange', function (e, $node, record, state) {
         if(state === "unchecked"){
             var url = '/delete-specialty/' + record.text + "/";
-            alert(url);
             $.ajax({
                 type: 'POST',
                 url: url
