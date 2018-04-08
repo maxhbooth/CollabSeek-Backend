@@ -341,6 +341,21 @@ profileRepository.prototype.removeProfileSpecialty = async(function (profileID, 
     return 0;
 });
 
+profileRepository.prototype.removeProfileSpecialtyById = async(function(profileID, specialtyID) {
+    if(specialtyID != null){
+        this.profileSpecialty.destroy({
+            where: {
+                profile_id: profileID,
+                specialty_id: specialtyID
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
 profileRepository.prototype.addImage = async(function(profileId, imagePath){
 
     this.profile.update(

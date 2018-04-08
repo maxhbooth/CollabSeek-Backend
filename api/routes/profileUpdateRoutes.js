@@ -74,13 +74,23 @@ module.exports = function (app, sessionChecker) {
 });
     app.post('/delete-specialty/:specialty', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
-            console.log("\n\n" + req.params.specialty + "\n\n");
+
             profileRepository = new ProfileRepository();
             profileRepository.removeProfileSpecialty(req.session.profile.id, req.params.specialty).then(function(){res.redirect('/my-profile')});
         }else{
             res.redirect('/welcome');
         }
     });
+
+    app.post('/delete-specialty-id/:id', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+
+        profileRepository = new ProfileRepository();
+        profileRepository.removeProfileSpecialtyById(req.session.profile.id, req.params.id).then(function(){res.redirect('/my-profile')});
+    }else{
+        res.redirect('/welcome');
+    }
+});
 
     app.post('/add-specialty', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
