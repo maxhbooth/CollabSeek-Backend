@@ -184,6 +184,27 @@ profileRepository.prototype.addProfileSpecialty = async(function (profileId, spe
     return 0;
 });
 
+profileRepository.prototype.addProfileSpecialtyById = async(function (profileId, specialtyId) {
+    if(specialtyId !=null){
+        this.profileSpecialty.findOrCreate({
+            where: {
+                profile_id: profileId,
+                specialty_id: specialtyId
+            },
+            default: {
+                profile_id: profileId,
+                specialty_id: specialtyId
+            }
+        })
+            .catch(error => {
+            //db errors
+            console.log(error);
+    });
+    }
+
+    return 0;
+});
+
 profileRepository.prototype.addProfileSkill = async(function (profileId, skillName) {
     let skillId = await(this.attrRepository.getSkillId(skillName));
 
@@ -202,6 +223,27 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
                 //db errors
                 console.log(error);
             });
+    }
+
+    return 0;
+});
+
+profileRepository.prototype.addProfileSkillById = async(function (profileId, skillId) {
+    if(skillId != null){
+        this.profileSkill.findOrCreate({
+            where: {
+                profile_id: profileId,
+                skill_id: skillId
+            },
+            default: {
+                profile_id: profileId,
+                skill_id: skillId
+            }
+        })
+            .catch(error => {
+            //db errors
+            console.log(error);
+    });
     }
 
     return 0;
@@ -234,6 +276,15 @@ profileRepository.prototype.updateIntro = async(function(profileID, intro){
     ).catch(error => {console.log(error);});
 });
 
+profileRepository.prototype.addImage = async(function(profileId, imagePath){
+
+    this.profile.update(
+        {imagepath : imagePath},
+        {where : {id : profileId}}
+    );
+
+    return 0;
+});
 
 // =====================================================================================================================
 // REMOVE ATTRIBUTE FROM PROFILE
@@ -304,6 +355,21 @@ profileRepository.prototype.removeProfileSkill = async(function (profileID, skil
     return 0;
 });
 
+profileRepository.prototype.removeProfileSkill = async(function (profileID, skillID){
+    if(skillID != null){
+        this.profileSkill.destroy({
+            where: {
+                profile_id: profileID,
+                skill_id: skillID
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
 profileRepository.prototype.removeProfileSpecialty = async(function (profileID, specialtyName){
     let specialtyID = await(this.attrRepository.getSpecialtyId(specialtyName));
     if(specialtyID != null){
@@ -320,15 +386,21 @@ profileRepository.prototype.removeProfileSpecialty = async(function (profileID, 
     return 0;
 });
 
-profileRepository.prototype.addImage = async(function(profileId, imagePath){
-
-    this.profile.update(
-        {imagepath : imagePath},
-        {where : {id : profileId}}
-    );
-
+profileRepository.prototype.removeProfileSpecialtyById = async(function(profileID, specialtyID) {
+    if(specialtyID != null){
+        this.profileSpecialty.destroy({
+            where: {
+                profile_id: profileID,
+                specialty_id: specialtyID
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
     return 0;
 });
+
 
 //not using right now.
 // =====================================================================================================================
@@ -350,12 +422,13 @@ profileRepository.prototype.createProfile = async(function
         confirmed_user: confirmed_user
     }, {
         returning: true,
-        plain: true})
-        .catch(errors => {
-            //db errors
-            console.log(errors);
-            return errors;
-        }));
+        plain: true}).catch(errors => {
+
+            errors.errors.forEach(function(error){//only actually catches first error
+            throw new Error(error.message);
+        });
+    }));
+
     let profileId = profile.id;
     var i;
     if(Array.isArray(degreeName) && Array.isArray(disciplineName)){
@@ -408,7 +481,6 @@ profileRepository.prototype.createProfile = async(function
     }
     return profile;
 });
-
 
 profileRepository.prototype.getProfileInformation = async(function (profileId){
 
@@ -483,6 +555,36 @@ profileRepository.prototype.deleteProfile = async(function(profileID){
     }
     return 0;
 
+});
+
+profileRepository.prototype.getSpecialtiesIDs = async(function(profileID){
+    let specialties = await(this.attrRepository.specialty.findAll({
+        include: [{
+            model: this.profile,
+            where: {id: profileID},
+            through: {}
+        }]
+    }));
+    var specialties_return = [];
+    for(var i = 0; i < specialties.length; i++){
+        specialties_return.push(specialties[i].dataValues.id);
+    }
+    return specialties_return;
+});
+
+profileRepository.prototype.getSkillsIDs = async(function(profileID){
+    let skills = await(this.attrRepository.skill.findAll({
+        include: [{
+            model: this.profile,
+            where: {id: profileID},
+            through: {}
+        }]
+    }));
+    var skills_return = [];
+    for(var i = 0; i < skills.length; i++){
+        skills_return.push(skills[i].dataValues.id);
+    }
+    return skills_return;
 });
 
 // =====================================================================================================================

@@ -10,7 +10,6 @@ const position = require('../../../models/position');
 const skill = require('../../../models/skill');
 const specialty = require('../../../models/specialty');
 const degree_discipline = require('../../../models/profile_degree');
-//const specialty_tree = require('../../models/specialty_tree')
 
 const repository = function repository(){
 
@@ -53,8 +52,18 @@ repository.prototype.getSkills = async(function () {
     return await(this.skill.findAll()).map(skill => skill.dataValues.name)
 });
 
+repository.prototype.getSkillsTree = async(function () {
+    let skills = await(this.skill.findAll());
+    return skills;
+});
+
 repository.prototype.getSpecialties = async(function () {
     return await(this.specialty.findAll()).map(specialty => specialty.dataValues.name)
+});
+
+repository.prototype.getSpecialtiesTree = async(function() {
+       let specialties = await(this.specialty.findAll());
+    return specialties;
 });
 
 repository.prototype.getAll = async(function () {
@@ -195,9 +204,16 @@ repository.prototype.getSpecialtyName = async(function(specialtyID) {
 });
 
 // =====================================================================================================================
-// HIERARCHICAL GETTING METHODS
+// ADD TO DATABASE
 // =====================================================================================================================
 
+repository.prototype.addNewSpecialty = async(function(specialtyName, parentID){
+    let specialty = await(this.specialty.create({name: specialtyName, parent_id: parentID}, {plain: true}));
+});
+
+repository.prototype.addNewSkill = async(function(skillName, parentID){
+    let skill = await(this.skill.create({name: skillName, parent_id: parentID}, {plain: true}));
+});
 
 
 module.exports = repository;

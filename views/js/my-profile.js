@@ -1,8 +1,4 @@
 $(document).ready(function(){
-
-    // TODO this breaks back end
-    $('#skill').select2();
-    $('#specialty').select2();
     $('#facility').select2();
     $('#department').select2();
     $('#discipline').select2();
@@ -55,30 +51,6 @@ $(document).ready(function(){
     $("#edit-intro").click(function(e){
         var edit = document.getElementById("intro-edit");
         var show = document.getElementById("intro-show");
-        if (show.style.display === "none") {
-            show.style.display = "block";
-            edit.style.display = "none";
-        } else {
-            edit.style.display = "block"
-            show.style.display = "none";
-        }
-    });
-
-    $("#edit-skills").click(function(e){
-        var edit = document.getElementById("skills-edit");
-        var show = document.getElementById("skills-show");
-        if (show.style.display === "none") {
-            show.style.display = "block";
-            edit.style.display = "none";
-        } else {
-            edit.style.display = "block"
-            show.style.display = "none";
-        }
-    });
-
-    $("#edit-specialties").click(function(e){
-        var edit = document.getElementById("specialties-edit");
-        var show = document.getElementById("specialties-show");
         if (show.style.display === "none") {
             show.style.display = "block";
             edit.style.display = "none";
