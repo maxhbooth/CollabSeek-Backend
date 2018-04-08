@@ -46,7 +46,7 @@ module.exports = function (app, sessionChecker) {
             let specialities = [];
             let skills = [];
             let facilities = [];
-            let positions = [];
+            let positions = req.body.positions;
 
             if (req.body.discipline != '') {
                 let disciplineArray = [];
@@ -192,11 +192,6 @@ module.exports = function (app, sessionChecker) {
                         fullNameProfiles: result[7]
                     });
                 });
-
-                // Promise.all(promises).then(function() {
-                //
-                // });
-
             });
         } else {
             res.redirect('/login');
