@@ -228,6 +228,27 @@ profileRepository.prototype.addProfileSkill = async(function (profileId, skillNa
     return 0;
 });
 
+profileRepository.prototype.addProfileSkillById = async(function (profileId, skillId) {
+    if(skillId != null){
+        this.profileSkill.findOrCreate({
+            where: {
+                profile_id: profileId,
+                skill_id: skillId
+            },
+            default: {
+                profile_id: profileId,
+                skill_id: skillId
+            }
+        })
+            .catch(error => {
+            //db errors
+            console.log(error);
+    });
+    }
+
+    return 0;
+});
+
 
 // =====================================================================================================================
 // UPDATE ATTRIBUTE OF PROFILE
@@ -311,6 +332,21 @@ profileRepository.prototype.removeProfileFacility = async(function (profileID, f
 
 profileRepository.prototype.removeProfileSkill = async(function (profileID, skillName){
     let skillID = await(this.attrRepository.getSkillId(skillName));
+    if(skillID != null){
+        this.profileSkill.destroy({
+            where: {
+                profile_id: profileID,
+                skill_id: skillID
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
+profileRepository.prototype.removeProfileSkill = async(function (profileID, skillID){
     if(skillID != null){
         this.profileSkill.destroy({
             where: {
@@ -445,7 +481,6 @@ profileRepository.prototype.createProfile = async(function
     return profile;
 });
 
-
 profileRepository.prototype.getProfileInformation = async(function (profileId){
 
     let profile = await(this.profile.findAll({where: {id:profileId}}));
@@ -534,6 +569,21 @@ profileRepository.prototype.getSpecialtiesIDs = async(function(profileID){
         specialties_return.push(specialties[i].dataValues.id);
     }
     return specialties_return;
+});
+
+profileRepository.prototype.getSkillsIDs = async(function(profileID){
+    let skills = await(this.attrRepository.skill.findAll({
+        include: [{
+            model: this.profile,
+            where: {id: profileID},
+            through: {}
+        }]
+    }));
+    var skills_return = [];
+    for(var i = 0; i < skills.length; i++){
+        skills_return.push(skills[i].dataValues.id);
+    }
+    return skills_return;
 });
 
 // =====================================================================================================================

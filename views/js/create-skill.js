@@ -21,6 +21,10 @@ $(document).ready(function() {
         }
     }
 
+    for(i = 0; i < $("#tree > ul > li").children().length; i++){
+        $("#tree > ul > li:nth-child(" + i + ") > div > span:nth-child(3)").remove();
+    }
+
     $("#expand_all").click(function(e){
         tree.expandAll();
     });
@@ -37,9 +41,8 @@ $(document).ready(function() {
             }
         }
     });
-
-    $("#add_root_specialty").click(function(e){
-        var text =  $("#root_specialty").val();
+    $("#add_skill_category").click(function(e){
+       var text =  $("#skill_category").val();
         if( !text){
             alert("Please fill in the field name!");
             e.preventDefault();
@@ -51,63 +54,60 @@ $(document).ready(function() {
             return false;
         }
         else {
-            var data = {specialty: text, parent:0};
+            var data = {skill: text, parent:0};
             $.ajax({
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
-                url: '/add-new-specialty/'
+                url: '/add-new-skill/'
             });
         }
     });
 
-    $("#add_other_specialty").click(function(e){
+    $("#add_skill").click(function(e){
         var result = tree.getSelections();
         if(result.length === 0){
             alert("Please select a parent category!");
             e.preventDefault();
             return false;
         }
-        if(result.length > 1){
+        else if(result.length > 1){
             alert("Please select only one parent category!");
             e.preventDefault();
             return false;
         }
-        var count = 0;
-        var node_id  = result[0];
-        while(tree.getDataById(node_id).parent_id !== 0){
-            count++;
-            node_id = tree.getDataById(node_id).parent_id;
-        }
-       if(count > 2){
-            alert("There are too many levels here! Cannot create another subcategory!");
-            e.preventDefault();
-            return false;
-       }
-        else if( !$("#other_specialty").val()){
-            alert("Please fill in the field name!")
+        else if(tree.getDataById(result[0]).parent_id !== 0){
+            alert("Please select a top level category!");
             e.preventDefault();
             return false;
         }
-        else if($("#other_specialty").val().includes("/")){
-            alert("Please do not use the slash character (/)!")
+        else if( !$("#skill").val()){
+            alert("Please fill in the field name!");
+            e.preventDefault();
+            return false;
+        }
+        else if($("#skill").val().includes("/")){
+            alert("Please do not use the slash character (/)!");
             e.preventDefault();
             return false;
         }
         else {
-            var data = {specialty: $("#other_specialty").val(), parent:result[0]};
+            var data = {skill: $("#skill").val(), parent:result[0]};
             $.ajax({
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
-                url: '/add-new-specialty/'
+                url: '/add-new-skill/'
             });
         }
     });
 
     tree.on('checkboxChange', function (e, $node, record, state) {
-        if(state === "unchecked"){
-            var url = '/delete-specialty-id/' + record.id + "/";
+        if(tree.getDataById(record.id).parent_id === 0){
+            //pass
+        }
+        else if(state === "unchecked"){
+            var url = '/delete-skill-id/' + record.id + "/";
             $.ajax({
                 type: 'POST',
                 url: url
@@ -116,7 +116,7 @@ $(document).ready(function() {
         else if (state ==="checked"){
             $.ajax({
                 type: 'POST',
-                url: '/add-specialty/' + record.id + "/"
+                url: '/add-skill/' + record.id + "/"
             });
         }
     });

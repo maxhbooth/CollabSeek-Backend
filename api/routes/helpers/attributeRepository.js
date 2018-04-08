@@ -52,6 +52,11 @@ repository.prototype.getSkills = async(function () {
     return await(this.skill.findAll()).map(skill => skill.dataValues.name)
 });
 
+repository.prototype.getSkillsTree = async(function () {
+    let skills = await(this.skill.findAll());
+    return skills;
+});
+
 repository.prototype.getSpecialties = async(function () {
     return await(this.specialty.findAll()).map(specialty => specialty.dataValues.name)
 });
@@ -204,6 +209,10 @@ repository.prototype.getSpecialtyName = async(function(specialtyID) {
 
 repository.prototype.addNewSpecialty = async(function(specialtyName, parentID){
     let specialty = await(this.specialty.create({name: specialtyName, parent_id: parentID}, {plain: true}));
+});
+
+repository.prototype.addNewSkill = async(function(skillName, parentID){
+    let skill = await(this.skill.create({name: skillName, parent_id: parentID}, {plain: true}));
 });
 
 

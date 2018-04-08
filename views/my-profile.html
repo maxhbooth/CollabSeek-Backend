@@ -261,14 +261,12 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="well well-sm">
-                <h4>Specialties <button id="edit-specialties" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                    <span class="glyphicon glyphicon-pencil"></span></button></h4>
+                <h4>Specialties <div class="pull-right"><a href='/create-specialty'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="well well-sm">
-                <h4>Skills <button id="edit-skills" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                    <span class="glyphicon glyphicon-pencil"></span></button></h4>
+                <h4>Skills <div class="pull-right"><a href='/create-skill'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
             </div>
         </div>
         <div class="col-sm-4">
@@ -279,7 +277,7 @@
         </div>
     </div>
     <div class="row">
-        <div id="specialties-show" style="display: block;" class="col-sm-4">
+        <div id="specialties" class="col-sm-4">
             <% if(locals.specialties){%>
             <div class="well well-sm">
                 <%if (specialties.length > 0){%>
@@ -288,84 +286,13 @@
                 <%})}}%>
             </div>
         </div>
-        <div id="specialties-edit" style="display: none;" class="col-sm-4">
-            <% if(locals.specialties){%>
-            <div class="well well-sm">
-                <table class="table"><tbody>
-                <%if (specialties.length > 0){%>
-                <%specialties.forEach(function(specialty){%>
-                <form method="post" action="/delete-specialty/<%=specialty.name%>" class="form-inline">
-                    <tr>
-                    <td><%=specialty.name %></td>
-                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                        <span class="glyphicon glyphicon-minus"></span></button></td>
-                    </tr>
-                </form>
-                <%})}}%>
-                <form method="post" action="/add-specialty" class="form-inline">
-                    <tr>
-                        <td><select id="specialty" name="specialty" class="js-example-basic-single js-states form-control" style="width:95%;">
-                            <% if(locals.all_specialties){%>
-                            <%if (all_specialties.length > 0){all_specialties.forEach(function(specialty){%>
-                            <option><%=specialty%></option>
-                            <%})}}%>
-                        </select></td>
-                        <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                            <span class="glyphicon glyphicon-plus"></span></button></td>
-                    </tr>
-                </form>
-                <form action="/create-new-specialty">
-                    <tr>
-                        <td><a class="btn btn-default" href="/create-specialty">Add Specialty Not In List</a></td>
-                        <td></td>
-                    </tr>
-                </form>
-                </tbody></table>
-            </div>
-        </div>
-
-        <div id="skills-show" style="display: block;"class="col-sm-4">
+        <div id="skills" class="col-sm-4">
             <% if(locals.skills){%>
             <div class="well well-sm">
                 <%if (skills.length > 0){%>
                 <%skills.forEach(function(skill){%>
                 <p><%= skill.name %></p>
                 <%})}}%>
-            </div>
-        </div>
-        <div id="skills-edit" style="display: none;" class="col-sm-4">
-            <% if(locals.skills){%>
-            <div class="well well-sm">
-                <table class="table"><tbody>
-                <%if (skills.length > 0){%>
-                <%skills.forEach(function(skill){%>
-                <form method="post" action="/delete-skill/<%=skill.name%>" class="form-inline">
-                    <tr>
-                    <td><%= skill.name %></td>
-                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                        <span class="glyphicon glyphicon-minus"></span></button></td>
-                    </tr>
-                </form>
-                <%})}}%>
-                <form method="post" action="/add-skill" class="form-inline">
-                <tr>
-                    <td><select id="skill" name="skill" class="js-example-basic-single js-states form-control" style="width:95%;">
-                        <% if(locals.all_skills){%>
-                        <%if (all_skills.length > 0){all_skills.forEach(function(skill){%>
-                        <option><%=skill %></option>
-                        <%})}}%>
-                    </select></td>
-                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                        <span class="glyphicon glyphicon-plus"></span></button></td>
-                </tr>
-                </form>
-                <form action="/create-new-skill">
-                    <tr>
-                        <td><a class="btn btn-default" href="/create-skill">Add Skill Not In List</a></td>
-                        <td></td>
-                    </tr>
-                </form>
-                </tbody></table>
             </div>
         </div>
         <div id="facilities-show" style="display: block;" class="col-sm-4">
