@@ -43,7 +43,7 @@ $(document).ready(function() {
         $newdegreeset.append('<button type="button" id="degreedelete" class="btn btn-default">Delete</button>');
         $("#degree_set").append($newdegreeset);
         $('#' + disc_id).select2();
-    })
+    });
 
     $(document).on('click', '#degreedelete', function () {
         $(this).parent().remove();
