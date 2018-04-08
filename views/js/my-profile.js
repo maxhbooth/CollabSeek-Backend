@@ -1,6 +1,5 @@
 $(document).ready(function(){
 
-    // TODO this breaks back end
     $('#skill').select2();
     $('#specialty').select2();
     $('#facility').select2();
