@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script type="text/javascript" src="js/my-profile.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/my-profile.css">
+
+    <script src="js/load-image.all.min.js"></script>
+
+
+    <script>
+        var imageUrl = "Images/<%=imagePath%>";
+        loadImage(
+            imageUrl,
+            function (img) {
+                if(img.type === "error") {
+                    console.log("Error loading image " + imageUrl);
+                    var icon = document.createElement("IMG");
+
+                    icon.src = "resources/profile-icon.png";
+                    document.getElementById("imageDiv").appendChild(icon);
+                } else {
+                    document.getElementById("imageDiv").appendChild(img);
+                }
+            },
+            {maxWidth: 200,
+                orientation: true}
+        );
+    </script>
+
+
+</head>
+<body class="container">
+<div class="page-header">
+    <h1>My Profile</h1>
+</div>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container row">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="well well-sm clearfix">
+                <div id="name-show" style="display: block;"><h4>Welcome <%=first%> <%=last%>!</h4></div>
+                <div id="name-edit" style="display: none;">
+                    <form method="post" action="/update-name">
+                        <label for="first">Preferred Name:</label>
+                        <input type="text" class="form-control" id="first" name="first" value="<%=first%>">
+                        <label  for="last">Last Name:</label>
+                        <input type="text" class="form-control" id="last" name="last" value="<%=last%>">
+                        <button type="submit" class="btn btn-default">Save</button>
+                    </form>
+                </div>
+                <h4><button id="edit-name" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button></h4>
+            </div>
+
+
+            <% if(locals.imagePath){%>
+            <div id = "imageDiv" style="text-align: center">
+            </div>
+            <%} else {%>
+            <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+            <%}%>
+
+            <form method="get" action="/upload-image">
+                <button class="btn btn-default" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
+            </form>
+            <div class="well well-sm">
+            <h4 class="text-left">Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h4>
+            </div>
+
+        </div>
+
+        <div class="col-sm-8">
+            <div class="well well-sm clearfix">
+                <div id="intro-show" style="display: block;">
+                    <%if(locals.intro){%>
+                    <h5><%=intro %></h5>
+                    <%}else{%>
+                    <h3>Add an introduction!</h3>
+                    <%}%>
+                </div>
+                <div id="intro-edit" style="display: none;">
+                    <form method="post" action="/update-intro">
+                        <textarea class="form-control" name="intro" rows="8"><%if(locals.intro){%><%=intro %><%}else{%><%}%></textarea>
+                        <button type="submit" class="btn btn-default">Save</button>
+                    </form>
+                </div>
+                <h4><button id="edit-intro" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button></h4>
+            </div>
+
+            <% if(locals.position){%>
+            <div class="well well-sm clearfix">
+                <div id="position-show" style="display: block;"><h4>Position: <small><%= position %></small></h4></div>
+                <div id="position-edit" style="display: none;">
+                    <form method="post" action="/update-position" class="form-inline">
+                        <label for="position"><h4>Position: </h4></label>
+                        <select id="position" name="position" class="form-control">
+                            <% if(locals.all_positions){%>
+                            <%if (locals.all_positions.length > 0){locals.all_positions.forEach(function(pos){%>
+                            <%if (locals.position == pos){%>
+                            <option selected><%= pos %></option>
+                            <%}else{%>
+                            <option><%= pos %></option>
+                            <%}})}}%>
+                        </select>
+                        <button type="submit" class="btn btn-default">Save</button>
+                    </form>
+                </div>
+                <h4><button id="edit-position" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button></h4>
+            </div>
+            <%}%>
+
+            <div class="well well-sm clearfix" id="departments-show" style="display: block;">
+                <table class="table">
+                    <thead>
+                    <th><h4>Department</h4></th>
+                    <th><h4><button id="edit-departments1" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                        <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
+                    </thead>
+                    <% if(locals.departments){%>
+                    <%if (departments.length > 0){%>
+                    <tbody>
+                        <%departments.forEach(function(department){%>
+                        <tr>
+                            <td><%=department.name %></td>
+                            <td></td>
+                        </tr>
+                        <%})%>
+                    <%}}%>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="well well-sm clearfix" id="departments-edit" style="display: none;">
+                <table class="table">
+                    <thead>
+                    <th><h4>Department</h4></th>
+                    <th><h4><button id="edit-departments2" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                        <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
+                    </thead>
+                    <tbody>
+                    <% if(locals.departments){%>
+                    <%if (departments.length > 0){%>
+                    <%departments.forEach(function(department){%>
+                    <form method="post" action="/delete-department/<%=department.name%>" class="form-inline">
+                        <tr>
+                            <td><%=department.name %></td>
+                            <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                                <span class="glyphicon glyphicon-minus"></span></button></td>
+                        </tr>
+                    </form>
+                    <%})}}%>
+                    <form method="post" action="/add-department" class="form-inline">
+                        <tr>
+                            <td><select id="department" name="department" class="js-example-basic-single js-states form-control" style="width:95%;">
+                                <% if(locals.all_departments){%>
+                                <%if (all_departments.length > 0){all_departments.forEach(function(department){%>
+                                <option><%=department%></option>
+                                <%})}}%>
+                            </select></td>
+                            <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                                <span class="glyphicon glyphicon-plus"></span></button></td>
+                        </tr>
+                    </form>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="well well-sm clearfix" id="degrees-show" style="display: block">
+                <table class="table">
+                    <thead>
+                    <th><h4 class="text-left">Degree</h4></th>
+                    <th><h4 class="text-left">Discipline</h4></th>
+
+                    <th><h4><button id="edit-degrees1" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                        <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
+
+                    </thead>
+                    <% if(locals.degrees && locals.disciplines){%>
+                    <% if(degrees.length > 0){%>
+                        <tbody>
+                        <%for(var i = 0; i < degrees.length; i++){%>
+                        <tr>
+                            <td><%= degrees[i] %></td>
+                            <td><%= disciplines[i] %></td>
+                            <td></td>
+                        </tr>
+                        <%}}}%>
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="well well-sm cleafix" id="degrees-edit" style="display: none;">
+                <table class="table">
+                    <thead>
+                    <th><h4 class="text-left">Degree</h4></th>
+                    <th><h4 class="text-left">Discipline</h4></th>
+                    <th><h4><button id="edit-degrees2" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                        <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
+                    </thead>
+                    <% if(locals.degrees && locals.disciplines){%>
+                    <% if(degrees.length > 0){%>
+                        <tbody>
+                        <%for(var i = 0; i < degrees.length; i++){%>
+                        <form method="post" action="/delete-degree/<%=degrees[i]%>/<%=disciplines[i]%>" class="form-inline">
+                            <tr>
+                                <td><%= degrees[i] %></td>
+                                <td><%= disciplines[i] %></td>
+                                <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                                    <span class="glyphicon glyphicon-minus"></span></button></td>
+                            </tr>
+                        </form>
+                        <%}}}%>
+                        <form method="post" action="/add-degree" class="form-inline">
+                            <tr>
+                                <td><select id="degree" name="degree" class="js-example-basic-single js-states form-control" style="width:95%;">
+                                    <% if(locals.all_degrees){%>
+                                    <%if (all_degrees.length > 0){all_degrees.forEach(function(degree){%>
+                                    <option><%=degree%></option>
+                                    <%})}}%>
+                                </select></td>
+                                <td><select id="discipline" name="discipline" class="js-example-basic-single js-states form-control" style="width:95%;">
+                                    <% if(locals.all_disciplines){%>
+                                    <%if (all_disciplines.length > 0){all_disciplines.forEach(function(discipline){%>
+                                    <option><%=discipline%></option>
+                                    <%})}}%>
+                                </select></td>
+                                <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                                    <span class="glyphicon glyphicon-plus"></span></button></td>
+                            </tr>
+                        </form>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="well well-sm">
+                <h4>Specialties <div class="pull-right"><a href='/create-specialty'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="well well-sm">
+                <h4>Skills <div class="pull-right"><a href='/create-skill'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="well well-sm">
+                <h4>Facilities<button id="edit-facilities" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                    <span class="glyphicon glyphicon-pencil"></span></button></h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="specialties" class="col-sm-4">
+            <% if(locals.specialties){%>
+            <div class="well well-sm">
+                <%if (specialties.length > 0){%>
+                <%specialties.forEach(function(specialty){%>
+                <p><%= specialty.name %></p>
+                <%})}}%>
+            </div>
+        </div>
+        <div id="skills" class="col-sm-4">
+            <% if(locals.skills){%>
+            <div class="well well-sm">
+                <%if (skills.length > 0){%>
+                <%skills.forEach(function(skill){%>
+                <p><%= skill.name %></p>
+                <%})}}%>
+            </div>
+        </div>
+        <div id="facilities-show" style="display: block;" class="col-sm-4">
+            <div class="well well-sm">
+                <% if(locals.facilities){%>
+                <%if (facilities.length > 0){%>
+                <%facilities.forEach(function(facility){%>
+                <p><%= facility.name %></p>
+                <%})}}%>
+            </div>
+        </div>
+        <div id="facilities-edit" style="display: none;" class="col-sm-4">
+            <div class="well well-sm">
+                <% if(locals.facilities){%>
+                <table class="table"><tbody>
+                <%if (facilities.length > 0){%>
+                <%facilities.forEach(function(facility){%>
+                <form method="post" action="/delete-facility/<%=facility.name%>" class="form-inline">
+                <tr>
+                <td><%= facility.name %></td>
+                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                        <span class="glyphicon glyphicon-minus"></span></button></td>
+                </tr>
+                </form>
+                <%})}}%>
+                <form method="post" action="/add-facility" class="form-inline">
+                    <tr>
+                        <td><select id="facility" name="facility" class="js-example-basic-single js-states form-control" style="width:95%;">
+                            <% if(locals.all_facilities){%>
+                            <%if (all_facilities.length > 0){all_facilities.forEach(function(facility){%>
+                            <option><%=facility%></option>
+                            <%})}}%>
+                        </select></td>
+                        <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                            <span class="glyphicon glyphicon-plus"></span></button></td>
+                    </tr>
+                </form>
+                <form action="/create-new-facility">
+                    <tr>
+                        <td><a class="btn btn-default" href="/create-facility">Add Facility Not In List</a></td>
+                        <td></td>
+                    </tr>
+                </form>
+                </tbody></table>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

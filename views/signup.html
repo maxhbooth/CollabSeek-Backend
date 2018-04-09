@@ -1,0 +1,180 @@
+<html>
+<head>
+    <title>Login Here</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script type="text/javascript" src="js/create-profile.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body class="container">
+
+<div class="page-header">
+    <h1>Simple Auth-System</h1>
+</div>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/signup">Sign Up</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/login">Log In</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container row">
+    <div class="jumbotron">
+        <form id= 'User' action="/signup" method="post">
+            <div>
+                <% if (locals.userErrors) { %>
+                <%if (userErrors.length > 0){userErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
+
+                <label for="email">Email:</label>
+                <% if (!locals.emailErrors) { %>
+                <input type="text" class="form-control" name="email" id="email"/>
+                <% } else { %>
+                <input type="text" class="form-control" name="email" value="<%=validated.email%>"/>
+                <%if (emailErrors.length > 0){emailErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input class="form-control" type="password" name="password" id="password"/>
+                <% if (locals.passwordErrors) { %>
+                <%if (passwordErrors.length > 0){passwordErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
+            </div>
+            <div>
+                <label for="passwordconfirm">Retype Password:</label>
+                <input class="form-control" type="password" name="passwordconfirm" id="passwordconfirm"/>
+            </div>
+
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label for="first">Preferred Name:</label>
+                    <input type="text" class="form-control" id="first" name="first">
+                </div>
+                <div class="form-group col-sm-4">
+                    <label  for="last">Last Name:</label>
+                    <input type="text" class="form-control " id="last" name="last">
+                </div>
+            </div>
+            <div id="degree_set">
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <label for="degree">Degree:</label>
+                        <select id="degree" name="degree" class="js-example-basic-single js-states form-control" >
+                            <% if(locals.degrees){%>
+                            <%if (degrees.length > 0){degrees.forEach(function(degree){%>
+                            <option><%= degree %></option>
+                            <%})}}%>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="discipline">Discipline:</label>
+                        <select id="discipline" name="discipline" class="js-example-basic-single js-states form-control" >
+                            <% if(locals.disciplines){%>
+                            <%if (disciplines.length > 0){disciplines.forEach(function(discipline){%>
+                            <option><%= discipline %></option>
+                            <%})}}%>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <button type="button" id="add_degree" class="btn btn-default">Add Degree</button>
+                </div>
+            </div>
+
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label for="position">Position:</label>
+                    <select id = "position" name = "position" class="js-example-basic-single js-states form-control">
+                        <% if(locals.positions){%>
+                        <%if (positions.length > 0){positions.forEach(function(position){%>
+                        <option><%= position %></option>
+                        <%})}}%>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label for="department">Department/Institute:</label>
+                    <select id="department" name="department" class="js-example-basic-single js-states form-control" multiple="multiple">
+                        <% if(locals.departments){%>
+                        <%if (departments.length > 0){departments.forEach(function(department){%>
+                        <option><%= department %></option>
+                        <%})}}%>
+                    </select>
+                </div>
+            </div>
+
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label for="specialty">Specialties:</label>
+                    <select id = "specialty" name = "specialty" class="js-example-basic-single js-states form-control" multiple="multiple">
+                        <% if(locals.specialties){%>
+                        <%if (specialties.length > 0){specialties.forEach(function(specialty){%>
+                        <option><%= specialty %></option>
+                        <%})}}%>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label for="skill">Skills:</label>
+                    <select id = "skill" name="skill" class="js-example-basic-single js-states form-control" multiple="multiple">
+                        <% if(locals.skills){%>
+                        <%if (skills.length > 0){skills.forEach(function(skill){%>
+                        <option><%= skill %></option>
+                        <%})}}%>
+                    </select>
+                </div>
+            </div>
+
+            <div class = "row">
+                <div class="form-group col-sm-12">
+                    <label for="facility">Facilities/Resources:</label>
+                    <select id = "facility" name="facility" class="js-example-basic-single js-states form-control" multiple="multiple">
+                        <% if(locals.facilities){%>
+                        <%if (facilities.length > 0){facilities.forEach(function(facility){%>
+                        <option><%= facility %></option>
+                        <%})}}%>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </form>
+    </div>
+    </div>
+
+</body>
+</html>
