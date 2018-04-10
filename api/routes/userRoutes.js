@@ -82,12 +82,12 @@ module.exports = function (app, sessionChecker) {
             var attrRepository = new AttrRepository();
             attrRepository.getAll().then(function (attributes){
                 var profileRepository = new ProfileRepository();
-                profileRepository.getProfileInformation(req.session.profile.id).then(function (profile){
-                    var models = {attributes: attributes, profile: profile};
-                    console.log(models);
-                    res.render('signup-details.html', models);
-                });
+            profileRepository.getProfileInformation(req.session.profile.id).then(function (profile){
+                var models = {attributes: attributes, profile: profile};
+                console.log(models);
+                res.render('signup-details.html', models);
             });
+        });
         }else {
             res.redirect('/my-profile');
         }
@@ -132,18 +132,12 @@ module.exports = function (app, sessionChecker) {
                     });
                 });
 
-                req.session.profile = profile.dataValues;
-                res.redirect('verify.html');
+                res.redirect('/verify');
             }).catch(profile_errors =>{
-                attrRepository = new AttrRepository();
-                attrRepository.getAll().then(function (models){
-                    var errors = {userErrors: [profile_errors],
-                    validated: req.body};
-                    var data = extend(models, errors);
-                    res.render('signup.html', data );
+                    console.log(profile_errors);
+                    res.redirect('/verify');
                 });
 
-            });
         } else {
             console.log(errors);
             attrRepository = new AttrRepository();
@@ -182,11 +176,12 @@ module.exports = function (app, sessionChecker) {
         });
     // ROUTING FOR verify page
 
-    app.route('/verify')
-        .get(sessionChecker,(req,res) =>{
+    //app.route('/verify')
+    app.get('/verify',(req,res) =>{
             res.sendFile('/views/verify.html', {root: './'});
-        })
-        .post(( req, res) =>{
+        });
+
+    app.post('/verify', ( req, res) =>{
             var hidden_token = req.body.token;
             console.log(hidden_token);
             // next find account that matches hidden token
