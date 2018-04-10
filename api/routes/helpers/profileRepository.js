@@ -521,11 +521,11 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         }));
         profiles[j] = {id: ID,  first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
             imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
-            hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user};
+            hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro};
         if(profile.length === 1){
             return {id: ID, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
                 imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
-                hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user};
+                hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro};
         }
     }
    return profiles;

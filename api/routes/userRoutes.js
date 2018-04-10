@@ -77,6 +77,7 @@ module.exports = function (app, sessionChecker) {
             }
         });
 
+    // TODO block access for signed up users
     app.get('/signup-details', (req, res) => {
         if (req.session.profile && req.cookies.user_sid){
             var attrRepository = new AttrRepository();
@@ -84,7 +85,7 @@ module.exports = function (app, sessionChecker) {
                 var profileRepository = new ProfileRepository();
                 profileRepository.getProfileInformation(req.session.profile.id).then(function (profile){
                     var models = {attributes: attributes, profile: profile};
-                    console.log(models);
+                    console.log("\n\n\nSINGUP DETAILS GET IN USERROUTES GO FIX THIS ACCESS LEVEL -- IF YOU SEE THIS POST 4/11 TELL ALDEN\n\n\n");
                     res.render('signup-details.html', models);
                 });
             });
@@ -93,57 +94,57 @@ module.exports = function (app, sessionChecker) {
         }
     });
     app.post('/signup-details', (req, res) => {
-            if (req.session.profile && req.cookies.user_sid){
-                profileRepository = new ProfileRepository();
-                profileRepository.getProfileInformation(req.session.profile.id).then(models => {
-                    //email compose
-                    const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
-                    'Please verify you email by typing in the following hidden token <br/>' +
-                    '<b>Token:</b>'+ models.hidden_token +
-                    '<br/> in the following link ' +
-                    '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
+        if (req.session.profile && req.cookies.user_sid){
+            profileRepository = new ProfileRepository();
+            profileRepository.getProfileInformation(req.session.profile.id).then(models => {
+                //email compose
+                const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
+                'Please verify you email by typing in the following hidden token <br/>' +
+                '<b>Token:</b>'+ models.hidden_token +
+                '<br/> in the following link ' +
+                '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
 
-                    nodemailer.createTestAccount((err, account) => {
-                    // create reusable transporter object using the default SMTP transport
-                    let transporter = nodemailer.createTransport({
-                        host: 'smtp.gmail.com',
-                        port: 465,
-                        secure: true,
-                        auth: {
-                            user: 'marcussw@cs.unc.edu',
-                            pass: 'kebab*heels1'
-                        }
-                    });
-                    let mailOptions = {
-                        from: '"Fred Foo 👻" <marcussw@cs.unc.edu>', // sender address
-                        to: models.email, // list of receivers
-                        subject: 'CollabSeek Verification', // Subject line
-                        text: 'Hello', // plain text body
-                        html: html // html body
-                    };
-                    // send mail with defined transport object
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            console.log(error);
-                        }
-                        console.log('Message sent: %s', info.messageId);
-                        // Preview only available when sending through an Ethereal account
-                        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                    });
+                nodemailer.createTestAccount((err, account) => {
+                // create reusable transporter object using the default SMTP transport
+                let transporter = nodemailer.createTransport({
+                    host: 'smtp.gmail.com',
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: 'marcussw@cs.unc.edu',
+                        pass: 'kebab*heels1'
+                    }
                 });
-
-                req.session.profile = profile.dataValues;
-                res.redirect('verify.html');
-            }).catch(profile_errors =>{
-                attrRepository = new AttrRepository();
-                attrRepository.getAll().then(function (models){
-                    var errors = {userErrors: [profile_errors],
-                    validated: req.body};
-                    var data = extend(models, errors);
-                    res.render('signup.html', data );
+                let mailOptions = {
+                    from: '"Fred Foo 👻" <marcussw@cs.unc.edu>', // sender address
+                    to: models.email, // list of receivers
+                    subject: 'CollabSeek Verification', // Subject line
+                    text: 'Hello', // plain text body
+                    html: html // html body
+                };
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        console.log(error);
+                    }
+                    console.log('Message sent: %s', info.messageId);
+                    // Preview only available when sending through an Ethereal account
+                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
                 });
-
             });
+
+            req.session.profile = profile.dataValues;
+            res.redirect('verify.html');
+        }).catch(profile_errors =>{
+            attrRepository = new AttrRepository();
+            attrRepository.getAll().then(function (models){
+                var errors = {userErrors: [profile_errors],
+                validated: req.body};
+                var data = extend(models, errors);
+                res.render('signup.html', data );
+            });
+
+        });
         } else {
             console.log(errors);
             attrRepository = new AttrRepository();

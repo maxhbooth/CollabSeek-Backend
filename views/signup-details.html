@@ -9,6 +9,21 @@
     <script type="text/javascript" src="js/signup-details.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="js/load-image.all.min.js"></script>
+    <script>
+        var imageUrl = "Images/<%=profile.imagePath%>";
+        loadImage(
+            imageUrl,
+            function (img) {
+                if(img.type === "error") {
+                } else {
+                    document.getElementById("imageDiv").appendChild(img);
+                }
+            },
+            {maxWidth: 200,
+                orientation: true}
+        );
+    </script>
 </head>
 <body class="container">
 <div class="container row">
@@ -18,7 +33,7 @@
     <div class="row">
         <div id="intro-edit" class="col-sm-8">
             <form method="post" action="/update-intro">
-                <textarea class="form-control" name="intro" rows="8"></textarea>
+                <textarea class="form-control" name="intro" rows="8"><%if(locals.profile.intro){%><%=locals.profile.intro%><%}%></textarea>
                 <button type="submit" class="btn btn-default">Save</button>
             </form>
         </div>
@@ -27,11 +42,18 @@
     <div class="row">
         <div>
             <h3><small>Upload a Profile Image:</small></h3>
-            <a class="btn btn-default" href="/upload-image" role="button">Upload Image</a>
+            <div id="imageDiv"></div>
+            <form method="post" enctype="multipart/form-data" action="/upload-image-signup">
+                <input type="file" name="imageUpload">
+                <input class="btn btn-default" type="submit" value="Submit">
+            </form>
+
             <h3><small>Add Specialties to Your Profile:</small></h3>
             <a class="btn btn-default" href="/create-specialty" role="button">Add Specialties</a>
+
             <h3><small>Add Skills to Your Profile:</small></h3>
             <a class="btn btn-default" href="/create-skill" role="button">Add Skills</a>
+
             <h3><small>Add Resources and Facilities to Your Profile:</small></h3>
             <a class="btn btn-default" href="/create-facility" role="button">Add Facilities</a>
         </div>
