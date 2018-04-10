@@ -19,14 +19,10 @@ module.exports = function (app, sessionChecker) {
     app.route('/signup')
         .get(sessionChecker, (req, res) => {
             if (!req.session.profile && !req.cookies.user_sid){
-
                 var attrRepository = new AttrRepository();
-
                 attrRepository.getAll().then(function (models){
-                    //console.log(models); tbh this is annoying rn
                     res.render('signup.html', models);
                 });
-
             }else {
                 res.redirect('/my-profile');
             }
@@ -36,88 +32,32 @@ module.exports = function (app, sessionChecker) {
             req.checkBody('email', 'Email must be from 8 to 50 characters.').len(8, 50);
             req.checkBody('password', 'Password must be between 8 to 50 characters.').len(4, 50);
             req.checkBody('password', 'Passwords must match.').equals(req.body.passwordconfirm);
-
-
             req.checkBody('first', "Must enter a first name.").notEmpty();
             req.checkBody('last', "Must enter a last name.").notEmpty();
 
             let errors = req.validationErrors();
-
             if(!req.body.email.endsWith("unc.edu") ){
                 errors.push({msg:"Email must end with unc.edu", param:"email"});
             }
-
             if (!errors) {
-                let email = req.body.email;
-                let password = req.body.password;
-                let first = req.body.first;
-                let last = req.body.last;
-                let degreeName = req.body.degree;
-                let departmentName = req.body.department;
-                let disciplineName = req.body.discipline;
-                let positionName = req.body.position;
-                let facilityName = req.body.facility || null;
-                let skillName = req.body.skill || null;
-                let specialtyName = req.body.specialty || null;
                 let hidden_token = randomstring.generate();
                 let confirmed_user = false;
 
                 var profileRepository = new ProfileRepository();
-                profileRepository.createProfile(first, last, degreeName, departmentName, disciplineName,
-                    positionName, facilityName, skillName, specialtyName, email, password, hidden_token, confirmed_user)
-                    .then(profile => {//code is skipped if error is thrown in profile repository
-                        //email compose
-                        const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
-                            'Please verify you email by typing in the following hidden token <br/>' +
-                            '<b>Token:</b>'+ hidden_token +
-                            '<br/> in the following link ' +
-                            '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
-
-                        nodemailer.createTestAccount((err, account) => {
-                            // create reusable transporter object using the default SMTP transport
-                            let transporter = nodemailer.createTransport({
-                                host: 'smtp.gmail.com',
-                                port: 465,
-                                secure: true,
-                                auth: {
-                                    user: 'marcussw@cs.unc.edu',
-                                    pass: 'kebab*heels1'
-                                }
-                            });
-                            let mailOptions = {
-                                from: '"Fred Foo 👻" <marcussw@cs.unc.edu>', // sender address
-                                to: email, // list of receivers
-                                subject: 'CollabSeek Verification', // Subject line
-                                text: 'Hello', // plain text body
-                                html: html // html body
-                            };
-                            // send mail with defined transport object
-                            transporter.sendMail(mailOptions, (error, info) => {
-                                if (error) {
-                                    console.log(error);
-                                    return;
-                                }
-                                console.log('Message sent: %s', info.messageId);
-                                // Preview only available when sending through an Ethereal account
-                                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                            });
-                        });
-
+                profileRepository.createProfile(req.body.first, req.body.last, req.body.degree, req.body.department, req.body.discipline,
+                    req.body.position, null, null, null, req.body.email, req.body.password, hidden_token, confirmed_user).then(profile => {
                         req.session.profile = profile.dataValues;
-                        res.redirect('verify.html');
+                        console.log(req.session.profile);
+                        res.redirect('/signup-details');
                     })
-                    .catch(profile_errors =>{
-
-                        var attrRepository = new AttrRepository();
-                        attrRepository.getAll().then(function (models){
-                            var errors = {userErrors: [profile_errors],
-                                validated: req.body};
-                            var data = extend(models, errors);
-                            res.render('signup.html',
-                                data );
-                        });
-
+                .catch(profile_errors =>{
+                    var attrRepository = new AttrRepository();
+                    attrRepository.getAll().then(function (models){
+                        var errors = {userErrors: [profile_errors], validated: req.body};
+                        var data = extend(models, errors);
+                        res.render('signup.html', data);
                     });
+                });
             }
             else {
                 console.log(errors);
@@ -125,36 +65,110 @@ module.exports = function (app, sessionChecker) {
                 var emailErrors = [];
                 var passwordErrors = [];
                 for (var i = 0; i < errors.length; i++) {
-                    if (errors[i].param === 'email') {
-                        emailErrors.push(errors[i].msg);
-                    }
-                    else if (errors[i].param === 'password') {
-                        passwordErrors.push(errors[i].msg);
-                    }
-                    else{
-                        userErrors.push(errors[i].msg);
-                    }
+                    if (errors[i].param === 'email') {emailErrors.push(errors[i].msg);}
+                    else if (errors[i].param === 'password') {passwordErrors.push(errors[i].msg);}
+                    else{userErrors.push(errors[i].msg);}
                 }
-                var attrRepository = new AttrRepository();
+                attrRepository = new AttrRepository();
                 attrRepository.getAll().then(function (models){
-                    var errors = {userErrors: userErrors,
-                        emailErrors: emailErrors,
-                        passwordErrors: passwordErrors,
-                        validated: req.body};
+                    var errors = {userErrors: userErrors, emailErrors: emailErrors,
+                        passwordErrors: passwordErrors, validated: req.body};
                     var data = extend(models, errors);
-                    res.render('signup.html',
-                        data );
+                    res.render('signup.html', data);
                 });
             }
         });
+
+    app.route('/signup-details')
+        .get(sessionChecker, (req, res) => {
+            res.render('signup-details.html');
+            // if (!req.session.profile && !req.cookies.user_sid){
+            //     console.log("HERE1");
+            //     var attrRepository = new AttrRepository();
+            //     console.log("HERE2");
+            //     attrRepository.getAll().then(function (attributes){
+            //         console.log("HERE3");
+            //         console.log(attributes);
+            //         var profileRepository = new ProfileRepository();
+            //         profileRepository.getProfileInformation(req.session.profile.id).then(function (profile){
+            //             var models = {attributes: attributes, profile: profile};
+            //             console.log(models);
+            //             res.render('signup-details.html', models);
+            //         });
+            //     });
+            // }else {
+            //     res.redirect('/my-profile');
+            // }
+        })
+        .post((req, res) => {
+            if (req.session.profile && req.cookies.user_sid){
+                profileRepository = new ProfileRepository();
+                profileRepository.getProfileInformation(req.session.profile.id).then(models => {
+                    //email compose
+                    const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
+                    'Please verify you email by typing in the following hidden token <br/>' +
+                    '<b>Token:</b>'+ models.hidden_token +
+                    '<br/> in the following link ' +
+                    '<a href ="http://localhost:8080/verify">http://localhost:8080/verify</a>';
+
+                    nodemailer.createTestAccount((err, account) => {
+                    // create reusable transporter object using the default SMTP transport
+                    let transporter = nodemailer.createTransport({
+                        host: 'smtp.gmail.com',
+                        port: 465,
+                        secure: true,
+                        auth: {
+                            user: 'marcussw@cs.unc.edu',
+                            pass: 'kebab*heels1'
+                        }
+                    });
+                    let mailOptions = {
+                        from: '"Fred Foo 👻" <marcussw@cs.unc.edu>', // sender address
+                        to: models.email, // list of receivers
+                        subject: 'CollabSeek Verification', // Subject line
+                        text: 'Hello', // plain text body
+                        html: html // html body
+                    };
+                    // send mail with defined transport object
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.log(error);
+                        }
+                        console.log('Message sent: %s', info.messageId);
+                        // Preview only available when sending through an Ethereal account
+                        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                    });
+                });
+
+                req.session.profile = profile.dataValues;
+                res.redirect('verify.html');
+            }).catch(profile_errors =>{
+                attrRepository = new AttrRepository();
+                attrRepository.getAll().then(function (models){
+                    var errors = {userErrors: [profile_errors],
+                    validated: req.body};
+                    var data = extend(models, errors);
+                    res.render('signup.html', data );
+                });
+
+            });
+        } else {
+            console.log(errors);
+            attrRepository = new AttrRepository();
+            attrRepository.getAll().then(function (models){
+                var errors = {userErrors: userErrors, emailErrors: emailErrors, passwordErrors: passwordErrors, validated: req.body};
+                var data = extend(models, errors);
+                res.render('signup.html', data);
+            });
+        }
+    });
 
     app.route('/login')
         .get(sessionChecker, (req, res) => {
             res.sendFile('/views/login.html', {root: './'});
         })
         .post((req, res) => {
-            var email = req.body.email,
-                password = req.body.password;
+            var email = req.body.email, password = req.body.password;
             Profile.findOne({where: {email: email}}).then(function (profile) {
                 let userConfirmed = profile.confirmed_user;
                 console.log("LOGIN");
@@ -164,13 +178,11 @@ module.exports = function (app, sessionChecker) {
                     res.redirect('/login');
                 } else if (!profile.validPassword(password)) {
                     res.redirect('/login');
-                }
-                //check to see if profile has been activated return error message  //
-                else if(!userConfirmed){
+                } else if(!userConfirmed){
+                    //check to see if profile has been activated return error message  //
                     console.log("Confirm your email address.");
                     res.redirect('/verify');
-                }
-                else {
+                } else {
                     req.session.profile = profile.dataValues;
                     res.redirect('/');
                 }
@@ -183,29 +195,22 @@ module.exports = function (app, sessionChecker) {
             res.sendFile('/views/verify.html', {root: './'});
         })
         .post(( req, res) =>{
-            try{
-                var hidden_token = req.body.token;
-                console.log(hidden_token);
-                // next find account that matches hidden token
-                Profile.findOne({where:{'hidden_token': hidden_token}}).then(function(user) {
-                    if (!user) {
-                        console.log("No user found");
-                        res.redirect('/verify');
-                        return;
-                    }
-                    //change the user's properties if pass
-                    console.log(user.email);
-                    console.log(user.confirmed_user);
-                    user.confirmed_user = true;
-                    user.hidden_token = "";
-                    user.save().then(res.redirect('/login'));
-                });
-            }catch(error){
-                console.log("Error:"+error);
-            }
+            var hidden_token = req.body.token;
+            console.log(hidden_token);
+            // next find account that matches hidden token
+            Profile.findOne({where:{'hidden_token': hidden_token}}).then(function(user) {
+                if (!user) {
+                    console.log("No user found");
+                    res.redirect('/verify');
+                }
+                //change the user's properties if pass
+                user.confirmed_user = true;
+                user.hidden_token = "";
+                user.save().then(res.redirect('/login'));
+            }).catch(error => {
+                console.log("Error:" + error);
+            });
         });
-
-
 
     app.get('/logout', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {

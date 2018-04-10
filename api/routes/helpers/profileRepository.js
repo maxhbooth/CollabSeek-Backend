@@ -96,7 +96,7 @@ var profileRepository = function profileRepository(){
 profileRepository.prototype.addProfileDegree = async(function (profileId, degreeName, disciplineName) {
         let degreeId = await(this.attrRepository.getDegreeId(degreeName));
         let disciplineId = await(this.attrRepository.getDisciplineId(disciplineName));
-        if(degreeId!=null && disciplineId!= null) {
+    if(degreeId!=null && disciplineId!= null) {
                 this.profileDegree.findOrCreate({
                     where: {
                         profile_id: profileId,
@@ -110,8 +110,7 @@ profileRepository.prototype.addProfileDegree = async(function (profileId, degree
                     }
                     })
                     .catch(error => {
-                    //db errors
-                    //console.log(error);
+                        console.log(error);
                     });
         }
     return 0;
@@ -423,7 +422,6 @@ profileRepository.prototype.createProfile = async(function
     }, {
         returning: true,
         plain: true}).catch(errors => {
-
             errors.errors.forEach(function(error){//only actually catches first error
             throw new Error(error.message);
         });

@@ -5,6 +5,16 @@
     <title>Facility Creation</title>
 </head>
 <body>
-
+<div class = "row">
+    <div class="form-group col-sm-12">
+        <label for="facility">Facilities/Resources:</label>
+        <select id = "facility" name="facility" class="js-example-basic-single js-states form-control" multiple="multiple">
+            <% if(locals.facilities){%>
+            <%if (facilities.length > 0){facilities.forEach(function(facility){%>
+            <option><%= facility %></option>
+            <%})}}%>
+        </select>
+    </div>
+</div>
 </body>
 </html>

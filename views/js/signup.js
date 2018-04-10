@@ -7,10 +7,7 @@ $(document).ready(function() {
         {disciplines.push($(this).val());});
 
     $('#discipline').select2();
-    $('#specialty').select2();
-    $('#skill').select2();
     $('#department').select2();
-    $('#facility').select2();
     $('#degree').select2();
     $('#position').select2();
 

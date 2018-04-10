@@ -18,7 +18,6 @@ module.exports = function (app, sessionChecker) {
             res.redirect('/login');
         }
     });
-
     app.get('/create-specialty', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
             let attrRepository = new AttributeRepository();
@@ -33,7 +32,6 @@ module.exports = function (app, sessionChecker) {
             res.redirect('/login');
         }
     });
-
     app.get('/create-facility', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
             let profileRepositiory = new ProfileRepository();
