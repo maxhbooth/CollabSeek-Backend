@@ -1,6 +1,8 @@
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 //asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const degree = require('../../../models/degree');
 const department = require('../../../models/department');
@@ -49,7 +51,10 @@ repository.prototype.getPositions = async(function () {
 });
 
 repository.prototype.getSkills = async(function () {
-    return await(this.skill.findAll()).map(skill => skill.dataValues.name)
+    return await(this.skill.findAll({
+            where: {parent_id: {[Op.ne]: 0}}
+        }
+    )).map(skill => skill.dataValues.name)
 });
 
 repository.prototype.getSkillsTree = async(function () {
