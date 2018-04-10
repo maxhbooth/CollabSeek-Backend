@@ -10,8 +10,10 @@ module.exports = function (app, sessionChecker) {
             attrRepository.getSkillsTree().then(function (skill) {
                 let profileRepository = new ProfileRepository();
                 profileRepository.getSkillsIDs(req.session.profile.id).then(function (ids) {
-                    var models = {skill: skill, ids: ids};
-                    res.render('create-skill.html', models);
+                    profileRepository.getUserConfirmed(req.session.profile.id).then(function (user_confirmed) {
+                        var models = {skill: skill, ids: ids, user_confirmed :user_confirmed};
+                        res.render('create-skill.html', models);
+                    });
                 });
             });
         }else{
@@ -24,8 +26,10 @@ module.exports = function (app, sessionChecker) {
             attrRepository.getSpecialtiesTree().then(function (specialty) {
                 let profileRepository = new ProfileRepository();
                 profileRepository.getSpecialtiesIDs(req.session.profile.id).then(function (ids) {
-                    var models = {specialty: specialty, ids: ids};
-                    res.render('create-specialty.html', models);
+                    profileRepository.getUserConfirmed(req.session.profile.id).then(function (user_confirmed){
+                        var models = {specialty: specialty, ids: ids, user_confirmed: user_confirmed};
+                        res.render('create-specialty.html', models);
+                    });
                 });
             });
         }else{

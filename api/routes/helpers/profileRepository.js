@@ -577,6 +577,17 @@ profileRepository.prototype.getSkillsIDs = async(function(profileID){
     return skills_return;
 });
 
+profileRepository.prototype.getUserConfirmed = async(function(profileID){
+    let profile = await(this.profile.findAll({where: {id:profileID}}));
+    if(profile==null){
+        return null;
+    }
+    else{
+        return profile[0].confirmed_user;
+    }
+
+});
+
 // =====================================================================================================================
 // GET PROFILE IDS WITH CERTAIN ATTRIBUTE
 // =====================================================================================================================

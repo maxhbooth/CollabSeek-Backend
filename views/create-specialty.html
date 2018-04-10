@@ -18,23 +18,23 @@
 <div class="page-header">
     <h2>Edit My Specialties</h2>
 </div>
+<%if (locals.user_confirmed){%>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/my-profile">My Profile</a></li>
+                </ul>
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-                <li><a href="/my-profile">My Profile</a></li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/logout">Log Out</a></li>
-            </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/logout">Log Out</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-
+    </nav>
+<%}%>
 <div class="container-fluid">
     <% var json_tree = []; %>
     <% if (locals.specialty) { %>
@@ -45,6 +45,12 @@
 
     <div id="test" style="display:none;"><%=JSON.stringify(json_tree)%></div>
     <div id="test2" style="display:none;"><%=locals.ids%></div>
+
+    <%if(!locals.user_confirmed){%>
+    <form action="/signup-details" method="get">
+        <button type="submit" class="btn btn-default">Return to Signup</button>
+    </form>
+    <%}%>
 
     <h3>Add and Remove Specialties From Your Profile By Checking The Below</h3>
     <h3><small>Add New Specialties to the List via the Below Options</small></h3>
@@ -60,13 +66,13 @@
         <button id="add_other_specialty" class="btn btn-default" style="display: inline-flex;">Save</button>
     </form>
 
-    <label for="specialty_search">Search:</label>
-    <select id="specialty_search" name="specialty_search" class="js-example-basic-single js-states form-control" style="width:95%;">
-        <% if(locals.specialty){%>
-        <%{specialty.forEach(function(spec){%>
-        <option><%=spec.dataValues.name%></option>
-        <%})}}%>
-    </select>
+    <!--<label for="specialty_search">Search:</label>-->
+    <!--<select id="specialty_search" name="specialty_search" class="js-example-basic-single js-states form-control" style="width:95%;">-->
+        <!--<% if(locals.specialty){%>-->
+        <!--<%{specialty.forEach(function(spec){%>-->
+        <!--<option><%=spec.dataValues.name%></option>-->
+        <!--<%})}}%>-->
+    <!--</select>-->
 
     <button id="expand_all" class="btn btn-default" style="display: inline-flex;">Expand All</button>
     <button id="collapse_all" class="btn btn-default" style="display: inline-flex;">Collapse All</button>

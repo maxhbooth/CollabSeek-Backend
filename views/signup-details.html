@@ -27,7 +27,7 @@
 </head>
 <body class="container">
 <div class="container row">
-    <h3>Add As Many Of the Following Features to Your Profile As Desired</h3>
+    <h3>Finish Creating Your Profile</h3>
     <h3><small>You will be able to edit this in your profile view later as well.</small></h3>
     <h3><small>Add an introduction for people viewing your profile:</small></h3>
     <div class="row">
@@ -50,12 +50,37 @@
 
             <h3><small>Add Specialties to Your Profile:</small></h3>
             <a class="btn btn-default" href="/create-specialty" role="button">Add Specialties</a>
+            <% if(locals.profile.specialties){%>
+            <%if(profile.specialties.length > 0){%>
+            <div class="well well-sm">
+                <%profile.specialties.forEach(function(specialty){%>
+                <p><%= specialty.name %></p>
+                <%})%>
+            </div>
+            <%}}%>
 
             <h3><small>Add Skills to Your Profile:</small></h3>
             <a class="btn btn-default" href="/create-skill" role="button">Add Skills</a>
+            <% if(locals.profile.skills){%>
+            <%if (profile.skills.length > 0){%>
+            <div class="well well-sm">
+                <%profile.skills.forEach(function(skill){%>
+                <p><%= skill.name %></p>
+                <%})%>
+            </div>
+            <%}}%>
 
             <h3><small>Add Resources and Facilities to Your Profile:</small></h3>
             <a class="btn btn-default" href="/create-facility" role="button">Add Facilities</a>
+            <% if(locals.profile.facilities){%>
+            <%if(profile.facilities.length > 0){%>
+            <div class="well well-sm">
+                <%profile.facilities.forEach(function(facility){%>
+                <p><%= facility.name %></p>
+                <%})%>
+            </div>
+            <%}}%>
+
         </div>
     </div>
 

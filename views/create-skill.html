@@ -17,6 +17,7 @@
     <h2>Edit My Skills</h2>
 </div>
 
+<%if (locals.user_confirmed){%>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -32,7 +33,7 @@
         </div>
     </div>
 </nav>
-
+<%}%>
 <div class="container-fluid">
     <% var json_tree = []; %>
     <% if (locals.skill) { %>
@@ -43,6 +44,12 @@
 
     <div id="test" style="display:none;"><%=JSON.stringify(json_tree)%></div>
     <div id="test2" style="display:none;"><%=locals.ids%></div>
+
+    <%if(!locals.user_confirmed){%>
+    <form action="/signup-details" method="get">
+        <button type="submit" class="btn btn-default">Return to Signup</button>
+    </form>
+    <%}%>
 
     <h3>Add and Remove Skills From Your Profile By Checking The Below</h3>
     <h3><small>Add New Skills and Categories to The List</small></h3>

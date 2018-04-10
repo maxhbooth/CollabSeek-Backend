@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    $('#specialty_search').select2();
+    //$('#specialty_search').select2();
 
     var database_data = (JSON.parse($("#test").text()));
     var sorted = _queryTreeSort({q:database_data});
@@ -14,13 +14,15 @@ $(document).ready(function() {
         border: true
     });
     var spec_ids = ($("#test2").text());
-    var spec_ints = spec_ids.split(",");
-    for(var i = 0; i < spec_ints.length; i++) {
-        var node_id = parseInt(spec_ints[i], 10);
-        tree.check(tree.getNodeById(node_id));
-        while(tree.getDataById(node_id).parent_id !== 0){
-            node_id = tree.getDataById(node_id).parent_id;
-            tree.expand(tree.getNodeById(node_id));
+    if(spec_ids) {
+        var spec_ints = spec_ids.split(",");
+        for (var i = 0; i < spec_ints.length; i++) {
+            var node_id = parseInt(spec_ints[i], 10);
+            tree.check(tree.getNodeById(node_id));
+            while (tree.getDataById(node_id).parent_id !== 0) {
+                node_id = tree.getDataById(node_id).parent_id;
+                tree.expand(tree.getNodeById(node_id));
+            }
         }
     }
 
@@ -31,12 +33,14 @@ $(document).ready(function() {
         tree.collapseAll();
     });
     $("#expand_mine").click(function(e){
-        for(var i = 0; i < spec_ints.length; i++) {
-            var node_id = parseInt(spec_ints[i], 10);
-            tree.check(tree.getNodeById(node_id));
-            while(tree.getDataById(node_id).parent_id !== 0){
-                node_id = tree.getDataById(node_id).parent_id;
-                tree.expand(tree.getNodeById(node_id));
+        if(spec_ids) {
+            for (var i = 0; i < spec_ints.length; i++) {
+                var node_id = parseInt(spec_ints[i], 10);
+                tree.check(tree.getNodeById(node_id));
+                while (tree.getDataById(node_id).parent_id !== 0) {
+                    node_id = tree.getDataById(node_id).parent_id;
+                    tree.expand(tree.getNodeById(node_id));
+                }
             }
         }
     });
