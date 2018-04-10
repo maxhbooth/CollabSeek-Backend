@@ -1,5 +1,5 @@
 // route for Home-Page
-
+var Profile = require('../../models/profile');
 const ProfileRepository = require('./helpers/profileRepository');
 const AttributeRepository = require('./helpers/attributeRepository');
 
@@ -33,6 +33,9 @@ module.exports = function (app, sessionChecker) {
             res.sendFile('/views/welcome.html', {root: './'});
         }
     });
+
+
+
 
     app.get('/profile', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
@@ -68,6 +71,41 @@ module.exports = function (app, sessionChecker) {
         res.redirect('/login');
     }
 });
+
+
+
+    app.get('/verify/:hidden_token',(req,res)=>{
+        if (req.session.profile && req.cookies.user_sid) {
+            var hidden_token = req.params.hidden_token;
+            console.log(hidden_token);
+            // next find account that matches hidden token
+            Profile.findOne({where:{'hidden_token': hidden_token}}).then(function(user) {
+                if (!user) {
+                    console.log("No user found");
+                    res.redirect('/login');
+                    return;
+                }
+                //change the user's properties if pass
+                console.log(user.email);
+                console.log(user.confirmed_user);
+                user.confirmed_user = true;
+                user.hidden_token = "";
+                user.save().then(res.redirect('/my-profile'));
+            });
+
+        }
+    });
+    app.get('/changepassword/:password_token',(req,res)=>{
+        if (req.session.profile && req.cookies.user_sid) {
+            var password_token = req.params.password_token;
+            console.log(password_token);
+
+            }
+
+
+        });
+
+
 
     app.get('/my-profile', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
