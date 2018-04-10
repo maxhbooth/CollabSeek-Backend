@@ -34,6 +34,15 @@ module.exports = function (app, sessionChecker) {
         }
     });
 
+    app.post('/update-intro-signup', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid) {
+        profileRepository = new ProfileRepository();
+        profileRepository.updateIntro(req.session.profile.id, req.body.intro).then(function(){res.redirect('/signup-details')});
+    }else {
+        res.redirect('/welcome');
+    }
+});
+
 
     app.post('/add-department', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
