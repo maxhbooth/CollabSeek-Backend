@@ -1,4 +1,7 @@
 $(document).ready(function() {
+
+    $('#specialty_search').select2();
+
     var database_data = (JSON.parse($("#test").text()));
     var sorted = _queryTreeSort({q:database_data});
     var tree_data = _makeTree({q:sorted});

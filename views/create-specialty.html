@@ -6,6 +6,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript" src="js/tree-making.js"></script>
     <script type="text/javascript" src="js/create-specialty.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -57,6 +59,14 @@
         <input type="text" class="form-control" id="other_specialty" name="other_specialty">
         <button id="add_other_specialty" class="btn btn-default" style="display: inline-flex;">Save</button>
     </form>
+
+    <label for="specialty_search">Search:</label>
+    <select id="specialty_search" name="specialty_search" class="js-example-basic-single js-states form-control" style="width:95%;">
+        <% if(locals.specialty){%>
+        <%{specialty.forEach(function(spec){%>
+        <option><%=spec.dataValues.name%></option>
+        <%})}}%>
+    </select>
 
     <button id="expand_all" class="btn btn-default" style="display: inline-flex;">Expand All</button>
     <button id="collapse_all" class="btn btn-default" style="display: inline-flex;">Collapse All</button>

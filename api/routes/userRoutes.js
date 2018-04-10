@@ -7,8 +7,6 @@ const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
 
 module.exports = function (app, sessionChecker) {
-    // set up the routes themselves
-
     function extend(dest, src) {
         for(var key in src) {
             dest[key] = src[key];
@@ -79,28 +77,22 @@ module.exports = function (app, sessionChecker) {
             }
         });
 
-    app.route('/signup-details')
-        .get(sessionChecker, (req, res) => {
-            res.render('signup-details.html');
-            // if (!req.session.profile && !req.cookies.user_sid){
-            //     console.log("HERE1");
-            //     var attrRepository = new AttrRepository();
-            //     console.log("HERE2");
-            //     attrRepository.getAll().then(function (attributes){
-            //         console.log("HERE3");
-            //         console.log(attributes);
-            //         var profileRepository = new ProfileRepository();
-            //         profileRepository.getProfileInformation(req.session.profile.id).then(function (profile){
-            //             var models = {attributes: attributes, profile: profile};
-            //             console.log(models);
-            //             res.render('signup-details.html', models);
-            //         });
-            //     });
-            // }else {
-            //     res.redirect('/my-profile');
-            // }
-        })
-        .post((req, res) => {
+    app.get('/signup-details', (req, res) => {
+        if (req.session.profile && req.cookies.user_sid){
+            var attrRepository = new AttrRepository();
+            attrRepository.getAll().then(function (attributes){
+                var profileRepository = new ProfileRepository();
+                profileRepository.getProfileInformation(req.session.profile.id).then(function (profile){
+                    var models = {attributes: attributes, profile: profile};
+                    console.log(models);
+                    res.render('signup-details.html', models);
+                });
+            });
+        }else {
+            res.redirect('/my-profile');
+        }
+    });
+    app.post('/signup-details', (req, res) => {
             if (req.session.profile && req.cookies.user_sid){
                 profileRepository = new ProfileRepository();
                 profileRepository.getProfileInformation(req.session.profile.id).then(models => {
