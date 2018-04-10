@@ -436,47 +436,39 @@ profileRepository.prototype.createProfile = async(function
         for(i = 0; i < min; i++){
             this.addProfileDegree(profileId, degreeName[i], disciplineName[i]);
         }
-    }
-    else if(Array.isArray(degreeName) && !Array.isArray(disciplineName)){
+    }else if(Array.isArray(degreeName) && !Array.isArray(disciplineName)){
         this.addProfileDegree(profileId, degreeName[0], disciplineName);
-    }
-    else if(!Array.isArray(degreeName) && Array.isArray(disciplineName)){
+    }else if(!Array.isArray(degreeName) && Array.isArray(disciplineName)){
         this.addProfileDegree(profileId, degreeName, disciplineName[0]);
-    }
-    else{
+    }else{
         this.addProfileDegree(profileId, degreeName, disciplineName);
     }
     if(Array.isArray(departmentName)){
         for(i = 0; i < departmentName.length; i++){
             this.addProfileDepartment(profileId, departmentName[i]);
         }
-    }
-    else{
+    }else{
         this.addProfileDepartment(profileId, departmentName);
     }
     if(Array.isArray(facilityName)){
         for(i = 0; i < facilityName.length; i++){
             this.addProfileFacility(profileId, facilityName[i]);
         }
-    }
-    else{
+    }else{
         this.addProfileFacility(profileId, facilityName);
     }
     if(Array.isArray(specialtyName)){
         for(i = 0; i < specialtyName.length; i++){
             this.addProfileSpecialty(profileId, specialtyName[i]);
         }
-    }
-    else {
+    }else {
         this.addProfileSpecialty(profileId, specialtyName);
     }
-
     if(Array.isArray(skillName)){
         for(i = 0; i < skillName.length; i++){
             this.addProfileSkill(profileId, skillName[i]);
         }
-    }
-    else{
+    }else{
         this.addProfileSkill(profileId, skillName);
     }
     return profile;
@@ -493,8 +485,7 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         let ID = profile[j].id;
         let positionId = profile[j].position;
 
-        let position = await(this.attrRepository.position.findOne({where:{id:positionId}}))
-
+        let position = await(this.attrRepository.position.findOne({where:{id:positionId}}));
         let degrees_set = await(this.attrRepository.degree_discipline.findAll({
             where: {profile_id: ID}
         }));
@@ -515,7 +506,6 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
                 through: {}
             }]
         }));
-
         let departments = await(this.attrRepository.department.findAll({
             include: [{
                 model: this.profile,
@@ -532,10 +522,12 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
             }]
         }));
         profiles[j] = {id: ID,  first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
-            imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
-        if(profile.length == 1){
+            imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
+            hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user};
+        if(profile.length === 1){
             return {id: ID, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
-                imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+                imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
+                hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user};
         }
     }
    return profiles;
