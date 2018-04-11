@@ -25,7 +25,7 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div>
+<div class="container">
     <% if (locals.pastQuery){%>
     <h5>You searched for: <b><%=pastQuery%></b></h5>
     <%}%>
@@ -33,188 +33,261 @@
     <% if(locals.departmentProfiles){%>
         <div>
             <% if (departmentProfiles.length > 0){%>
-            <h3>By Department: <small>
+            <div class="page-header"><h3>Department: </h3></div>
                 <%departmentProfiles.forEach(function(profile){%>
-                <div>
-                    |<%=profile.first %>&nbsp;<%=profile.last%>|
-                    |<%=profile.position %>|
-                    <% if (profile.departments.length > 0) {%>
-                        |<%=profile.matchedQuery %>|
-                    <%}%>
-                    |<a href="/profile/<%=profile.id%>">Profile</a>|
+                <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                    <div >
+                        <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                    </div>
+                    <div>
+                        <%=profile.email%>
+                    </div>
+                    <div>
+                        <%=profile.position %>
+                    </div>
+                    <div>
+                        <% if (profile.departments.length > 0) {%>
+                        <%=profile.departments[0].name %>
+                        <%}%>
+                    </div>
                 </div>
                 <%})%>
-            </small></h3><%}%>
+            <%}%>
         </div>
     <%}%>
 
     <% if(locals.disciplineProfiles){%>
     <div>
         <% if (disciplineProfiles.length > 0){%>
-        <h3>By Discipline: <small>
-            <%disciplineProfiles.forEach(function(profile){%>
-            <div>
-                |<%=profile.first %>&nbsp;<%=profile.last%>|
-                |<%=profile.position %>|
-                <% if (profile.departments.length > 0) {%>
-                    |<%=profile.departments[0].name %>|
-                <%}%>
-                |<%=profile.matchedQuery %>|
-                |<a href="/profile/<%=profile.id%>">Profile</a>|
+        <div class="page-header"><h3>Discipline: </h3></div>
+        <%disciplineProfiles.forEach(function(profile){%>
+            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <%=profile.email%>
+                </div>
+                <div>
+                    <%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <%=profile.departments[0].name %>
+                    <%}%>
+                </div>
             </div>
             <%})%>
-        </small></h3><%}%>
+        <%}%>
     </div>
     <%}%>
 
     <% if(locals.facilityProfiles){%>
     <div>
         <% if (facilityProfiles.length > 0){%>
-        <h3>By Facility: <small>
+        <div class="page-header"><h3>Facilities: </h3></div>
             <%facilityProfiles.forEach(function(profile){%>
-            <div>
-                |<%=profile.first %>&nbsp;<%=profile.last%>|
-                |<%=profile.position %>|
-                <% if (profile.departments.length > 0) {%>
-                    |<%=profile.departments[0].name %>|
-                <%}%>
-                |<%=profile.matchedQuery %>|
-                |<a href="/profile/<%=profile.id%>">Profile</a>|
+            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <%=profile.email%>
+                </div>
+                <div>
+                    <%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <%=profile.departments[0].name %>
+                    <%}%>
+                </div>
             </div>
             <%})%>
-        </small></h3><%}%>
+        <%}%>
     </div>
     <%}%>
 
     <% if(locals.skillProfiles){%>
     <div>
         <% if (skillProfiles.length > 0){%>
-        <h3>By Skill: <small>
+        <div class="page-header"><h3>Skills: </h3></div>
             <%skillProfiles.forEach(function(profile){%>
-            <div>
-                |<%=profile.first %>&nbsp;<%=profile.last%>|
-                |<%=profile.position %>|
-                <% if (profile.departments.length > 0) {%>
-                    |<%=profile.departments[0].name %>|
-                <%}%>
-                |<%=profile.matchedQuery %>|
-                |<a href="/profile/<%=profile.id%>">Profile</a>|
+            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <%=profile.email%>
+                </div>
+                <div>
+                    <%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <%=profile.departments[0].name %>
+                    <%}%>
+                </div>
             </div>
             <%})%>
-        </small></h3><%}%>
+        <%}%>
     </div>
     <%}%>
 
     <% if(locals.specialtyProfiles){%>
     <div>
         <% if (specialtyProfiles.length > 0){%>
-        <h3>By Specialty: <small>
+        <div class="page-header"><h3>Specialty: </h3></div>
             <%specialtyProfiles.forEach(function(profile){%>
-            <div>
-                |<%=profile.first %>&nbsp;<%=profile.last%>|
-                |<%=profile.position %>|
-                <% if (profile.departments.length > 0) {%>
-                    |<%=profile.departments[0].name %>|
-                <%}%>
-                |<%=profile.matchedQuery %>|
-                |<a href="/profile/<%=profile.id%>">Profile</a>|
+            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <%=profile.email%>
+                </div>
+                <div>
+                    <%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <%=profile.departments[0].name %>
+                    <%}%>
+                </div>
             </div>
             <%})%>
-        </small></h3><%}%>
+        <%}%>
     </div>
     <%}%>
 
     <% if(locals.positionProfiles){%>
     <div>
         <% if (positionProfiles.length > 0){%>
-        <h3>By Position: <small>
-            <%positionProfiles.forEach(function(profile){%>
-            <div>
-                |<%=profile.first %>&nbsp;<%=profile.last%>|
-                |<%=profile.position %>|
-                <% if (profile.departments.length > 0) {%>
-                    |<%=profile.departments[0].name %>|
-                <%}%>
-                |<%=profile.matchedQuery %>|
-                |<a href="/profile/<%=profile.id%>">Profile</a>|
+        <div class="page-header"><h3>Position: </h3></div>
+        <%positionProfiles.forEach(function(profile){%>
+            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <%=profile.email%>
+                </div>
+                <div>
+                    <%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <%=profile.departments[0].name %>
+                    <%}%>
+                </div>
             </div>
             <%})%>
-        </small></h3><%}%>
+        <%}%>
     </div>
     <%}%>
 
     <% if(locals.firstNameProfiles){%>
     <div>
         <% if (firstNameProfiles.length > 0){%>
-        <h3>By First Name: <small>
+        <div class="page-header"><h3>First Name: </h3></div>
             <%firstNameProfiles.forEach(function(profile){%>
-            <div>
-                |<%=profile.first %>&nbsp;<%=profile.last%>|
-                |<%=profile.position %>|
-                <% if (profile.departments.length > 0) {%>
-                    |<%=profile.departments[0].name %>|
-                <%}%>
-                |<a href="/profile/<%=profile.id%>">Profile</a>|
+            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <%=profile.email%>
+                </div>
+                <div>
+                    <%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <%=profile.departments[0].name %>
+                    <%}%>
+                </div>
             </div>
             <%})%>
-        </small></h3><%}%>
+        <%}%>
     </div>
     <%}%>
+
 
     <% if(locals.lastNameProfiles){%>
     <div>
         <% if (lastNameProfiles.length > 0){%>
-        <h3>By Last Name: <small>
+        <div class="page-header"><h3>Last Name: </h3></div>
             <%lastNameProfiles.forEach(function(profile){%>
-            <div>
-                |<%=profile.first %>&nbsp;<%=profile.last%>|
-                |<%=profile.position %>|
-                <% if (profile.departments.length > 0) {%>
-                    |<%=profile.departments[0].name %>|
-                <%}%>
-                |<a href="/profile/<%=profile.id%>">Profile</a>|
+            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <%=profile.email%>
+                </div>
+                <div>
+                    <%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <%=profile.departments[0].name %>
+                    <%}%>
+                </div>
             </div>
             <%})%>
-        </small></h3><%}%>
+        <%}%>
     </div>
     <%}%>
 
     <% if(locals.fullNameProfiles){%>
     <div>
         <% if (fullNameProfiles.length > 0){%>
-        <h3>By Full Name: <small>
+        <div class="page-header"><h3>Full Name: </h3></div>
             <%fullNameProfiles.forEach(function(profile){%>
-            <div>
-                |<%=profile.first %>&nbsp;<%=profile.last%>|
-                |<%=profile.position %>|
-                <% if (profile.departments.length > 0) {%>
-                    |<%=profile.departments[0].name %>|
-                <%}%>
-                |<a href="/profile/<%=profile.id%>">Profile</a>|
+            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <%=profile.email%>
+                </div>
+                <div>
+                    <%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <%=profile.departments[0].name %>
+                    <%}%>
+                </div>
             </div>
             <%})%>
-        </small></h3><%}%>
+        <%}%>
     </div>
     <%}%>
 
     <% if(locals.byClosestMatchProfiles){%>
     <div>
         <% if (byClosestMatchProfiles.length > 0){%>
-        <h3>By Closest Match: <small>
+        <div class="page-header"><h3>Closest Match: </h3></div>
             <%byClosestMatchProfiles.forEach(function(profile){%>
-            <div>
-                |<%=profile.first %>&nbsp;<%=profile.last%>|
-                |<%=profile.position %>|
-                <% if (profile.departments.length > 0) {%>
-                    |<%=profile.departments[0].name %>|
-                <%}%>
-                <% if (profile.matchedQuery) {%>
-                    |<%=profile.matchedQuery %>|
-                <%}%>
-                |<a href="/profile/<%=profile.id%>">Profile</a>|
+            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <%=profile.email%>
+                </div>
+                <div>
+                    <%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <%=profile.departments[0].name %>
+                    <%}%>
+                </div>
             </div>
             <%})%>
-        </small></h3><%}%>
+        <%}%>
     </div>
     <%}%>
 </div>

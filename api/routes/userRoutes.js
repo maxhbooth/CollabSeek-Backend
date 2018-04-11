@@ -42,11 +42,9 @@ module.exports = function (app, sessionChecker) {
             req.checkBody('last', "Must enter a last name.").notEmpty();
 
             let errors = req.validationErrors();
-
-            // if(!req.body.email.endsWith("unc.edu") ){
-            //     errors.push({msg:"Email must end with unc.edu", param:"email"});
-            // }
-
+            if(!req.body.email.endsWith("unc.edu") ){
+                errors.push({msg:"Email must end with unc.edu", param:"email"});
+            }
             if (!errors) {
                 let email = req.body.email;
                 let password = req.body.password;
@@ -60,7 +58,6 @@ module.exports = function (app, sessionChecker) {
                 let skillName = req.body.skill || null;
                 let specialtyName = req.body.specialty || null;
                 let hidden_token = randomstring.generate();
-                let password_token = randomstring.generate();
                 let confirmed_user = false;
 
                 var profileRepository = new ProfileRepository();
@@ -155,8 +152,7 @@ module.exports = function (app, sessionChecker) {
             res.sendFile('/views/login.html', {root: './'});
         })
         .post((req, res) => {
-            var email = req.body.email,
-                password = req.body.password;
+            var email = req.body.email, password = req.body.password;
             Profile.findOne({where: {email: email}}).then(function (profile) {
                 let userConfirmed = profile.confirmed_user;
                 console.log("LOGIN");
@@ -166,13 +162,11 @@ module.exports = function (app, sessionChecker) {
                     res.redirect('/login');
                 } else if (!profile.validPassword(password)) {
                     res.redirect('/login');
-                }
-                //check to see if profile has been activated return error message  //
-                else if(!userConfirmed){
+                } else if(!userConfirmed){
+                    //check to see if profile has been activated return error message  //
                     console.log("Confirm your email address.");
                     res.redirect('/verify');
-                }
-                else {
+                } else {
                     req.session.profile = profile.dataValues;
                     res.redirect('/');
                 }
@@ -180,31 +174,27 @@ module.exports = function (app, sessionChecker) {
         });
     // ROUTING FOR verify page
 
-    app.route('/verify')
-        .get(sessionChecker,(req,res) =>{
+    //app.route('/verify')
+    app.get('/verify',(req,res) =>{
             res.sendFile('/views/verify.html', {root: './'});
-        })
-        .post(( req, res) =>{
-            try{
-                var hidden_token = req.body.token;
-                console.log(hidden_token);
-                // next find account that matches hidden token
-                Profile.findOne({where:{'hidden_token': hidden_token}}).then(function(user) {
-                    if (!user) {
-                        console.log("No user found");
-                        res.redirect('/verify');
-                        return;
-                    }
-                    //change the user's properties if pass
-                    console.log(user.email);
-                    console.log(user.confirmed_user);
-                    user.confirmed_user = true;
-                    user.hidden_token = "";
-                    user.save().then(res.redirect('/login'));
-                });
-            }catch(error){
-                console.log("Error:"+error);
-            }
+        });
+
+    app.post('/verify', ( req, res) =>{
+            var hidden_token = req.body.token;
+            console.log(hidden_token);
+            // next find account that matches hidden token
+            Profile.findOne({where:{'hidden_token': hidden_token}}).then(function(user) {
+                if (!user) {
+                    console.log("No user found");
+                    res.redirect('/verify');
+                }
+                //change the user's properties if pass
+                user.confirmed_user = true;
+                user.hidden_token = "";
+                user.save().then(res.redirect('/login'));
+            }).catch(error => {
+                console.log("Error:" + error);
+            });
         });
     app.route('/resetpassword')
         .get(sessionChecker,(req,res) =>

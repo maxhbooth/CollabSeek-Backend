@@ -11,10 +11,6 @@
 </head>
 <body>
 
-
-<%if(locals.errors){ %>
-<div> THERE WERE ERRORS</div>
-<%}%>
 <form method="post" enctype="multipart/form-data" action="/upload-image">
     <input type="file" name="imageUpload">
     <input type="submit" value="Submit">

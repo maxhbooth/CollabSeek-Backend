@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/my-profile.css">
+    <link rel="stylesheet" href="css/homepage.css">
 
     <script src="js/load-image.all.min.js"></script>
 
@@ -37,24 +38,31 @@
 
 </head>
 <body class="container">
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="resources/CollabSeek-Logo.png" alt="CollabSeek">
+            </a>
+        </div>
+        <div id="navbar5" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li class="active"><a href="/my-profile">Profile</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
 <div class="page-header">
     <h1>My Profile</h1>
 </div>
-
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/logout">Log Out</a></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
 
 <div class="container row">
     <div class="row">
@@ -96,7 +104,7 @@
             <div class="well well-sm clearfix">
                 <div id="intro-show" style="display: block;">
                     <%if(locals.intro){%>
-                    <h5><%=intro %></h5>
+                    <h5><%=intro%></h5>
                     <%}else{%>
                     <h3>Add an introduction!</h3>
                     <%}%>
@@ -266,18 +274,17 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="well well-sm">
-                <h4>Specialties <div class="pull-right"><a href='/create-specialty'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
+                <h4>Specialties<div class="pull-right"><a href='/create-specialty'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="well well-sm">
-                <h4>Skills <div class="pull-right"><a href='/create-skill'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
+                <h4>Skills<div class="pull-right"><a href='/create-skill'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="well well-sm">
-                <h4>Facilities<button id="edit-facilities" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                    <span class="glyphicon glyphicon-pencil"></span></button></h4>
+                <h4>Facilities<div class="pull-right"><a href='/create-facility'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
             </div>
         </div>
     </div>
@@ -300,52 +307,15 @@
                 <%})}}%>
             </div>
         </div>
-        <div id="facilities-show" style="display: block;" class="col-sm-4">
+        <div id="facilities" class="col-sm-4">
+            <% if(locals.facilities){%>
             <div class="well well-sm">
-                <% if(locals.facilities){%>
                 <%if (facilities.length > 0){%>
                 <%facilities.forEach(function(facility){%>
                 <p><%= facility.name %></p>
                 <%})}}%>
             </div>
         </div>
-        <div id="facilities-edit" style="display: none;" class="col-sm-4">
-            <div class="well well-sm">
-                <% if(locals.facilities){%>
-                <table class="table"><tbody>
-                <%if (facilities.length > 0){%>
-                <%facilities.forEach(function(facility){%>
-                <form method="post" action="/delete-facility/<%=facility.name%>" class="form-inline">
-                <tr>
-                <td><%= facility.name %></td>
-                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                        <span class="glyphicon glyphicon-minus"></span></button></td>
-                </tr>
-                </form>
-                <%})}}%>
-                <form method="post" action="/add-facility" class="form-inline">
-                    <tr>
-                        <td><select id="facility" name="facility" class="js-example-basic-single js-states form-control" style="width:95%;">
-                            <% if(locals.all_facilities){%>
-                            <%if (all_facilities.length > 0){all_facilities.forEach(function(facility){%>
-                            <option><%=facility%></option>
-                            <%})}}%>
-                        </select></td>
-                        <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                            <span class="glyphicon glyphicon-plus"></span></button></td>
-                    </tr>
-                </form>
-                <form action="/create-new-facility">
-                    <tr>
-                        <td><a class="btn btn-default" href="/create-facility">Add Facility Not In List</a></td>
-                        <td></td>
-                    </tr>
-                </form>
-                </tbody></table>
-            </div>
-        </div>
     </div>
-
-</div>
 </body>
 </html>

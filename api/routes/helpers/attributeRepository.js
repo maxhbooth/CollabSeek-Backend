@@ -1,6 +1,8 @@
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 //asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const degree = require('../../../models/degree');
 const department = require('../../../models/department');
@@ -41,7 +43,15 @@ repository.prototype.getDisciplines = async(function () {
 });
 
 repository.prototype.getFacilities = async(function () {
-    return await(this.facility.findAll()).map(facility => facility.dataValues.name)
+    return await(this.facility.findAll({
+            where: {parent_id: {[Op.ne]: 0}}
+        }
+    )).map(facility => facility.dataValues.name)
+});
+
+repository.prototype.getFacilitiesTree = async(function () {
+    let facilities = await(this.facility.findAll());
+    return facilities;
 });
 
 repository.prototype.getPositions = async(function () {
@@ -49,7 +59,10 @@ repository.prototype.getPositions = async(function () {
 });
 
 repository.prototype.getSkills = async(function () {
-    return await(this.skill.findAll()).map(skill => skill.dataValues.name)
+    return await(this.skill.findAll({
+            where: {parent_id: {[Op.ne]: 0}}
+        }
+    )).map(skill => skill.dataValues.name)
 });
 
 repository.prototype.getSkillsTree = async(function () {
@@ -215,5 +228,8 @@ repository.prototype.addNewSkill = async(function(skillName, parentID){
     let skill = await(this.skill.create({name: skillName, parent_id: parentID}, {plain: true}));
 });
 
+repository.prototype.addNewFacility = async(function(facilityName, parentID){
+    let facility = await(this.facility.create({name: facilityName, parent_id: parentID}, {plain: true}));
+})
 
 module.exports = repository;

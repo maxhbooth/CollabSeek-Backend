@@ -34,6 +34,15 @@ module.exports = function (app, sessionChecker) {
         }
     });
 
+    app.post('/update-intro-signup', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid) {
+        profileRepository = new ProfileRepository();
+        profileRepository.updateIntro(req.session.profile.id, req.body.intro).then(function(){res.redirect('/signup-details')});
+    }else {
+        res.redirect('/welcome');
+    }
+});
+
 
     app.post('/add-department', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
@@ -73,11 +82,11 @@ module.exports = function (app, sessionChecker) {
 
     app.post('/add-skill', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
-        var profileRepository = new ProfileRepository();
-        profileRepository.addProfileSkill(req.session.profile.id, req.body.skill).then(function(){res.redirect('/my-profile')});
-    }else{
-        res.redirect('/welcome');
-    }
+            var profileRepository = new ProfileRepository();
+            profileRepository.addProfileSkill(req.session.profile.id, req.body.skill).then(function(){res.redirect('/my-profile')});
+        }else{
+            res.redirect('/welcome');
+        }
     });
 
     app.post('/add-skill/:id', (req, res) => {
@@ -89,14 +98,22 @@ module.exports = function (app, sessionChecker) {
         }
     });
 
-
     app.post('/add-facility', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
-        profileRepository = new ProfileRepository();
-        profileRepository.addProfileFacility(req.session.profile.id, req.body.facility).then(function(){res.redirect('/my-profile')});
-    }else{
-        res.redirect('/welcome');
-    }
+            profileRepository = new ProfileRepository();
+            profileRepository.addProfileFacility(req.session.profile.id, req.body.facility).then(function(){res.redirect('/my-profile')});
+        }else{
+            res.redirect('/welcome');
+        }
+    });
+
+    app.post('/add-facility/:id', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+            profileRepository = new ProfileRepository();
+            profileRepository.addProfileFacilityById(req.session.profile.id, req.params.id).then(function(){res.redirect('/my-profile')});
+        }else{
+            res.redirect('/welcome');
+        }
     });
 
 
