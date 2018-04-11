@@ -419,8 +419,8 @@ profileRepository.prototype.createProfile = async(function
         email: email,
         password: password,
         hidden_token: hidden_token,
-        password_token: password_token,
-        confirmed_user: confirmed_user
+        confirmed_user: confirmed_user,
+        password_token: password_token
     }, {
         returning: true,
         plain: true}).catch(errors => {
