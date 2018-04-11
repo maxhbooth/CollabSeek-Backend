@@ -96,7 +96,7 @@ var profileRepository = function profileRepository(){
 profileRepository.prototype.addProfileDegree = async(function (profileId, degreeName, disciplineName) {
         let degreeId = await(this.attrRepository.getDegreeId(degreeName));
         let disciplineId = await(this.attrRepository.getDisciplineId(disciplineName));
-        if(degreeId!=null && disciplineId!= null) {
+    if(degreeId!=null && disciplineId!= null) {
                 this.profileDegree.findOrCreate({
                     where: {
                         profile_id: profileId,
@@ -110,8 +110,7 @@ profileRepository.prototype.addProfileDegree = async(function (profileId, degree
                     }
                     })
                     .catch(error => {
-                    //db errors
-                    //console.log(error);
+                        console.log(error);
                     });
         }
     return 0;
@@ -141,6 +140,27 @@ profileRepository.prototype.addProfileDepartment = async(function (profileId, de
 profileRepository.prototype.addProfileFacility = async(function (profileId, facilityName) {
     let facilityId = await(this.attrRepository.getFacilityId(facilityName));
 
+    if(facilityId !=null){
+        this.profileFacility.findOrCreate({
+            where: {
+                profile_id: profileId,
+                facility_id: facilityId
+            },
+            default: {
+                profile_id: profileId,
+                facility_id: facilityId
+            }
+        })
+            .catch(error => {
+            //db errors
+            console.log(error);
+    });
+    }
+
+    return 0;
+});
+
+profileRepository.prototype.addProfileFacilityById = async(function (profileId, facilityId) {
     if(facilityId !=null){
         this.profileFacility.findOrCreate({
             where: {
@@ -339,6 +359,21 @@ profileRepository.prototype.removeProfileFacility = async(function (profileID, f
     return 0;
 });
 
+profileRepository.prototype.removeProfileFacilityById = async(function (profileID, facilityID){
+    if(facilityID != null){
+        this.profileFacility.destroy({
+            where: {
+                profile_id: profileID,
+                facility_id: facilityID
+            }
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
 profileRepository.prototype.removeProfileSkill = async(function (profileID, skillName){
     let skillID = await(this.attrRepository.getSkillId(skillName));
     if(skillID != null){
@@ -355,7 +390,7 @@ profileRepository.prototype.removeProfileSkill = async(function (profileID, skil
     return 0;
 });
 
-profileRepository.prototype.removeProfileSkill = async(function (profileID, skillID){
+profileRepository.prototype.removeProfileSkillById = async(function (profileID, skillID){
     if(skillID != null){
         this.profileSkill.destroy({
             where: {
@@ -419,12 +454,11 @@ profileRepository.prototype.createProfile = async(function
         email: email,
         password: password,
         hidden_token: hidden_token,
-        password_token: password_token,
-        confirmed_user: confirmed_user
+        confirmed_user: confirmed_user,
+        password_token: password_token
     }, {
         returning: true,
         plain: true}).catch(errors => {
-
             errors.errors.forEach(function(error){//only actually catches first error
             throw new Error(error.message);
         });
@@ -437,47 +471,39 @@ profileRepository.prototype.createProfile = async(function
         for(i = 0; i < min; i++){
             this.addProfileDegree(profileId, degreeName[i], disciplineName[i]);
         }
-    }
-    else if(Array.isArray(degreeName) && !Array.isArray(disciplineName)){
+    }else if(Array.isArray(degreeName) && !Array.isArray(disciplineName)){
         this.addProfileDegree(profileId, degreeName[0], disciplineName);
-    }
-    else if(!Array.isArray(degreeName) && Array.isArray(disciplineName)){
+    }else if(!Array.isArray(degreeName) && Array.isArray(disciplineName)){
         this.addProfileDegree(profileId, degreeName, disciplineName[0]);
-    }
-    else{
+    }else{
         this.addProfileDegree(profileId, degreeName, disciplineName);
     }
     if(Array.isArray(departmentName)){
         for(i = 0; i < departmentName.length; i++){
             this.addProfileDepartment(profileId, departmentName[i]);
         }
-    }
-    else{
+    }else{
         this.addProfileDepartment(profileId, departmentName);
     }
     if(Array.isArray(facilityName)){
         for(i = 0; i < facilityName.length; i++){
             this.addProfileFacility(profileId, facilityName[i]);
         }
-    }
-    else{
+    }else{
         this.addProfileFacility(profileId, facilityName);
     }
     if(Array.isArray(specialtyName)){
         for(i = 0; i < specialtyName.length; i++){
             this.addProfileSpecialty(profileId, specialtyName[i]);
         }
-    }
-    else {
+    }else {
         this.addProfileSpecialty(profileId, specialtyName);
     }
-
     if(Array.isArray(skillName)){
         for(i = 0; i < skillName.length; i++){
             this.addProfileSkill(profileId, skillName[i]);
         }
-    }
-    else{
+    }else{
         this.addProfileSkill(profileId, skillName);
     }
     return profile;
@@ -494,8 +520,7 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         let ID = profile[j].id;
         let positionId = profile[j].position;
 
-        let position = await(this.attrRepository.position.findOne({where:{id:positionId}}))
-
+        let position = await(this.attrRepository.position.findOne({where:{id:positionId}}));
         let degrees_set = await(this.attrRepository.degree_discipline.findAll({
             where: {profile_id: ID}
         }));
@@ -516,7 +541,6 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
                 through: {}
             }]
         }));
-
         let departments = await(this.attrRepository.department.findAll({
             include: [{
                 model: this.profile,
@@ -532,11 +556,21 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
                 through: {}
             }]
         }));
+
+        let facilities = await(this.attrRepository.facility.findAll({
+            include: [{
+                model: this.profile,
+                where: {id: ID},
+                through: {}
+            }]
+        }));
         profiles[j] = {id: ID,  first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
-            imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
-        if(profile.length == 1){
+            imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
+            hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro, facilities: facilities};
+        if(profile.length === 1){
             return {id: ID, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
-                imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines};
+                imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
+                hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro, facilities: facilities};
         }
     }
    return profiles;
@@ -586,6 +620,32 @@ profileRepository.prototype.getSkillsIDs = async(function(profileID){
         skills_return.push(skills[i].dataValues.id);
     }
     return skills_return;
+});
+
+profileRepository.prototype.getFacilitiesIDs = async(function(profileID){
+    let facilities = await(this.attrRepository.facility.findAll({
+        include: [{
+            model: this.profile,
+            where: {id: profileID},
+            through: {}
+        }]
+    }));
+    var facilities_return = [];
+    for(var i = 0; i < facilities.length; i++){
+        facilities_return.push(facilities[i].dataValues.id);
+    }
+    return facilities_return;
+});
+
+profileRepository.prototype.getUserConfirmed = async(function(profileID){
+    let profile = await(this.profile.findAll({where: {id:profileID}}));
+    if(profile==null){
+        return null;
+    }
+    else{
+        return profile[0].confirmed_user;
+    }
+
 });
 
 // =====================================================================================================================

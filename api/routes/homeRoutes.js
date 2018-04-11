@@ -96,11 +96,24 @@ module.exports = function (app, sessionChecker) {
         }
     });
     app.get('/changepassword/:password_token',(req,res)=>{
-        if (req.session.profile && req.cookies.user_sid) {
+
             var password_token = req.params.password_token;
             console.log(password_token);
 
-            }
+            Profile.findOne({where:{'password_token':password_token}}).then(function(user)
+            {
+                if (!user) {
+                    console.log("No user found");
+                    res.redirect('/login');
+                    return;
+                }
+                console.log(password_token);
+               res.render('changepassword.html');
+
+
+            });
+
+
 
 
         });

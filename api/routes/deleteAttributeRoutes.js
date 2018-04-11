@@ -54,7 +54,7 @@ module.exports = function (app, sessionChecker) {
     app.post('/delete-skill-id/:id', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
             profileRepository = new ProfileRepository();
-            profileRepository.removeProfileSkill(req.session.profile.id, req.params.id).then(function(){res.redirect('/my-profile')});
+            profileRepository.removeProfileSkillById(req.session.profile.id, req.params.id).then(function(){res.redirect('/my-profile')});
         }else{
             res.redirect('/welcome');
         }
@@ -64,6 +64,15 @@ module.exports = function (app, sessionChecker) {
         if(req.session.profile && req.cookies.user_sid){
             profileRepository = new ProfileRepository();
             profileRepository.removeProfileFacility(req.session.profile.id, req.params.facility).then(function(){res.redirect('/my-profile')});
+        }else{
+            res.redirect('/welcome');
+        }
+    });
+
+    app.post('/delete-facility-id/:id', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+            profileRepository = new ProfileRepository();
+            profileRepository.removeProfileFacilityById(req.session.profile.id, req.params.id).then(function(){res.redirect('/my-profile')});
         }else{
             res.redirect('/welcome');
         }

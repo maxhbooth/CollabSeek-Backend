@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finish Signup</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script type="text/javascript" src="js/signup-details.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="js/load-image.all.min.js"></script>
+    <link rel="stylesheet" href="css/homepage.css">
+    <script>
+        var imageUrl = "Images/<%=profile.imagePath%>";
+        loadImage(
+            imageUrl,
+            function (img) {
+                if(img.type === "error") {
+                } else {
+                    document.getElementById("imageDiv").appendChild(img);
+                }
+            },
+            {maxWidth: 200,
+                orientation: true}
+        );
+    </script>
+</head>
+<body class="container">
+<div class="container row">
+    <h3>Finish Creating Your Profile</h3>
+    <h3><small>You will be able to edit this in your profile view later as well.</small></h3>
+    <h3><small>Add an introduction for people viewing your profile:</small></h3>
+    <div class="row">
+        <div id="intro-edit" class="col-sm-8">
+            <form method="post" action="/update-intro-signup">
+                <textarea class="form-control" name="intro" rows="8"><%if(locals.profile.intro){%><%=locals.profile.intro%><%}%></textarea>
+                <button type="submit" class="btn btn-default">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div>
+            <h3><small>Upload a Profile Image:</small></h3>
+            <div id="imageDiv"></div>
+            <form method="post" enctype="multipart/form-data" action="/upload-image-signup">
+                <input type="file" name="imageUpload">
+                <input class="btn btn-default" type="submit" value="Submit">
+            </form>
+
+            <h3><small>Add Specialties to Your Profile:</small></h3>
+            <a class="btn btn-default" href="/create-specialty" role="button">Add Specialties</a>
+            <% if(locals.profile.specialties){%>
+            <%if(profile.specialties.length > 0){%>
+            <div class="well well-sm">
+                <%profile.specialties.forEach(function(specialty){%>
+                <p><%= specialty.name %></p>
+                <%})%>
+            </div>
+            <%}}%>
+
+            <h3><small>Add Skills to Your Profile:</small></h3>
+            <a class="btn btn-default" href="/create-skill" role="button">Add Skills</a>
+            <% if(locals.profile.skills){%>
+            <%if (profile.skills.length > 0){%>
+            <div class="well well-sm">
+                <%profile.skills.forEach(function(skill){%>
+                <p><%= skill.name %></p>
+                <%})%>
+            </div>
+            <%}}%>
+
+            <h3><small>Add Resources and Facilities to Your Profile:</small></h3>
+            <a class="btn btn-default" href="/create-facility" role="button">Add Facilities</a>
+            <% if(locals.profile.facilities){%>
+            <%if(profile.facilities.length > 0){%>
+            <div class="well well-sm">
+                <%profile.facilities.forEach(function(facility){%>
+                <p><%= facility.name %></p>
+                <%})%>
+            </div>
+            <%}}%>
+
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="row">
+        <form method="post" action="/signup-details">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>
