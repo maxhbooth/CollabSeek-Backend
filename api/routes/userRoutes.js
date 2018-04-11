@@ -117,7 +117,6 @@ module.exports = function (app, sessionChecker) {
     app.route('/changepassword')
         .get(sessionChecker,(req,res) =>{
 
-
         })
 
         .post((req,res)=>{
