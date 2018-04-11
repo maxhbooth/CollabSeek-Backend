@@ -31,8 +31,8 @@
     <div class="row">
         <h1 class="col-xs-2 col-xs-offset-2" style="padding-left:9px">Search</h1>
     </div>
-    <form action="/search" method="POST" class="form-inline">
-        <input id="searchBar" type="text" placeholder="Search..." name="query" value="query" class="col-xs-7 col-xs-offset-2">
+    <form action="/search" method="POST" class="form-inline" id="searcher">
+        <input id="searchBar" type="text" placeholder="Enter a search term..." name="query" class="col-xs-7 col-xs-offset-2">
         <button type="submit" id="searchButton"><i class="fas fa-search"></i></button>
     </form>
     <div class="col-xs-8 col-xs-offset-2" style="padding-left: 0px;">Search by entering a single skill, discipline, name (first, last, or both), facility/resource, or department. Or, try <a href="/advanced-search">Advanced Search</a>
