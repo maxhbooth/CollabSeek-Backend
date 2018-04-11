@@ -139,7 +139,11 @@ module.exports = function (app, sessionChecker) {
                 result = sortByFrequency(result);
                 profileRepository.getProfileInformation(result).then(function (profiles) {
                     let orderedProfileArray = [];
-                    let profileIds = profiles.map(a => a.id);
+                    let profileIds = [];
+                    if (profiles.isArray) {
+                        profileIds = profiles.map(a => a.id);
+                    } else
+                        profileIds = profiles;
                     for (let i = 0; i<result.length; i++){
                         let endPlace = result.indexOf(profileIds[i]);
                         orderedProfileArray[endPlace] = profiles[i]
