@@ -108,43 +108,43 @@ module.exports = function (app, sessionChecker) {
         profileRepository.getProfileInformation(req.session.profile.id).then(models => {
             //email compose
             const url = "http://localhost:8080/verify/"+hidden_token;
-        const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
-            'Please verify you email by typing in the following hidden token <br/>' +
-            '<b>Token:</b>'+ hidden_token +
-            '<br/> in the following link ' +
-            '<a href ="http://localhost:8080/verify/'+hidden_token+'">click here</a>';
+            const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
+                'Please verify you email by typing in the following hidden token <br/>' +
+                '<b>Token:</b>'+ hidden_token +
+                '<br/> in the following link ' +
+                '<a href ="http://localhost:8080/verify/'+hidden_token+'">click here</a>';
 
-        nodemailer.createTestAccount((err, account) => {
-            // create reusable transporter object using the default SMTP transport
-            let transporter = nodemailer.createTransport({
-                host: 'smtp.gmail.com',
-                port: 465,
-                secure: true,
-                auth: {
-                    user: 'marcussw@cs.unc.edu',
-                    pass: 'kebab*heels1'
-                }
+            nodemailer.createTestAccount((err, account) => {
+                // create reusable transporter object using the default SMTP transport
+                let transporter = nodemailer.createTransport({
+                    host: 'smtp.gmail.com',
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: 'collabuncseek@cs.unc.edu',
+                        pass: 'collab123'
+                    }
+                });
+                let mailOptions = {
+                    from: '"CollabSeek" <marcussw@cs.unc.edu>', // sender address
+                    to: email, // list of receivers
+                    subject: 'CollabSeek Email Verification', // Subject line
+                    text: 'Click on the Link below', // plain text body
+                    html: html // html body
+                };
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        console.log(error);
+                        return;
+                    }
+                    console.log('Message sent: %s', info.messageId);
+                    // Preview only available when sending through an Ethereal account
+                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                });
             });
-        let mailOptions = {
-            from: '"CollabSeek" <marcussw@cs.unc.edu>', // sender address
-            to: email, // list of receivers
-            subject: 'CollabSeek Email Verification', // Subject line
-            text: 'Click on the Link below', // plain text body
-            html: html // html body
-        };
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log(error);
-                return;
-            }
-            console.log('Message sent: %s', info.messageId);
-        // Preview only available when sending through an Ethereal account
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    });
-    });
 
-        res.redirect('/verify');
+            res.redirect('/verify');
     }).catch(profile_errors =>{
             console.log(profile_errors);
         res.redirect('/verify');
