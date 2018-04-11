@@ -10,9 +10,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript" src="js/tree-making.js"></script>
     <script type="text/javascript" src="js/create-specialty.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="css/my-profile.css">
 
 </head>
 <body>
@@ -40,62 +43,68 @@
 </nav>
 <%}%>
 
-<div class="container-fluid">
-    <% var json_tree = []; %>
-    <% if (locals.specialty) { %>
-    <% for(var i = 0; i < locals.specialty.length; i++){ %>
-        <% json_tree.push({id: specialty[i].dataValues.id, parent_id: specialty[i].dataValues.parent_id, text:specialty[i].dataValues.name});%>
-    <%}%>
-    <%}%>
+<% var json_tree = []; %>
+<% if (locals.specialty) { %>
+<% for(var i = 0; i < locals.specialty.length; i++){ %>
+<% json_tree.push({id: specialty[i].dataValues.id, parent_id: specialty[i].dataValues.parent_id, text:specialty[i].dataValues.name});%>
+<%}%>
+<%}%>
+<div id="test" style="display:none;"><%=JSON.stringify(json_tree)%></div>
+<div id="test2" style="display:none;"><%=locals.ids%></div>
 
-    <div id="test" style="display:none;"><%=JSON.stringify(json_tree)%></div>
-    <div id="test2" style="display:none;"><%=locals.ids%></div>
-    <div class="row">
-        <div class="col-sm-7">
-            <%if(!locals.user_confirmed){%>
-            <form action="/signup-details" method="get">
-                <button type="submit" class="btn btn-default">Return to Signup</button>
-            </form>
-            <%}%>
 
-            <form class="form-inline">
-                <label  for="root_specialty">Add New Root Specialty:</label>
-                <input type="text" class="form-control" id="root_specialty" name="root_specialty">
-                <button id="add_root_specialty" class="btn btn-primary" style="display: inline-flex;">Save</button>
-            </form>
+<div class="container-fluid" id="top_container">
 
-            <form class="form-inline">
-                <label for="other_specialty">Add New Specialty As Subcategory:</label>
-                <input type="text" class="form-control" id="other_specialty" name="other_specialty">
-                <button id="add_other_specialty" class="btn btn-primary" style="display: inline-flex;">Save</button>
-            </form>
+    <div class="col-sm-4" id="user_interface" data-spy="affix">
 
-            <!--<label for="specialty_search">Search:</label>-->
-            <!--<select id="specialty_search" name="specialty_search" class="js-example-basic-single js-states form-control" style="width:95%;">-->
-                <!--<% if(locals.specialty){%>-->
-                <!--<%{specialty.forEach(function(spec){%>-->
-                <!--<option><%=spec.dataValues.name%></option>-->
-                <!--<%})}}%>-->
-            <!--</select>-->
-
-            <button id="expand_all" class="btn btn-primary" style="display: inline-flex;">Expand All</button>
-            <button id="collapse_all" class="btn btn-primary" style="display: inline-flex;">Collapse All</button>
-            <button id="expand_mine" class="btn btn-primary" style="display: inline-flex;">Expand Mine</button>
-        </div>
-        <div class="col-sm-5">
-            <div class="well well-sm clearfix">
-                <h4>Instructions</h4>
-                <ul>
-                    <li>Add or remove your specialties by checking or un-checking their boxes.</li>
-                    <li>Add a new top category of specialties by using the "Add New Root Specialty" input box.</li>
-                    <li>Add a subcategory by selecting the parent category with your mouse (so that it turns blue) and
+        <div class="well well-sm clearfix">
+            <h4>Instructions <button id="toggle_instructions" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                <span class="glyphicon glyphicon-plus"></span></button></h4>
+            <ul id="instruction_list" style="display: none;">
+                <li>Add or remove your specialties by checking or un-checking their boxes.</li>
+                <li>Add a new top category of specialties by using the "Add New Root Specialty" input box.</li>
+                <li>Add a subcategory by selecting the parent category with your mouse (so that it turns blue) and
                     then writing the new specialty in the "Add New Specialty As Subcategory" input box.</li>
-                    <li>Try not to add specialties that already exist. Do not add new specialties that contain slashes.</li>
-                </ul>
-            </div>
+                <li>Try not to add specialties that already exist. Do not add new specialties that contain slashes.</li>
+            </ul>
         </div>
+
+        <form class="form-inline">
+            <label  for="root_specialty">Add New Root Specialty:</label>
+            <br>
+            <input type="text" class="form-control" id="root_specialty" name="root_specialty" style="width:80%;">
+            <button id="add_root_specialty" class="btn btn-primary" style="display: inline-flex;">Save</button>
+        </form>
+
+        <form class="form-inline">
+            <label for="other_specialty">Add New Specialty As Subcategory:</label>
+            <br>
+            <input type="text" class="form-control" id="other_specialty" name="other_specialty" style="width:80%;">
+            <button id="add_other_specialty" class="btn btn-primary" style="display: inline-flex;">Save</button>
+        </form>
+
+        <br>
+
+        <button id="expand_all" class="btn btn-primary" style="display: inline-flex;">Expand All</button>
+        <button id="collapse_all" class="btn btn-primary" style="display: inline-flex;">Collapse All</button>
+        <button id="expand_mine" class="btn btn-primary" style="display: inline-flex;">Expand Mine</button>
+
+        <br><br>
+
+        <%if(!locals.user_confirmed){%>
+        <form action="/signup-details" method="get" class="text-center">
+            <button type="submit" class="btn btn-basic"><strong>Return to Signup</strong></button>
+        </form>
+        <%}%>
     </div>
-    <div id="tree"></div>
+
+    <div class="col-sm-8 pull-right">
+        <div id="tree"></div>
+    </div>
+
+
+
+
 </div>
 
 
