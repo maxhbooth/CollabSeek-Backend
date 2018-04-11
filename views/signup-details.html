@@ -26,30 +26,42 @@
         );
     </script>
 </head>
-<body class="container">
-<div class="container row">
-    <h3>Finish Creating Your Profile</h3>
-    <h3><small>You will be able to edit this in your profile view later as well.</small></h3>
-    <h3><small>Add an introduction for people viewing your profile:</small></h3>
-    <div class="row">
-        <div id="intro-edit" class="col-sm-8">
-            <form method="post" action="/update-intro-signup">
-                <textarea class="form-control" name="intro" rows="8"><%if(locals.profile.intro){%><%=locals.profile.intro%><%}%></textarea>
-                <button type="submit" class="btn btn-default">Save</button>
-            </form>
-        </div>
-    </div>
 
-    <div class="row">
-        <div>
-            <h3><small>Upload a Profile Image:</small></h3>
+<body class="container">
+<div class="page-header">
+    <h1>CollabSeek Signup</h1>
+</div>
+
+<div class="container row">
+    <div class="jumbotron">
+
+        <div class="row">
+            <label>Add an introduction for people viewing your profile:</label>
+            <div class="row">
+                <div id="intro-edit" class="col-sm-8">
+                    <form method="post" action="/update-intro-signup">
+                        <textarea class="form-control" name="intro" rows="8"><%if(locals.profile.intro){%><%=locals.profile.intro%><%}%></textarea>
+                        <button type="submit" class="btn btn-default">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+
+        <div class="row">
+            <label>Upload a Profile Image:</label>
             <div id="imageDiv"></div>
             <form method="post" enctype="multipart/form-data" action="/upload-image-signup">
                 <input type="file" name="imageUpload">
                 <input class="btn btn-default" type="submit" value="Submit">
             </form>
+        </div>
 
-            <h3><small>Add Specialties to Your Profile:</small></h3>
+        <br><br>
+
+        <div class="row">
+            <label>Add Specialties to Your Profile:</label>
             <a class="btn btn-default" href="/create-specialty" role="button">Add Specialties</a>
             <% if(locals.profile.specialties){%>
             <%if(profile.specialties.length > 0){%>
@@ -59,8 +71,12 @@
                 <%})%>
             </div>
             <%}}%>
+        </div>
 
-            <h3><small>Add Skills to Your Profile:</small></h3>
+        <br>
+
+        <div class="row">
+            <label>Add Skills to Your Profile:</label>
             <a class="btn btn-default" href="/create-skill" role="button">Add Skills</a>
             <% if(locals.profile.skills){%>
             <%if (profile.skills.length > 0){%>
@@ -70,8 +86,12 @@
                 <%})%>
             </div>
             <%}}%>
+        </div>
 
-            <h3><small>Add Resources and Facilities to Your Profile:</small></h3>
+        <br>
+
+        <div class="row">
+            <label>Add Resources and Facilities to Your Profile:</label>
             <a class="btn btn-default" href="/create-facility" role="button">Add Facilities</a>
             <% if(locals.profile.facilities){%>
             <%if(profile.facilities.length > 0){%>
@@ -81,18 +101,16 @@
                 <%})%>
             </div>
             <%}}%>
+        </div>
 
+        <br><br>
+
+        <div class="row">
+            <form method="post" action="/signup-details">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
         </div>
     </div>
-
-    <br><br>
-
-    <div class="row">
-        <form method="post" action="/signup-details">
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-    </div>
-
 </div>
 </body>
 </html>
