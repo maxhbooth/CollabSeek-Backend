@@ -27,6 +27,15 @@ $(document).ready(function() {
         $("#tree > ul > li:nth-child(" + i + ") > div > span:nth-child(3)").remove();
     }
 
+    $("#toggle_instructions").click(function(e){
+        if(document.getElementById("instruction_list").style.display === "none"){
+            document.getElementById("instruction_list").style.display = "block";
+        }
+        else{
+            document.getElementById("instruction_list").style.display = "none";
+        }
+    });
+
     $("#expand_all").click(function(e){
         tree.expandAll();
     });

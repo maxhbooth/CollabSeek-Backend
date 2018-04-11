@@ -56,6 +56,19 @@
 <div class="container-fluid" id="top_container">
 
     <div class="col-sm-4" id="user_interface" data-spy="affix">
+
+        <div class="well well-sm clearfix">
+            <h4>Instructions <button id="toggle_instructions" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                <span class="glyphicon glyphicon-plus"></span></button></h4>
+            <ul id="instruction_list" style="display: none;">
+                <li>Add or remove your specialties by checking or un-checking their boxes.</li>
+                <li>Add a new top category of specialties by using the "Add New Root Specialty" input box.</li>
+                <li>Add a subcategory by selecting the parent category with your mouse (so that it turns blue) and
+                    then writing the new specialty in the "Add New Specialty As Subcategory" input box.</li>
+                <li>Try not to add specialties that already exist. Do not add new specialties that contain slashes.</li>
+            </ul>
+        </div>
+
         <form class="form-inline">
             <label  for="root_specialty">Add New Root Specialty:</label>
             <br>
@@ -75,20 +88,6 @@
         <button id="expand_all" class="btn btn-primary" style="display: inline-flex;">Expand All</button>
         <button id="collapse_all" class="btn btn-primary" style="display: inline-flex;">Collapse All</button>
         <button id="expand_mine" class="btn btn-primary" style="display: inline-flex;">Expand Mine</button>
-
-        <br><br>
-
-        <div class="well well-sm clearfix">
-            <h4>Instructions <button id="toggle_instructions" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                <span class="glyphicon glyphicon-plus"></span></button></h4>
-            <ul id="instruction_list" style="display: none;">
-                <li>Add or remove your specialties by checking or un-checking their boxes.</li>
-                <li>Add a new top category of specialties by using the "Add New Root Specialty" input box.</li>
-                <li>Add a subcategory by selecting the parent category with your mouse (so that it turns blue) and
-                    then writing the new specialty in the "Add New Specialty As Subcategory" input box.</li>
-                <li>Try not to add specialties that already exist. Do not add new specialties that contain slashes.</li>
-            </ul>
-        </div>
 
         <br><br>
 

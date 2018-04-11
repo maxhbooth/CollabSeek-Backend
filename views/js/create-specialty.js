@@ -26,9 +26,6 @@ $(document).ready(function() {
         }
     }
 
-    $('#top_container').scroll(function() {
-        $('#user_interface').animate({top:$(this).scrollTop()},100,"linear");
-    })
 
     $("#toggle_instructions").click(function(e){
         if(document.getElementById("instruction_list").style.display === "none"){
