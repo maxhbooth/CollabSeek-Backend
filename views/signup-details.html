@@ -61,53 +61,8 @@
         <br><br>
 
         <div class="row">
-            <label>Add Specialties to Your Profile:</label>
-            <a class="btn btn-default" href="/create-specialty" role="button">Add Specialties</a>
-            <% if(locals.profile.specialties){%>
-            <%if(profile.specialties.length > 0){%>
-            <div class="well well-sm">
-                <%profile.specialties.forEach(function(specialty){%>
-                <p><%= specialty.name %></p>
-                <%})%>
-            </div>
-            <%}}%>
-        </div>
-
-        <br>
-
-        <div class="row">
-            <label>Add Skills to Your Profile:</label>
-            <a class="btn btn-default" href="/create-skill" role="button">Add Skills</a>
-            <% if(locals.profile.skills){%>
-            <%if (profile.skills.length > 0){%>
-            <div class="well well-sm">
-                <%profile.skills.forEach(function(skill){%>
-                <p><%= skill.name %></p>
-                <%})%>
-            </div>
-            <%}}%>
-        </div>
-
-        <br>
-
-        <div class="row">
-            <label>Add Resources and Facilities to Your Profile:</label>
-            <a class="btn btn-default" href="/create-facility" role="button">Add Facilities</a>
-            <% if(locals.profile.facilities){%>
-            <%if(profile.facilities.length > 0){%>
-            <div class="well well-sm">
-                <%profile.facilities.forEach(function(facility){%>
-                <p><%= facility.name %></p>
-                <%})%>
-            </div>
-            <%}}%>
-        </div>
-
-        <br><br>
-
-        <div class="row">
             <form method="post" action="/signup-details">
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" class="btn btn-default">Next</button>
             </form>
         </div>
     </div>
