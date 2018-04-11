@@ -8,3 +8,8 @@
 }
 
 .input-large { width: 300px; }
+
+.affix {
+    top:50px;
+    position:fixed;
+}
