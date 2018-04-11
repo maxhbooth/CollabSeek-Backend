@@ -164,22 +164,23 @@ module.exports = function (app, sessionChecker) {
 
     app.route('/login')
         .get(sessionChecker, (req, res) => {
-            res.sendFile('/views/login.html', {root: './'});
+            res.render('login.html');
         })
         .post((req, res) => {
             var email = req.body.email, password = req.body.password;
             Profile.findOne({where: {email: email}}).then(function (profile) {
+                if(profile==null){
+                    res.render('login.html', {error: 'Invalid email.'});
+                }
                 let userConfirmed = profile.confirmed_user;
-                console.log("LOGIN");
-                console.log(userConfirmed);
-                console.log(profile.email);
+
                 if (!profile) {
-                    res.redirect('/login');
+                    res.render('login.html', {error: 'Invalid email.'});
                 } else if (!profile.validPassword(password)) {
-                    res.redirect('/login');
+
+                    res.render('login.html', {error: 'Invalid password.'});
                 } else if(!userConfirmed){
                     //check to see if profile has been activated return error message  //
-                    console.log("Confirm your email address.");
                     res.redirect('/verify');
                 } else {
                     req.session.profile = profile.dataValues;
