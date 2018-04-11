@@ -23,7 +23,7 @@ app.route('/signup')
         var attrRepository = new AttrRepository();
 
         attrRepository.getAll().then(function (models){
-            //console.log(models); tbh this is annoying rn
+
             res.render('signup.html', models);
         });
 
