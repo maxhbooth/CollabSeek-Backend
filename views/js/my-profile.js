@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    $('#facility').select2();
     $('#department').select2();
     $('#discipline').select2();
     $('#degree').select2();
@@ -51,18 +50,6 @@ $(document).ready(function(){
     $("#edit-intro").click(function(e){
         var edit = document.getElementById("intro-edit");
         var show = document.getElementById("intro-show");
-        if (show.style.display === "none") {
-            show.style.display = "block";
-            edit.style.display = "none";
-        } else {
-            edit.style.display = "block"
-            show.style.display = "none";
-        }
-    });
-
-    $("#edit-facilities").click(function(e){
-        var edit = document.getElementById("facilities-edit");
-        var show = document.getElementById("facilities-show");
         if (show.style.display === "none") {
             show.style.display = "block";
             edit.style.display = "none";

@@ -43,7 +43,15 @@ repository.prototype.getDisciplines = async(function () {
 });
 
 repository.prototype.getFacilities = async(function () {
-    return await(this.facility.findAll()).map(facility => facility.dataValues.name)
+    return await(this.facility.findAll({
+            where: {parent_id: {[Op.ne]: 0}}
+        }
+    )).map(facility => facility.dataValues.name)
+});
+
+repository.prototype.getFacilitiesTree = async(function () {
+    let facilities = await(this.facility.findAll());
+    return facilities;
 });
 
 repository.prototype.getPositions = async(function () {
@@ -220,5 +228,8 @@ repository.prototype.addNewSkill = async(function(skillName, parentID){
     let skill = await(this.skill.create({name: skillName, parent_id: parentID}, {plain: true}));
 });
 
+repository.prototype.addNewFacility = async(function(facilityName, parentID){
+    let facility = await(this.facility.create({name: facilityName, parent_id: parentID}, {plain: true}));
+})
 
 module.exports = repository;
