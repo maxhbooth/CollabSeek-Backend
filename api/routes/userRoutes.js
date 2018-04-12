@@ -94,12 +94,12 @@ module.exports = function (app, sessionChecker) {
                 nodemailer.createTestAccount((err, account) => {
                     // create reusable transporter object using the default SMTP transport
                     let transporter = nodemailer.createTransport({
-                        host: 'smtp.gmail.com',
+                        host: process.env.NODE_EMAIL_SERVICE,
                         port: 465,
                         secure: true,
                         auth: {
-                            user: 'marcussw@cs.unc.edu',
-                            pass: 'kebab*heels1'
+                            user: process.env.NODE_EMAIL,
+                            pass: process.env.NODE_PASS
                         }
                     });
                     let mailOptions = {
