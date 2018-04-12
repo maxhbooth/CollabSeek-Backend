@@ -296,6 +296,21 @@ profileRepository.prototype.updateIntro = async(function(profileID, intro){
     ).catch(error => {console.log(error);});
 });
 
+profileRepository.prototype.updatePronouns = async(function(profileID, pronouns){
+    this.profile.update(
+        {pronouns: pronouns},
+        {where: {id: profileID}}
+    ).catch(error => {console.log(error);});
+});
+
+profileRepository.prototype.updateInfo = async(function(profileID, positionName, firstName, lastName, pronouns){
+    let positionId = await(this.attrRepository.getPositionId(positionName));
+    this.profile.update(
+        {position: positionId, first_name: firstName, last_name: lastName, pronouns: pronouns},
+        {where: {id: profileID}}
+    ).catch(error => {console.log(error);});
+});
+
 profileRepository.prototype.addImage = async(function(profileId, imagePath){
 
     this.profile.update(
@@ -444,7 +459,7 @@ profileRepository.prototype.removeProfileSpecialtyById = async(function(profileI
 profileRepository.prototype.createProfile = async(function
     (first, last, degreeName, departmentName, disciplineName,
      positionName, facilityName, skillName, specialtyName, email, password, hidden_token,
-     confirmed_user, password_token, intro) {
+     confirmed_user, password_token, intro, pronouns) {
 
     let positionId = await(this.attrRepository.getPositionId(positionName));
 
@@ -457,7 +472,8 @@ profileRepository.prototype.createProfile = async(function
         hidden_token: hidden_token,
         confirmed_user: confirmed_user,
         password_token: password_token,
-        intro: intro
+        intro: intro,
+        pronouns: pronouns
     }, {
         returning: true,
         plain: true}).catch(errors => {
@@ -568,11 +584,13 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         }));
         profiles[j] = {id: ID,  first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
             imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
-            hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro, facilities: facilities};
+            hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
+            facilities: facilities, pronouns: profile[j].pronouns};
         if(profile.length === 1){
             return {id: ID, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
                 imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
-                hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro, facilities: facilities};
+                hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
+                facilities: facilities, pronouns: profile[j].pronouns};
         }
     }
    return profiles;

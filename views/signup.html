@@ -25,6 +25,7 @@
                 <% } %>
 
                 <label for="email"><span style="color:red">*</span>Email:</label>
+                <span class="glyphicon glyphicon-question-sign pull-right" title="You must use an email ending in 'unc.edu'."></span>
                 <% if (!locals.emailErrors) { %>
                 <input type="text" class="form-control" name="email" id="email"/>
                 <% } else { %>
@@ -58,6 +59,11 @@
                 <div class="form-group col-sm-4">
                     <label  for="last"><span style="color:red">*</span>Last Name:</label>
                     <input type="text" class="form-control " id="last" name="last">
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="pronouns">Pronouns:</label>
+                    <span class="glyphicon glyphicon-question-sign pull-right" title="This is an optional field, if filled out it will be visible on your profile. You can change this field at any time."></span>
+                    <input type="text" class="form-control" id="pronouns" name="pronouns">
                 </div>
             </div>
             <div id="degree_set">
@@ -104,6 +110,7 @@
             <div class="row">
                 <div class="form-group col-sm-12">
                     <label for="department">Department/Institute:</label>
+                    <span class="glyphicon glyphicon-question-sign pull-right" title="Select as many as apply or none at all."></span>
                     <select id="department" name="department" class="js-example-basic-single js-states form-control" multiple="multiple">
                         <% if(locals.departments){%>
                         <%if (departments.length > 0){departments.forEach(function(department){%>

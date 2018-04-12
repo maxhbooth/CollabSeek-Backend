@@ -6,6 +6,18 @@ const ProfileRepository = require('./helpers/profileRepository');
 
 module.exports = function (app, sessionChecker) {
 
+    app.post('/update-info', (req, res) => {
+        if (req.session.profile && req.cookies.user_sid) {
+            profileRepository = new ProfileRepository();
+            profileRepository.updateInfo(req.session.profile.id, req.body.position, req.body.first, req.body.last,
+                req.body.pronouns).then(function(){
+                res.redirect('/my-profile');
+        });
+        }else {
+            res.redirect('/welcome');
+        }
+    });
+
     app.post('/update-position', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
             let positionName = req.body.position;

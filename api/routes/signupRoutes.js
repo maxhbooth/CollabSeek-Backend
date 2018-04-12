@@ -50,7 +50,7 @@ module.exports = function (app, sessionChecker) {
             var profileRepository = new ProfileRepository();
             profileRepository.createProfile(req.body.first, req.body.last, req.body.degree, req.body.department, req.body.discipline,
                 req.body.position, null, null, null, req.body.email, req.body.password,
-                hidden_token, confirmed_user, password_token, req.body.intro).then(profile => {
+                hidden_token, confirmed_user, password_token, req.body.intro, req.body.pronouns).then(profile => {
                 req.session.profile = profile.dataValues;
                 var email = req.body.email;
                 //email compose
@@ -59,7 +59,6 @@ module.exports = function (app, sessionChecker) {
                     '<b>Token:</b>'+ hidden_token +
                     '<br/> in the following link ' +
                     '<a href ="http://localhost:8080/verify/'+hidden_token+'">click here</a>';
-//console.log(process.env.NODE_EMAIL_SERVICE,process.env.NODE_EMAIL,process.env.NODE_PASS  );;
                 // var html;
                 nodemailer.createTestAccount((err, account) => {
                     // create reusable transporter object using the default SMTP transport

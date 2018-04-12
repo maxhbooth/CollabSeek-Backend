@@ -63,16 +63,19 @@
                 <img src="../resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
             <%}%>
 
-            <h3>Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h3>
+            <div class="well well-sm">
+                <h4>Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h4>
+                <% if(locals.position){%>
+                <h4>Position: <small><%= position %></small></h4>
+                <%}%>
+                <% if(locals.pronouns){%>
+                <h4>Pronouns: <small><%=pronouns %></small></h4>
+                <%}%>
+            </div>
         </div>
         <div class="col-sm-8">
             <% if(locals.intro){%>
             <h3><%= intro %></h3>
-            <%}%>
-            <% if(locals.position){%>
-            <div class="well well-sm">
-                <h4>Position: <small><%= position %></small></h4>
-            </div>
             <%}%>
 
             <% if(locals.departments){%>
