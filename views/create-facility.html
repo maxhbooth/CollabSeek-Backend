@@ -14,6 +14,8 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/homepage.css">
     <link rel="stylesheet" href="css/my-profile.css">
+    <link rel="stylesheet" href="css/navbar.css">
+
 </head>
 <body>
 <%if (locals.user_confirmed){%>
@@ -55,7 +57,7 @@
     <div class="col-sm-4" id="user_interface" data-spy="affix">
         <div class="well well-sm clearfix">
             <h4>Instructions <button id="toggle_instructions" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                <span class="glyphicon glyphicon-plus"></span></button></h4>
+                <span class="glyphicon glyphicon-plus" id="plus_button"></span></button></h4>
             <ul id="instruction_list" style="display: none;">
                 <li>Add or remove your facilities and resources by checking or un-checking their boxes.</li>
                 <li>Add a new category of facility by using the "Add New Category" input box.</li>
@@ -89,8 +91,14 @@
         <br><br>
 
         <%if(!locals.user_confirmed){%>
-        <form action="/signup-details" method="get" class="text-center">
+        <form action="/signup-trees" method="get" class="text-center">
             <button type="submit" class="btn btn-basic"><strong>Return to Signup</strong></button>
+        </form>
+        <%}%>
+
+        <%if(locals.user_confirmed){%>
+        <form action="/my-profile" method="get" class="text-center">
+            <button type="submit" class="btn btn-basic"><strong>Return to Profile</strong></button>
         </form>
         <%}%>
 

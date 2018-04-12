@@ -32,7 +32,6 @@ module.exports = function (app) {
                     callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
                 }
             });
-
             var upload = multer({
                 storage: storage,
                     fileFilter: function(req, file, callback) {
@@ -49,7 +48,6 @@ module.exports = function (app) {
                         callback(null, true)
                     }
             }).single('imageUpload');
-
             upload(req, res, function(err){
                 if(err){
                     //there was an error uploading!
@@ -76,7 +74,7 @@ module.exports = function (app) {
 
     });
     app.post('/upload-image-signup', (req, res) => {
-        if (req.session.profile && req.cookies.user_sid) {
+        if (req.session.profile && req.cookies.user_sid && req.file) {
             const profileId = req.session.profile.id;
             var profileRepository = new ProfileRepository();
             const storage = multer.diskStorage({
@@ -120,8 +118,10 @@ module.exports = function (app) {
                     });
                 }
             });
-            res.redirect('/signup-details');
-        } else {
+            res.redirect('/signup-trees');
+        }else if(req.session.profile && req.cookies.user_sid){
+            res.redirect('/signup-trees');
+        }else {
             res.redirect('/login');
         }
     });

@@ -65,6 +65,10 @@ var profile = sequelize.define('profile', {
     intro: {
         type: Sequelize.TEXT,
         allowNull:true
+    },
+    pronouns: {
+        type: Sequelize.STRING,
+        allowNull: true
     }
 }, {
     hooks: {

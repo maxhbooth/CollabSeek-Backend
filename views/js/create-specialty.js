@@ -26,13 +26,16 @@ $(document).ready(function() {
         }
     }
 
-
     $("#toggle_instructions").click(function(e){
         if(document.getElementById("instruction_list").style.display === "none"){
             document.getElementById("instruction_list").style.display = "block";
+            $("#plus_button").removeClass();
+            $("#plus_button").addClass("glyphicon glyphicon-minus");
         }
         else{
             document.getElementById("instruction_list").style.display = "none";
+            $("#plus_button").removeClass();
+            $("#plus_button").addClass("glyphicon glyphicon-plus");
         }
     });
 

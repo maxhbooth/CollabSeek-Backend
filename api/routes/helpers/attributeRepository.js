@@ -35,11 +35,11 @@ repository.prototype.getDegrees = async(function () {
 });
 
 repository.prototype.getDepartments = async(function () {
-    return await(this.department.findAll()).map(department => department.dataValues.name)
+    return await(this.department.findAll({order:  Sequelize.col('name')})).map(department => department.dataValues.name)
 });
 
 repository.prototype.getDisciplines = async(function () {
-    return await(this.discipline.findAll()).map(discipline => discipline.dataValues.name)
+    return await(this.discipline.findAll({order:  Sequelize.col('name')})).map(discipline => discipline.dataValues.name)
 });
 
 repository.prototype.getFacilities = async(function () {
@@ -71,7 +71,7 @@ repository.prototype.getSkillsTree = async(function () {
 });
 
 repository.prototype.getSpecialties = async(function () {
-    return await(this.specialty.findAll()).map(specialty => specialty.dataValues.name)
+    return await(this.specialty.findAll({order:  Sequelize.col('name')})).map(specialty => specialty.dataValues.name)
 });
 
 repository.prototype.getSpecialtiesTree = async(function() {
