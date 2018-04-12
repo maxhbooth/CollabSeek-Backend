@@ -443,7 +443,8 @@ profileRepository.prototype.removeProfileSpecialtyById = async(function(profileI
 // =====================================================================================================================
 profileRepository.prototype.createProfile = async(function
     (first, last, degreeName, departmentName, disciplineName,
-     positionName, facilityName, skillName, specialtyName, email, password, hidden_token, confirmed_user,password_token) {
+     positionName, facilityName, skillName, specialtyName, email, password, hidden_token,
+     confirmed_user, password_token, intro) {
 
     let positionId = await(this.attrRepository.getPositionId(positionName));
 
@@ -455,7 +456,8 @@ profileRepository.prototype.createProfile = async(function
         password: password,
         hidden_token: hidden_token,
         confirmed_user: confirmed_user,
-        password_token: password_token
+        password_token: password_token,
+        intro: intro
     }, {
         returning: true,
         plain: true}).catch(errors => {
