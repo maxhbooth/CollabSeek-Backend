@@ -2,6 +2,7 @@ var db = require('../../database/database');
 var Profile = require('../../models/profile');
 var randomstring = require('randomstring');
 const await = require('asyncawait/await');
+//var mailer = require('../../views/js/mailer');
 var nodemailer = require('nodemailer');
 const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
@@ -40,17 +41,58 @@ module.exports = function (app, sessionChecker) {
         req.checkBody('last', "Must enter a last name.").notEmpty();
 
         let errors = req.validationErrors();
-        if(!req.body.email.endsWith("unc.edu") ){
-            errors.push({msg:"Email must end with unc.edu", param:"email"});
-        }
+        // if(!req.body.email.endsWith("unc.edu") ){
+        //     errors.push({msg:"Email must end with unc.edu", param:"email"});
+        // }
         if (!errors) {
             let hidden_token = randomstring.generate();
             let confirmed_user = false;
+            let password_token = randomstring.generate();
 
             var profileRepository = new ProfileRepository();
             profileRepository.createProfile(req.body.first, req.body.last, req.body.degree, req.body.department, req.body.discipline,
-                req.body.position, null, null, null, req.body.email, req.body.password, hidden_token, confirmed_user).then(profile => {
+                req.body.position, null, null, null, req.body.email, req.body.password, hidden_token, confirmed_user, password_token).then(profile => {
                 req.session.profile = profile.dataValues;
+                var email = req.body.email;
+                //email compose
+                const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
+                    'Please verify you email by typing in the following hidden token <br/>' +
+                    '<b>Token:</b>'+ hidden_token +
+                    '<br/> in the following link ' +
+                    '<a href ="http://localhost:8080/verify/'+hidden_token+'">click here</a>';
+//console.log(process.env.NODE_EMAIL_SERVICE,process.env.NODE_EMAIL,process.env.NODE_PASS  );;
+               // var html;
+                nodemailer.createTestAccount((err, account) => {
+                    // create reusable transporter object using the default SMTP transport
+                    let transporter = nodemailer.createTransport({
+                        host: process.env.NODE_EMAIL_SERVICE,
+                        port: 465,
+                        secure: true,
+                        auth: {
+                            user: process.env.NODE_EMAIL,
+                            pass: process.env.NODE_PASS
+                        }
+                    });
+                    let mailOptions = {
+                        from: '"CollabSeek" <collabuncseek@gmail.com>', // sender address
+                        to: email, // list of receivers
+                        subject: 'CollabSeek Email Verification', // Subject line
+                        text: 'Click on the Link below', // plain text body
+                        html: html // html body
+                    };
+                    // send mail with defined transport object
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.log(error);
+                            return;
+                        }
+                        console.log('Message sent: %s', info.messageId);
+                        // Preview only available when sending through an Ethereal account
+                        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                    });
+                });
+
+
             console.log(req.session.profile);
             res.redirect('/signup-details');
         })
@@ -106,43 +148,7 @@ module.exports = function (app, sessionChecker) {
         if (req.session.profile && req.cookies.user_sid){
         profileRepository = new ProfileRepository();
         profileRepository.getProfileInformation(req.session.profile.id).then(models => {
-            //email compose
-            const url = "http://localhost:8080/verify/"+hidden_token;
-            const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
-                'Please verify you email by typing in the following hidden token <br/>' +
-                '<b>Token:</b>'+ hidden_token +
-                '<br/> in the following link ' +
-                '<a href ="http://localhost:8080/verify/'+hidden_token+'">click here</a>';
 
-            nodemailer.createTestAccount((err, account) => {
-                // create reusable transporter object using the default SMTP transport
-                let transporter = nodemailer.createTransport({
-                    host: 'smtp.gmail.com',
-                    port: 465,
-                    secure: true,
-                    auth: {
-                        user: 'collabuncseek@cs.unc.edu',
-                        pass: 'collab123'
-                    }
-                });
-                let mailOptions = {
-                    from: '"CollabSeek" <marcussw@cs.unc.edu>', // sender address
-                    to: email, // list of receivers
-                    subject: 'CollabSeek Email Verification', // Subject line
-                    text: 'Click on the Link below', // plain text body
-                    html: html // html body
-                };
-                // send mail with defined transport object
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        console.log(error);
-                        return;
-                    }
-                    console.log('Message sent: %s', info.messageId);
-                    // Preview only available when sending through an Ethereal account
-                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                });
-            });
 
             res.redirect('/verify');
     }).catch(profile_errors =>{
@@ -230,19 +236,20 @@ module.exports = function (app, sessionChecker) {
                     //else send an email to change password
                     const html = 'Greetings, <br/> Check the following link below to change password'+
                         '<a href ="http://localhost:8080/changepassword/'+password_token+'">click here</a>';
+
                 nodemailer.createTestAccount((err, account) => {
                     // create reusable transporter object using the default SMTP transport
                     let transporter = nodemailer.createTransport({
-                        host: 'smtp.gmail.com',
+                        host: process.env.NODE_EMAIL_SERVICE,
                         port: 465,
                         secure: true,
                         auth: {
-                            user: 'marcussw@cs.unc.edu',
-                            pass: 'kebab*heels1'
+                            user: process.env.NODE_EMAIL,
+                            pass: process.env.NODE_PASS
                         }
                     });
                     let mailOptions = {
-                        from: '"CollabSeek " <marcussw@cs.unc.edu>', // sender address
+                        from: '"CollabSeek " <collabuncseek@gmail.com>', // sender address
                         to: email, // list of receivers
                         subject: 'CollabSeek Password Change Request', // Subject line
                         text: 'Please look at the link below', // plain text body
