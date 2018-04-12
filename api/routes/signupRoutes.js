@@ -58,7 +58,7 @@ module.exports = function (app, sessionChecker) {
                     'Please verify you email by typing in the following hidden token <br/>' +
                     '<b>Token:</b>'+ hidden_token +
                     '<br/> in the following link ' +
-                    '<a href ="http://localhost:8080/verify/'+hidden_token+'">click here</a>';
+                    '<a href ="'+process.env.COLLAB_LINK+/verify/+hidden_token+'">click here</a>';
                 // var html;
                 nodemailer.createTestAccount((err, account) => {
                     // create reusable transporter object using the default SMTP transport

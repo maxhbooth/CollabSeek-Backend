@@ -90,7 +90,7 @@ module.exports = function (app, sessionChecker) {
 
                     //else send an email to change password
                     const html = 'Greetings, <br/> Check the following link below to change password'+
-                        '<a href ="http://localhost:8080/changepassword/'+password_token+'">click here</a>';
+                        '<a href ="'+process.env.COLLAB_LINK+/changepassword/+password_token+'">click here</a>';
                 nodemailer.createTestAccount((err, account) => {
                     // create reusable transporter object using the default SMTP transport
                     let transporter = nodemailer.createTransport({
