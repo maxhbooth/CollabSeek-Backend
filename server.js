@@ -74,6 +74,7 @@ var profileUpdateRoutes = require('./api/routes/profileUpdateRoutes');
 var searchRoutes = require('./api/routes/searchRoutes');
 var addAttributeRoutes = require('./api/routes/addAttributeRoutes');
 var deleteAttributeRoutes = require('./api/routes/deleteAttributeRoutes');
+var signupRoutes = require('./api/routes/signupRoutes');
 homeRoutes(app, sessionChecker);
 userRoutes(app, sessionChecker);
 imageUploadRoutes(app, sessionChecker);
@@ -81,6 +82,7 @@ profileUpdateRoutes(app, sessionChecker);
 searchRoutes(app, sessionChecker);
 addAttributeRoutes(app, sessionChecker);
 deleteAttributeRoutes(app, sessionChecker);
+signupRoutes(app, sessionChecker);
 
 
 app.listen(port);

@@ -32,7 +32,6 @@ module.exports = function (app) {
                     callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
                 }
             });
-
             var upload = multer({
                 storage: storage,
                     fileFilter: function(req, file, callback) {
@@ -49,7 +48,6 @@ module.exports = function (app) {
                         callback(null, true)
                     }
             }).single('imageUpload');
-
             upload(req, res, function(err){
                 if(err){
                     //there was an error uploading!
@@ -120,7 +118,7 @@ module.exports = function (app) {
                     });
                 }
             });
-            res.redirect('/signup-details');
+            res.redirect('/signup-trees');
         } else {
             res.redirect('/login');
         }

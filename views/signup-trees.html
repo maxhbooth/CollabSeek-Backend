@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finish Signup</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="js/load-image.all.min.js"></script>
+    <link rel="stylesheet" href="css/homepage.css">
+    </head>
+
+<body class="container">
+<div class="page-header">
+    <h1>CollabSeek Signup</h1>
+</div>
+
+<div class="container row">
+    <div class="jumbotron">
+
+        <div class="row">
+            <label>Add Specialties to Your Profile:</label>
+            <a class="btn btn-default" href="/create-specialty" role="button">Add Specialties</a>
+            <% if(locals.profile.specialties){%>
+            <%if(profile.specialties.length > 0){%>
+            <div class="well well-sm">
+                <%profile.specialties.forEach(function(specialty){%>
+                <p><%= specialty.name %></p>
+                <%})%>
+            </div>
+            <%}}%>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <label>Add Skills to Your Profile:</label>
+            <a class="btn btn-default" href="/create-skill" role="button">Add Skills</a>
+            <% if(locals.profile.skills){%>
+            <%if (profile.skills.length > 0){%>
+            <div class="well well-sm">
+                <%profile.skills.forEach(function(skill){%>
+                <p><%= skill.name %></p>
+                <%})%>
+            </div>
+            <%}}%>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <label>Add Resources and Facilities to Your Profile:</label>
+            <a class="btn btn-default" href="/create-facility" role="button">Add Facilities</a>
+            <% if(locals.profile.facilities){%>
+            <%if(profile.facilities.length > 0){%>
+            <div class="well well-sm">
+                <%profile.facilities.forEach(function(facility){%>
+                <p><%= facility.name %></p>
+                <%})%>
+            </div>
+            <%}}%>
+        </div>
+
+        <br><br>
+
+        <div class="row">
+            <form method="post" action="/signup-trees">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
