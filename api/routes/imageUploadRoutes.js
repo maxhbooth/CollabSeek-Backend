@@ -74,7 +74,7 @@ module.exports = function (app) {
 
     });
     app.post('/upload-image-signup', (req, res) => {
-        if (req.session.profile && req.cookies.user_sid) {
+        if (req.session.profile && req.cookies.user_sid && req.file) {
             const profileId = req.session.profile.id;
             var profileRepository = new ProfileRepository();
             const storage = multer.diskStorage({
@@ -119,7 +119,9 @@ module.exports = function (app) {
                 }
             });
             res.redirect('/signup-trees');
-        } else {
+        }else if(req.session.profile && req.cookies.user_sid){
+            res.redirect('/signup-trees');
+        }else {
             res.redirect('/login');
         }
     });
