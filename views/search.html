@@ -1,8 +1,30 @@
 <html>
 <head>
-    <title>Login Here</title>
+    <title>Search</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <script type="text/javascript">
+        function toggle_visibility(name, id) {
+            var elems = document.getElementsByName(name);
+            elems.forEach(function(elem){
+                if(elem.style.display == 'block') {
+                    elem.style.display = 'none';
+                }
+                else{
+                    elem.style.display = 'block';
+                }
+            });
+            var toggle = document.getElementById(id);
+            if(toggle.innerHTML === "Show All"){
+                toggle.innerHTML =  "Show Less";
+            }
+            else if(toggle.innerHTML === "Show Less"){
+                toggle.innerHTML =  "Show All";
+            }
+        }
+    </script>
+
 </head>
 <body class="container">
 <div class="page-header">
@@ -30,12 +52,15 @@
     <h5>You searched for: <b><%=pastQuery%></b></h5>
     <%}%>
 
+
     <% if(locals.departmentProfiles){%>
-        <div>
+        <div class="row">
             <% if (departmentProfiles.length > 0){%>
-            <div class="page-header"><h3>Department: </h3></div>
+            <%var i = 0;%>
+            <div class="page-header"><h3>Department: <a href="#" id="department_toggle" onclick="toggle_visibility('department_result', 'department_toggle');">Show Less</a></h3></div>
                 <%departmentProfiles.forEach(function(profile){%>
-                <div class="jumbotron" style="margin-bottom:10;padding:10;">
+                <%i++;%>
+                <div class="jumbotron col-sm-3" <% if(i > 12) { %> name='department_result' <%}%> style="margin:10;padding:10;display:block;">
                     <div >
                         <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
                     </div>
@@ -57,11 +82,13 @@
     <%}%>
 
     <% if(locals.disciplineProfiles){%>
-    <div>
+    <div class="row">
         <% if (disciplineProfiles.length > 0){%>
-        <div class="page-header"><h3>Discipline: </h3></div>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Discipline: <a href="#" id="discipline_toggle" onclick="toggle_visibility('discipline_result', 'discipline_toggle');">Show Less</a></h3></div>
         <%disciplineProfiles.forEach(function(profile){%>
-            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+        <%i++;%>
+            <div class="jumbotron col-sm-3" <% if(i > 12) { %> name='discipline_result' <%}%> style="margin:10;padding:10;display:block;">
                 <div >
                     <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
                 </div>
@@ -83,11 +110,13 @@
     <%}%>
 
     <% if(locals.facilityProfiles){%>
-    <div>
+    <div class="row">
         <% if (facilityProfiles.length > 0){%>
-        <div class="page-header"><h3>Facilities: </h3></div>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Facilities: <a href="#" id="facility_toggle" onclick="toggle_visibility('facility_result', 'facility_toggle');">Show Less</a></h3></div>
             <%facilityProfiles.forEach(function(profile){%>
-            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+            <%i++;%>
+            <div class="jumbotron col-sm-3" <% if(i > 12) { %> name='facility_result' <%}%> style="margin:10;padding:10;display:block;">
                 <div >
                     <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
                 </div>
@@ -109,11 +138,13 @@
     <%}%>
 
     <% if(locals.skillProfiles){%>
-    <div>
+    <div class="row">
         <% if (skillProfiles.length > 0){%>
-        <div class="page-header"><h3>Skills: </h3></div>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Skills: <a href="#" id="skill_toggle" onclick="toggle_visibility('skill_result', 'skill_toggle');">Show Less</a></h3></div>
             <%skillProfiles.forEach(function(profile){%>
-            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+            <%i++;%>
+            <div class="jumbotron col-sm-3" <% if(i > 12) { %> name='skill_result' <%}%> style="margin:10;padding:10;display:block;">
                 <div >
                     <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
                 </div>
@@ -135,11 +166,13 @@
     <%}%>
 
     <% if(locals.specialtyProfiles){%>
-    <div>
+    <div class="row">
         <% if (specialtyProfiles.length > 0){%>
-        <div class="page-header"><h3>Specialty: </h3></div>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Specialty: <a href="#" id="specialty_toggle" onclick="toggle_visibility('specialty_result', 'specialty_toggle');">Show Less</a></h3></div>
             <%specialtyProfiles.forEach(function(profile){%>
-            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+            <%i++;%>
+            <div class="jumbotron col-sm-3" <% if(i > 12) { %> name='specialty_result' <%}%> style="margin:10;padding:10;display:block;">
                 <div >
                     <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
                 </div>
@@ -161,11 +194,13 @@
     <%}%>
 
     <% if(locals.positionProfiles){%>
-    <div>
+    <div class="row">
         <% if (positionProfiles.length > 0){%>
-        <div class="page-header"><h3>Position: </h3></div>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Position: <a href="#" id="position_toggle" onclick="toggle_visibility('position_result', 'position_toggle');">Show Less</a></h3></div>
         <%positionProfiles.forEach(function(profile){%>
-            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+            <%i++;%>
+            <div class="jumbotron col-sm-3" <% if(i > 12) { %> name='position_result' <%}%> style="margin:10;padding:10;display:block;">
                 <div >
                     <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
                 </div>
@@ -187,11 +222,13 @@
     <%}%>
 
     <% if(locals.firstNameProfiles){%>
-    <div>
+    <div class="row">
         <% if (firstNameProfiles.length > 0){%>
-        <div class="page-header"><h3>First Name: </h3></div>
+        <%var i = 0;%>
+        <div class="page-header"><h3>First Name: <a href="#" id="first_toggle" onclick="toggle_visibility('first_result', 'first_toggle');">Show Less</a></h3></div>
             <%firstNameProfiles.forEach(function(profile){%>
-            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+            <%i++;%>
+            <div class="jumbotron col-sm-3" <% if(i > 12) { %> name='first_result' <%}%> style="margin:10;padding:10;display:block;">
                 <div >
                     <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
                 </div>
@@ -214,11 +251,13 @@
 
 
     <% if(locals.lastNameProfiles){%>
-    <div>
+    <div class="row">
         <% if (lastNameProfiles.length > 0){%>
-        <div class="page-header"><h3>Last Name: </h3></div>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Last Name: <a href="#" id="last_toggle" onclick="toggle_visibility('last_result', 'last_toggle');">Show Less</a></h3></div>
             <%lastNameProfiles.forEach(function(profile){%>
-            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+            <%i++;%>
+            <div class="jumbotron col-sm-3" <% if(i > 12) { %> name='last_result' <%}%> style="margin:10;padding:10;display:block;">
                 <div >
                     <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
                 </div>
@@ -240,11 +279,13 @@
     <%}%>
 
     <% if(locals.fullNameProfiles){%>
-    <div>
+    <div class="row">
         <% if (fullNameProfiles.length > 0){%>
-        <div class="page-header"><h3>Full Name: </h3></div>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Full Name: <a href="#" id="full_toggle" onclick="toggle_visibility('full_result', 'full_toggle');">Show Less</a></h3></div>
             <%fullNameProfiles.forEach(function(profile){%>
-            <div class="jumbotron" style="margin-bottom:10;padding:10;">
+            <%i++;%>
+            <div class="jumbotron col-sm-3" <% if(i > 12) { %> name='full_result' <%}%> style="margin:10;padding:10;display:block;">
                 <div >
                     <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
                 </div>
@@ -268,8 +309,11 @@
     <% if(locals.byClosestMatchProfiles){%>
     <div>
         <% if (byClosestMatchProfiles.length > 0){%>
-        <div class="page-header"><h3>Closest Match: </h3></div>
+        <%var i = 0;%>
+        <div class="page-header row"><h3>>Closest Match: <a href="#" id="closest_toggle" onclick="toggle_visibility('closest_result', 'closest_toggle');">Show Less</a></h3></div>
             <%byClosestMatchProfiles.forEach(function(profile){%>
+            <%i++;%>
+            <div class="jumbotron col-sm-3" <% if(i > 12) { %> name='closest_result' <%}%> style="margin:10;padding:10;display:block;">
             <div class="jumbotron" style="margin-bottom:10;padding:10;">
                 <div >
                     <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
