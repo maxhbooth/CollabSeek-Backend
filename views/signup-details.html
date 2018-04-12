@@ -34,37 +34,17 @@
 
 <div class="container row">
     <div class="jumbotron">
-
-        <div class="row">
-            <label>Add an introduction for people viewing your profile:</label>
-            <div class="row">
-                <div id="intro-edit" class="col-sm-8">
-                    <form method="post" action="/update-intro-signup">
-                        <textarea class="form-control" name="intro" rows="8"><%if(locals.profile.intro){%><%=locals.profile.intro%><%}%></textarea>
-                        <button type="submit" class="btn btn-default">Save</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <br><br>
-
+    <form method="post" enctype="multipart/form-data" action="/upload-image-signup">
         <div class="row">
             <label>Upload a Profile Image:</label>
             <div id="imageDiv"></div>
-            <form method="post" enctype="multipart/form-data" action="/upload-image-signup">
-                <input type="file" name="imageUpload">
-                <input class="btn btn-default" type="submit" value="Submit">
-            </form>
+            <input type="file" name="imageUpload">
         </div>
 
         <br><br>
 
-        <div class="row">
-            <form method="post" action="/signup-details">
-                <button type="submit" class="btn btn-default">Next</button>
-            </form>
-        </div>
+        <button type="submit" class="btn btn-default">Next</button>
+    </form>
     </div>
 </div>
 </body>

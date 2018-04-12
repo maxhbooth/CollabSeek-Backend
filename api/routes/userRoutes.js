@@ -2,12 +2,24 @@ var db = require('../../database/database');
 var Profile = require('../../models/profile');
 var randomstring = require('randomstring');
 const await = require('asyncawait/await');
+//var mailer = require('../../views/js/mailer');
 var nodemailer = require('nodemailer');
 const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
 var bcrypt = require('bcrypt');
 module.exports = function (app, sessionChecker) {
     // set up the routes themselves
+
+    function extend(dest, src) {
+        for(var key in src) {
+            dest[key] = src[key];
+        }
+        return dest;
+    }
+
+
+
+
 
     app.route('/login')
         .get(sessionChecker, (req, res) => {
@@ -28,6 +40,7 @@ module.exports = function (app, sessionChecker) {
                     res.render('login.html', {error: 'Invalid password.'});
                 } else if(!userConfirmed){
                     //check to see if profile has been activated return error message  //
+                    console.log("Confirm your email address.");
                     res.redirect('/verify');
                 } else {
                     req.session.profile = profile.dataValues;
@@ -116,6 +129,7 @@ module.exports = function (app, sessionChecker) {
         });
     app.route('/changepassword')
         .get(sessionChecker,(req,res) =>{
+
 
         })
 
