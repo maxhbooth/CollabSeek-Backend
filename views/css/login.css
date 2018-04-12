@@ -9,27 +9,37 @@
     -moz-border-radius-bottomright: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    width:86%;
+
 }
 
 .inputContainer {
     margin-bottom: 5px;
     line-height: 2.8;
-
 }
 
 .icon {
     background-color: white;
-    padding: 1.69ex;
+    padding: 1.722ex;
     z-index: 1;
+    margin-right: -5px;
+    color: #2c3e50;
 }
 
-#searcher {
+.login {
+    margin-left: 5px;
+    background-color:#4B9CD3;
+    border: none;
 }
 
-#advSearch {
-    font-weight:bold;
-}
 
 .jumbotron {
     background-color: #ecf0f1;
+    padding-top:20px;
+    padding-bottom: 20px;
+}
+
+.buttonContainer{
+    float:right;
+    margin-top: 10px;
 }
