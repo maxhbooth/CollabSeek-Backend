@@ -25,6 +25,7 @@ function connectDatabase(){
             host: dbHost,
             port: dbPort,
             dialect: 'postgres',
+            logging: false,
             pool: {
                 max: 5,
                 min: 0,

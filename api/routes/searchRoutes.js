@@ -208,7 +208,7 @@ module.exports = function (app, sessionChecker) {
         if (departments.length == 0){
             return [];
         }
-        for (var i = 0; i < departments.length; ++i){
+        for (var i = 0; i < departments.length && i <  10; ++i){
             let id = await(profileRepository.getProfileIDByDepartment(departments[i]));
             if (id !=null){
                 departmentProfileIds = departmentProfileIds.concat(id);
@@ -224,7 +224,7 @@ module.exports = function (app, sessionChecker) {
         if (disciplines.length == 0){
             return [];
         }
-        for (var i = 0; i < disciplines.length; ++i){
+        for (var i = 0; i < disciplines.length && i <  10; ++i){
             let id = await(profileRepository.getProfileIDByDiscipline(disciplines[i]));
             if (id !=null){
                 disciplineProfileIds = disciplineProfileIds.concat(id);
@@ -240,7 +240,7 @@ module.exports = function (app, sessionChecker) {
         if (facilities.length == 0){
             return [];
         }
-        for (var i = 0; i < facilities.length; ++i){
+        for (var i = 0; i < facilities.length && i <  10; ++i){
             let id = await(profileRepository.getProfileIDByFacility(facilities[i]));
             if (id !=null){
                 facilityProfileIds = facilityProfileIds.concat(id);
@@ -256,7 +256,7 @@ module.exports = function (app, sessionChecker) {
         if (skills.length == 0){
             return [];
         }
-        for (var i = 0; i < skills.length; ++i){
+        for (var i = 0; i < skills.length  && i <  10; ++i){
             let id = await(profileRepository.getProfileIDBySkill(skills[i]));
             if (id !=null){
                 skillProfileIds = skillProfileIds.concat(id);
@@ -272,7 +272,7 @@ module.exports = function (app, sessionChecker) {
         if (specialties.length == 0){
             return [];
         }
-        for (var i = 0; i < specialties.length; ++i){
+        for (var i = 0; i < specialties.length && i <  10; ++i){
             let id = await(profileRepository.getProfileIDBySpecialty(specialties[i]));
             if (id !=null){
                 specialtyProfileIds = specialtyProfileIds.concat(id);
@@ -288,14 +288,16 @@ module.exports = function (app, sessionChecker) {
         if (departments.length == 0){
             return [];
         }
-        for (var i = 0; i < departments.length; ++i){
+        for (var i = 0; i < departments.length && i <  10; ++i){
             let id = await(profileRepository.getProfileIDByDepartment(departments[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null){
-                profile.forEach(function(singleProfile) {
+                let profileArray = [];
+                profileArray = profileArray.concat(profile);
+                profileArray.forEach(function(singleProfile) {
                    singleProfile.matchedQuery = departments[i];
                 });
-                departmentProfiles = departmentProfiles.concat(profile);
+                departmentProfiles = departmentProfiles.concat(profileArray);
             }
             count++;
             if (count > departments.length - 1) return departmentProfiles;
@@ -309,14 +311,16 @@ module.exports = function (app, sessionChecker) {
         if (disciplines.length == 0){
             return [];
         }
-        for (var i = 0; i < disciplines.length; ++i){
+        for (var i = 0; i < disciplines.length && i <  10; ++i){
             let id = await(profileRepository.getProfileIDByDiscipline(disciplines[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
-                profile.forEach(function(singleProfile) {
+                let profileArray = [];
+                profileArray = profileArray.concat(profile);
+                profileArray.forEach(function(singleProfile) {
                     singleProfile.matchedQuery = disciplines[i];
                 });
-                disciplineProfiles = disciplineProfiles.concat(profile);
+                disciplineProfiles = disciplineProfiles.concat(profileArray);
             }
             count++;
             if (count > disciplines.length - 1) return disciplineProfiles;
@@ -330,14 +334,16 @@ module.exports = function (app, sessionChecker) {
         if (facilities.length == 0){
             return [];
         }
-        for (var i = 0; i < facilities.length; ++i){
+        for (var i = 0; i < facilities.length && i <  10; ++i){
             let id = await(profileRepository.getProfileIDByFacility(facilities[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
-                profile.forEach(function(singleProfile) {
+                let profileArray = [];
+                profileArray = profileArray.concat(profile);
+                profileArray.forEach(function(singleProfile) {
                     singleProfile.matchedQuery = facilities[i];
                 });
-                facilityProfiles = facilityProfiles.concat(profile);
+                facilityProfiles = facilityProfiles.concat(profileArray);
             }
             count++;
             if (count > facilities.length - 1) return facilityProfiles;
@@ -351,14 +357,16 @@ module.exports = function (app, sessionChecker) {
         if (skills.length == 0){
             return [];
         }
-        for (var i = 0; i < skills.length; ++i){
+        for (var i = 0; i < skills.length && i <  10; ++i){
             let id = await(profileRepository.getProfileIDBySkill(skills[i]))
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
-                profile.forEach(function(singleProfile) {
+                let profileArray = [];
+                profileArray = profileArray.concat(profile);
+                profileArray.forEach(function(singleProfile) {
                     singleProfile.matchedQuery = skills[i];
                 });
-                skillProfiles = skillProfiles.concat(profile);
+                skillProfiles = skillProfiles.concat(profileArray);
             }
             count++;
             if (count > skills.length - 1) return skillProfiles;
@@ -372,14 +380,16 @@ module.exports = function (app, sessionChecker) {
         if (specialties.length == 0){
             return [];
         }
-        for (var i = 0; i < specialties.length; ++i){
+        for (var i = 0; i < specialties.length && i <  10; ++i){
             let id = await(profileRepository.getProfileIDBySpecialty(specialties[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
-                profile.forEach(function(singleProfile) {
+                let profileArray = [];
+                profileArray = profileArray.concat(profile);
+                profileArray.forEach(function(singleProfile) {
                     singleProfile.matchedQuery = specialties[i];
                 });
-                specialtyProfiles = specialtyProfiles.concat(profile);
+                specialtyProfiles = specialtyProfiles.concat(profileArray);
             }
             count++;
             if (count > specialties.length - 1) return specialtyProfiles;
@@ -393,14 +403,15 @@ module.exports = function (app, sessionChecker) {
         if (positions.length == 0){
             return [];
         }
-        for (var i = 0; i < positions.length; ++i){
+        for (var i = 0; i < positions.length && i <  10; ++i){
             let id = await(profileRepository.getProfileIDByPosition(positions[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
-                profile.forEach(function(singleProfile) {
-                    singleProfile.matchedQuery = positions[i];
+                let profileArray = [];
+                profileArray = profileArray.concat(profile);
+                profileArray.forEach(function(singleProfile) {                          singleProfile.matchedQuery = positions[i];
                 });
-                positionProfiles = positionProfiles.concat(profile);
+                positionProfiles = positionProfiles.concat(profileArray);
             }
             count++;
             if (count > positions.length - 1) return positionProfiles;

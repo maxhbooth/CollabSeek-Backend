@@ -1,0 +1,35 @@
+.inputContainer input.field {
+    border: none;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 6px;
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.inputContainer {
+    margin-bottom: 5px;
+    line-height: 2.8;
+
+}
+
+.icon {
+    background-color: white;
+    padding: 1.69ex;
+    z-index: 1;
+}
+
+#searcher {
+}
+
+#advSearch {
+    font-weight:bold;
+}
+
+.jumbotron {
+    background-color: #ecf0f1;
+}
