@@ -182,47 +182,43 @@ profileRepository.prototype.addProfileFacilityById = async(function (profileId, 
 });
 
 profileRepository.prototype.addProfileSpecialty = async(function (profileId, specialtyName) {
-    let specialtyId = await(this.attrRepository.getSpecialtyId(specialtyName));
+    let specialty = await(this.attrRepository.specialty.findOne({where: {name: specialtyName}}));
 
-    if(specialtyId !=null){
-        this.profileSpecialty.findOrCreate({
-            where: {
-                profile_id: profileId,
-                specialty_id: specialtyId
-            },
-            default: {
-                profile_id: profileId,
-                specialty_id: specialtyId
-            }
-        })
-            .catch(error => {
-            //db errors
-            console.log(error);
-    });
-    }
-
+        if(specialty.id !=null) {
+            this.profileSpecialty.findOrCreate({
+                where: {
+                    profile_id: profileId,
+                    specialty_id: specialty.id
+                },
+                default: {
+                    profile_id: profileId,
+                    specialty_id: specialty.id
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        }
     return 0;
 });
 
 profileRepository.prototype.addProfileSpecialtyById = async(function (profileId, specialtyId) {
-    if(specialtyId !=null){
-        this.profileSpecialty.findOrCreate({
+    let specialty = await(this.attrRepository.specialty.findOne({where: {id: specialtyId}}));
+    var wait;
+    if(specialty.id !=null) {
+        wait = await(this.profileSpecialty.findOrCreate({
             where: {
                 profile_id: profileId,
-                specialty_id: specialtyId
+                specialty_id: specialty.id
             },
             default: {
                 profile_id: profileId,
-                specialty_id: specialtyId
+                specialty_id: specialty.id
             }
-        })
-            .catch(error => {
-            //db errors
+        }).catch(error => {
             console.log(error);
-    });
+    }));
     }
-
-    return 0;
+    return wait;
 });
 
 profileRepository.prototype.addProfileSkill = async(function (profileId, skillName) {
@@ -423,12 +419,12 @@ profileRepository.prototype.removeProfileSkillById = async(function (profileID, 
 });
 
 profileRepository.prototype.removeProfileSpecialty = async(function (profileID, specialtyName){
-    let specialtyID = await(this.attrRepository.getSpecialtyId(specialtyName));
-    if(specialtyID != null){
+    let specialty = await(this.attrRepository.specialty.findOne({where: {name: specialtyName}}));
+    if(specialty.id != null){
         this.profileSpecialty.destroy({
             where: {
                 profile_id: profileID,
-                specialty_id: specialtyID
+                specialty_id: specialty.id
             }
         })
             .catch(error => {
@@ -439,11 +435,12 @@ profileRepository.prototype.removeProfileSpecialty = async(function (profileID, 
 });
 
 profileRepository.prototype.removeProfileSpecialtyById = async(function(profileID, specialtyID) {
-    if(specialtyID != null){
+    let specialty = await(this.attrRepository.specialty.findOne({where: {id: specialtyID}}));
+    if(specialty.id != null){
         this.profileSpecialty.destroy({
             where: {
                 profile_id: profileID,
-                specialty_id: specialtyID
+                specialty_id: specialty.id
             }
         })
             .catch(error => {
