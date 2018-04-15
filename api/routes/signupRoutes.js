@@ -4,7 +4,8 @@ const fs = require('fs');
 var Profile = require('../../models/profile');
 var randomstring = require('randomstring');
 const await = require('asyncawait/await');
-var nodemailer = require('nodemailer');
+//var nodemailer = require('nodemailer');
+var mailer = require('./helpers/mailer');
 const multer = require('multer');
 var Jimp = require("jimp");
 const AttrRepository = require('./helpers/attributeRepository');
@@ -38,9 +39,9 @@ module.exports = function (app, sessionChecker) {
         req.checkBody('last', "Must enter a last name.").notEmpty();
 
         let errors = req.validationErrors();
-        // if(!req.body.email.endsWith("unc.edu") ){
-        //     errors.push({msg:"Email must end with unc.edu", param:"email"});
-        // }
+        if(!req.body.email.endsWith("unc.edu") ){
+            errors.push({msg:"Email must end with unc.edu", param:"email"});
+        }
         if (!errors) {
             let hidden_token = randomstring.generate();
             let confirmed_user = false;
@@ -54,41 +55,12 @@ module.exports = function (app, sessionChecker) {
                 req.session.profile = profile.dataValues;
                 var email = req.body.email;
                 //email compose
-                const html = 'Greetings, <br/> Thank you for registering for CollabSeek' +
-                    'Please verify you email by typing in the following hidden token <br/>' +
-                    '<b>Token:</b>'+ hidden_token +
-                    '<br/> in the following link ' +
-                    '<a href ="'+process.env.COLLAB_LINK+/verify/+hidden_token+'">click here</a>';
+                const html = 'Dear CollabSeek User, <br/><br/> Thank you for registering for CollabSeek' +
+                    'In order to to view your profile you have to verify your account by clicking on the link below<br/>'+
+                    '<a href ="'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'">"http://backend-test-dept-comp523collaborate.cloudapps.unc.edu"</a>';
+
                 // var html;
-                nodemailer.createTestAccount((err, account) => {
-                    // create reusable transporter object using the default SMTP transport
-                    let transporter = nodemailer.createTransport({
-                        host: process.env.NODE_EMAIL_SERVICE,
-                        port: 465,
-                        secure: true,
-                        auth: {
-                            user: process.env.NODE_EMAIL,
-                            pass: process.env.NODE_PASS
-                        }
-                    });
-                    let mailOptions = {
-                        from: '"CollabSeek" <collabuncseek@gmail.com>', // sender address
-                        to: email, // list of receivers
-                        subject: 'CollabSeek Email Verification', // Subject line
-                        text: 'Click on the Link below', // plain text body
-                        html: html // html body
-                    };
-                    // send mail with defined transport object
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            console.log(error);
-                            return;
-                        }
-                        console.log('Message sent: %s', info.messageId);
-                        // Preview only available when sending through an Ethereal account
-                        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                    });
-                });
+               mailer.sendEmail("donotreply@collabseek.com",email, "Please Verify Account", html);
             res.redirect('/signup-details');
         })
         .catch(profile_errors =>{
