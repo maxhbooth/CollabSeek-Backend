@@ -182,47 +182,43 @@ profileRepository.prototype.addProfileFacilityById = async(function (profileId, 
 });
 
 profileRepository.prototype.addProfileSpecialty = async(function (profileId, specialtyName) {
-    let specialtyId = await(this.attrRepository.getSpecialtyId(specialtyName));
+    let specialty = await(this.attrRepository.specialty.findOne({where: {name: specialtyName}}));
 
-    if(specialtyId !=null){
-        this.profileSpecialty.findOrCreate({
-            where: {
-                profile_id: profileId,
-                specialty_id: specialtyId
-            },
-            default: {
-                profile_id: profileId,
-                specialty_id: specialtyId
-            }
-        })
-            .catch(error => {
-            //db errors
-            console.log(error);
-    });
-    }
-
+        if(specialty.id !=null) {
+            this.profileSpecialty.findOrCreate({
+                where: {
+                    profile_id: profileId,
+                    specialty_id: specialty.id
+                },
+                default: {
+                    profile_id: profileId,
+                    specialty_id: specialty.id
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        }
     return 0;
 });
 
 profileRepository.prototype.addProfileSpecialtyById = async(function (profileId, specialtyId) {
-    if(specialtyId !=null){
-        this.profileSpecialty.findOrCreate({
+    let specialty = await(this.attrRepository.specialty.findOne({where: {id: specialtyId}}));
+    var wait;
+    if(specialty.id !=null) {
+        wait = await(this.profileSpecialty.findOrCreate({
             where: {
                 profile_id: profileId,
-                specialty_id: specialtyId
+                specialty_id: specialty.id
             },
             default: {
                 profile_id: profileId,
-                specialty_id: specialtyId
+                specialty_id: specialty.id
             }
-        })
-            .catch(error => {
-            //db errors
+        }).catch(error => {
             console.log(error);
-    });
+    }));
     }
-
-    return 0;
+    return wait;
 });
 
 profileRepository.prototype.addProfileSkill = async(function (profileId, skillName) {
@@ -303,10 +299,12 @@ profileRepository.prototype.updatePronouns = async(function(profileID, pronouns)
     ).catch(error => {console.log(error);});
 });
 
-profileRepository.prototype.updateInfo = async(function(profileID, positionName, firstName, lastName, pronouns){
+profileRepository.prototype.updateInfo = async(function(profileID, positionName, firstName, lastName, pronouns,
+                                                        website, phone, availability){
     let positionId = await(this.attrRepository.getPositionId(positionName));
     this.profile.update(
-        {position: positionId, first_name: firstName, last_name: lastName, pronouns: pronouns},
+        {position: positionId, first_name: firstName, last_name: lastName, pronouns: pronouns,
+        website: website, phone_number: phone, availability: availability},
         {where: {id: profileID}}
     ).catch(error => {console.log(error);});
 });
@@ -421,12 +419,12 @@ profileRepository.prototype.removeProfileSkillById = async(function (profileID, 
 });
 
 profileRepository.prototype.removeProfileSpecialty = async(function (profileID, specialtyName){
-    let specialtyID = await(this.attrRepository.getSpecialtyId(specialtyName));
-    if(specialtyID != null){
+    let specialty = await(this.attrRepository.specialty.findOne({where: {name: specialtyName}}));
+    if(specialty.id != null){
         this.profileSpecialty.destroy({
             where: {
                 profile_id: profileID,
-                specialty_id: specialtyID
+                specialty_id: specialty.id
             }
         })
             .catch(error => {
@@ -437,11 +435,12 @@ profileRepository.prototype.removeProfileSpecialty = async(function (profileID, 
 });
 
 profileRepository.prototype.removeProfileSpecialtyById = async(function(profileID, specialtyID) {
-    if(specialtyID != null){
+    let specialty = await(this.attrRepository.specialty.findOne({where: {id: specialtyID}}));
+    if(specialty.id != null){
         this.profileSpecialty.destroy({
             where: {
                 profile_id: profileID,
-                specialty_id: specialtyID
+                specialty_id: specialty.id
             }
         })
             .catch(error => {
@@ -459,7 +458,7 @@ profileRepository.prototype.removeProfileSpecialtyById = async(function(profileI
 profileRepository.prototype.createProfile = async(function
     (first, last, degreeName, departmentName, disciplineName,
      positionName, facilityName, skillName, specialtyName, email, password, hidden_token,
-     confirmed_user, password_token, intro, pronouns) {
+     confirmed_user, password_token, intro, pronouns, website, phone, availability) {
 
     let positionId = await(this.attrRepository.getPositionId(positionName));
 
@@ -473,7 +472,10 @@ profileRepository.prototype.createProfile = async(function
         confirmed_user: confirmed_user,
         password_token: password_token,
         intro: intro,
-        pronouns: pronouns
+        pronouns: pronouns,
+        website: website,
+        phone_number: phone,
+        availability: availability
     }, {
         returning: true,
         plain: true}).catch(errors => {
@@ -585,12 +587,14 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         profiles[j] = {id: ID,  first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
             imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
             hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
-            facilities: facilities, pronouns: profile[j].pronouns};
+            facilities: facilities, pronouns: profile[j].pronouns, website: profile[j].website, phone: profile[j].phone_number,
+            availability: profile[j].availability};
         if(profile.length === 1){
             return {id: ID, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
                 imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
                 hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
-                facilities: facilities, pronouns: profile[j].pronouns};
+                facilities: facilities, pronouns: profile[j].pronouns, website: profile[j].website, phone: profile[j].phone_number,
+                availability: profile[j].availability};
         }
     }
    return profiles;

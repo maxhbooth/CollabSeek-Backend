@@ -46,4 +46,16 @@ $(document).ready(function() {
         $(this).parent().remove();
         current_degrees--;
     });
+
+    //track number of characters remaining for intro.
+
+    var text_max = 300;
+    $('#intro_char_count').html(text_max + ' characters remaining');
+
+    $('#intro').keyup(function() {
+        var text_length = $('#intro').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#intro_char_count').html(text_remaining + ' characters remaining');
+    });
 });

@@ -10,7 +10,7 @@ module.exports = function (app, sessionChecker) {
         if (req.session.profile && req.cookies.user_sid) {
             profileRepository = new ProfileRepository();
             profileRepository.updateInfo(req.session.profile.id, req.body.position, req.body.first, req.body.last,
-                req.body.pronouns).then(function(){
+                req.body.pronouns, req.body.website, req.body.phone, req.body.availability).then(function(){
                 res.redirect('/my-profile');
         });
         }else {
@@ -75,11 +75,13 @@ module.exports = function (app, sessionChecker) {
 
     app.post('/add-specialty/:id', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
-        profileRepository = new ProfileRepository();
-        profileRepository.addProfileSpecialtyById(req.session.profile.id, req.params.id).then(function(){res.redirect('/my-profile')});
-    }else{
-        res.redirect('/welcome');
-    }
+            profileRepository = new ProfileRepository();
+            profileRepository.addProfileSpecialtyById(req.session.profile.id, req.params.id).then(function(){
+                res.redirect('/create_specialty')
+            });
+        }else{
+            res.redirect('/welcome');
+        }
 });
 
     app.post('/add-skill', (req, res) => {
@@ -94,7 +96,7 @@ module.exports = function (app, sessionChecker) {
     app.post('/add-skill/:id', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
             profileRepository = new ProfileRepository();
-            profileRepository.addProfileSkillById(req.session.profile.id, req.params.id).then(function(){res.redirect('/my-profile')});
+            profileRepository.addProfileSkillById(req.session.profile.id, req.params.id).then(function(){res.redirect('/create_skill')});
         }else{
             res.redirect('/welcome');
         }
@@ -112,7 +114,7 @@ module.exports = function (app, sessionChecker) {
     app.post('/add-facility/:id', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
             profileRepository = new ProfileRepository();
-            profileRepository.addProfileFacilityById(req.session.profile.id, req.params.id).then(function(){res.redirect('/my-profile')});
+            profileRepository.addProfileFacilityById(req.session.profile.id, req.params.id).then(function(){res.redirect('/create_specialty')});
         }else{
             res.redirect('/welcome');
         }
