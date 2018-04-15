@@ -46,4 +46,5 @@ $(document).ready(function() {
         $(this).parent().remove();
         current_degrees--;
     });
+
 });

@@ -64,12 +64,22 @@
             <%}%>
 
             <div class="well well-sm">
-                <h4>Email: <a href="mailto:<%=locals.email%>"><%=locals.email%></a></h4>
+                <h4>Name: <small><%=first%> <%=last%></small></h4>
+                <% if(locals.pronouns){%>
+                <h4>Pronouns: <small><%=locals.pronouns %></small></h4>
+                <%}%>
                 <% if(locals.position){%>
                 <h4>Position: <small><%= position %></small></h4>
                 <%}%>
-                <% if(locals.pronouns){%>
-                <h4>Pronouns: <small><%=pronouns %></small></h4>
+                <h4 class="text-left">Email: <small><a href="mailto:<%=locals.email%>"><%=locals.email%></a></small></h4>
+                <% if(locals.phone){%>
+                <h4>Phone Number: <small><%=locals.phone %></small></h4>
+                <%}%>
+                <% if(locals.website){%>
+                <h4>Website: <small><%=locals.website %></small></h4>
+                <%}%>
+                <% if(locals.availability){%>
+                <h4>Availability: <small><%=locals.availability%>/5</small></h4>
                 <%}%>
             </div>
         </div>

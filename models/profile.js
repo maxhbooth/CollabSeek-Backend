@@ -69,6 +69,18 @@ var profile = sequelize.define('profile', {
     pronouns: {
         type: Sequelize.STRING,
         allowNull: true
+    },
+    website: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    phone_number: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    availability: {
+        type: Sequelize.INTEGER,
+        allowNull: true
     }
 }, {
     hooks: {

@@ -222,14 +222,17 @@ repository.prototype.getSpecialtyName = async(function(specialtyID) {
 
 repository.prototype.addNewSpecialty = async(function(specialtyName, parentID){
     let specialty = await(this.specialty.create({name: specialtyName, parent_id: parentID}, {plain: true}));
+    return specialty;
 });
 
 repository.prototype.addNewSkill = async(function(skillName, parentID){
     let skill = await(this.skill.create({name: skillName, parent_id: parentID}, {plain: true}));
+    return skill;
 });
 
 repository.prototype.addNewFacility = async(function(facilityName, parentID){
     let facility = await(this.facility.create({name: facilityName, parent_id: parentID}, {plain: true}));
+    return facility;
 })
 
 module.exports = repository;

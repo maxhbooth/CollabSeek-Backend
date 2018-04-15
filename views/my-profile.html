@@ -83,12 +83,21 @@
                     <h4><button id="edit-info" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
                         <span class="glyphicon glyphicon-pencil" title="Edit your profile information."></span></button></h4>
                     <h4>Name: <small><%=first%> <%=last%></small></h4>
-                    <h4 class="text-left">Email: <small><a href="mailto:<%=locals.email%>"><%=locals.email%></a></small></h4>
+                    <% if(locals.pronouns){%>
+                    <h4>Pronouns: <small><%=locals.pronouns %></small></h4>
+                    <%}%>
                     <% if(locals.position){%>
                     <h4>Position: <small><%= position %></small></h4>
                     <%}%>
-                    <% if(locals.pronouns){%>
-                    <h4>Pronouns: <small><%=locals.pronouns %></small></h4>
+                    <h4 class="text-left">Email: <small><a href="mailto:<%=locals.email%>"><%=locals.email%></a></small></h4>
+                    <% if(locals.phone){%>
+                    <h4>Phone Number: <small><%=locals.phone %></small></h4>
+                    <%}%>
+                    <% if(locals.website){%>
+                    <h4>Website: <small><%=locals.website %></small></h4>
+                    <%}%>
+                    <% if(locals.availability){%>
+                    <h4>Availability: <small><%=locals.availability%>/5</small></h4>
                     <%}%>
                 </div>
                 <div id="info-edit" style="display: none;">
@@ -97,6 +106,13 @@
                         <input type="text" class="form-control" id="first" name="first" value="<%=first%>">
                         <label  for="last">Last Name:</label>
                         <input type="text" class="form-control" id="last" name="last" value="<%=last%>">
+                        <label for="pronouns">Pronouns:</label>
+                        <% if(locals.pronouns){%>
+                        <input type="text" class="form-control" id="pronouns" name="pronouns" value="<%=pronouns%>">
+                        <%}%>
+                        <% if(!locals.pronouns){%>
+                        <input type="text" class="form-control" id="pronouns" name="pronouns">
+                        <%}%>
                         <label for="position">Position:</label>
                         <select id="position" name="position" class="form-control">
                             <% if(locals.all_positions){%>
@@ -107,13 +123,36 @@
                             <option><%= pos %></option>
                             <%}})}}%>
                         </select>
-                        <label for="pronouns">Pronouns:</label>
-                        <% if(locals.pronouns){%>
-                            <input type="text" class="form-control" id="pronouns" name="pronouns" value="<%=pronouns%>">
+
+                        <label for="phone">Phone Number <small>ex. (555)555-5555</small>:</label>
+                        <% if(locals.phone){%>
+                        <input type="text" class="form-control" id="phone" name="phone" value="<%=phone%>">
                         <%}%>
-                        <% if(!locals.pronouns){%>
-                        <input type="text" class="form-control" id="pronouns" name="pronouns">
+                        <% if(!locals.phone){%>
+                        <input type="text" class="form-control" id="phone" name="phone">
                         <%}%>
+
+                        <label for="website">Website:</label>
+                        <% if(locals.website){%>
+                        <input type="text" class="form-control" id="website" name="website" value="<%=website%>">
+                        <%}%>
+                        <% if(!locals.website){%>
+                        <input type="text" class="form-control" id="website" name="website">
+                        <%}%>
+                        <br>
+                        <% if(locals.availability){%>
+                        <input type="range" min="1" max="5" value="<%=locals.availability%>" id="availability" name="availability">
+                        <label for="busy" class="pull-left"><small>Less Available</small></label>
+                        <label for="free" class="pull-right"><small>More Available</small></label>
+                        <%}%>
+
+                        <% if(!locals.availability){%>
+                        <input type="range" min="1" max="5" value="3" id="availability" name="availability">
+                        <label for="busy" class="pull-left"><small>Less Available</small></label>
+                        <label for="free" class="pull-right"><small>More Available</small></label>
+                        <%}%>
+
+                        <br><br>
                         <button type="submit" class="btn btn-default">Save</button>
                     </form>
                 </div>

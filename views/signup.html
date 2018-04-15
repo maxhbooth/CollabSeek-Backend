@@ -5,6 +5,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript" src="js/signup.js"></script>
+    <link rel="stylesheet" href="css/my-profile.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
@@ -60,12 +61,21 @@
                     <label  for="last"><span style="color:red">*</span>Last Name:</label>
                     <input type="text" class="form-control " id="last" name="last">
                 </div>
+            </div>
+            <div class="row">
                 <div class="form-group col-sm-4">
                     <label for="pronouns">Pronouns:</label>
                     <span class="glyphicon glyphicon-question-sign pull-right" title="This is an optional field, if filled out it will be visible on your profile. You can change this field at any time."></span>
                     <input type="text" class="form-control" id="pronouns" name="pronouns">
                 </div>
+                <div class="form-group col-sm-4">
+                    <label  for="phone">Phone Number <small>ex. (555) 555-5555</small>:</label>
+                    <input type="text" class="form-control " id="phone" name="phone">
+                </div>
             </div>
+
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+
             <div id="degree_set">
                 <div class="row">
                     <div class="form-group col-sm-4">
@@ -94,8 +104,6 @@
                 </div>
             </div>
 
-            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
-
             <div class="row">
                 <div class="form-group col-sm-12">
                     <label for="position">Position:</label>
@@ -120,12 +128,31 @@
                 </div>
             </div>
 
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+
             <div class="row">
-                <div class="form-group col-sm-12">
-                <label>Add an introduction for people viewing your profile:</label>
-                    <div id="intro-edit" class="col-sm-8">
-                        <textarea class="form-control" name="intro" rows="8"></textarea>
+                <div class="range-slider">
+                    <div class="form-group col-sm-6">
+                        <label>Mark Your Availability for Collaboration from 1 to 5:</label>
+                        <input type="range" min="1" max="5" value="3" id="availability" name="availability">
+                        <label for="busy" class="pull-left"><small>Less Available</small></label>
+                        <label for="free" class="pull-right"><small>More Available</small></label>
+                        </br>
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-8">
+                    <label for="website">Your Website:</label>
+                    <input type="text" class="form-control" id="website" name="website">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-8">
+                        <label>Add an introduction for people viewing your profile:</label>
+                        <textarea class="form-control" name="intro" rows="8"></textarea>
                 </div>
             </div>
 
