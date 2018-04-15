@@ -48,8 +48,7 @@ module.exports = function (app, sessionChecker) {
                 }
             });
         });
-    // ROUTING FOR verify page
-
+    //////////////////////////////////// ROUTING FOR VERIFY PAGE BY MARCUS/////////////////////////////////////////////
     //app.route('/verify')
     app.get('/verify',(req,res) =>{
             res.sendFile('/views/verify.html', {root: './'});
@@ -72,6 +71,8 @@ module.exports = function (app, sessionChecker) {
                 console.log("Error:" + error);
             });
         });
+
+    //////////////////////////////////  ROUTE FOR RESET PASSWORD BY MARCUS/////////////////////////////////////////////
     app.route('/resetpassword')
         .get(sessionChecker,(req,res) =>
         {
@@ -86,7 +87,7 @@ module.exports = function (app, sessionChecker) {
                     return;
                 }
                     let password_token = user.password_token;
-               // console.log(password_token);
+
 
                     //else send an email to change password
                     const html = 'Dear CollabSeek User, <br/><br/>  You are receiving this email because there was a request ' +
@@ -104,6 +105,7 @@ module.exports = function (app, sessionChecker) {
 
             })
         });
+    /////////////////////////////////////////// ROUTE FOR CHANGING USER PASSWORD BY MARCUS///////////////////////////////////
     app.route('/changepassword')
         .get(sessionChecker,(req,res) =>{
 
