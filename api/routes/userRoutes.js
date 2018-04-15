@@ -2,8 +2,8 @@ var db = require('../../database/database');
 var Profile = require('../../models/profile');
 var randomstring = require('randomstring');
 const await = require('asyncawait/await');
-//var mailer = require('../../views/js/mailer');
-var nodemailer = require('nodemailer');
+var mailer = require('./helpers/mailer');
+//var nodemailer = require('nodemailer');
 const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
 var bcrypt = require('bcrypt');
@@ -89,39 +89,16 @@ module.exports = function (app, sessionChecker) {
                // console.log(password_token);
 
                     //else send an email to change password
-                    const html = 'Greetings, <br/> Check the following link below to change password'+
-                        '<a href ="'+process.env.COLLAB_LINK+/changepassword/+password_token+'">click here</a>';
-                nodemailer.createTestAccount((err, account) => {
-                    // create reusable transporter object using the default SMTP transport
-                    let transporter = nodemailer.createTransport({
-                        host: process.env.NODE_EMAIL_SERVICE,
-                        port: 465,
-                        secure: true,
-                        auth: {
-                            user: process.env.NODE_EMAIL,
-                            pass: process.env.NODE_PASS
-                        }
-                    });
-                    let mailOptions = {
-                        from: '"CollabSeek " <marcussw@cs.unc.edu>', // sender address
-                        to: email, // list of receivers
-                        subject: 'CollabSeek Password Change Request', // Subject line
-                        text: 'Please look at the link below', // plain text body
-                        html: html // html body
-                    };
-                    // send mail with defined transport object
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            console.log(error);
-                            return;
-                        }
-                        console.log('Message sent: %s', info.messageId);
-                        // Preview only available when sending through an Ethereal account
-                        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                    });
+                    const html = 'Dear CollabSeek User, <br/><br/>  You are receiving this email because there was a request ' +
+                        'to change the account password for '+ user.first_name +user.last_name +
+                        'if this is true click the link below, if not just ignore this message'+
+                        '<a href ="'+process.env.COLLAB_LINK+'/changepassword/'+password_token+'">http://backend-test-dept-comp523collaborate.cloudapps.unc.edu</a>' +
+                          '<br/><br/> Have a nice day, <br/> CollabSeek team';
+                    mailer.sendEmail("collabuncseek@gmail.com", email, "Password Reset", html);
+
                     res.redirect('/login');
 
-                });
+
 
 
 
