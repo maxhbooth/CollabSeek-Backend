@@ -47,8 +47,11 @@ module.exports = function (app, sessionChecker) {
             let skills = [];
             let facilities = [];
             let positions = req.body.positions;
+            if (req.body.positions == undefined){
+                positions = [];
+            }
 
-            if (req.body.discipline != '') {
+            if (req.body.discipline != '' || req.body.discipline != undefined) {
                 let disciplineArray = [];
                 disciplineArray = disciplineArray.concat(req.body.disciplines);
                 disciplineArray.forEach(function (discipline){
@@ -59,7 +62,7 @@ module.exports = function (app, sessionChecker) {
                     disciplines = disciplines.concat(fuzzyDisciplines.map(a => a.target));
                 });
             }
-            if (req.body.position != '') {
+            if (req.body.position != '' || req.body.position != undefined) {
                 let positionArray = [];
                 positionArray = positionArray.concat(req.body.positions);
                 positionArray.forEach(function (position){
@@ -70,7 +73,7 @@ module.exports = function (app, sessionChecker) {
                     positions = positions.concat(fuzzyPositions.map(a => a.target));
                 });
             }
-            if (req.body.department != '') {
+            if (req.body.department != ''  || req.body.department != undefined) {
                 let departmentArray = [];
                 departmentArray = departmentArray.concat(req.body.departments);
                 departmentArray.forEach(function (department){
@@ -81,7 +84,7 @@ module.exports = function (app, sessionChecker) {
                     departments = departments.concat(fuzzyDepartments.map(a => a.target));
                 });
             }
-            if (req.body.specialty != '') {
+            if (req.body.specialty != '' || req.body.specialty != undefined) {
                 let specialityArray = [];
                 specialityArray = specialityArray.concat(req.body.specialties);
                 specialityArray.forEach(function (specialty){
@@ -92,8 +95,10 @@ module.exports = function (app, sessionChecker) {
                     specialities = specialities.concat(fuzzySpecialties.map(a => a.target));
                 });
             }
-            if (req.body.skill != '') {
-                req.body.skill.forEach(function (skill){
+            if (req.body.skills != '' || req.body.skills != undefined) {
+                let skillArray = [];
+                skillArray = skillArray.concat(req.body.skills);
+                skillArray.forEach(function (skill){
                     if (skill == ''){
                         return;
                     }
@@ -101,7 +106,7 @@ module.exports = function (app, sessionChecker) {
                     skills = skills.concat(fuzzySkills.map(a => a.target));
                 });
             }
-            if (req.body.facility != '') {
+            if (req.body.facility != '' || req.body.facility != undefined) {
                 let facilityArray = [];
                 facilityArray = facilityArray.concat(req.body.facilities);
                 facilityArray.forEach(function (facility){
@@ -140,14 +145,16 @@ module.exports = function (app, sessionChecker) {
                 profileRepository.getProfileInformation(result).then(function (profiles) {
                     let orderedProfileArray = [];
                     let profileIds = [];
-                    if (profiles.isArray) {
-                        profileIds = profiles.map(a => a.id);
-                    } else
-                        profileIds = profiles;
+                    let profileArray = [];
+                    profiles = profileArray.concat(profiles);
+                    profileIds = profiles.map(a => a.id);
+
                     for (let i = 0; i<result.length; i++){
                         let endPlace = result.indexOf(profileIds[i]);
                         orderedProfileArray[endPlace] = profiles[i]
                     }
+                    console.log(orderedProfileArray);
+                    console.log(orderedProfileArray.length);
                     res.render('search.html', {
                         byClosestMatchProfiles: orderedProfileArray
                     });
