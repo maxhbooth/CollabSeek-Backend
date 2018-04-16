@@ -1,0 +1,78 @@
+.icon-button {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: 0;
+    background: transparent;
+}
+
+.input-large { width: 300px; }
+
+.jumbotron {
+    background-color: #ecf0f1;
+    padding-top:30px;
+    padding-bottom: 30px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    font-size: 50px;
+    font-family: fantasy;
+    color: #fff;
+    line-height: 150px;
+    text-align: center;
+    background: #3498db;
+    margin: 0 auto;
+}
+
+.pad {
+    padding: 50px;
+}
+
+h3 {
+    margin-top:0px;
+}
+
+h4 {
+    line-height: 1.75;
+}
+
+h5 {
+    font-weight: bold;
+    color: black;
+}
+
+hr {
+    width: 100%;
+    color: #555555;
+    height: 1px;
+    background-color:#555555;
+}
+.login {
+    margin-left: 5px;
+    background-color:#4B9CD3;
+    border: none;
+}
+
+.image_container {
+    width: 75%;
+    display: block;
+    margin: 0 auto;
+}
+
+canvas{
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+    border-radius: 10%;
+}
+
+
