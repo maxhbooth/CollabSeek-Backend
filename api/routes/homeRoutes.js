@@ -9,13 +9,7 @@ module.exports = function (app, sessionChecker) {
 
     app.get('/', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
-            //let attributeRepository = new AttributeRepository();
-
-            //attributeRepository.getAll().then(function (models) {
-               // let searchData = models.departments.concat(models.disciplines, models.facilities, models.skills, models.specialties);
-                //res.render('homepage.html', {searchData: JSON.stringify(searchData)});
             res.render('homepage.html');
-            //});
         } else {
             res.sendFile('/views/welcome.html', {root: './'});
         }
@@ -34,28 +28,12 @@ module.exports = function (app, sessionChecker) {
         }
     });
 
-    // app.get('/profile', (req, res) => {
-    //     if (req.session.profile && req.cookies.user_sid) {
-    //
-    //         let profileRepositiory = new ProfileRepository();
-    //
-    //         profileRepositiory.getProfileInformation(req.session.profile.id).then(function (models){
-    //             //console.log(models);
-    //             res.render('profile.html', models);
-    //         });
-    //
-    //     } else {
-    //         res.redirect('/login');
-    //     }
-    // });
-
     app.get('/profile/:id', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
             var id = req.params.id;
             let profileRepository = new ProfileRepository();
 
             profileRepository.getProfileInformation(id).then(function (models){
-                //console.log(models);
                 if(models != null){
                     res.render('profile.html', models);
                 }
@@ -133,9 +111,5 @@ module.exports = function (app, sessionChecker) {
 
 
             });
-
-
-
-
         });
 };

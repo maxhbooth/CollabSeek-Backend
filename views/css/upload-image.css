@@ -26,3 +26,9 @@
 .buttonContainer{
     float:right;
 }
+
+.login {
+    margin-left: 5px;
+    background-color:#4B9CD3;
+    border: none;
+}

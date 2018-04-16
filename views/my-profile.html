@@ -9,6 +9,12 @@
     <script type="text/javascript" src="js/my-profile.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+            integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+            integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/my-profile.css">
     <link rel="stylesheet" href="css/homepage.css">
     <link rel="stylesheet" href="css/navbar.css">
@@ -66,46 +72,57 @@
     <div class="container row">
         <div class="row">
             <div class="col-sm-4">
-                <% if(locals.imagePath){%>
-                <div class="image_container">
-                    <div id="imageDiv" alt="Avatar" class="image" style="width:100%"></div>
-                    <div class="middle">
-                        <form method="get" action="/upload-image">
-                            <button class="btn btn-basic" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
-                        </form>
-                    </div>
-                </div>
-                <%} else {%>
-                <div class="image_container">
-                    <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
-                    <div class="middle">
-                        <form method="get" action="/upload-image">
-                            <button class="btn btn-basic" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
-                        </form>
-                    </div>
-                </div>
-                <%}%>
-
                 <div class="well well-sm clearfix">
+                    <h4><button id="edit-info" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                        <span class="glyphicon glyphicon-pencil" title="Edit your profile information."></span></button></h4>
+                    <% if(locals.imagePath){%>
+                    <form method="get" action="/upload-image">
+                        <div class="image_container">
+                            <div id="imageDiv" alt="Avatar" class="image"></div>
+                            <div class="middle">
+                                    <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
+                            </div>
+                        </div>
+                    </form>
+                    <%} else {%>
+                    <div class="image_container">
+                        <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+                        <div class="middle">
+                            <form method="get" action="/upload-image">
+                                <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
+                            </form>
+                        </div>
+                    </div>
+                    <%}%>
+
                     <div id="info-show" style="display: block;">
-                        <h4><button id="edit-info" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                            <span class="glyphicon glyphicon-pencil" title="Edit your profile information."></span></button></h4>
-                        <h4>Name: <small><%=first%> <%=last%></small></h4>
-                        <% if(locals.pronouns){%>
-                        <h4>Pronouns: <small><%=locals.pronouns %></small></h4>
-                        <%}%>
-                        <% if(locals.position){%>
-                        <h4>Position: <small><%= position %></small></h4>
-                        <%}%>
-                        <h4 class="text-left">Email: <small><a href="mailto:<%=locals.email%>"><%=locals.email%></a></small></h4>
+                        <h4 style="text-align:center;"><%=first%> <%=last%></h4>
+
+                        <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
+
+
+                        <h5><span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i></span>&nbsp;&nbsp;<a href="mailto:<%=locals.email%>"><%=locals.email%></a></h5>
+
                         <% if(locals.phone){%>
-                        <h4>Phone Number: <small><%=locals.phone %></small></h4>
+                        <h5><span style="color:#3498db"><i class="fas fa-phone-volume" title="Phone Number"></i></span>&nbsp;&nbsp;<%=locals.phone %></h5>
                         <%}%>
+
                         <% if(locals.website){%>
-                        <h4>Website: <small><%=locals.website %></small></h4>
+                        <h5><span style="color:#3498db"><i class="fas fa-globe" title="Website"></i></span>&nbsp;&nbsp;<a href="<%=locals.website %>"><%=locals.website %></a></h5>
                         <%}%>
+
+                        <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
+
+                        <% if(locals.pronouns){%>
+                        <h5><span style="color:#3498db"><i class="fas fa-user" title="Pronouns"></i></span>&nbsp;&nbsp;Pronouns: <%=locals.pronouns %></h5>
+                        <%}%>
+
+                        <% if(locals.position){%>
+                        <h5><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=locals.position %></h5>
+                        <%}%>
+
                         <% if(locals.availability){%>
-                        <h4>Availability: <small><%=locals.availability%>/5</small></h4>
+                        <h5><span style="color:#3498db"><i class="fas fa-calendar-check" title="Availability"></i></span>&nbsp;&nbsp;Availability: <%=locals.availability%>/5</h5>
                         <%}%>
                     </div>
                     <div id="info-edit" style="display: none;">

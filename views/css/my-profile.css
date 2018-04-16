@@ -24,21 +24,28 @@ h3 {
 
 h5 {
     font-weight: bold;
-    color: #3498db;
+    color: black;
+}
+.login {
+    margin-left: 5px;
+    background-color:#4B9CD3;
+    border: none;
 }
 
 .image_container {
-    position: relative;
-    width: 50%;
+    width: 75%;
+    display: block;
+    margin: 0 auto;
 }
 
-.image {
+canvas{
     opacity: 1;
     display: block;
     width: 100%;
     height: auto;
     transition: .5s ease;
     backface-visibility: hidden;
+    border-radius: 10%;
 }
 
 .middle {
