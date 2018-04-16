@@ -6,6 +6,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.6/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <script type="text/javascript" src="js/tree-making.js"></script>
     <script type="text/javascript" src="js/create-facility.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -65,6 +68,7 @@
                     (so that it turns blue) and then writing the new facility in the
                     "Add New Facility" input box.</li>
                 <li>Try not to add facilities that already exist. Do not add new facilities that contain slashes.</li>
+                <li>You can search the tree using the filtering search bar below.</li>
             </ul>
         </div>
 
@@ -89,6 +93,14 @@
         <button id="expand_mine" class="btn btn-primary" style="display: inline-flex;">Expand Mine</button>
 
         <br><br>
+
+        <div class="row">
+            <label for="facility_search">Search:</label>
+            <select id = "facility_search" name="facility_search" class="js-example-basic-single js-states form-control">
+            </select>
+        </div>
+
+        <br><br><br><br>
 
         <%if(!locals.user_confirmed){%>
         <form action="/signup-trees" method="get" class="text-center">
