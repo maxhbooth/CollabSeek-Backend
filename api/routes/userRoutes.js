@@ -94,10 +94,6 @@ module.exports = function (app, sessionChecker) {
 
                     res.redirect('/login');
 
-
-
-
-
             })
         });
     app.route('/changepassword')
@@ -124,9 +120,6 @@ module.exports = function (app, sessionChecker) {
 
 
         });
-
-
-
 
     app.get('/logout', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {

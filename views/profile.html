@@ -8,9 +8,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="../views/css/homepage.css">
-    <link rel="stylesheet" href="../views/css/navbar.css">
-    <script src="../views/js/load-image.all.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+            integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+            integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <script src="../js/load-image.all.min.js"></script>
 
 
     <script>
@@ -20,11 +26,6 @@
             function (img) {
                 if(img.type === "error") {
                     console.log("Error loading image " + imageUrl);
-
-                    var icon = document.createElement("IMG");
-
-                    icon.src = "../resources/profile-icon.png";
-                    document.getElementById("imageDiv").appendChild(icon);
                 } else {
                     document.getElementById("imageDiv").appendChild(img);
                 }
@@ -46,7 +47,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/"><img src="/views/resources/CollabSeek-Logo.png" alt="CollabSeek">
+            <a class="navbar-brand" href="/"><img src="../resources/CollabSeek-Logo.png" alt="CollabSeek">
             </a>
         </div>
         <div id="navbar5" class="navbar-collapse collapse">
@@ -60,116 +61,120 @@
 </nav>
 
 
-<div class ="container">
-<div class="jumbotron text-center">
-    <h2><% if(locals.first && locals.last){%>
-        <%= first %> <%= last%>
-        <%}%></h2>
-</div>
-
-<div class="container row">
+<div class ="container-fluid pad">
     <div class="row">
         <div class="col-sm-4">
-            <% if(locals.imagePath){%>
-            <div id = "imageDiv"  style="text-align: center">
-            </div>
-            <%} else {%>
-                <img src="../resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
-            <%}%>
-
             <div class="well well-sm">
-                <h4>Name: <small><%=first%> <%=last%></small></h4>
+                <% if(locals.imagePath){%>
+                <div id = "imageDiv"  style="text-align: center">
+                </div>
+                <%} else {%>
+                <% var initials = first.charAt(0) + last.charAt(0); %>
+                <div class="circle"><%=initials%></div>
+                <%}%>
+
+                <h4 style="text-align:center;"><%=first%> <%=last%></h4>
+
+                <hr/>
+
                 <% if(locals.pronouns){%>
-                <h4>Pronouns: <small><%=locals.pronouns %></small></h4>
+                <h5><span style="color:#3498db"><i class="fas fa-user" title="Pronouns"></i></span>&nbsp;&nbsp;Pronouns: <%=locals.pronouns %></h5>
                 <%}%>
-                <% if(locals.position){%>
-                <h4>Position: <small><%= position %></small></h4>
-                <%}%>
-                <h4 class="text-left">Email: <small><a href="mailto:<%=locals.email%>"><%=locals.email%></a></small></h4>
-                <% if(locals.phone){%>
-                <h4>Phone Number: <small><%=locals.phone %></small></h4>
-                <%}%>
-                <% if(locals.website){%>
-                <h4>Website: <small><%=locals.website %></small></h4>
-                <%}%>
-                <% if(locals.availability){%>
-                <h4>Availability: <small><%=locals.availability%>/5</small></h4>
-                <%}%>
-            </div>
-        </div>
-        <div class="col-sm-8">
-            <% if(locals.intro){%>
-            <h3><%= intro %></h3>
-            <%}%>
 
-            <% if(locals.departments){%>
-            <%if (departments.length > 0){%>
-            <h3>Department: <small>
-            <%departments.forEach(function(department){%>
-            |<%=department.name %>|
-                <%})%>
-            </small></h3><%}}%>
-
-            <% if(locals.degrees && locals.disciplines){%>
-            <% if(degrees.length > 0){%>
-            <table class="table">
-                <thead>
-                <th><h3>Degree</h3></th>
-                <th><h3>Discipline</h3></th>
-                </thead>
-                <tbody>
+                <% if(locals.degrees && locals.disciplines){%>
+                <% if(degrees.length > 0){%>
+                <h5><span style="color:#3498db"><i class="fas fa-graduation-cap" title="Degrees"></i></span>&nbsp;&nbsp;Degrees</h5>
+                <ul>
                 <%for(var i = 0; i < degrees.length; i++){%>
-                <tr>
-                    <td><%= degrees[i] %></td>
-                    <td><%= disciplines[i] %></td>
-                </tr>
-                </tbody>
-            <%}}}%>
-            </table>
-        </div>
-    </div>
-    <br>
-    <br>
+                    <li><%= degrees[i] %> in <%= disciplines[i] %></li>
+                <%}%>
+                </ul>
+                <%}}%>
 
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="well well-sm">
-                <h3>Specialties</h3>
-            </div>
-            <% if(locals.specialties){%>
-            <%if (specialties.length > 0){%>
-            <div class="well well-sm">
-                <%specialties.forEach(function(specialty){%>
-                <p><%= specialty.name %></p>
-                <%})}}%>
+                <hr/>
+
+                <h5><span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i></span>&nbsp;&nbsp;<a href="mailto:<%=locals.email%>"><%=locals.email%></a></h5>
+
+                <% if(locals.phone){%>
+                <h5><span style="color:#3498db"><i class="fas fa-phone-volume" title="Phone Number"></i></span>&nbsp;&nbsp;<%=locals.phone %></h5>
+                <%}%>
+
+                <% if(locals.website){%>
+                <h5><span style="color:#3498db"><i class="fas fa-globe" title="Website"></i></span>&nbsp;&nbsp;<a href="<%=locals.website %>"><%=locals.website %></a></h5>
+                <%}%>
+
+                <hr/>
+
+                <% if(locals.availability){%>
+                <h5><span style="color:#3498db"><i class="fas fa-calendar-check" title="Availability"></i></span>&nbsp;&nbsp;Availability: <%=locals.availability%>/5</h5>
+                <%}%>
+
+                <% if(locals.position){%>
+                <h5><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=locals.position %></h5>
+                <%}%>
+
+                <% if(locals.departments){%>
+                <%if (departments.length > 0){%>
+                <h5><span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;Departments and Institutes</h5>
+                <ul>
+                <%departments.forEach(function(department){%>
+                    <li><%=department.name %></li>
+                <%})%>
+                </ul>
+                <%}}%>
             </div>
         </div>
-        <div class="col-sm-4">
-            <div class="well well-sm">
-                <h3>Skills</h3>
+
+        <div class="col-sm-8">
+            <div class="row">
+                <% if(locals.intro){%>
+                <div class="well well-sm">
+                    <h4><span style="color:#3498db"><i class="fas fa-quote-left"></i></span>
+                        &nbsp;&nbsp;<%= intro %>&nbsp;&nbsp;<span style="color:#3498db"><i class="fas fa-quote-right"></i></span></h4>
+                </div>
+                <%}%>
             </div>
-            <% if(locals.skills){%>
-            <%if (skills.length > 0){%>
-            <div class="well well-sm">
-                <%skills.forEach(function(skill){%>
-                <p><%= skill.name %></p>
-                <%})}}%>
+
+            <div class="row">
+            <div class="col-sm-4">
+                <div class="well well-sm">
+                    <h3>Specialties</h3>
+                </div>
+                <% if(locals.specialties){%>
+                <%if (specialties.length > 0){%>
+                <div class="well well-sm">
+                    <%specialties.forEach(function(specialty){%>
+                    <p><%= specialty.name %></p>
+                    <%})}}%>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="well well-sm">
-                <h3>Facilities</h3>
+            <div class="col-sm-4">
+                <div class="well well-sm">
+                    <h3>Skills</h3>
+                </div>
+                <% if(locals.skills){%>
+                <%if (skills.length > 0){%>
+                <div class="well well-sm">
+                    <%skills.forEach(function(skill){%>
+                    <p><%= skill.name %></p>
+                    <%})}}%>
+                </div>
             </div>
-            <% if(locals.facilities){%>
-            <%if (facilities.length > 0){%>
-            <div class="well well-sm">
-                <%facilities.forEach(function(facility){%>
-                <p><%= facility.name %></p>
-                <%})}}%>
+            <div class="col-sm-4">
+                <div class="well well-sm">
+                    <h3>Facilities</h3>
+                </div>
+                <% if(locals.facilities){%>
+                <%if (facilities.length > 0){%>
+                <div class="well well-sm">
+                    <%facilities.forEach(function(facility){%>
+                    <p><%= facility.name %></p>
+                    <%})}}%>
+                </div>
+            </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 </body>
 </html>
