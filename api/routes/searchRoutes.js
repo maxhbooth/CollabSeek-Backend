@@ -14,7 +14,6 @@ module.exports = function (app, sessionChecker) {
             var attrRepository = new AttributeRepository();
 
             attrRepository.getAll().then(function (models) {
-                console.log(models);
                 models.degrees.sort();
                 models.departments.sort();
                 models.disciplines.sort();
@@ -22,13 +21,7 @@ module.exports = function (app, sessionChecker) {
                 models.positions.sort();
                 models.skills.sort();
                 models.specialties.sort();
-                models.degrees.unshift("");
-                models.departments.unshift("");
-                models.disciplines.unshift("");
-                models.facilities.unshift("");
                 models.positions.unshift("");
-                models.skills.unshift("");
-                models.specialties.unshift("");
                 res.render('advanced-search.html', models);
             });
         } else {
@@ -40,7 +33,6 @@ module.exports = function (app, sessionChecker) {
         let attributeRepository = new AttributeRepository();
 
         attributeRepository.getAll().then(function (models) {
-
             let disciplines = [];
             let departments = [];
             let specialities = [];
@@ -86,7 +78,7 @@ module.exports = function (app, sessionChecker) {
             }
             if (req.body.specialty != '' || req.body.specialty != undefined) {
                 let specialityArray = [];
-                specialityArray = specialityArray.concat(req.body.specialties);
+                specialityArray = specialityArray.concat(req.body.specialty);
                 specialityArray.forEach(function (specialty){
                     if (specialty == ''){
                         return;
@@ -95,9 +87,9 @@ module.exports = function (app, sessionChecker) {
                     specialities = specialities.concat(fuzzySpecialties.map(a => a.target));
                 });
             }
-            if (req.body.skills != '' || req.body.skills != undefined) {
+            if (req.body.skill != '' || req.body.skill != undefined) {
                 let skillArray = [];
-                skillArray = skillArray.concat(req.body.skills);
+                skillArray = skillArray.concat(req.body.skill);
                 skillArray.forEach(function (skill){
                     if (skill == ''){
                         return;
@@ -153,8 +145,7 @@ module.exports = function (app, sessionChecker) {
                         let endPlace = result.indexOf(profileIds[i]);
                         orderedProfileArray[endPlace] = profiles[i]
                     }
-                    console.log(orderedProfileArray);
-                    console.log(orderedProfileArray.length);
+
                     res.render('search.html', {
                         byClosestMatchProfiles: orderedProfileArray
                     });
@@ -190,7 +181,6 @@ module.exports = function (app, sessionChecker) {
                 });
 
                 compoundOP().then(function (result) {
-                    console.log(result);
                     res.render('search.html', {
                         pastQuery: query,
                         departmentProfiles: result[0],
