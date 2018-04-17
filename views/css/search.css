@@ -12,7 +12,7 @@ h5 {
     margin-bottom: 0px;
     float: left;
     padding-left:3px;
-
+    font-size:14px;
 }
 
 .jumbotron {
@@ -23,3 +23,14 @@ h5 {
     float:right;
     margin-right:3px;
 }
+
+@media (min-width: 1600px){
+    .container {
+        width: 1560px;
+    }
+}
+
+.notop {
+    margin-top: 20px;
+}
+
