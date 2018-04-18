@@ -27,7 +27,7 @@ module.exports = function (app) {
             const storage = multer.diskStorage({
                 destination: function(req, file, callback) {
                     console.log("2");
-                    callback(null, 'views\\Images')
+                    callback(null, 'views/Images')
                 },
                 filename: function(req, file, callback) {
                     console.log("3");
@@ -58,7 +58,7 @@ module.exports = function (app) {
                     console.log(err);
                 }
                 else{
-                    var profilePath = path.join(__dirname, "..\\..\\views\\images\\ProfileImage_"
+                    var profilePath = path.join(__dirname, "../../views/images/ProfileImage_"
                         + profileId + path.extname(req.file.originalname));
                     // resize image
                     Jimp.read(profilePath, function (err, picture) {
