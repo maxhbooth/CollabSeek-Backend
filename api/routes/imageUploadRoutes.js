@@ -63,6 +63,7 @@ module.exports = function (app) {
                     // resize image
                     console.log("got into this else statement, image upload routes");
                     console.log(profilePath);
+                    console.log(fs.existsSync(profilePath));
 
                     Jimp.read(profilePath, function (err, picture) {
                         if (err){
