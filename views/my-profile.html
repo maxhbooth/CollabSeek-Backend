@@ -21,27 +21,28 @@
     <script src="js/load-image.all.min.js"></script>
 
 
-    <script>
-        var imageUrl = "Images/<%=imagePath%>";
-        loadImage(
-            imageUrl,
-            function (img) {
-                if(img.type === "error") {
-                    console.log("Error loading image " + imageUrl);
-                    var icon = document.createElement("IMG");
+    <!--<script>-->
+        <!--var imageUrl = "Images/<%=imagePath%>";-->
+        <!--loadImage(-->
+            <!--imageUrl,-->
+            <!--function (img) {-->
+                <!--if(img.type === "error") {-->
+                    <!--console.log("Error loading image " + imageUrl);-->
+                    <!--var icon = document.createElement("IMG");-->
 
-                    icon.src = "resources/profile-icon.png";
-                    document.getElementById("imageDiv").appendChild(icon);
-                } else {
-                    document.getElementById("imageDiv").appendChild(img);
-                }
-            },
-            {maxWidth: 200,
-                orientation: true}
-        );
-    </script>
+                    <!--icon.src = "resources/profile-icon.png";-->
+                    <!--document.getElementById("imageDiv").appendChild(icon);-->
+                <!--} else {-->
+                    <!--document.getElementById("imageDiv").appendChild(img);-->
+                <!--}-->
+            <!--},-->
+            <!--{maxWidth: 200,-->
+                <!--orientation: true}-->
+        <!--);-->
+    <!--</script>-->
 
 </head>
+
 <body>
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
@@ -64,7 +65,7 @@
         </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->
 </nav>
-<div class="container">
+<div class="container-fluid pad">
     <div class="page-header">
         <h1>My Profile</h1>
     </div>
@@ -78,7 +79,10 @@
                     <% if(locals.imagePath){%>
                     <form method="get" action="/upload-image">
                         <div class="image_container">
-                            <div id="imageDiv" alt="Avatar" class="image"></div>
+                            <!--<div id="imageDiv" alt="Avatar" class="image"></div>-->
+
+                            <img src="Images/<%=imagePath%>" onerror="this.src='resources/profile-icon.png'" width="200">
+
                             <div class="middle">
                                     <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
                             </div>
@@ -86,7 +90,8 @@
                     </form>
                     <%} else {%>
                     <div class="image_container">
-                        <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+                        <% var initials = first.charAt(0) + last.charAt(0); %>
+                        <div class="circle"><%=initials%></div>
                         <div class="middle">
                             <form method="get" action="/upload-image">
                                 <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>

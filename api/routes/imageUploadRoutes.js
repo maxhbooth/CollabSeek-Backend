@@ -19,16 +19,18 @@ module.exports = function (app) {
     app.post('/upload-image', (req, res) => {
 
         if (req.session.profile && req.cookies.user_sid) {
-
+            console.log("1");
             const profileId = req.session.profile.id;
 
             var profileRepository = new ProfileRepository();
 
             const storage = multer.diskStorage({
                 destination: function(req, file, callback) {
+                    console.log("2");
                     callback(null, 'views\\Images')
                 },
                 filename: function(req, file, callback) {
+                    console.log("3");
                     callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
                 }
             });
@@ -39,10 +41,11 @@ module.exports = function (app) {
                         console.log(ext);
                         if (ext.toLowerCase() !== '.png' && ext.toLowerCase() !== '.jpg'
                             && ext.toLowerCase() !== '.gif' && ext.toLowerCase() !== '.jpeg') {
+                                console.log("4");
                                 return callback(new Error('Expected an image.'))
                         }
                         //add image to database then!
-
+                        console.log("5");
                         profileRepository.addImage(profileId,  "ProfileImage_" + profileId + ext);
 
                         callback(null, true)
@@ -51,6 +54,8 @@ module.exports = function (app) {
             upload(req, res, function(err){
                 if(err){
                     //there was an error uploading!
+                    console.log("6");
+                    console.log(err);
                 }
                 else{
                     var profilePath = path.join(__dirname, "..\\..\\views\\images\\ProfileImage_"
@@ -58,15 +63,18 @@ module.exports = function (app) {
                     // resize image
                     Jimp.read(profilePath, function (err, picture) {
                         if (err) throw err;
-
+                        console.log("7");
+                        console.log(err);
                         picture.resize(200, Jimp.AUTO)
                             .quality(60) // set JPEG quality
                             .exifRotate()
                             .write(profilePath); // save
                     });
+                    console.log("8");
                 }
             });
 
+            console.log("9");
             res.redirect('/my-profile');
         } else {
             res.redirect('/login');
@@ -74,7 +82,7 @@ module.exports = function (app) {
 
     });
     app.post('/upload-image-signup', (req, res) => {
-        if (req.session.profile && req.cookies.user_sid && req.file) {
+        if (req.session.profile && req.cookies.user_sid) {
             const profileId = req.session.profile.id;
             var profileRepository = new ProfileRepository();
             const storage = multer.diskStorage({
@@ -101,7 +109,7 @@ module.exports = function (app) {
                 }
             }).single('imageUpload');
             upload(req, res, function(err){
-                if(err){
+                if(err || !req.file){
                     console.log("ERROR IN IMAGEUPLOADROUTES: " + err);
                 }
                 else{
