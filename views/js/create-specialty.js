@@ -1,18 +1,57 @@
 $(document).ready(function() {
 
-    //$('#specialty_search').select2();
-
     var database_data = (JSON.parse($("#test").text()));
     var sorted = _queryTreeSort({q:database_data});
     var tree_data = _makeTree({q:sorted});
+
+    var $specialty_search = $("#specialty_search");
+    tree_data.forEach(function(specialty){
+        $specialty_search.append('<option>' + specialty.text + '</option>');
+        specialty.children.forEach(function(child){
+            var child_text = "&nbsp;&nbsp;" + child.text;
+            $specialty_search.append('<option>' + child_text + '</option>');
+            child.children.forEach(function(child2){
+                var child_text = "&nbsp;&nbsp;&nbsp;&nbsp;" + child2.text;
+                $specialty_search.append('<option>' + child_text + '</option>');
+                child2.children.forEach(function(child3){
+                    var child_text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + child3.text;
+                    $specialty_search.append('<option>' + child_text + '</option>');
+                    child3.children.forEach(function(child4){
+                        var child_text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + child4.text;
+                        $specialty_search.append('<option>' + child_text + '</option>');
+                        child4.children.forEach(function(child5){
+                            var child_text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + child5.text;
+                            $specialty_search.append('<option>' + child_text + '</option>');
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+    $('#specialty_search').select2();
+
     var tree = $('#tree').tree({
         primaryKey: 'id',
         dataSource: tree_data,
         cascadeCheck: false,
         checkboxes: true,
         uiLibrary: 'bootstrap',
-        border: true
+        border: true,
+        selectionType: 'single'
     });
+
+    $('#specialty_search').on('select2:select', function (e) {
+        tree.unselectAll();
+        var text = e.params.data.text;
+        text = $.trim(text);
+        tree.select(tree.getNodeByText(text));
+        while (tree.getDataByText(text).parent_id !== 0) {
+            text = tree.getDataById(tree.getDataByText(text).parent_id).text;
+            tree.expand(tree.getNodeByText(text));
+        }
+    });
+
     var spec_ids = ($("#test2").text());
     if(spec_ids) {
         var spec_ints = spec_ids.split(",");

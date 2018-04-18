@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/homepage.css">
-    <link rel="stylesheet" href="css/my-profile.css">
+    <link rel="stylesheet" href="css/trees.css">
     <link rel="stylesheet" href="css/navbar.css">
 
 </head>
@@ -67,6 +67,7 @@
                 <li>Add a subcategory by selecting the parent category with your mouse (so that it turns blue) and
                     then writing the new specialty in the "Add New Specialty As Subcategory" input box.</li>
                 <li>Try not to add specialties that already exist. Do not add new specialties that contain slashes.</li>
+                <li>You can search the tree using the filtering search bar below.</li>
             </ul>
         </div>
 
@@ -89,7 +90,15 @@
         <button id="collapse_all" class="btn btn-primary" style="display: inline-flex;">Collapse All</button>
         <button id="expand_mine" class="btn btn-primary" style="display: inline-flex;">Expand Mine</button>
 
-        <br><br><br>
+        <br><br>
+
+        <div class="row">
+            <label for="specialty_search">Search:</label>
+            <select id = "specialty_search" name="specialty_search" class="js-example-basic-single js-states form-control">
+            </select>
+        </div>
+
+        <br><br><br><br>
 
         <%if(!locals.user_confirmed){%>
         <form action="/signup-trees" method="get" class="text-center">

@@ -1,15 +1,40 @@
 $(document).ready(function() {
+
     var database_data = (JSON.parse($("#test").text()));
     var sorted = _queryTreeSort({q: database_data});
     var tree_data = _makeTree({q: sorted});
+
+    var $skill_search = $("#skill_search");
+    tree_data.forEach(function(skill){
+        $skill_search.append('<option>' + skill.text + '</option>');
+        skill.children.forEach(function(child){
+            var child_text = "&nbsp;&nbsp;&nbsp;&nbsp;" + child.text;
+            $skill_search.append('<option>' + child_text + '</option>');
+        })
+    });
+
+    $('#skill_search').select2();
+
     var tree = $('#tree').tree({
         primaryKey: 'id',
         dataSource: tree_data,
         cascadeCheck: false,
         checkboxes: true,
         uiLibrary: 'bootstrap',
-        border: true
+        border: true,
+        selectionType: 'single'
     });
+
+    $('#skill_search').on('select2:select', function (e) {
+        tree.unselectAll();
+        var text = e.params.data.text;
+        text = $.trim(text);
+        tree.select(tree.getNodeByText(text));
+        if(tree.getDataByText(text).parent_id !== 0){
+            tree.expand(tree.getNodeById(tree.getDataByText(text).parent_id));
+        }
+    });
+
     var spec_ids = ($("#test2").text());
     if (spec_ids) {
         var spec_ints = spec_ids.split(",");

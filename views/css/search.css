@@ -1,0 +1,36 @@
+h3 {
+    display: inline;
+    padding-left:5px;
+}
+
+div>a {
+    float:right;
+    padding-right:5px;
+}
+
+h5 {
+    margin-bottom: 0px;
+    float: left;
+    padding-left:3px;
+    font-size:14px;
+}
+
+.jumbotron {
+    background-color: #ecf0f1;
+}
+
+.newsearch {
+    float:right;
+    margin-right:3px;
+}
+
+@media (min-width: 1600px){
+    .container {
+        width: 1560px;
+    }
+}
+
+.notop {
+    margin-top: 20px;
+}
+

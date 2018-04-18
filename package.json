@@ -1,10 +1,9 @@
 {
   "name": "collab-back-end",
   "version": "1.0.0",
-  "description": "RESTful back-end for 523 collab website",
+  "description": "RESTful back-end and front end for 523 collab website",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test",
     "start": "nodemon server.js"
   },
   "keywords": [
@@ -21,8 +20,6 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
     "bootstrap-tree-view": "^1.8.0",
-    "chai": "^4.1.2",
-    "chai-http": "^4.0.0",
     "cli": "^1.0.1",
     "codeceptjs": "1.0.3",
     "cookie-parser": "^1.4.3",

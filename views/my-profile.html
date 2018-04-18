@@ -9,6 +9,12 @@
     <script type="text/javascript" src="js/my-profile.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+            integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+            integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/my-profile.css">
     <link rel="stylesheet" href="css/homepage.css">
     <link rel="stylesheet" href="css/navbar.css">
@@ -35,9 +41,8 @@
         );
     </script>
 
-
 </head>
-<body class="container">
+<body>
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -59,239 +64,192 @@
         </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->
 </nav>
+<div class="container">
+    <div class="page-header">
+        <h1>My Profile</h1>
+    </div>
 
-<div class="page-header">
-    <h1>My Profile</h1>
-</div>
-
-<div class="container row">
-    <div class="row">
-        <div class="col-sm-4">
-            <% if(locals.imagePath){%>
-            <div id = "imageDiv" style="text-align: center">
-            </div>
-            <%} else {%>
-            <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
-            <%}%>
-
-            <form method="get" action="/upload-image">
-                <button class="btn btn-default" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
-            </form>
-
-            <div class="well well-sm clearfix">
-                <div id="info-show" style="display: block;">
+    <div class="container row">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="well well-sm clearfix">
                     <h4><button id="edit-info" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
                         <span class="glyphicon glyphicon-pencil" title="Edit your profile information."></span></button></h4>
-                    <h4>Name: <small><%=first%> <%=last%></small></h4>
-                    <% if(locals.pronouns){%>
-                    <h4>Pronouns: <small><%=locals.pronouns %></small></h4>
+                    <% if(locals.imagePath){%>
+                    <form method="get" action="/upload-image">
+                        <div class="image_container">
+                            <div id="imageDiv" alt="Avatar" class="image"></div>
+                            <div class="middle">
+                                    <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
+                            </div>
+                        </div>
+                    </form>
+                    <%} else {%>
+                    <div class="image_container">
+                        <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+                        <div class="middle">
+                            <form method="get" action="/upload-image">
+                                <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
+                            </form>
+                        </div>
+                    </div>
                     <%}%>
-                    <% if(locals.position){%>
-                    <h4>Position: <small><%= position %></small></h4>
-                    <%}%>
-                    <h4 class="text-left">Email: <small><a href="mailto:<%=locals.email%>"><%=locals.email%></a></small></h4>
-                    <% if(locals.phone){%>
-                    <h4>Phone Number: <small><%=locals.phone %></small></h4>
-                    <%}%>
-                    <% if(locals.website){%>
-                    <h4>Website: <small><%=locals.website %></small></h4>
-                    <%}%>
-                    <% if(locals.availability){%>
-                    <h4>Availability: <small><%=locals.availability%>/5</small></h4>
-                    <%}%>
-                </div>
-                <div id="info-edit" style="display: none;">
-                    <form method="post" action="/update-info">
-                        <label for="first">Preferred Name:</label>
-                        <input type="text" class="form-control" id="first" name="first" value="<%=first%>">
-                        <label  for="last">Last Name:</label>
-                        <input type="text" class="form-control" id="last" name="last" value="<%=last%>">
-                        <label for="pronouns">Pronouns:</label>
-                        <% if(locals.pronouns){%>
-                        <input type="text" class="form-control" id="pronouns" name="pronouns" value="<%=pronouns%>">
-                        <%}%>
-                        <% if(!locals.pronouns){%>
-                        <input type="text" class="form-control" id="pronouns" name="pronouns">
-                        <%}%>
-                        <label for="position">Position:</label>
-                        <select id="position" name="position" class="form-control">
-                            <% if(locals.all_positions){%>
-                            <%if (locals.all_positions.length > 0){locals.all_positions.forEach(function(pos){%>
-                            <%if (locals.position == pos){%>
-                            <option selected><%= pos %></option>
-                            <%}else{%>
-                            <option><%= pos %></option>
-                            <%}})}}%>
-                        </select>
 
-                        <label for="phone">Phone Number <small>ex. (555)555-5555</small>:</label>
+                    <div id="info-show" style="display: block;">
+                        <h4 style="text-align:center;"><%=first%> <%=last%></h4>
+
+                        <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
+
+
+                        <h5><span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i></span>&nbsp;&nbsp;<a href="mailto:<%=locals.email%>"><%=locals.email%></a></h5>
+
                         <% if(locals.phone){%>
-                        <input type="text" class="form-control" id="phone" name="phone" value="<%=phone%>">
-                        <%}%>
-                        <% if(!locals.phone){%>
-                        <input type="text" class="form-control" id="phone" name="phone">
+                        <h5><span style="color:#3498db"><i class="fas fa-phone-volume" title="Phone Number"></i></span>&nbsp;&nbsp;<%=locals.phone %></h5>
                         <%}%>
 
-                        <label for="website">Website:</label>
                         <% if(locals.website){%>
-                        <input type="text" class="form-control" id="website" name="website" value="<%=website%>">
+                        <h5><span style="color:#3498db"><i class="fas fa-globe" title="Website"></i></span>&nbsp;&nbsp;<a href="<%=locals.website %>"><%=locals.website %></a></h5>
                         <%}%>
-                        <% if(!locals.website){%>
-                        <input type="text" class="form-control" id="website" name="website">
+
+                        <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
+
+                        <% if(locals.pronouns){%>
+                        <h5><span style="color:#3498db"><i class="fas fa-user" title="Pronouns"></i></span>&nbsp;&nbsp;Pronouns: <%=locals.pronouns %></h5>
                         <%}%>
-                        <br>
+
+                        <% if(locals.position){%>
+                        <h5><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=locals.position %></h5>
+                        <%}%>
+
                         <% if(locals.availability){%>
-                        <input type="range" min="1" max="5" value="<%=locals.availability%>" id="availability" name="availability">
-                        <label for="busy" class="pull-left"><small>Less Available</small></label>
-                        <label for="free" class="pull-right"><small>More Available</small></label>
+                        <h5><span style="color:#3498db"><i class="fas fa-calendar-check" title="Availability"></i></span>&nbsp;&nbsp;Availability: <%=locals.availability%>/5</h5>
                         <%}%>
+                    </div>
+                    <div id="info-edit" style="display: none;">
+                        <form method="post" action="/update-info">
+                            <label for="first">Preferred Name:</label>
+                            <input type="text" class="form-control" id="first" name="first" value="<%=first%>">
+                            <label  for="last">Last Name:</label>
+                            <input type="text" class="form-control" id="last" name="last" value="<%=last%>">
+                            <label for="pronouns">Pronouns:</label>
+                            <% if(locals.pronouns){%>
+                            <input type="text" class="form-control" id="pronouns" name="pronouns" value="<%=pronouns%>">
+                            <%}%>
+                            <% if(!locals.pronouns){%>
+                            <input type="text" class="form-control" id="pronouns" name="pronouns">
+                            <%}%>
+                            <label for="position">Position:</label>
+                            <select id="position" name="position" class="form-control">
+                                <% if(locals.all_positions){%>
+                                <%if (locals.all_positions.length > 0){locals.all_positions.forEach(function(pos){%>
+                                <%if (locals.position == pos){%>
+                                <option selected><%= pos %></option>
+                                <%}else{%>
+                                <option><%= pos %></option>
+                                <%}})}}%>
+                            </select>
 
-                        <% if(!locals.availability){%>
-                        <input type="range" min="1" max="5" value="3" id="availability" name="availability">
-                        <label for="busy" class="pull-left"><small>Less Available</small></label>
-                        <label for="free" class="pull-right"><small>More Available</small></label>
+                            <label for="phone">Phone Number <small>ex. (555)555-5555</small>:</label>
+                            <% if(locals.phone){%>
+                            <input type="text" class="form-control" id="phone" name="phone" value="<%=phone%>">
+                            <%}%>
+                            <% if(!locals.phone){%>
+                            <input type="text" class="form-control" id="phone" name="phone">
+                            <%}%>
+
+                            <label for="website">Website:</label>
+                            <% if(locals.website){%>
+                            <input type="text" class="form-control" id="website" name="website" value="<%=website%>">
+                            <%}%>
+                            <% if(!locals.website){%>
+                            <input type="text" class="form-control" id="website" name="website">
+                            <%}%>
+                            <br>
+                            <% if(locals.availability){%>
+                            <input type="range" min="1" max="5" value="<%=locals.availability%>" id="availability" name="availability">
+                            <label for="busy" class="pull-left"><small>Less Available</small></label>
+                            <label for="free" class="pull-right"><small>More Available</small></label>
+                            <%}%>
+
+                            <% if(!locals.availability){%>
+                            <input type="range" min="1" max="5" value="3" id="availability" name="availability">
+                            <label for="busy" class="pull-left"><small>Less Available</small></label>
+                            <label for="free" class="pull-right"><small>More Available</small></label>
+                            <%}%>
+
+                            <br><br>
+                            <button type="submit" class="btn btn-default">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-8">
+                <div class="well well-sm clearfix">
+                    <div id="intro-show" style="display: block;">
+                        <%if(locals.intro){%>
+                        <h5><%=intro%></h5>
+                        <%}else{%>
+                        <h3>Add an introduction!</h3>
                         <%}%>
-
-                        <br><br>
-                        <button type="submit" class="btn btn-default">Save</button>
-                    </form>
+                    </div>
+                    <div id="intro-edit" style="display: none;">
+                        <form method="post" action="/update-intro">
+                            <textarea class="form-control" name="intro" rows="8"><%if(locals.intro){%><%=intro %><%}else{%><%}%></textarea>
+                            <button type="submit" class="btn btn-default">Save</button>
+                        </form>
+                    </div>
+                    <h4><button id="edit-intro" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button></h4>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-sm-8">
-            <div class="well well-sm clearfix">
-                <div id="intro-show" style="display: block;">
-                    <%if(locals.intro){%>
-                    <h5><%=intro%></h5>
-                    <%}else{%>
-                    <h3>Add an introduction!</h3>
-                    <%}%>
-                </div>
-                <div id="intro-edit" style="display: none;">
-                    <form method="post" action="/update-intro">
-                        <textarea class="form-control" name="intro" rows="8"><%if(locals.intro){%><%=intro %><%}else{%><%}%></textarea>
-                        <button type="submit" class="btn btn-default">Save</button>
-                    </form>
-                </div>
-                <h4><button id="edit-intro" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </button></h4>
-            </div>
-
-            <div class="well well-sm clearfix" id="departments-show" style="display: block;">
-                <table class="table">
-                    <thead>
-                    <th><h4>Department</h4></th>
-                    <th><h4><button id="edit-departments1" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                        <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
-                    </thead>
-                    <% if(locals.departments){%>
-                    <%if (departments.length > 0){%>
-                    <tbody>
-                        <%departments.forEach(function(department){%>
-                        <tr>
-                            <td><%=department.name %></td>
-                            <td></td>
-                        </tr>
-                        <%})%>
-                    <%}}%>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="well well-sm clearfix" id="departments-edit" style="display: none;">
-                <table class="table">
-                    <thead>
-                    <th><h4>Department</h4></th>
-                    <th><h4><button id="edit-departments2" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                        <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
-                    </thead>
-                    <tbody>
-                    <% if(locals.departments){%>
-                    <%if (departments.length > 0){%>
-                    <%departments.forEach(function(department){%>
-                    <form method="post" action="/delete-department/<%=department.name%>" class="form-inline">
-                        <tr>
-                            <td><%=department.name %></td>
-                            <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                                <span class="glyphicon glyphicon-minus"></span></button></td>
-                        </tr>
-                    </form>
-                    <%})}}%>
-                    <form method="post" action="/add-department" class="form-inline">
-                        <tr>
-                            <td><select id="department" name="department" class="js-example-basic-single js-states form-control" style="width:95%;">
-                                <% if(locals.all_departments){%>
-                                <%if (all_departments.length > 0){all_departments.forEach(function(department){%>
-                                <option><%=department%></option>
-                                <%})}}%>
-                            </select></td>
-                            <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                                <span class="glyphicon glyphicon-plus"></span></button></td>
-                        </tr>
-                    </form>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="well well-sm clearfix" id="degrees-show" style="display: block">
-                <table class="table">
-                    <thead>
-                    <th><h4 class="text-left">Degree</h4></th>
-                    <th><h4 class="text-left">Discipline</h4></th>
-
-                    <th><h4><button id="edit-degrees1" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                        <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
-
-                    </thead>
-                    <% if(locals.degrees && locals.disciplines){%>
-                    <% if(degrees.length > 0){%>
+                <div class="well well-sm clearfix" id="departments-show" style="display: block;">
+                    <table class="table">
+                        <thead>
+                        <th><h4>Department</h4></th>
+                        <th><h4><button id="edit-departments1" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                            <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
+                        </thead>
+                        <% if(locals.departments){%>
+                        <%if (departments.length > 0){%>
                         <tbody>
-                        <%for(var i = 0; i < degrees.length; i++){%>
-                        <tr>
-                            <td><%= degrees[i] %></td>
-                            <td><%= disciplines[i] %></td>
-                            <td></td>
-                        </tr>
-                        <%}}}%>
-                        </tbody>
-                </table>
-            </div>
-
-            <div class="well well-sm cleafix" id="degrees-edit" style="display: none;">
-                <table class="table">
-                    <thead>
-                    <th><h4 class="text-left">Degree</h4></th>
-                    <th><h4 class="text-left">Discipline</h4></th>
-                    <th><h4><button id="edit-degrees2" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                        <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
-                    </thead>
-                    <% if(locals.degrees && locals.disciplines){%>
-                    <% if(degrees.length > 0){%>
-                        <tbody>
-                        <%for(var i = 0; i < degrees.length; i++){%>
-                        <form method="post" action="/delete-degree/<%=degrees[i]%>/<%=disciplines[i]%>" class="form-inline">
+                            <%departments.forEach(function(department){%>
                             <tr>
-                                <td><%= degrees[i] %></td>
-                                <td><%= disciplines[i] %></td>
+                                <td><%=department.name %></td>
+                                <td></td>
+                            </tr>
+                            <%})%>
+                        <%}}%>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="well well-sm clearfix" id="departments-edit" style="display: none;">
+                    <table class="table">
+                        <thead>
+                        <th><h4>Department</h4></th>
+                        <th><h4><button id="edit-departments2" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                            <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
+                        </thead>
+                        <tbody>
+                        <% if(locals.departments){%>
+                        <%if (departments.length > 0){%>
+                        <%departments.forEach(function(department){%>
+                        <form method="post" action="/delete-department/<%=department.name%>" class="form-inline">
+                            <tr>
+                                <td><%=department.name %></td>
                                 <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
                                     <span class="glyphicon glyphicon-minus"></span></button></td>
                             </tr>
                         </form>
-                        <%}}}%>
-                        <form method="post" action="/add-degree" class="form-inline">
+                        <%})}}%>
+                        <form method="post" action="/add-department" class="form-inline">
                             <tr>
-                                <td><select id="degree" name="degree" class="js-example-basic-single js-states form-control" style="width:95%;">
-                                    <% if(locals.all_degrees){%>
-                                    <%if (all_degrees.length > 0){all_degrees.forEach(function(degree){%>
-                                    <option><%=degree%></option>
-                                    <%})}}%>
-                                </select></td>
-                                <td><select id="discipline" name="discipline" class="js-example-basic-single js-states form-control" style="width:95%;">
-                                    <% if(locals.all_disciplines){%>
-                                    <%if (all_disciplines.length > 0){all_disciplines.forEach(function(discipline){%>
-                                    <option><%=discipline%></option>
+                                <td><select id="department" name="department" class="js-example-basic-single js-states form-control" style="width:95%;">
+                                    <% if(locals.all_departments){%>
+                                    <%if (all_departments.length > 0){all_departments.forEach(function(department){%>
+                                    <option><%=department%></option>
                                     <%})}}%>
                                 </select></td>
                                 <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
@@ -299,58 +257,127 @@
                             </tr>
                         </form>
                         </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <br>
-    <br>
+                    </table>
+                </div>
 
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="well well-sm">
-                <h4>Specialties<div class="pull-right"><a href='/create-specialty'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
+                <div class="well well-sm clearfix" id="degrees-show" style="display: block">
+                    <table class="table">
+                        <thead>
+                        <th><h4 class="text-left">Degree</h4></th>
+                        <th><h4 class="text-left">Discipline</h4></th>
+
+                        <th><h4><button id="edit-degrees1" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                            <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
+
+                        </thead>
+                        <% if(locals.degrees && locals.disciplines){%>
+                        <% if(degrees.length > 0){%>
+                            <tbody>
+                            <%for(var i = 0; i < degrees.length; i++){%>
+                            <tr>
+                                <td><%= degrees[i] %></td>
+                                <td><%= disciplines[i] %></td>
+                                <td></td>
+                            </tr>
+                            <%}}}%>
+                            </tbody>
+                    </table>
+                </div>
+
+                <div class="well well-sm cleafix" id="degrees-edit" style="display: none;">
+                    <table class="table">
+                        <thead>
+                        <th><h4 class="text-left">Degree</h4></th>
+                        <th><h4 class="text-left">Discipline</h4></th>
+                        <th><h4><button id="edit-degrees2" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                            <span class="glyphicon glyphicon-pencil"></span></button></h4></th>
+                        </thead>
+                        <% if(locals.degrees && locals.disciplines){%>
+                        <% if(degrees.length > 0){%>
+                            <tbody>
+                            <%for(var i = 0; i < degrees.length; i++){%>
+                            <form method="post" action="/delete-degree/<%=degrees[i]%>/<%=disciplines[i]%>" class="form-inline">
+                                <tr>
+                                    <td><%= degrees[i] %></td>
+                                    <td><%= disciplines[i] %></td>
+                                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                                        <span class="glyphicon glyphicon-minus"></span></button></td>
+                                </tr>
+                            </form>
+                            <%}}}%>
+                            <form method="post" action="/add-degree" class="form-inline">
+                                <tr>
+                                    <td><select id="degree" name="degree" class="js-example-basic-single js-states form-control" style="width:95%;">
+                                        <% if(locals.all_degrees){%>
+                                        <%if (all_degrees.length > 0){all_degrees.forEach(function(degree){%>
+                                        <option><%=degree%></option>
+                                        <%})}}%>
+                                    </select></td>
+                                    <td><select id="discipline" name="discipline" class="js-example-basic-single js-states form-control" style="width:95%;">
+                                        <% if(locals.all_disciplines){%>
+                                        <%if (all_disciplines.length > 0){all_disciplines.forEach(function(discipline){%>
+                                        <option><%=discipline%></option>
+                                        <%})}}%>
+                                    </select></td>
+                                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                                        <span class="glyphicon glyphicon-plus"></span></button></td>
+                                </tr>
+                            </form>
+                            </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        <div class="col-sm-4">
-            <div class="well well-sm">
-                <h4>Skills<div class="pull-right"><a href='/create-skill'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="well well-sm">
+                    <h4>Specialties<div class="pull-right"><a href='/create-specialty'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="well well-sm">
+                    <h4>Skills<div class="pull-right"><a href='/create-skill'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="well well-sm">
+                    <h4>Facilities<div class="pull-right"><a href='/create-facility'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
+                </div>
             </div>
         </div>
-        <div class="col-sm-4">
-            <div class="well well-sm">
-                <h4>Facilities<div class="pull-right"><a href='/create-facility'><span class='glyphicon glyphicon-pencil'></span></a></div></h4>
+        <div class="row">
+            <div id="specialties" class="col-sm-4">
+                <% if(locals.specialties){%>
+                <div class="well well-sm">
+                    <%if (specialties.length > 0){%>
+                    <%specialties.forEach(function(specialty){%>
+                    <p><%= specialty.name %></p>
+                    <%})}}%>
+                </div>
+            </div>
+            <div id="skills" class="col-sm-4">
+                <% if(locals.skills){%>
+                <div class="well well-sm">
+                    <%if (skills.length > 0){%>
+                    <%skills.forEach(function(skill){%>
+                    <p><%= skill.name %></p>
+                    <%})}}%>
+                </div>
+            </div>
+            <div id="facilities" class="col-sm-4">
+                <% if(locals.facilities){%>
+                <div class="well well-sm">
+                    <%if (facilities.length > 0){%>
+                    <%facilities.forEach(function(facility){%>
+                    <p><%= facility.name %></p>
+                    <%})}}%>
+                </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div id="specialties" class="col-sm-4">
-            <% if(locals.specialties){%>
-            <div class="well well-sm">
-                <%if (specialties.length > 0){%>
-                <%specialties.forEach(function(specialty){%>
-                <p><%= specialty.name %></p>
-                <%})}}%>
-            </div>
-        </div>
-        <div id="skills" class="col-sm-4">
-            <% if(locals.skills){%>
-            <div class="well well-sm">
-                <%if (skills.length > 0){%>
-                <%skills.forEach(function(skill){%>
-                <p><%= skill.name %></p>
-                <%})}}%>
-            </div>
-        </div>
-        <div id="facilities" class="col-sm-4">
-            <% if(locals.facilities){%>
-            <div class="well well-sm">
-                <%if (facilities.length > 0){%>
-                <%facilities.forEach(function(facility){%>
-                <p><%= facility.name %></p>
-                <%})}}%>
-            </div>
-        </div>
-    </div>
+</div>
 </body>
 </html>
