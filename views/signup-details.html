@@ -2,15 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Finish Signup</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <script type="text/javascript" src="js/signup-details.js"></script>
+    <title>Upload Image</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+            integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+            integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/homepage.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="js/load-image.all.min.js"></script>
-    <link rel="stylesheet" href="css/homepage.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/upload-image.css">
     <script>
         var imageUrl = "Images/<%=profile.imagePath%>";
         loadImage(
@@ -27,27 +31,24 @@
     </script>
 </head>
 
-<body class="container">
+<body class="container-fluid pad">
 <div class="page-header">
     <h1>CollabSeek Signup</h1>
 </div>
-
-<div class="container row">
-    <div class="jumbotron">
-    <form method="post" enctype="multipart/form-data" action="/upload-image-signup">
-        <div class="row">
-            <label>Upload a Profile Image:</label>
-            <span class="glyphicon glyphicon-question-sign"
-                  title="Expects a file with one of the following extensions: .jpg, .jpeg, .png, .gif"></span>
-            <div id="imageDiv"></div>
-            <input type="file" name="imageUpload">
-        </div>
-
-        <br><br>
-
-        <button type="submit" class="btn btn-default">Next</button>
-    </form>
-    </div>
+<div class="progress">
+    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
 </div>
+
+    <div class="jumbotron">
+
+        <form method="post" enctype="multipart/form-data" action="/upload-image-signup">
+            <label>Upload a Profile Image:</label>
+            <span style=""><i class="fas fa-question-circle" title="Expects a file with one of the following extensions: .jpg, .jpeg, .png, .gif"></i></span>
+            <br>
+            <input type="file" name="imageUpload"/>
+            <br><br>
+            <button type="submit" class="btn btn-default">Next</button>
+        </form>
+    </div>
 </body>
 </html>

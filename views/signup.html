@@ -15,7 +15,11 @@
 </div>
 
 <div class="container row">
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
     <div class="jumbotron">
+
         <form id= 'User' action="/signup" method="post">
             <div>
                 <% if (locals.userErrors) { %>

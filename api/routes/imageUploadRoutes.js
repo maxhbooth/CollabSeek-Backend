@@ -101,7 +101,7 @@ module.exports = function (app) {
                 }
             }).single('imageUpload');
             upload(req, res, function(err){
-                if(err){
+                if(err || !req.file){
                     console.log("ERROR IN IMAGEUPLOADROUTES: " + err);
                 }
                 else{
