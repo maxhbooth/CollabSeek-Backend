@@ -61,13 +61,16 @@ module.exports = function (app) {
                     var profilePath = path.join(__dirname, "../../views/images/ProfileImage_"
                         + profileId + path.extname(req.file.originalname));
                     // resize image
+                    console.log("got into this else statement, image upload routes");
+                    console.log(profilePath);
+
                     Jimp.read(profilePath, function (err, picture) {
                         if (err){
                             console.log(err);
                             throw err;
                         }
                         console.log("7");
-                        
+
                         picture.resize(200, Jimp.AUTO)
                             .quality(60) // set JPEG quality
                             .exifRotate()
