@@ -58,7 +58,7 @@ module.exports = function (app, sessionChecker) {
                 //email compose
                 const html = 'Dear CollabSeek User, <br/><br/> Thank you for registering for CollabSeek' +
                     'In order to to view your profile you have to verify your account by clicking on the link below<br/>'+
-                    '<a href ="'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'">"http://backend-test-dept-comp523collaborate.cloudapps.unc.edu"</a>';
+                    '<a href ="'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'">'+process.env.COLLAB_LINK+'/verify/'+hidden_token+' </a>';
 
                 // var html;
                mailer.sendEmail("donotreply@collabseek.com",email, "Please Verify Account", html);
