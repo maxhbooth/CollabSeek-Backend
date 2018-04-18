@@ -19,21 +19,21 @@
     <script src="../js/load-image.all.min.js"></script>
 
 
-    <script>
-        var imageUrl = "../Images/<%=imagePath%>";
-        loadImage(
-            imageUrl,
-            function (img) {
-                if(img.type === "error") {
-                    console.log("Error loading image " + imageUrl);
-                } else {
-                    document.getElementById("imageDiv").appendChild(img);
-                }
-            },
-            {maxWidth: 200,
-                orientation: true}
-        );
-    </script>
+    <!--<script>-->
+        <!--var imageUrl = "../Images/<%=imagePath%>";-->
+        <!--loadImage(-->
+            <!--imageUrl,-->
+            <!--function (img) {-->
+                <!--if(img.type === "error") {-->
+                    <!--console.log("Error loading image " + imageUrl);-->
+                <!--} else {-->
+                    <!--document.getElementById("imageDiv").appendChild(img);-->
+                <!--}-->
+            <!--},-->
+            <!--{maxWidth: 200,-->
+                <!--orientation: true}-->
+        <!--);-->
+    <!--</script>-->
 
 </head>
 <body>
@@ -65,8 +65,9 @@
     <div class="col-sm-4">
         <div class="well well-sm">
             <% if(locals.imagePath){%>
-            <div id = "imageDiv"  style="text-align: center">
-            </div>
+            <!--<div id = "imageDiv"  style="text-align: center">-->
+            <!--</div>-->
+            <img src="../Images/<%=imagePath%>" onerror="this.src='../resources/profile-icon.png'" width="200">
             <%} else {%>
             <% var initials = first.charAt(0) + last.charAt(0); %>
             <div class="circle"><%=initials%></div>
