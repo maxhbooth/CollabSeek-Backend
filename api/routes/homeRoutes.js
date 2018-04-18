@@ -72,7 +72,7 @@ module.exports = function (app, sessionChecker) {
 });
 
 
-
+////////////////////// ROUTE FOR /VERIFY WITH WHICHEVER HIDDEN TOKEN ATTAHCED TO IT BY MARCUS///////////////////////////
     app.get('/verify/:hidden_token',(req,res)=>{
         if (req.session.profile && req.cookies.user_sid) {
             var hidden_token = req.params.hidden_token;
@@ -94,6 +94,7 @@ module.exports = function (app, sessionChecker) {
 
         }
     });
+    //////////////////////ROUTE FOR THE /CHANGEPASSWORD PLUS WHICH EVER PASSWORD TOKEN ATTACHED BY MARCUS////////////////
     app.get('/changepassword/:password_token',(req,res)=>{
 
             var password_token = req.params.password_token;

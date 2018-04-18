@@ -17,6 +17,10 @@ module.exports = function (app, sessionChecker) {
         return dest;
     }
 
+
+
+
+
     app.route('/login')
         .get(sessionChecker, (req, res) => {
             res.render('login.html');
@@ -68,6 +72,8 @@ module.exports = function (app, sessionChecker) {
                 console.log("Error:" + error);
             });
         });
+
+    //////////////////////////////////  ROUTE FOR RESET PASSWORD BY MARCUS/////////////////////////////////////////////
     app.route('/resetpassword')
         .get(sessionChecker,(req,res) =>
         {
@@ -86,6 +92,9 @@ module.exports = function (app, sessionChecker) {
 
                     //else send an email to change password
                     const html = 'Dear CollabSeek User, <br/><br/>  You are receiving this email because there was a request ' +
+                        'to change the account password for '+ user.first_name +user.last_name +
+                        'if this is true click the link below, if not just ignore this message <br/>'+
+                        '<a href ="'+process.env.COLLAB_LINK+'/changepassword/'+password_token+'">http://backend-test-dept-comp523collaborate.cloudapps.unc.edu</a>' +
                         'to change the account password for '+ user.first_name + " " + user.last_name +
                         '. If this is true click the link below, if not just ignore this message.'+
                         '<br/><br/><a href ="'+process.env.COLLAB_LINK+'/changepassword/'+password_token+'">'+process.env.COLLAB_LINK+'/changepassword/'+password_token+'</a>' +
@@ -93,6 +102,10 @@ module.exports = function (app, sessionChecker) {
                     mailer.sendEmail("collabuncseek@gmail.com", email, "Password Reset", html);
 
                     res.redirect('/login');
+
+
+
+
 
             })
         });
@@ -120,6 +133,9 @@ module.exports = function (app, sessionChecker) {
 
 
         });
+
+
+
 
     app.get('/logout', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
