@@ -78,7 +78,10 @@
                     <% if(locals.imagePath){%>
                     <form method="get" action="/upload-image">
                         <div class="image_container">
-                            <div id="imageDiv" alt="Avatar" class="image"></div>
+                            <!--<div id="imageDiv" alt="Avatar" class="image"></div>-->
+                            <object data="resources/profile-icon.png" type="image/png">
+                                <img src="Images/<%=imagePath%>" />
+                            </object>
                             <div class="middle">
                                     <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
                             </div>
