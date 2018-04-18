@@ -16,70 +16,67 @@ module.exports = function (app) {
         }
     });
 
-    app.post('/upload-image', (req, res) => {
+    const storage = multer.diskStorage({
+        destination: function(req, file, callback) {
+            console.log("2");
+            callback(null, 'views/Images')
+        },
+        filename: function(req, file, callback) {
+            console.log("3");
+            const profileId = req.session.profile.id;
+            callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
+        }
+    });
+    var upload = multer({
+        storage: storage,
+        fileFilter: function(req, file, callback) {
+            var ext = path.extname(file.originalname);
+            console.log(ext);
+            if (ext.toLowerCase() !== '.png' && ext.toLowerCase() !== '.jpg'
+                && ext.toLowerCase() !== '.gif' && ext.toLowerCase() !== '.jpeg') {
+                console.log("4");
+                return callback(new Error('Expected an image.'))
+            }
+            //add image to database then!
+            console.log("5");
+            const profileId = req.session.profile.id;
+            const profileRepository = new ProfileRepository();
+            profileRepository.addImage(profileId,  "ProfileImage_" + profileId + ext);
+
+            callback(null, true)
+        }
+    });
+
+
+    app.post('/upload-image',upload.single('imageUpload'), (req, res) => {
 
         if (req.session.profile && req.cookies.user_sid) {
             console.log("1");
+
             const profileId = req.session.profile.id;
 
-            var profileRepository = new ProfileRepository();
+            var profilePath = path.join(__dirname, "../../views/images/ProfileImage_"
+                + profileId + path.extname(req.file.originalname));
 
-            const storage = multer.diskStorage({
-                destination: function(req, file, callback) {
-                    console.log("2");
-                    callback(null, 'views/Images')
-                },
-                filename: function(req, file, callback) {
-                    console.log("3");
-                    callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
-                }
-            });
-            var upload = multer({
-                storage: storage,
-                    fileFilter: function(req, file, callback) {
-                        var ext = path.extname(file.originalname);
-                        console.log(ext);
-                        if (ext.toLowerCase() !== '.png' && ext.toLowerCase() !== '.jpg'
-                            && ext.toLowerCase() !== '.gif' && ext.toLowerCase() !== '.jpeg') {
-                                console.log("4");
-                                return callback(new Error('Expected an image.'))
-                        }
-                        //add image to database then!
-                        console.log("5");
-                        profileRepository.addImage(profileId,  "ProfileImage_" + profileId + ext);
+            // resize image
+            console.log("got into this else statement, image upload routes");
+            console.log(profilePath);
+            console.log(fs.existsSync(profilePath));
 
-                        callback(null, true)
-                    }
-            }).single('imageUpload');
-            upload(req, res, function(err){
-                if(err){
-                    //there was an error uploading!
-                    console.log("6");
+            Jimp.read(profilePath, function (err, picture) {
+                if (err){
                     console.log(err);
+                    throw err;
                 }
-                else{
-                    var profilePath = path.join(__dirname, "../../views/images/ProfileImage_"
-                        + profileId + path.extname(req.file.originalname));
-                    // resize image
-                    console.log("got into this else statement, image upload routes");
-                    console.log(profilePath);
-                    console.log(fs.existsSync(profilePath));
+                console.log("7");
 
-                    Jimp.read(profilePath, function (err, picture) {
-                        if (err){
-                            console.log(err);
-                            throw err;
-                        }
-                        console.log("7");
-
-                        picture.resize(200, Jimp.AUTO)
-                            .quality(60) // set JPEG quality
-                            .exifRotate()
-                            .write(profilePath); // save
-                    });
-                    console.log("8");
-                }
+                picture.resize(200, Jimp.AUTO)
+                    .quality(60) // set JPEG quality
+                    .exifRotate()
+                    .write(profilePath); // save
             });
+            console.log("8");
+
 
             console.log("9");
             res.redirect('/my-profile');
