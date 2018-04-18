@@ -62,9 +62,12 @@ module.exports = function (app) {
                         + profileId + path.extname(req.file.originalname));
                     // resize image
                     Jimp.read(profilePath, function (err, picture) {
-                        if (err) throw err;
+                        if (err){
+                            console.log(err);
+                            throw err;
+                        }
                         console.log("7");
-                        console.log(err);
+                        
                         picture.resize(200, Jimp.AUTO)
                             .quality(60) // set JPEG quality
                             .exifRotate()
