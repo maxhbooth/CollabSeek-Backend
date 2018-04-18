@@ -92,7 +92,7 @@ module.exports = function (app, sessionChecker) {
                     //else send an email to change password
                     const html = 'Dear CollabSeek User, <br/><br/>  You are receiving this email because there was a request ' +
                         'to change the account password for '+ user.first_name +user.last_name +
-                        'if this is true click the link below, if not just ignore this message'+
+                        'if this is true click the link below, if not just ignore this message <br/>'+
                         '<a href ="'+process.env.COLLAB_LINK+'/changepassword/'+password_token+'">http://backend-test-dept-comp523collaborate.cloudapps.unc.edu</a>' +
                           '<br/><br/> Have a nice day, <br/> CollabSeek team';
                     mailer.sendEmail("collabuncseek@gmail.com", email, "Password Reset", html);
