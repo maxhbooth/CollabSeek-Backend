@@ -128,10 +128,31 @@ module.exports = function (app, sessionChecker) {
                 }
                 const salt = bcrypt.genSaltSync();
                 user.password = bcrypt.hashSync(password, salt);
-                user.save().then(res.redirect('/login'));
+                user.save().then(res.redirect('/my-profile'));
             });
 
 
+        });
+    //////////////////////////RESET PASSWORD FOR PROFILE ///////////////////////////////////////////////////////////
+    app.route('/reset')
+        .get(sessionChecker,(req,res) =>{
+
+        })
+        .post((req,res) =>{
+            var password = req.body.current_password;
+            req.checkBody('new_password', 'Password must be between 8 to 50 characters.').len(4, 50);
+            req.checkBody('new_password', 'Passwords must match.').equals(req.body.confirm_password);
+            Profile.findOne({where: {password: password}}).then(function (user) {
+                if(!user){
+                    console.log("Invalid password");
+                    return;
+                }
+                const salt = bcrypt.genSaltSync();
+                user.password = bcrypt.hashSync(password, salt);
+                user.save().then(res.redirect('/my-profile'));
+
+
+            });
         });
 
 

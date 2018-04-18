@@ -57,7 +57,7 @@ module.exports = function (app, sessionChecker) {
                 var email = req.body.email;
                 //email compose
                 const html = 'Dear CollabSeek User, <br/><br/> Thank you for registering for CollabSeek' +
-                    'In order to to view your profile you have to verify your account by clicking on the link below<br/>'+
+                    'In order to to view your profile you have to verify your account by clicking on the link below <br/>'+
                     '<a href ="'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'">'+process.env.COLLAB_LINK+'/verify/'+hidden_token+' </a>';
 
                 // var html;
