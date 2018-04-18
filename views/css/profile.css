@@ -31,7 +31,10 @@
 }
 
 .pad {
-    padding: 50px;
+    padding-left: 75px;
+    padding-right: 75px;
+    padding-bottom: 30px;
+    padding-top: 30px;
 }
 
 h3 {
@@ -59,20 +62,18 @@ hr {
     border: none;
 }
 
-.image_container {
-    width: 75%;
-    display: block;
-    margin: 0 auto;
-}
-
 canvas{
     opacity: 1;
     display: block;
-    width: 100%;
+    width: 60%;
     height: auto;
     transition: .5s ease;
     backface-visibility: hidden;
     border-radius: 10%;
+    margin: 0 auto;
 }
+
+
+
 
 

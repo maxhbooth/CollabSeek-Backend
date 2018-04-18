@@ -64,7 +64,7 @@
         </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->
 </nav>
-<div class="container">
+<div class="container-fluid pad">
     <div class="page-header">
         <h1>My Profile</h1>
     </div>
@@ -86,7 +86,8 @@
                     </form>
                     <%} else {%>
                     <div class="image_container">
-                        <img src="resources/profile-icon.png" style="height:200px; width:auto; padding-top:2%; padding-left: 2%">
+                        <% var initials = first.charAt(0) + last.charAt(0); %>
+                        <div class="circle"><%=initials%></div>
                         <div class="middle">
                             <form method="get" action="/upload-image">
                                 <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>

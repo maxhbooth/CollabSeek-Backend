@@ -74,7 +74,7 @@ module.exports = function (app) {
 
     });
     app.post('/upload-image-signup', (req, res) => {
-        if (req.session.profile && req.cookies.user_sid && req.file) {
+        if (req.session.profile && req.cookies.user_sid) {
             const profileId = req.session.profile.id;
             var profileRepository = new ProfileRepository();
             const storage = multer.diskStorage({

@@ -26,6 +26,12 @@ h5 {
     font-weight: bold;
     color: black;
 }
+
+.pad {
+    padding-left: 75px;
+    padding-right: 75px;
+}
+
 .login {
     margin-left: 5px;
     background-color:#4B9CD3;
@@ -68,9 +74,20 @@ canvas{
 }
 
 .text {
-    background-color: #4CAF50;
     color: white;
     font-size: 16px;
     padding: 16px 32px;
 }
 
+.circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    font-size: 50px;
+    font-family: fantasy;
+    color: #fff;
+    line-height: 150px;
+    text-align: center;
+    background: #3498db;
+    margin: 0 auto;
+}

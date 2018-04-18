@@ -584,17 +584,21 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
                 through: {}
             }]
         }));
+
+        let skill_parents = await(this.attrRepository.skill.findAll({where: {parent_id: 0}}));
+        let facility_parents = await(this.attrRepository.facility.findAll({where: {parent_id: 0}}));
+
         profiles[j] = {id: ID,  first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
             imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
             hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
             facilities: facilities, pronouns: profile[j].pronouns, website: profile[j].website, phone: profile[j].phone_number,
-            availability: profile[j].availability};
+            availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents};
         if(profile.length === 1){
             return {id: ID, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
                 imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
                 hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
                 facilities: facilities, pronouns: profile[j].pronouns, website: profile[j].website, phone: profile[j].phone_number,
-                availability: profile[j].availability};
+                availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents};
         }
     }
    return profiles;
