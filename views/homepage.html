@@ -17,8 +17,6 @@
 
     <link rel="stylesheet" href="css/homepage.css">
     <link rel="stylesheet" href="css/navbar.css">
-    <script type="text/javascript" src="js/delaunay.js">
-    </script>
 </head>
 <!--<body class="fullscreen background" style="background-image:url('resources/collabseekbg.png');"-->
 <!--data-img-width="5035" data-img-height="3357">-->
@@ -48,17 +46,17 @@
 </nav>
 
 <div class="container-fluid">
-    <div class="row">
+    <div class="row" style="margin-top:60px;">
         <h1 class="col-xs-2 col-xs-offset-2" style="padding-left:9px">Search</h1>
     </div>
     <form action="/search" method="POST" class="form-inline" id="searcher">
         <input id="searchBar" type="text" placeholder="Enter a search term..." name="query" class="col-xs-7 col-xs-offset-2">
         <button type="submit" id="searchButton"><i class="fas fa-search"></i></button>
     </form>
-    <div class="col-xs-8 col-xs-offset-2" style="padding-left: 0px;">Search by entering a single skill, discipline, name (first, last, or both), facility/resource, or department. Or, try <a href="/advanced-search" id="advSearch">Advanced Search</a>
+    <div class="col-xs-8 col-xs-offset-2 instructions" style="padding-left: 0px;">Search by entering a single skill, discipline, name (first, last, or both), facility/resource, or department. Or, try <a href="/advanced-search" id="advSearch">Advanced Search</a>
     </div>
 </div>
-<canvas id="stars" width="300" height="300"  style="position:fixed; top:0;left:0; z-index: -1;" ></canvas>
+<!--<canvas id="stars" width="300" height="300"  style="position:fixed; top:0;left:0; z-index: -1;" ></canvas>-->
 <script type="text/javascript" src="js/homepage.js"></script>
 
 </body>

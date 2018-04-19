@@ -7,14 +7,12 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/stylesheet.css" type="text/css">
     <link href="//fonts.googleapis.com/css?family=Montserrat:100i,200,700,400" rel="stylesheet">
-    <script type="text/javascript" src="js/welcome.js"></script>
+    <script type="text/javascript" src="js/delaunay.js"></script>
 </head>
-
 <body>
-<div class="fullscreen background" style="background-image:url('resources/backgroundNewEdited.jpg');"
-     data-img-width="6016" data-img-height="4016">
+<div class="fullscreen background">
     <div class="header">
-        <img src="resources/CollabSeek-Logo%20hp3%2075.png" style="height:32px; width:auto; padding-top:2%; padding-left: 2%;">
+        <img src="resources/CollabSeek-Logo%20hp3%2075.png" style="height:41px; width:auto; padding-top:2.5%; padding-left: 2.5%;">
     </div>
     <div class="content-a">
         <div class="content-b" id="content">
@@ -22,8 +20,7 @@
                 Connect With Other Researchers
             </div>
             <div class="text fadeInThird">
-                CollabSeek is a place for academic researchers to find others to work with based on individuals
-                different skills and resources.
+                CollabSeek is a place for academic researchers of the University of North Carolina at Chapel Hill to find others to work with based on individual's different skills and resources.
             </div>
             <div id="linkContainer" class="text fadeInSecond">
                 <div id="linkedIn">
@@ -36,5 +33,7 @@
         </div>
     </div>
 </div>
+<canvas id="stars" width="300" height="300"  style="position:fixed; top:0;left:0; z-index: -1;" ></canvas>
+<script type="text/javascript" src="js/welcome.js"></script>
 </body>
 </html>
