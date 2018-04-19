@@ -21,27 +21,28 @@
     <script src="js/load-image.all.min.js"></script>
 
 
-    <script>
-        var imageUrl = "Images/<%=imagePath%>";
-        loadImage(
-            imageUrl,
-            function (img) {
-                if(img.type === "error") {
-                    console.log("Error loading image " + imageUrl);
-                    var icon = document.createElement("IMG");
+    <!--<script>-->
+        <!--var imageUrl = "Images/<%=imagePath%>";-->
+        <!--loadImage(-->
+            <!--imageUrl,-->
+            <!--function (img) {-->
+                <!--if(img.type === "error") {-->
+                    <!--console.log("Error loading image " + imageUrl);-->
+                    <!--var icon = document.createElement("IMG");-->
 
-                    icon.src = "resources/profile-icon.png";
-                    document.getElementById("imageDiv").appendChild(icon);
-                } else {
-                    document.getElementById("imageDiv").appendChild(img);
-                }
-            },
-            {maxWidth: 200,
-                orientation: true}
-        );
-    </script>
+                    <!--icon.src = "resources/profile-icon.png";-->
+                    <!--document.getElementById("imageDiv").appendChild(icon);-->
+                <!--} else {-->
+                    <!--document.getElementById("imageDiv").appendChild(img);-->
+                <!--}-->
+            <!--},-->
+            <!--{maxWidth: 200,-->
+                <!--orientation: true}-->
+        <!--);-->
+    <!--</script>-->
 
 </head>
+
 <body>
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
@@ -78,7 +79,10 @@
                     <% if(locals.imagePath){%>
                     <form method="get" action="/upload-image">
                         <div class="image_container">
-                            <div id="imageDiv" alt="Avatar" class="image"></div>
+                            <!--<div id="imageDiv" alt="Avatar" class="image"></div>-->
+
+                            <img src="Images/<%=imagePath%>" onerror="this.src='resources/profile-icon.png'" width="200">
+
                             <div class="middle">
                                     <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
                             </div>
