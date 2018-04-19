@@ -6,10 +6,45 @@ $(document).ready(function() {
     $("#discipline option").each(function()
         {disciplines.push($(this).val());});
 
-    $('#discipline').select2();
-    $('#department').select2();
-    $('#degree').select2();
-    $('#position').select2();
+    function matchStart(params, data) {
+        params.term = params.term || '';
+        if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) == 0) {
+            return data;
+        }
+        var i = -1;
+        while ((i = data.text.indexOf(" ", i+1)) != -1){
+            if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) == i+1) {
+                return data;
+            }
+        }
+        return false;
+    }
+
+    $("#discipline").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select a Discipline",
+    });
+    $("#department").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select One or More Departments/Institutes",
+        allowClear: true
+    });
+    $("#degree").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select A Degree"
+    });
+    $("#position").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select A Position"
+    });
 
     // Degree and discipline handling
     $("#add_degree").click(function(e){ //on add input button click
@@ -20,7 +55,7 @@ $(document).ready(function() {
         var deg_id = "degree" + current_degrees.toString();
         var $newdegree = $('<div class="form-group col-sm-4"></div>');
         var $degreeselect = $('<select id=' + deg_id +  ' name="degree" class="form-control"></select>');
-
+        $degreeselect.append('<option></option>');
         $("#degree option").each(function()
         {$degreeselect.append('<option>' + $(this).val() + '</option>');});
         $newdegree.append($degreeselect);
@@ -29,7 +64,7 @@ $(document).ready(function() {
         var disc_id = "discipline" + current_degrees.toString();
         var $newdiscipline = $('<div class="form-group col-sm-4"></div>');
         var $disciplineselect = $('<select id=' + disc_id + ' name="discipline" class="form-control"></select>');
-
+        $disciplineselect.append('<option></option>');
         disciplines.forEach(function(discipline)
         {$disciplineselect.append('<option>' + discipline + '</option>');});
         $newdiscipline.append($disciplineselect);
@@ -39,7 +74,18 @@ $(document).ready(function() {
         $newdegreeset.append($newdiscipline);
         $newdegreeset.append('<button type="button" id="degreedelete" class="btn btn-default">Delete</button>');
         $("#degree_set").append($newdegreeset);
-        $('#' + disc_id).select2();
+        $('#' + disc_id).select2({
+            matcher: function(params, data) {
+                return matchStart(params, data);
+            },
+            placeholder: "Select A Discipline"
+        });
+        $('#' + deg_id).select2({
+            matcher: function(params, data) {
+                return matchStart(params, data);
+            },
+            placeholder: "Select A Degree"
+        });
     });
 
     $(document).on('click', '#degreedelete', function () {

@@ -183,8 +183,7 @@ profileRepository.prototype.addProfileFacilityById = async(function (profileId, 
 
 profileRepository.prototype.addProfileSpecialty = async(function (profileId, specialtyName) {
     let specialty = await(this.attrRepository.specialty.findOne({where: {name: specialtyName}}));
-
-        if(specialty.id !=null) {
+        if(specialty != null && specialty.id !=null) {
             this.profileSpecialty.findOrCreate({
                 where: {
                     profile_id: profileId,
@@ -541,6 +540,13 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         let positionId = profile[j].position;
 
         let position = await(this.attrRepository.position.findOne({where:{id:positionId}}));
+        var position_name;
+        if(position){
+            position_name = position.name;
+        }
+        else{
+            position_name = null;
+        }
         let degrees_set = await(this.attrRepository.degree_discipline.findAll({
             where: {profile_id: ID}
         }));
@@ -588,13 +594,13 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
         let skill_parents = await(this.attrRepository.skill.findAll({where: {parent_id: 0}}));
         let facility_parents = await(this.attrRepository.facility.findAll({where: {parent_id: 0}}));
 
-        profiles[j] = {id: ID,  first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
+        profiles[j] = {id: ID,  first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position_name,
             imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
             hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
             facilities: facilities, pronouns: profile[j].pronouns, website: profile[j].website, phone: profile[j].phone_number,
             availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents};
         if(profile.length === 1){
-            return {id: ID, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position.name,
+            return {id: ID, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position_name,
                 imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
                 hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
                 facilities: facilities, pronouns: profile[j].pronouns, website: profile[j].website, phone: profile[j].phone_number,
