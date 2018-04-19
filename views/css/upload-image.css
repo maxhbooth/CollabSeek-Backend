@@ -32,3 +32,8 @@
     background-color:#4B9CD3;
     border: none;
 }
+
+.pad {
+    padding-left: 75px;
+    padding-right: 75px;
+}
