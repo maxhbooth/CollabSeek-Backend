@@ -59,7 +59,6 @@ module.exports = function (app) {
                 + profileId + path.extname(req.file.originalname));
 
             // resize image
-            console.log("got into this else statement, image upload routes");
             console.log(profilePath);
             console.log(fs.existsSync(profilePath));
             console.log(fs.existsSync(path.join(__dirname, "../../views/Images/")));
@@ -77,8 +76,6 @@ module.exports = function (app) {
             });
             console.log("8");
 
-
-            console.log("9");
             res.redirect('/my-profile');
         } else {
             res.redirect('/login');
