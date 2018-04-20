@@ -80,9 +80,11 @@ module.exports = function (app) {
                     .exifRotate()
                     .write(profilePath); // save
                 fs.unlink(tempPath);
+                res.redirect('/my-profile');
+            }).catch(function(error){
+                console.log(error);
             });
             console.log("8");
-            res.redirect('/my-profile');
         } else {
             res.redirect('/login');
         }
