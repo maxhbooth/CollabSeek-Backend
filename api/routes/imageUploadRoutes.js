@@ -55,14 +55,14 @@ module.exports = function (app) {
 
             const profileId = req.session.profile.id;
 
-            var profilePath = path.join(__dirname, "../../views/images/ProfileImage_"
+            var profilePath = path.join(__dirname, "../../views/Images/ProfileImage_"
                 + profileId + path.extname(req.file.originalname));
 
             // resize image
             console.log("got into this else statement, image upload routes");
             console.log(profilePath);
             console.log(fs.existsSync(profilePath));
-
+            console.log(fs.existsSync(path.join(__dirname, "../../views/Images/")));
             Jimp.read(profilePath, function (err, picture) {
                 if (err){
                     console.log(err);
