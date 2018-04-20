@@ -100,7 +100,7 @@ module.exports = function (app, sessionChecker) {
             }
             if (req.body.facility != '' || req.body.facility != undefined) {
                 let facilityArray = [];
-                facilityArray = facilityArray.concat(req.body.facilities);
+                facilityArray = facilityArray.concat(req.body.facility);
                 facilityArray.forEach(function (facility){
                     if (facility == ''){
                         return;
@@ -134,6 +134,11 @@ module.exports = function (app, sessionChecker) {
             compoundOP().then(function (result) {
                 result = filter_array(result);
                 result = sortByFrequency(result);
+                for (let j = 0; j<result.length; ++j){
+                    if (result[j] == req.session.profile.id){
+                        result.splice(j,1)
+                    }
+                }
                 profileRepository.getProfileInformation(result).then(function (profiles) {
                     let orderedProfileArray = [];
                     let profileIds = [];
@@ -177,6 +182,13 @@ module.exports = function (app, sessionChecker) {
 
                 var compoundOP = async(function() {
                     let response = await([getDepartments(departments),getDisciplines(disciplines),getFacilities(facilities),getSkills(skills),getSpecialties(specialities), getFirstName(query),getLastName(query), getFirstAndLast(query)]);
+                    for (let i =0; i<response.length;++i){
+                        for (let j = 0; j<response[i].length; ++j){
+                            if (response[i][j].id == req.session.profile.id){
+                                response[i].splice(j,1)
+                            }
+                        }
+                    }
                     return response;
                 });
 
