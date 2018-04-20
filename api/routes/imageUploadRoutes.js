@@ -68,19 +68,14 @@ module.exports = function (app) {
             console.log(tempPath);
             console.log(fs.existsSync(tempPath));
             console.log(fs.existsSync(path.join(__dirname, "../../views/Images/")));
-            Jimp.read(tempPath, function (err, picture) {
-                if (err){
-                    console.log(err);
-                    throw err;
-                }
-                console.log("7");
-
-                picture.resize(200, Jimp.AUTO)
+            Jimp.read(tempPath).then(function(image){
+                return image.resize(200, Jimp.AUTO)
                     .quality(60) // set JPEG quality
                     .exifRotate()
-                    .write(profilePath); // save
-                fs.unlink(tempPath);
-                res.redirect('/my-profile');
+                    .write(profilePath, function(){
+                        fs.unlink(tempPath);
+                        res.redirect('/my-profile');
+                    }); // save
             }).catch(function(error){
                 console.log(error);
             });
