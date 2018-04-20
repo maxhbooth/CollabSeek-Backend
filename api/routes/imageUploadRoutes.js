@@ -73,10 +73,13 @@ module.exports = function (app) {
                     .quality(60) // set JPEG quality
                     .exifRotate()
                     .write(profilePath, function(){
+                        console.log("9");
                         fs.unlink(tempPath);
+                        console.log("10");
                         res.redirect('/my-profile');
                     }); // save
             }).catch(function(error){
+                console.log("caught error:");
                 console.log(error);
             });
             console.log("8");
