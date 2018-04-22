@@ -68,7 +68,11 @@ module.exports = function (app) {
             console.log(tempPath);
             console.log(fs.existsSync(tempPath));
             console.log(fs.existsSync(path.join(__dirname, "../../views/Images/")));
-            Jimp.read(tempPath).then(function(image){
+            Jimp.read(tempPath).then(function(err, image){
+                if(err){
+                    console.log(err);
+                }
+                console.log("sucessfully read");
                 return image.resize(200, Jimp.AUTO, function(err, image) {
                             console.log("inside resize");
                             image.quality(60, function(err, image) {
@@ -101,9 +105,8 @@ module.exports = function (app) {
         }
     };
 
-    app.post('/upload-image',upload.single('imageUpload'), resize, (req, res) => {
+    app.post('/upload-image',upload.single('imageUpload'), resize);
 
-    });
     app.post('/upload-image-signup', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
             const profileId = req.session.profile.id;
