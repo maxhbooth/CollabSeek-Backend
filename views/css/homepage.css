@@ -51,3 +51,14 @@ body {
     height: 100vh;
     z-index: 1;
 }
+
+.error {
+    padding-top: 20px;
+    clear:left;
+    text-align: center;
+    font-style: italic;
+    color:rgba(192, 57, 43,1.0);
+    font-weight: bold;
+    padding-left:12%;
+    padding-right:12%;
+}

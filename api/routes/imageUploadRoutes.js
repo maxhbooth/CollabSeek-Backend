@@ -24,65 +24,71 @@ module.exports = function (app) {
         filename: function(req, file, callback) {
             console.log("3");
             const profileId = req.session.profile.id;
-            callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
+            callback(null, "temp_" + profileId + path.extname(file.originalname))
         }
     });
     var upload = multer({
         storage: storage,
         fileFilter: function(req, file, callback) {
-            var ext = path.extname(file.originalname);
-            console.log(ext);
-            if (ext.toLowerCase() !== '.png' && ext.toLowerCase() !== '.jpg'
-                && ext.toLowerCase() !== '.gif' && ext.toLowerCase() !== '.jpeg') {
-                console.log("4");
-                return callback(new Error('Expected an image.'))
-            }
-            //add image to database then!
-            console.log("5");
-            const profileId = req.session.profile.id;
-            const profileRepository = new ProfileRepository();
-            profileRepository.addImage(profileId,  "ProfileImage_" + profileId + ext);
+            if (req.session.profile && req.cookies.user_sid) {
+                var ext = path.extname(file.originalname);
+                console.log(ext);
+                if (ext.toLowerCase() !== '.png' && ext.toLowerCase() !== '.jpg'
+                    && ext.toLowerCase() !== '.gif' && ext.toLowerCase() !== '.jpeg') {
+                    console.log("4");
+                    return callback(new Error('Expected an image.'))
+                }
+                //add image to database then!
+                console.log("5");
+                const profileId = req.session.profile.id;
+                const profileRepository = new ProfileRepository();
+                profileRepository.addImage(profileId, "ProfileImage_" + profileId + ext);
 
-            callback(null, true)
+                callback(null, true)
+            }
+            else{
+                callback(null, false);
+            }
         }
     });
 
 
-    app.post('/upload-image',upload.single('imageUpload'), (req, res) => {
-
+    var resize = function(req, res) {
         if (req.session.profile && req.cookies.user_sid) {
             console.log("1");
 
             const profileId = req.session.profile.id;
 
-            var profilePath = path.join(__dirname, "../../views/images/ProfileImage_"
+            var profilePath = path.join(__dirname, "../../views/Images/ProfileImage_"
                 + profileId + path.extname(req.file.originalname));
 
+            var tempPath = path.join(__dirname, "../../views/Images/temp_"
+                + profileId + path.extname(req.file.originalname));
             // resize image
-            console.log("got into this else statement, image upload routes");
-            console.log(profilePath);
-            console.log(fs.existsSync(profilePath));
-
-            Jimp.read(profilePath, function (err, picture) {
-                if (err){
-                    console.log(err);
-                    throw err;
-                }
-                console.log("7");
-
-                picture.resize(200, Jimp.AUTO)
+            console.log(tempPath);
+            console.log(fs.existsSync(tempPath));
+            console.log(fs.existsSync(path.join(__dirname, "../../views/Images/")));
+            Jimp.read(tempPath).then(function(image){
+                return image.resize(200, Jimp.AUTO)
                     .quality(60) // set JPEG quality
                     .exifRotate()
-                    .write(profilePath); // save
+                    .write(profilePath, function(){
+                        console.log("9");
+                        fs.unlink(tempPath);
+                        console.log("10");
+                        res.redirect('/my-profile');
+                    }); // save
+            }).catch(function(error){
+                console.log("caught error:");
+                console.log(error);
             });
             console.log("8");
-
-
-            console.log("9");
-            res.redirect('/my-profile');
         } else {
             res.redirect('/login');
         }
+    };
+
+    app.post('/upload-image',upload.single('imageUpload'), resize, (req, res) => {
 
     });
     app.post('/upload-image-signup', (req, res) => {
