@@ -69,15 +69,30 @@ module.exports = function (app) {
             console.log(fs.existsSync(tempPath));
             console.log(fs.existsSync(path.join(__dirname, "../../views/Images/")));
             Jimp.read(tempPath).then(function(image){
-                return image.resize(200, Jimp.AUTO)
-                    .quality(60) // set JPEG quality
-                    .exifRotate()
-                    .write(profilePath, function(){
-                        console.log("9");
-                        fs.unlink(tempPath);
-                        console.log("10");
-                        res.redirect('/my-profile');
-                    }); // save
+                console.log(image);
+                console.log("sucessfully read");
+                return image.resize(200, Jimp.AUTO, function(err, image) {
+                            console.log("inside resize");
+                            image.quality(60, function(err, image) {
+                                console.log("inside quality");
+                                //image.exifRotate(function(err, image) {
+                                //    console.log("inside exif rotate");
+                                    image.write(profilePath, function(err, image) {
+                                        console.log("inside write");
+                                        res.redirect('/my-profile');
+                                    });
+                               //});
+                            });
+                        });
+                    // .quality(60) // set JPEG quality
+                    // .exifRotate()
+                    // .write(profilePath, function(err, image){
+                    //     console.log(err);
+                    //     console.log("9");
+                    //     fs.unlink(tempPath);
+                    //     console.log("10");
+                    //     res.redirect('/my-profile');
+                    // }); // save
             }).catch(function(error){
                 console.log("caught error:");
                 console.log(error);
@@ -88,9 +103,8 @@ module.exports = function (app) {
         }
     };
 
-    app.post('/upload-image',upload.single('imageUpload'), resize, (req, res) => {
+    app.post('/upload-image',upload.single('imageUpload'), resize);
 
-    });
     app.post('/upload-image-signup', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
             const profileId = req.session.profile.id;
