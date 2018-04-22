@@ -16,14 +16,13 @@ $(document).ready(function(){
         matcher: function(params, data) {
             return matchStart(params, data);
         },
-        placeholder: "Select a Discipline",
+        placeholder: "Select A Discipline",
     });
     $("#department").select2({
         matcher: function(params, data) {
             return matchStart(params, data);
         },
-        placeholder: "Select One or More Departments/Institutes",
-        allowClear: true
+        placeholder: "Select A Department",
     });
     $("#degree").select2({
         matcher: function(params, data) {
@@ -66,4 +65,18 @@ $(document).ready(function(){
             show.style.display = "none";
         }
     });
+
+    var database_data = (JSON.parse($("#test").text()));
+    var sorted = _queryTreeSort({q: database_data});
+    var tree_data = _makeTree({q: sorted});
+
+    var tree = $('#specialty_tree').tree({
+        primaryKey: 'id',
+        dataSource: tree_data,
+        uiLibrary: 'bootstrap'
+    });
+    tree.expandAll();
+    for(var i = 0; i < database_data.length; i++){
+        tree.getNodeById(database_data[i].id).css('background-color', '#f5f5f5');
+    }
 });
