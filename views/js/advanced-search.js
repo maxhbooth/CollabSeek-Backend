@@ -1,10 +1,68 @@
 $(document).ready(function() {
     // Add select functionality
-    $('#discipline').select2();
-    $('#department').select2();
-    $('#degree').select2();
-    $('#specialty').select2();
-    $('#skill').select2();
-    $('#facility').select2();
-    $('#position').select2();
+
+
+    function matchStart(params, data) {
+        params.term = params.term || '';
+        if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) == 0) {
+            return data;
+        }
+        var i = -1;
+        while ((i = data.text.indexOf(" ", i+1)) != -1){
+            if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) == i+1) {
+                return data;
+            }
+        }
+        return false;
+    }
+
+    $("#discipline").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select a Discipline",
+        allowClear: true
+    });
+    $("#department").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select One or More Departments/Institutes",
+        allowClear: true
+    });
+    $("#degree").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select A Degree",
+        allowClear: true
+    });
+    $("#position").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select A Position",
+        allowClear: true
+    });
+    $("#skill").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select One or More Skills",
+        allowClear: true
+    });
+    $("#specialty").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select One or More Specialties",
+        allowClear: true
+    });
+    $("#facility").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select One or More Facilities",
+        allowClear: true
+    });
 });

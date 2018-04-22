@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/search.css">
+
 </head>
 <body>
 
@@ -42,7 +44,10 @@
     </div><!--/.container-fluid -->
 </nav>
 
+<div class="container-fluid pad" style="padding-bottom: 45px;">
     <h1>Advanced Search</h1>
+    <h4>Fill in as many data fields below as desired for a more precisely matched search.</h4>
+
     <form action="/advanced-search" method="POST">
 
         <div class="row">
@@ -57,8 +62,8 @@
         </div>
         <div id="degree_set">
             <div class="row">
-                <div class="form-group col-sm-12">
-                    <label for="discipline">Discipline:</label>
+                <div class="form-group col-sm-8">
+                    <label for="discipline"><span style="color:#3498db"><i class="fas fa-graduation-cap" title="Degrees"></i></span>&nbsp;&nbsp;Discipline:</label>
                     <select id="discipline" name="discipline" class="js-example-basic-single js-states form-control" multiple="multiple">
                         <% if(locals.disciplines){%>
                         <%if (disciplines.length > 0){disciplines.forEach(function(discipline){%>
@@ -68,11 +73,10 @@
                 </div>
             </div>
         </div>
-        <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
 
         <div class="row">
-            <div class="form-group col-sm-12">
-                <label for="position">Position:</label>
+            <div class="form-group col-sm-8">
+                <label for="position"><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;Position:</label>
                 <select id = "position" name = "position" class="js-example-basic-single js-states form-control">
                     <% if(locals.positions){%>
                     <%if (positions.length > 0){positions.forEach(function(position){%>
@@ -83,8 +87,8 @@
         </div>
 
         <div class="row">
-            <div class="form-group col-sm-12">
-                <label for="department">Department/Institute:</label>
+            <div class="form-group col-sm-8">
+                <label for="department"><span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;Department/Institute:</label>
                 <select id="department" name="department" class="js-example-basic-single js-states form-control" multiple="multiple">
                     <% if(locals.departments){%>
                     <%if (departments.length > 0){departments.forEach(function(department){%>
@@ -95,8 +99,8 @@
         </div>
 
         <div class="row">
-            <div class="form-group col-sm-12">
-                <label for="specialty">Specialties:</label>
+            <div class="form-group col-sm-8">
+                <label for="specialty"><span style="color:#3498db"><i class="fas fa-cogs" title="Specialties"></i></span>&nbsp;&nbsp;Specialties:</label>
                 <select id = "specialty" name = "specialty" class="js-example-basic-single js-states form-control" multiple="multiple">
                     <% if(locals.specialties){%>
                     <%if (specialties.length > 0){specialties.forEach(function(specialty){%>
@@ -108,8 +112,8 @@
 
 
         <div class="row">
-            <div class="form-group col-sm-12">
-                <label for="skill">Skills:</label>
+            <div class="form-group col-sm-8">
+                <label for="skill"><span style="color:#3498db"><i class="fas fa-flask" title="Skills"></i></span>&nbsp;&nbsp;Skills:</label>
                 <select id = "skill" name="skill" class="js-example-basic-single js-states form-control" multiple="multiple">
                     <% if(locals.skills){%>
                     <%if (skills.length > 0){skills.forEach(function(skill){%>
@@ -120,8 +124,8 @@
         </div>
 
         <div class = "row">
-            <div class="form-group col-sm-12">
-                <label for="facility">Facilities/Resources:</label>
+            <div class="form-group col-sm-8">
+                <label for="facility"><span style="color:#3498db"><i class="fas fa-university" title="Resources and Facilities"></i></span>&nbsp;&nbsp;Resources and Facilities:</label>
                 <select id = "facility" name="facility" class="js-example-basic-single js-states form-control" multiple="multiple">
                     <% if(locals.facilities){%>
                     <%if (facilities.length > 0){facilities.forEach(function(facility){%>
@@ -132,8 +136,14 @@
         </div>
 
 
-        <button type="submit" id="searchButton"><i class="fas fa-search"></i></button>
+        <button type="submit" id="searchButton" style="-webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;"><i class="fas fa-search"></i></button>
     </form>
+</div>
     <!--<div id="prefetch">-->
     <!--<input class="typeahead" type="text" placeholder="Search here" name="search">-->
     <!--</div>-->
