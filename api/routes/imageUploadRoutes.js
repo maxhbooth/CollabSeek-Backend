@@ -68,10 +68,8 @@ module.exports = function (app) {
             console.log(tempPath);
             console.log(fs.existsSync(tempPath));
             console.log(fs.existsSync(path.join(__dirname, "../../views/Images/")));
-            Jimp.read(tempPath).then(function(err, image){
-                if(err){
-                    console.log(err);
-                }
+            Jimp.read(tempPath).then(function(image){
+                console.log(image);
                 console.log("sucessfully read");
                 return image.resize(200, Jimp.AUTO, function(err, image) {
                             console.log("inside resize");
