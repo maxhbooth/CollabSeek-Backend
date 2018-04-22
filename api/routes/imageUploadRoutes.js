@@ -75,13 +75,13 @@ module.exports = function (app) {
                             console.log("inside resize");
                             image.quality(60, function(err, image) {
                                 console.log("inside quality");
-                                image.exifRotate(function(err, image) {
-                                    console.log("inside exif rotate");
+                                //image.exifRotate(function(err, image) {
+                                //    console.log("inside exif rotate");
                                     image.write(profilePath, function(err, image) {
                                         console.log("inside write");
                                         res.redirect('/my-profile');
                                     });
-                               });
+                               //});
                             });
                         });
                     // .quality(60) // set JPEG quality
