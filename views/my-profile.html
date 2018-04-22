@@ -74,8 +74,6 @@
         <div class="row">
             <div class="col-sm-4">
                 <div class="well well-sm clearfix">
-                    <h4><button id="edit-info" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
-                        <span class="glyphicon glyphicon-pencil" title="Edit your profile information."></span></button></h4>
                     <% if(locals.imagePath){%>
                     <form method="get" action="/upload-image">
                         <div class="image_container">
@@ -101,7 +99,8 @@
                     <%}%>
 
                     <div id="info-show" style="display: block;">
-                        <h4 style="text-align:center;"><%=first%> <%=last%></h4>
+                        <h4 style="text-align:center;"><%=first%> <%=last%><button id="edit-info" class="icon-button pull-right" style="display: inline-flex; vertical-align: middle;">
+                        <span class="glyphicon glyphicon-pencil" title="Edit your profile information."></span></button></h4>
 
                         <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
 

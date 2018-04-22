@@ -15,11 +15,9 @@
     padding-bottom: 30px;
     text-align: center;
     margin-bottom: 5px;
-
 }
 
 h3 {
-    margin-top:0px;
 }
 
 h5 {
@@ -39,7 +37,7 @@ h5 {
 }
 
 .image_container {
-    width: 75%;
+    width: 60%;
     display: block;
     margin: 0 auto;
 }
