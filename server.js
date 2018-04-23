@@ -87,7 +87,6 @@ signupRoutes(app, sessionChecker);
 
 app.listen(port);
 
-console.log('todo list RESTful API server started on: ' + port);
 
 module.exports = app;
 module.exports = sessionChecker;
