@@ -16,116 +16,146 @@ module.exports = function (app) {
         }
     });
 
-    app.post('/upload-image', (req, res) => {
+    const storage = multer.diskStorage({
+        destination: function(req, file, callback) {
+            console.log("2");
+            callback(null, 'views/Images')
+        },
+        filename: function(req, file, callback) {
+            console.log("3");
+            const profileId = req.session.profile.id;
+            callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
+        }
+    });
+    var upload = multer({
+        storage: storage,
+        fileFilter: function(req, file, callback) {
+            if (req.session.profile && req.cookies.user_sid) {
+                var ext = path.extname(file.originalname);
+                console.log(ext);
+                if (ext.toLowerCase() !== '.png' && ext.toLowerCase() !== '.jpg'
+                    && ext.toLowerCase() !== '.gif' && ext.toLowerCase() !== '.jpeg') {
+                    console.log("4");
+                    return callback(new Error('Expected an image.'))
+                }
+                //add image to database then!
+                console.log("5");
+                const profileId = req.session.profile.id;
+                const profileRepository = new ProfileRepository();
+                profileRepository.addImage(profileId, "ProfileImage_" + profileId + ext);
 
+                callback(null, true)
+            }
+            else{
+                callback(null, false);
+            }
+        }
+    });
+
+
+    var resize = function(req, res) {
         if (req.session.profile && req.cookies.user_sid) {
             console.log("1");
+
             const profileId = req.session.profile.id;
 
-            var profileRepository = new ProfileRepository();
+            var profilePath = path.join(__dirname, "../../views/Images/ProfileImage_"
+                + profileId + path.extname(req.file.originalname));
 
-            const storage = multer.diskStorage({
-                destination: function(req, file, callback) {
-                    console.log("2");
-                    callback(null, 'views\\Images')
-                },
-                filename: function(req, file, callback) {
-                    console.log("3");
-                    callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
-                }
+            var tempPath = path.join(__dirname, "../../views/Images/temp_"
+                + profileId + path.extname(req.file.originalname));
+            // resize image
+            console.log(tempPath);
+            console.log(fs.existsSync(tempPath));
+            console.log(fs.existsSync(path.join(__dirname, "../../views/Images/")));
+            Jimp.read(tempPath).then(function(image){
+                console.log(image);
+                console.log("sucessfully read");
+                return image.resize(200, Jimp.AUTO, function(err, image) {
+                            console.log("inside resize");
+                            image.quality(60, function(err, image) {
+                                console.log("inside quality");
+                                //image.exifRotate(function(err, image) {
+                                //    console.log("inside exif rotate");
+                                    image.write(profilePath, function(err, image) {
+                                        console.log("inside write");
+                                        res.redirect('/my-profile');
+                                    });
+                               //});
+                            });
+                        });
+                    // .quality(60) // set JPEG quality
+                    // .exifRotate()
+                    // .write(profilePath, function(err, image){
+                    //     console.log(err);
+                    //     console.log("9");
+                    //     fs.unlink(tempPath);
+                    //     console.log("10");
+                    //     res.redirect('/my-profile');
+                    // }); // save
+            }).catch(function(error){
+                console.log("caught error:");
+                console.log(error);
             });
-            var upload = multer({
-                storage: storage,
-                    fileFilter: function(req, file, callback) {
-                        var ext = path.extname(file.originalname);
-                        console.log(ext);
-                        if (ext.toLowerCase() !== '.png' && ext.toLowerCase() !== '.jpg'
-                            && ext.toLowerCase() !== '.gif' && ext.toLowerCase() !== '.jpeg') {
-                                console.log("4");
-                                return callback(new Error('Expected an image.'))
-                        }
-                        //add image to database then!
-                        console.log("5");
-                        profileRepository.addImage(profileId,  "ProfileImage_" + profileId + ext);
+            console.log("8");
+        } else {
+            res.redirect('/login');
+        }
+    };
 
-                        callback(null, true)
-                    }
-            }).single('imageUpload');
-            upload(req, res, function(err){
-                if(err){
-                    //there was an error uploading!
-                    console.log("6");
-                    console.log(err);
-                }
-                else{
-                    var profilePath = path.join(__dirname, "..\\..\\views\\images\\ProfileImage_"
-                        + profileId + path.extname(req.file.originalname));
-                    // resize image
-                    Jimp.read(profilePath, function (err, picture) {
-                        if (err) throw err;
-                        console.log("7");
-                        console.log(err);
-                        picture.resize(200, Jimp.AUTO)
-                            .quality(60) // set JPEG quality
-                            .exifRotate()
-                            .write(profilePath); // save
-                    });
-                    console.log("8");
-                }
-            });
-
-            console.log("9");
+    app.post('/upload-image',upload.single('imageUpload'), function(req,res){
+        if (req.session.profile && req.cookies.user_sid) {
             res.redirect('/my-profile');
         } else {
             res.redirect('/login');
         }
-
     });
-    app.post('/upload-image-signup', (req, res) => {
+
+    app.post('/upload-image-signup',upload.single('imageUpload'), function(req, res){
         if (req.session.profile && req.cookies.user_sid) {
-            const profileId = req.session.profile.id;
-            var profileRepository = new ProfileRepository();
-            const storage = multer.diskStorage({
-                destination: function(req, file, callback) {
-                    callback(null, 'views\\Images')
-                },
-                filename: function(req, file, callback) {
-                    callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
-                }
-            });
-
-            var upload = multer({
-                storage: storage,
-                fileFilter: function(req, file, callback) {
-                    var ext = path.extname(file.originalname);
-                    console.log(ext);
-                    if (ext.toLowerCase() !== '.png' && ext.toLowerCase() !== '.jpg'
-                        && ext.toLowerCase() !== '.gif' && ext.toLowerCase() !== '.jpeg') {
-                        return callback(new Error('Expected an image.'))
-                    }
-                    //add image to database then!
-                    profileRepository.addImage(profileId,  "ProfileImage_" + profileId + ext);
-                    callback(null, true)
-                }
-            }).single('imageUpload');
-            upload(req, res, function(err){
-                if(err || !req.file){
-                    console.log("ERROR IN IMAGEUPLOADROUTES: " + err);
-                }
-                else{
-                    var profilePath = path.join(__dirname, "..\\..\\views\\images\\ProfileImage_"
-                        + profileId + path.extname(req.file.originalname));
-                    // resize image
-                    Jimp.read(profilePath, function (err, picture) {
-                        if (err) throw err;
-
-                        picture.resize(200, Jimp.AUTO)
-                            .quality(60) // set JPEG quality
-                            .exifRotate()
-                            .write(profilePath); // save
-                    });
-                }
-            });
+            // const profileId = req.session.profile.id;
+            // var profileRepository = new ProfileRepository();
+            // const storage = multer.diskStorage({
+            //     destination: function(req, file, callback) {
+            //         callback(null, 'views\\Images')
+            //     },
+            //     filename: function(req, file, callback) {
+            //         callback(null, "ProfileImage_" + profileId + path.extname(file.originalname))
+            //     }
+            // });
+            //
+            // var upload = multer({
+            //     storage: storage,
+            //     fileFilter: function(req, file, callback) {
+            //         var ext = path.extname(file.originalname);
+            //         console.log(ext);
+            //         if (ext.toLowerCase() !== '.png' && ext.toLowerCase() !== '.jpg'
+            //             && ext.toLowerCase() !== '.gif' && ext.toLowerCase() !== '.jpeg') {
+            //             return callback(new Error('Expected an image.'))
+            //         }
+            //         //add image to database then!
+            //         profileRepository.addImage(profileId,  "ProfileImage_" + profileId + ext);
+            //         callback(null, true)
+            //     }
+            // }).single('imageUpload');
+            // upload(req, res, function(err){
+            //     if(err || !req.file){
+            //         console.log("ERROR IN IMAGEUPLOADROUTES: " + err);
+            //     }
+            //     else{
+            //         var profilePath = path.join(__dirname, "..\\..\\views\\images\\ProfileImage_"
+            //             + profileId + path.extname(req.file.originalname));
+            //         // resize image
+            //         Jimp.read(profilePath, function (err, picture) {
+            //             if (err) throw err;
+            //
+            //             picture.resize(200, Jimp.AUTO)
+            //                 .quality(60) // set JPEG quality
+            //                 .exifRotate()
+            //                 .write(profilePath); // save
+            //         });
+            //     }
+            // });
             res.redirect('/signup-trees');
         }else if(req.session.profile && req.cookies.user_sid){
             res.redirect('/signup-trees');

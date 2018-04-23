@@ -42,10 +42,9 @@ module.exports = function (app, sessionChecker) {
             if (req.body.positions == undefined){
                 positions = [];
             }
-
             if (req.body.discipline != '' || req.body.discipline != undefined) {
                 let disciplineArray = [];
-                disciplineArray = disciplineArray.concat(req.body.disciplines);
+                disciplineArray = disciplineArray.concat(req.body.discipline);
                 disciplineArray.forEach(function (discipline){
                     if (discipline == ''){
                         return;
@@ -56,7 +55,7 @@ module.exports = function (app, sessionChecker) {
             }
             if (req.body.position != '' || req.body.position != undefined) {
                 let positionArray = [];
-                positionArray = positionArray.concat(req.body.positions);
+                positionArray = positionArray.concat(req.body.position);
                 positionArray.forEach(function (position){
                     if (position == ''){
                         return;
@@ -67,7 +66,7 @@ module.exports = function (app, sessionChecker) {
             }
             if (req.body.department != ''  || req.body.department != undefined) {
                 let departmentArray = [];
-                departmentArray = departmentArray.concat(req.body.departments);
+                departmentArray = departmentArray.concat(req.body.department);
                 departmentArray.forEach(function (department){
                     if (department == ''){
                         return;
@@ -83,7 +82,7 @@ module.exports = function (app, sessionChecker) {
                     if (specialty == ''){
                         return;
                     }
-                    let fuzzySpecialties = fuzzysort.go(specialty, models.specialties);
+                    let fuzzySpecialties = fuzzysort.go(specialty, models.specialty);
                     specialities = specialities.concat(fuzzySpecialties.map(a => a.target));
                 });
             }
@@ -94,13 +93,13 @@ module.exports = function (app, sessionChecker) {
                     if (skill == ''){
                         return;
                     }
-                    let fuzzySkills = fuzzysort.go(skill, models.skills);
+                    let fuzzySkills = fuzzysort.go(skill, models.skill);
                     skills = skills.concat(fuzzySkills.map(a => a.target));
                 });
             }
             if (req.body.facility != '' || req.body.facility != undefined) {
                 let facilityArray = [];
-                facilityArray = facilityArray.concat(req.body.facilities);
+                facilityArray = facilityArray.concat(req.body.facility);
                 facilityArray.forEach(function (facility){
                     if (facility == ''){
                         return;
@@ -134,6 +133,11 @@ module.exports = function (app, sessionChecker) {
             compoundOP().then(function (result) {
                 result = filter_array(result);
                 result = sortByFrequency(result);
+                for (let j = 0; j<result.length; ++j){
+                    if (result[j] == req.session.profile.id){
+                        result.splice(j,1)
+                    }
+                }
                 profileRepository.getProfileInformation(result).then(function (profiles) {
                     let orderedProfileArray = [];
                     let profileIds = [];
@@ -145,7 +149,6 @@ module.exports = function (app, sessionChecker) {
                         let endPlace = result.indexOf(profileIds[i]);
                         orderedProfileArray[endPlace] = profiles[i]
                     }
-
                     res.render('search.html', {
                         byClosestMatchProfiles: orderedProfileArray
                     });
@@ -177,6 +180,13 @@ module.exports = function (app, sessionChecker) {
 
                 var compoundOP = async(function() {
                     let response = await([getDepartments(departments),getDisciplines(disciplines),getFacilities(facilities),getSkills(skills),getSpecialties(specialities), getFirstName(query),getLastName(query), getFirstAndLast(query)]);
+                    for (let i =0; i<response.length;++i){
+                        for (let j = 0; j<response[i].length; ++j){
+                            if (response[i][j].id == req.session.profile.id){
+                                response[i].splice(j,1)
+                            }
+                        }
+                    }
                     return response;
                 });
 

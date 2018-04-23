@@ -1,17 +1,36 @@
 $(document).ready(function(){
-    $('#department').select2();
-    $('#discipline').select2();
-    $('#degree').select2();
-
-    $("#edit-departments1").click(function(e){
-        document.getElementById("departments-edit").style.display = "block";
-        document.getElementById("departments-show").style.display = "none";
+    function matchStart(params, data) {
+        params.term = params.term || '';
+        if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) == 0) {
+            return data;
+        }
+        var i = -1;
+        while ((i = data.text.indexOf(" ", i+1)) != -1){
+            if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) == i+1) {
+                return data;
+            }
+        }
+        return false;
+    }
+    $("#discipline").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select A Discipline",
+    });
+    $("#department").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select A Department",
+    });
+    $("#degree").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select A Degree"
     });
 
-    $("#edit-departments2").click(function(e){
-        document.getElementById("departments-edit").style.display = "none";
-        document.getElementById("departments-show").style.display = "block";
-    });
 
     $("#edit-degrees1").click(function(e){
         document.getElementById("degrees-edit").style.display = "block";
@@ -46,4 +65,18 @@ $(document).ready(function(){
             show.style.display = "none";
         }
     });
+
+    var database_data = (JSON.parse($("#test").text()));
+    var sorted = _queryTreeSort({q: database_data});
+    var tree_data = _makeTree({q: sorted});
+
+    var tree = $('#specialty_tree').tree({
+        primaryKey: 'id',
+        dataSource: tree_data,
+        uiLibrary: 'bootstrap'
+    });
+    tree.expandAll();
+    for(var i = 0; i < database_data.length; i++){
+        tree.getNodeById(database_data[i].id).css('background-color', '#f5f5f5');
+    }
 });
