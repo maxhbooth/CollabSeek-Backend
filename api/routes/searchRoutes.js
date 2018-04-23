@@ -1,3 +1,10 @@
+/* Searching routes, advanced search and regular search routes.
+* Written by Mac Watrous April 2018.
+*  Includes:
+*  1. /advanced-search (GET & POST)
+*  2. /search (POST)
+* */
+
 fuzzysort = require('fuzzysort');
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');

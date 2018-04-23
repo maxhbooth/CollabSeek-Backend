@@ -1,7 +1,14 @@
+/* Delete various attributes from profile association
+* Written by Alden Caron-O'Neill April 2018
+*  Includes:
+*  1. /delete-department/:department (POST)
+*  2. /delete-degree/:degree/:discipline (POST)
+*  3. /delete-specialty/:specialty (POST), /delete-specialty-id/:id (POST)
+*  4. /delete-skill/:skill (POST), /delete-skill-id/:id (POST)
+*  5. /delete-facility/:facility (POST), /delete-facility-id/:id(POST)
+* */
+
 const ProfileRepository = require('./helpers/profileRepository');
-const AttributeRepository = require('./helpers/attributeRepository');
-
-
 module.exports = function (app, sessionChecker) {
 
     app.post('/delete-department/:department', (req, res) => {

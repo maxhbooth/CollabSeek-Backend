@@ -1,6 +1,17 @@
+/* Add various fields to database
+* Written by Alden Caron-O'Neill April 2018
+*  Includes:
+*  1. /create-skill (GET)
+*  2. /create-specialty (GET)
+*  3. /create-facility (GET)
+*  4. /add-new-skill (POST)
+*  5. /add-new-specialty (POST)
+*  6. /add-new-facility (POST)
+* */
+
+
 const ProfileRepository = require('./helpers/profileRepository');
 const AttributeRepository = require('./helpers/attributeRepository');
-
 
 module.exports = function (app, sessionChecker) {
 

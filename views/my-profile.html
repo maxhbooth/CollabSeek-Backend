@@ -33,10 +33,6 @@
             function (img) {
                 if(img.type === "error") {
                     console.log("Error loading image " + imageUrl);
-                    var icon = document.createElement("IMG");
-
-                    icon.src = "resources/profile-icon.png";
-                    document.getElementById("imageDiv").appendChild(icon);
                 } else {
                     document.getElementById("imageDiv").appendChild(img);
                 }
@@ -82,7 +78,6 @@
                 <div class="image_container">
                     <div id="imageDiv" alt="Avatar" class="image"></div>
                     <div>
-                    <!--<img src="Images/<%=imagePath%>" onerror="this.src='resources/profile-icon.png'" width="200">-->
                     <div class="middle">
                             <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
                         </div>
