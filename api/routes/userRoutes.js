@@ -120,12 +120,16 @@ module.exports = function (app, sessionChecker) {
             req.checkBody('new_password', 'Password must be between 8 to 50 characters.').len(4, 50);
             req.checkBody('new_password', 'Passwords must match.').equals(req.body.confirm_password);
             var password = req.body.new_password;
-            Profile.findOne({where: {email: email}}).then(function (user) {
+            Profile.findOne({where: {'email': email}}).then(function (user) {
                 if(!user){
                     console.log("No user found with the email");
                     res.redirect('/login');
                     return;
                 }
+                const html = 'Dear CollabSeek User, <br/><br/>  You are receiving this email because the password ' +
+                    'was changed for the account '+ user.first_name +user.last_name +
+                    'if this is true ignore this message or click the Forgot Password link on the login page <br/> <br/>'
+                     +'Regards <br/> The CollabSeek Team';
                 const salt = bcrypt.genSaltSync();
                 user.password = bcrypt.hashSync(password, salt);
                 user.save().then(res.redirect('/my-profile'));
@@ -134,25 +138,30 @@ module.exports = function (app, sessionChecker) {
 
         });
     //////////////////////////RESET PASSWORD FOR PROFILE ///////////////////////////////////////////////////////////
-    app.route('/reset')
+    app.route('/profile-reset')
         .get(sessionChecker,(req,res) =>{
 
         })
         .post((req,res) =>{
+
             var password = req.body.current_password;
+            var user = req.session.profile;
+            req.checkBody('current_password', 'Wrong current password.').equals(user.password)
             req.checkBody('new_password', 'Password must be between 8 to 50 characters.').len(4, 50);
             req.checkBody('new_password', 'Passwords must match.').equals(req.body.confirm_password);
-            Profile.findOne({where: {password: password}}).then(function (user) {
-                if(!user){
-                    console.log("Invalid password");
+            var newpassword = req.body.new_password;
+            Profile.findOne({where: {email: user.email}}).then(function (profile) {
+                if(!profile){
+                    console.log("Error");
                     return;
                 }
                 const salt = bcrypt.genSaltSync();
-                user.password = bcrypt.hashSync(password, salt);
-                user.save().then(res.redirect('/my-profile'));
+                profile.password = bcrypt.hashSync(newpassword, salt);
+                profile.save().then(res.redirect('/my-profile'));
 
 
             });
+
         });
 
 
