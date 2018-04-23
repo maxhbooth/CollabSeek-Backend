@@ -97,7 +97,7 @@
                         <div class="circle"><%=initials%>
                             <div class="middle">
                                 <form method="get" action="/upload-image">
-                                    <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
+                                    <button class="btn btn-primary" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
                                 </form>
                             </div>
                         </div>
@@ -107,15 +107,11 @@
                     <div id="info-show" style="display: block;">
                         <h5 style="text-align:center;"><%=first%> <%=last%></h5>
 
-                        <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
-
-
                         <h5><a href="/profile-reset">
-                            <button>Reset password</button>
+                            <button class="btn btn-primary" style="display: block; margin: 0 auto;" type="submit">Reset Password</button>
                         </a> </h5>
 
-
-
+                        <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
 
                         <h5><span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i></span>&nbsp;&nbsp;<a href="mailto:<%=locals.email%>"><%=locals.email%></a></h5>
 

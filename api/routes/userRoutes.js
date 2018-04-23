@@ -67,6 +67,8 @@ module.exports = function (app, sessionChecker) {
                 //change the user's properties if pass
                 user.confirmed_user = true;
                 user.hidden_token = "";
+
+
                 user.save().then(res.redirect('/login'));
             }).catch(error => {
                 console.log("Error:" + error);
@@ -125,10 +127,7 @@ module.exports = function (app, sessionChecker) {
                     res.redirect('/login');
                     return;
                 }
-                const html = 'Dear CollabSeek User, <br/><br/>  You are receiving this email because the password ' +
-                    'was changed for the account '+ user.first_name +user.last_name +
-                    'if this is true ignore this message or click the Forgot Password link on the login page <br/> <br/>'
-                     +'Regards <br/> The CollabSeek Team';
+
                 const salt = bcrypt.genSaltSync();
                 user.password = bcrypt.hashSync(password, salt);
                 user.save().then(res.redirect('/my-profile'));
@@ -156,6 +155,11 @@ module.exports = function (app, sessionChecker) {
                 }
                 const salt = bcrypt.genSaltSync();
                 profile.password = bcrypt.hashSync(newpassword, salt);
+                const html = 'Dear CollabSeek User, <br/><br/>  You are receiving this email because the password ' +
+                    'was changed for the account '+ user.first_name +user.last_name +
+                    'if this is true ignore this message or click the Forgot Password link on the login page <br/> <br/>'
+                    +'Regards <br/> The CollabSeek Team';
+                mailer.sendEmail("collabuncseek@gmail.com", user.email, "Password Reset", html);
                 profile.save().then(res.redirect('/my-profile'));
 
 

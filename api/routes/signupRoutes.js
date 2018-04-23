@@ -56,12 +56,10 @@ module.exports = function (app, sessionChecker) {
                 req.session.profile = profile.dataValues;
                 var email = req.body.email;
                 //email compose
-                const html = 'Dear CollabSeek User, <br/><br/> Thank you for registering for CollabSeek' +
-                    'In order to to view your profile you have to verify your account by clicking on the link below <br/>'+
-                    '<a href ="'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'">'+process.env.COLLAB_LINK+'/verify/'+hidden_token+' </a>';
-
-                // var html;
-               mailer.sendEmail("donotreply@collabseek.com",email, "Please Verify Account", html);
+                const html = 'Dear CollabSeek User, <br/><br/>  this email contains a link that will verify your account'+
+                    '<br/><br/><a href ="'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'">'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'</a>' +
+                    '<br/><br/> Have a nice day, <br/> CollabSeek team';
+                mailer.sendEmail("collabuncseek@gmail.com",email , "Email Verification", html);
             res.redirect('/signup-details');
         })
         .catch(profile_errors =>{
