@@ -21,7 +21,6 @@ module.exports = function (app, sessionChecker) {
                 models.positions.sort();
                 models.skills.sort();
                 models.specialties.sort();
-                models.positions.unshift("");
                 res.render('advanced-search.html', models);
             });
         } else {
@@ -30,131 +29,136 @@ module.exports = function (app, sessionChecker) {
     });
 
     app.post('/advanced-search', (req,res) => {
-        let attributeRepository = new AttributeRepository();
+        if (req.session.profile && req.cookies.user_sid) {
 
-        attributeRepository.getAll().then(function (models) {
-            let disciplines = [];
-            let departments = [];
-            let specialities = [];
-            let skills = [];
-            let facilities = [];
-            let positions = req.body.positions;
-            if (req.body.positions == undefined){
-                positions = [];
-            }
-            if (req.body.discipline != '' || req.body.discipline != undefined) {
-                let disciplineArray = [];
-                disciplineArray = disciplineArray.concat(req.body.discipline);
-                disciplineArray.forEach(function (discipline){
-                    if (discipline == ''){
-                        return;
-                    }
-                    let fuzzyDisciplines = fuzzysort.go(discipline, models.disciplines);
-                    disciplines = disciplines.concat(fuzzyDisciplines.map(a => a.target));
-                });
-            }
-            if (req.body.position != '' || req.body.position != undefined) {
-                let positionArray = [];
-                positionArray = positionArray.concat(req.body.position);
-                positionArray.forEach(function (position){
-                    if (position == ''){
-                        return;
-                    }
-                    let fuzzyPositions = fuzzysort.go(position, models.positions);
-                    positions = positions.concat(fuzzyPositions.map(a => a.target));
-                });
-            }
-            if (req.body.department != ''  || req.body.department != undefined) {
-                let departmentArray = [];
-                departmentArray = departmentArray.concat(req.body.department);
-                departmentArray.forEach(function (department){
-                    if (department == ''){
-                        return;
-                    }
-                    let fuzzyDepartments = fuzzysort.go(department, models.departments);
-                    departments = departments.concat(fuzzyDepartments.map(a => a.target));
-                });
-            }
-            if (req.body.specialty != '' || req.body.specialty != undefined) {
-                let specialityArray = [];
-                specialityArray = specialityArray.concat(req.body.specialty);
-                specialityArray.forEach(function (specialty){
-                    if (specialty == ''){
-                        return;
-                    }
-                    let fuzzySpecialties = fuzzysort.go(specialty, models.specialty);
-                    specialities = specialities.concat(fuzzySpecialties.map(a => a.target));
-                });
-            }
-            if (req.body.skill != '' || req.body.skill != undefined) {
-                let skillArray = [];
-                skillArray = skillArray.concat(req.body.skill);
-                skillArray.forEach(function (skill){
-                    if (skill == ''){
-                        return;
-                    }
-                    let fuzzySkills = fuzzysort.go(skill, models.skill);
-                    skills = skills.concat(fuzzySkills.map(a => a.target));
-                });
-            }
-            if (req.body.facility != '' || req.body.facility != undefined) {
-                let facilityArray = [];
-                facilityArray = facilityArray.concat(req.body.facility);
-                facilityArray.forEach(function (facility){
-                    if (facility == ''){
-                        return;
-                    }
-                    let fuzzyFacilities = fuzzysort.go(facility, models.facilities);
-                    facilities = facilities.concat(fuzzyFacilities.map(a => a.target));
-                });
-            }
+            let attributeRepository = new AttributeRepository();
 
-            let response;
-
-            var compoundOP = async(function() {
-                if (req.body.first == ''){
-                    if (req.body.last == ''){
-                        response = await([getDepartmentsIDOnly(departments),getDisciplinesIDOnly(disciplines),getFacilitiesIDOnly(facilities),getSkillsIDOnly(skills),getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions), [],[], []]);
-                    } else {
-                        response = await([getDepartmentsIDOnly(departments),getDisciplinesIDOnly(disciplines),getFacilitiesIDOnly(facilities),getSkillsIDOnly(skills),getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions),[],profileRepository.getProfileIDByLastName(req.body.last), []]);
-                    }
-                } else {
-                    if (req.body.last == ''){
-                        response = await([getDepartmentsIDOnly(departments),getDisciplinesIDOnly(disciplines),getFacilitiesIDOnly(facilities),getSkillsIDOnly(skills),getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions), profileRepository.getProfileIDByFirstName(req.body.first),[], []]);
-                    } else {
-                        response = await([getDepartmentsIDOnly(departments),getDisciplinesIDOnly(disciplines),getFacilitiesIDOnly(facilities),getSkillsIDOnly(skills),getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions), [],[], profileRepository.getProfileIDByFirstLastName(req.body.first + " " + req.body.last)]);
-                    }
+            attributeRepository.getAll().then(function (models) {
+                let disciplines = [];
+                let departments = [];
+                let specialities = [];
+                let skills = [];
+                let facilities = [];
+                let positions = req.body.positions;
+                if (req.body.positions == undefined) {
+                    positions = [];
                 }
-                let concatResponse = [];
-                concatResponse = concatResponse.concat(response[0],response[1],response[2],response[3],response[4],response[5],response[6],response[7],response[8]);
-                return concatResponse;
-            });
-
-            compoundOP().then(function (result) {
-                result = filter_array(result);
-                result = sortByFrequency(result);
-                for (let j = 0; j<result.length; ++j){
-                    if (result[j] == req.session.profile.id){
-                        result.splice(j,1)
-                    }
+                if (req.body.discipline != '' || req.body.discipline != undefined) {
+                    let disciplineArray = [];
+                    disciplineArray = disciplineArray.concat(req.body.discipline);
+                    disciplineArray.forEach(function (discipline) {
+                        if (discipline == '') {
+                            return;
+                        }
+                        let fuzzyDisciplines = fuzzysort.go(discipline, models.disciplines);
+                        disciplines = disciplines.concat(fuzzyDisciplines.map(a => a.target));
+                    });
                 }
-                profileRepository.getProfileInformation(result).then(function (profiles) {
-                    let orderedProfileArray = [];
-                    let profileIds = [];
-                    let profileArray = [];
-                    profiles = profileArray.concat(profiles);
-                    profileIds = profiles.map(a => a.id);
+                if (req.body.position != '' || req.body.position != undefined) {
+                    let positionArray = [];
+                    positionArray = positionArray.concat(req.body.position);
+                    positionArray.forEach(function (position) {
+                        if (position == '') {
+                            return;
+                        }
+                        let fuzzyPositions = fuzzysort.go(position, models.positions);
+                        positions = positions.concat(fuzzyPositions.map(a => a.target));
+                    });
+                }
+                if (req.body.department != '' || req.body.department != undefined) {
+                    let departmentArray = [];
+                    departmentArray = departmentArray.concat(req.body.department);
+                    departmentArray.forEach(function (department) {
+                        if (department == '') {
+                            return;
+                        }
+                        let fuzzyDepartments = fuzzysort.go(department, models.departments);
+                        departments = departments.concat(fuzzyDepartments.map(a => a.target));
+                    });
+                }
+                if (req.body.specialty != '' || req.body.specialty != undefined) {
+                    let specialityArray = [];
+                    specialityArray = specialityArray.concat(req.body.specialty);
+                    specialityArray.forEach(function (specialty) {
+                        if (specialty == '') {
+                            return;
+                        }
+                        let fuzzySpecialties = fuzzysort.go(specialty, models.specialties);
+                        specialities = specialities.concat(fuzzySpecialties.map(a => a.target));
+                    });
+                }
+                if (req.body.skill != '' || req.body.skill != undefined) {
+                    let skillArray = [];
+                    skillArray = skillArray.concat(req.body.skill);
+                    skillArray.forEach(function (skill) {
+                        if (skill == '') {
+                            return;
+                        }
+                        let fuzzySkills = fuzzysort.go(skill, models.skills);
+                        skills = skills.concat(fuzzySkills.map(a => a.target));
+                    });
+                }
+                if (req.body.facility != '' || req.body.facility != undefined) {
+                    let facilityArray = [];
+                    facilityArray = facilityArray.concat(req.body.facility);
+                    facilityArray.forEach(function (facility) {
+                        if (facility == '') {
+                            return;
+                        }
+                        let fuzzyFacilities = fuzzysort.go(facility, models.facilities);
+                        facilities = facilities.concat(fuzzyFacilities.map(a => a.target));
+                    });
+                }
 
-                    for (let i = 0; i<result.length; i++){
-                        let endPlace = result.indexOf(profileIds[i]);
-                        orderedProfileArray[endPlace] = profiles[i]
+                let response;
+
+                var compoundOP = async(function () {
+                    if (req.body.first == '') {
+                        if (req.body.last == '') {
+                            response = await([getDepartmentsIDOnly(departments), getDisciplinesIDOnly(disciplines), getFacilitiesIDOnly(facilities), getSkillsIDOnly(skills), getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions), [], [], []]);
+                        } else {
+                            response = await([getDepartmentsIDOnly(departments), getDisciplinesIDOnly(disciplines), getFacilitiesIDOnly(facilities), getSkillsIDOnly(skills), getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions), [], profileRepository.getProfileIDByLastName(req.body.last), []]);
+                        }
+                    } else {
+                        if (req.body.last == '') {
+                            response = await([getDepartmentsIDOnly(departments), getDisciplinesIDOnly(disciplines), getFacilitiesIDOnly(facilities), getSkillsIDOnly(skills), getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions), profileRepository.getProfileIDByFirstName(req.body.first), [], []]);
+                        } else {
+                            response = await([getDepartmentsIDOnly(departments), getDisciplinesIDOnly(disciplines), getFacilitiesIDOnly(facilities), getSkillsIDOnly(skills), getSpecialtiesIDOnly(specialities), profileRepository.getProfileIDByPosition(positions), [], [], profileRepository.getProfileIDByFirstLastName(req.body.first + " " + req.body.last)]);
+                        }
                     }
-                    res.render('search.html', {
-                        byClosestMatchProfiles: orderedProfileArray
+                    let concatResponse = [];
+                    concatResponse = concatResponse.concat(response[0], response[1], response[2], response[3], response[4], response[5], response[6], response[7], response[8]);
+                    return concatResponse;
+                });
+
+                compoundOP().then(function (result) {
+                    result = filter_array(result);
+                    result = sortByFrequency(result);
+                    for (let j = 0; j < result.length; ++j) {
+                        if (result[j] == req.session.profile.id) {
+                            result.splice(j, 1)
+                        }
+                    }
+                    profileRepository.getProfileInformation(result).then(function (profiles) {
+                        let orderedProfileArray = [];
+                        let profileIds = [];
+                        let profileArray = [];
+                        profiles = profileArray.concat(profiles);
+                        profileIds = profiles.map(a => a.id);
+
+                        for (let i = 0; i < result.length; i++) {
+                            let endPlace = result.indexOf(profileIds[i]);
+                            orderedProfileArray[endPlace] = profiles[i]
+                        }
+                        res.render('search.html', {
+                            byClosestMatchProfiles: orderedProfileArray
+                        });
                     });
                 });
             });
-        });
+        } else {
+            res.redirect('/login');
+        }
     });
 
     app.post('/search', (req, res) => {
