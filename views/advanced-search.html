@@ -79,6 +79,7 @@
                 <label for="position"><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;Position:</label>
                 <select id = "position" name = "position" class="js-example-basic-single js-states form-control">
                     <% if(locals.positions){%>
+                    <option></option>
                     <%if (positions.length > 0){positions.forEach(function(position){%>
                     <option><%= position %></option>
                     <%})}}%>
