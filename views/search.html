@@ -61,7 +61,6 @@
 </nav>
 
 
-
 <div class="container">
     <div class="page-header row notop">
         <h1 style="float: left; padding-left: 3px; padding-right:12px;">Search Results</h1>
@@ -76,6 +75,10 @@
             <button type="submit" id="searchButton"><i class="fas fa-search"></i></button>
         </form>
     </div>
+
+    <%if(!locals.departmentProfiles && !locals.disciplineProfiles && !locals.facilityProfiles && !locals.skillProfiles && !locals.specialtyProfiles && !locals.positionProfiles && !locals.firstNameProfiles && !locals.lastNameProfiles && !locals.fullNameProfiles && !locals.byClosestMatchProfiles){%>
+    <p>NO RESULTS!</p>
+    <%}%>
 
     <% if(locals.departmentProfiles){%>
         <div class="row">
