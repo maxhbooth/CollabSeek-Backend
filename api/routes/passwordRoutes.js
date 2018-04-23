@@ -114,7 +114,7 @@ module.exports = function (app, sessionChecker) {
 
     app.get('/profile-reset', (req,res) =>{
         if (req.session.profile && req.cookies.user_sid) {
-            res.render('ProfilePasswordChange.html');
+            res.render('profile-password-change.html');
         }
     });
     app.get('/changepassword/:password_token',(req,res)=>{
@@ -125,7 +125,7 @@ module.exports = function (app, sessionChecker) {
                 res.redirect('/login');
                 return;
             }
-            res.render('changepassword.html');
+            res.render('change-password.html');
         });
     });
 

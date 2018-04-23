@@ -67,6 +67,18 @@
         <% if (locals.pastQuery){%>
         <h5>You searched for: <b><%=pastQuery%></b></h5>
         <%}%>
+        <% if (!locals.departmentProfiles || (locals.departmentProfiles && departmentProfiles.length == 0)) { %>
+        <% if (!locals.disciplineProfiles || (locals.disciplineProfiles && disciplineProfiles.length == 0)) { %>
+        <% if (!locals.facilityProfiles || (locals.facilityProfiles && facilityProfiles.length == 0)) { %>
+        <% if (!locals.skillProfiles || (locals.skillProfiles && skillProfiles.length == 0)) { %>
+        <% if (!locals.specialtyProfiles || (locals.specialtyProfiles && specialtyProfiles.length == 0)) { %>
+        <% if (!locals.positionProfiles || (locals.positionProfiles && positionProfiles.length == 0)) { %>
+        <% if (!locals.firstNameProfiles || (locals.firstNameProfiles && firstNameProfiles.length == 0)) { %>
+        <% if (!locals.lastNameProfiles || (locals.lastNameProfiles && lastNameProfiles.length == 0)) { %>
+        <% if (!locals.fullNameProfiles || (locals.fullNameProfiles && fullNameProfiles.length == 0)) { %>
+        <% if (!locals.byClosestMatchProfiles || (locals.byClosestMatchProfiles && byClosestMatchProfiles.length == 0)) { %>
+        <h5>No results found for this search. Try again below or try <a href="/advanced-search" id="advSearch">Advanced Search</a>.</h5>
+        <%}}}}}}}}}}%>
     </div>
     <div class="row">
 
@@ -77,10 +89,7 @@
     </div>
 
 
-    <!--THIS DOES NOT WORK-->
-    <%if(!locals.departmentProfiles && !locals.disciplineProfiles && !locals.facilityProfiles && !locals.skillProfiles && !locals.specialtyProfiles && !locals.positionProfiles && !locals.firstNameProfiles && !locals.lastNameProfiles && !locals.fullNameProfiles && !locals.byClosestMatchProfiles){%>
-    <p>NO RESULTS!</p>
-    <%}%>
+
 
     <% if(locals.departmentProfiles){%>
         <div class="row">
