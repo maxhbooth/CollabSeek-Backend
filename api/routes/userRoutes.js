@@ -96,7 +96,7 @@ module.exports = function (app, sessionChecker) {
                     const html = 'Dear CollabSeek User, <br/><br/>  You are receiving this email because there was a request ' +
                         'to change the account password for '+ user.first_name +user.last_name +
                         'if this is true click the link below, if not just ignore this message <br/>'+
-                        '<a href ="'+process.env.COLLAB_LINK+'/changepassword/'+password_token+'">http://backend-test-dept-comp523collaborate.cloudapps.unc.edu</a>' +
+                        '<a href ="'+process.env.COLLAB_LINK+'/changepassword/'+password_token+'">'+process.env.COLLAB_LINK+'/changepassword/'+password_token+'</a>' +
                         'to change the account password for '+ user.first_name + " " + user.last_name +
                         '. If this is true click the link below, if not just ignore this message.'+
                         '<br/><br/><a href ="'+process.env.COLLAB_LINK+'/changepassword/'+password_token+'">'+process.env.COLLAB_LINK+'/changepassword/'+password_token+'</a>' +
@@ -104,16 +104,10 @@ module.exports = function (app, sessionChecker) {
                     mailer.sendEmail("collabuncseek@gmail.com", email, "Password Reset", html);
 
                     res.redirect('/login');
-
-
-
-
-
             })
         });
     app.route('/changepassword')
         .get(sessionChecker,(req,res) =>{
-
         })
 
         .post((req,res)=>{
@@ -144,7 +138,7 @@ module.exports = function (app, sessionChecker) {
 
             var password = req.body.current_password;
             var user = req.session.profile;
-            req.checkBody('current_password', 'Wrong current password.').equals(user.password)
+            req.checkBody('current_password', 'Wrong current password.').equals(user.password);
             req.checkBody('new_password', 'Password must be between 8 to 50 characters.').len(4, 50);
             req.checkBody('new_password', 'Passwords must match.').equals(req.body.confirm_password);
             var newpassword = req.body.new_password;
@@ -164,11 +158,7 @@ module.exports = function (app, sessionChecker) {
 
 
             });
-
         });
-
-
-
 
     app.get('/logout', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
