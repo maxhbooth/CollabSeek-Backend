@@ -31,8 +31,7 @@ module.exports = function (app, sessionChecker) {
                 if (!profile) {
                     res.render('login.html', {error: 'Invalid email.'});
                 } else if (!profile.validPassword(password)) {
-
-                    res.render('login.html', {error: 'Invalid password.'});
+                    res.render('login.html', {error: 'Invalid password.', email: req.body.email});
                 } else if(!userConfirmed){
                     //check to see if profile has been activated return error message  //
                     console.log("Confirm your email address.");
