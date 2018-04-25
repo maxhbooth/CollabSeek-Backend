@@ -29,6 +29,7 @@ homeRoute.js
         2. /welcome (GET)
         3. /profile/:id (GET)
         4. /my-profile (GET)
+        5. /about (GET)
 
 
 imageUploadRoutes.js

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <script type="text/javascript" src="js/delaunay.js"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="resources/CollabSeek-Logo.png" alt="CollabSeek">
+            </a>
+        </div>
+        <div id="navbar5" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="/my-profile">Profile</a></li>
+                <li class="active"><a href="/about">About</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+<div class="container-fluid pad">
+    <div class="page-header">
+        <h1 style="color: white">About CollabSeek</h1>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse1">What is CollabSeek?</a>
+            </h3>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse">
+            <div class="panel-body">
+                We know networking in academia can be a difficult, time consuming, and yet ultimately necessary procedure.
+                We aim to make this part of the research process a little easier. This website
+                will help users in the UNC system find collaborators for research projects.
+                <br><br>The way collaborators are often found
+                through UNC today is via email blasts that often go unanswered. We believe that the specificity of
+                connecting person to person will mitigate that problem, as people will be spared irrelevant email blasts
+                in favor of being emailed by people familiar with their skill set.
+                <br><br>This project is targeted towards the local community.
+                Interested participants will be able to sign up for an account on our webpage if they have a “unc.edu”
+                account. They will then complete a signup process and input their professional information,
+                qualifications, skills, specialties, and available resources. Then they can search using a variety
+                of fields for potential collaborators and reach out to them on their own via the contact information
+                listed on profiles.
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse2">How Can I Use CollabSeek?</a>
+            </h3>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body">
+                First you will need to sign up and create an account in order to use the site. When you create your account,
+                you will list your research discipline, specialties, skills, and available resources. Then, if you are looking
+                for a person with a particular skill set, you can search our database of other users to find anyone who
+                has that skill. This site will help you find people who you can then contact on your own.
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse3">Who Made CollabSeek?</a>
+            </h3>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body">
+            CollabSeek is the result of the UNC-CH class COMP 523: Software Development with David Stotts. This class pairs
+                groups of students with people on campus who have an idea for a piece of software to further their academic development.
+                The client for this project was <b>Wanda Bodnar</b>, PhD of UNC Gillings School of Global Public Health. The students who worked on
+                the project are all class of 2018 computer science majors: <b>Mac Watrous</b>, <b>Max Booth</b>,
+                <b>Marcus Wallace</b>, and <b>Alden Caron-O'Neill</b>.
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse4">Questions or Comments?</a>
+            </h3>
+        </div>
+        <div id="collapse4" class="panel-collapse collapse">
+            <div class="panel-body">
+                Because CollabSeek was a semester long project of now graduated students, the support base is now
+                relatively minimal. However, you may contact Wanda Bodnar <a href="mailto:wanda_bodnar@.unc.edu">here</a>
+                if you have concerns.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<canvas id="stars" width="300" height="300"  style="position:fixed; top:0;left:0; z-index: -1;" ></canvas>
+<script type="text/javascript" src="js/welcome.js"></script>
+</body>
+</html>

@@ -5,6 +5,7 @@
 *  2. /welcome (GET)
 *  3. /profile/:id (GET)
 *  4. /my-profile (GET)
+*  5. /about (GET)
 * */
 
 // route for Home-Page
@@ -74,9 +75,13 @@ module.exports = function (app, sessionChecker) {
             });
         });
 
-    } else {
-        res.redirect('/login');
-    }
-});
+        } else {
+            res.redirect('/login');
+        }
+    });
+
+    app.get('/about', (req, res) => {
+       res.render('about.html');
+    });
 
 };

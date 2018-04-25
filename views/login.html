@@ -33,6 +33,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">Home</a></li>
                 <li><a href="/signup">Sign Up</a></li>
+                <li><a href="/about">About</a></li>
                 <li class="active"><a href="/login">Log In</a></li>
             </ul>
         </div><!--/.nav-collapse -->
@@ -45,9 +46,9 @@
         <h1 class="col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3" style="padding-left:9px">Log In</h1>
     </div>
     <div class="jumbotron col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3">
-        <%if(locals.error){%>
-        <h4><%=error%></h4>
-        <%}%>
+        <% if (locals.error) {%>
+        <div class="alert alert-danger" role="alert"><%=locals.error%></div>
+        <% } %>
         <form action="/login" method="post">
             <div class = "inputContainer">
                 <span class="icon"><i class="fas fa-envelope"></i></span>
