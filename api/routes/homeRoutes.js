@@ -6,6 +6,7 @@
 *  3. /profile/:id (GET)
 *  4. /my-profile (GET)
 *  5. /about (GET)
+*  6. /delete-profile (GET & POST)
 * */
 
 // route for Home-Page
@@ -84,4 +85,17 @@ module.exports = function (app, sessionChecker) {
        res.render('about.html');
     });
 
+    app.get('/delete-profile', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+            res.render('delete-profile.html');
+        }
+    });
+    app.post('/delete-profile', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+            let profileRepository = new ProfileRepository();
+            profileRepository.deleteProfile(req.session.profile.id).then(function() {
+                res.redirect('/logout');
+            });
+        }
+    });
 };

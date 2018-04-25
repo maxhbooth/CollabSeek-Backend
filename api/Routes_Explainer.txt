@@ -30,6 +30,7 @@ homeRoute.js
         3. /profile/:id (GET)
         4. /my-profile (GET)
         5. /about (GET)
+        6. /delete-profile (GET & POST)
 
 
 imageUploadRoutes.js

@@ -611,12 +611,10 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
 });
 
 profileRepository.prototype.deleteProfile = async(function(profileID){
-    let profile = await(this.profile.findOne({where: {id:profileId}}));
+    let profile = await(this.profile.findOne({where: {id: profileID}}));
     if(profile != null){
         this.profile.destroy({
-            where: {
-                profile_id: profileID,
-            }
+            where: {id: profileID}
         })
             .catch(error => {
             console.log(error);
