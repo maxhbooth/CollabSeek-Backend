@@ -611,12 +611,10 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
 });
 
 profileRepository.prototype.deleteProfile = async(function(profileID){
-    let profile = await(this.profile.findOne({where: {id:profileId}}));
+    let profile = await(this.profile.findOne({where: {id: profileID}}));
     if(profile != null){
         this.profile.destroy({
-            where: {
-                profile_id: profileID,
-            }
+            where: {id: profileID}
         })
             .catch(error => {
             console.log(error);
@@ -828,9 +826,9 @@ profileRepository.prototype.getProfileIDByLastName = async(function(lastName){
 });
 
 profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
+    console.log("NAME: " + name);
     let profiles = await(this.profile.findAll({
-        attributes: ['id'],
-        where: Sequelize.where(Sequelize.fn('concat', Sequelize.col('first_name'), ' ', Sequelize.col('last_name')),
+        where: Sequelize.where(Sequelize.fn('concat', Sequelize.fn('lower', Sequelize.col('first_name')), ' ', Sequelize.fn('lower', Sequelize.col('last_name'))),
             {like: '%' + name + '%'})
         }));
     var profile_ids = [];

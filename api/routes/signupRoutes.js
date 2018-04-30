@@ -1,17 +1,20 @@
-var db = require('../../database/database');
+/* Signup routes.
+* Written by Mac Watrous, Alden Caron-O'Neill, Max Booth, Marcus Wallace April 2018.
+*  Includes:
+*  1. /signup (GET & POST)
+*  2. /signup-details (GET & POST)
+*  3. /signup-trees (GET & POST)
+* */
+
 const path = require('path');
-const fs = require('fs');
-var Profile = require('../../models/profile');
 var randomstring = require('randomstring');
-const await = require('asyncawait/await');
-//var nodemailer = require('nodemailer');
 var mailer = require('./helpers/mailer');
 const multer = require('multer');
 var Jimp = require("jimp");
 const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
+
 module.exports = function (app, sessionChecker) {
-    // set up the routes themselves
     function extend(dest, src) {
         for(var key in src) {
             dest[key] = src[key];
@@ -57,7 +60,7 @@ module.exports = function (app, sessionChecker) {
                 var email = req.body.email;
                 //email compose
                 const html = 'Dear CollabSeek User, <br/><br/>  this email contains a link that will verify your account'+
-                    '<br/><br/><a href ="'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'">'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'</a>' +
+                    '<br/><br/><a href =http://'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'>http://'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'</a>' +
                     '<br/><br/> Have a nice day, <br/> CollabSeek team';
                 mailer.sendEmail("collabuncseek@gmail.com",email , "Email Verification", html);
             res.redirect('/signup-details');

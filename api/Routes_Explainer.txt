@@ -1,0 +1,101 @@
+createAttributeRoutes.js
+    Add various fields to database
+    Written by Alden Caron-O'Neill April 2018
+    Includes:
+        1. /create-skill (GET)
+        2. /create-specialty (GET)
+        3. /create-facility (GET)
+        4. /add-new-skill (POST)
+        5. /add-new-specialty (POST)
+        6. /add-new-facility (POST)
+
+
+deleteAttributeRoutes.js
+    Delete various attributes from profile association
+    Written by Alden Caron-O'Neill April 2018
+    Includes:
+        1. /delete-department/:department (POST)
+        2. /delete-degree/:degree/:discipline (POST)
+        3. /delete-specialty/:specialty (POST), /delete-specialty-id/:id (POST)
+        4. /delete-skill/:skill (POST), /delete-skill-id/:id (POST)
+        5. /delete-facility/:facility (POST), /delete-facility-id/:id(POST)
+
+
+homeRoute.js
+    Welcome, homepage, profile directions
+    Written by Mac Watrous, Max Booth, Alden Caron-O'Neill April 2018.
+    Includes:
+        1. / (GET)
+        2. /welcome (GET)
+        3. /profile/:id (GET)
+        4. /my-profile (GET)
+        5. /about (GET)
+        6. /delete-profile (GET & POST)
+
+
+imageUploadRoutes.js
+    Upload profile images during signup and from profile edit. Also helper functions for image processing.
+    Written by Max Booth April 2018.
+    Includes:
+        1. /upload-image (GET & POST)
+        2. /upload-image-signup (POST)
+        3. Helpers: image storage, image upload, image resize
+
+
+loginRoutes.js
+    Login, logout and verify email address routes.
+    Written by Mac Watrous, Max Booth, Marcus Wallace April 2018.
+    Includes:
+        1. /login (GET & POST)
+        2. /verify (GET & POST)
+        3. /logout (GET)
+
+
+passwordRoutes.js
+    Password resetting and changing routes.
+    Written by Marcus Wallace April 2018.
+    Includes:
+        1. /resetpassword (POST)
+        2. /changepassword (GET & POST)
+        3. /profile-reset (GET & POST)
+        4. /verify/:hidden_token (POST)
+        5. /changepassword/:password_token (GET
+
+
+profileUpdateRoutes.js
+    Update various profile pieces, end points for editing on my-profile
+    Written by Alden Caron-O'Neill April 2018
+    Includes:
+        1. /update-info (POST)
+        2. /update-position (POST)
+        3. /update-name (POST)
+        4. /update-intro (POST)
+        5. /add-department (POST)
+        6. /add-degree (POST)
+        7. /add-specialty (POST), /add-specialty/:id (POST)
+        8. /add-skill (POST), /add-skill/:id (POST)
+        9. .add-facility (POST), /add-facility/:id (POST)
+
+
+searchRoutes.js
+    Searching routes, advanced search and regular search routes.
+    Written by Mac Watrous April 2018.
+    Includes:
+        1. /advanced-search (GET & POST)
+        2. /search (POST)
+
+
+signupRoutes.js
+    Routes to run through the signup process.
+    Written by Mac Watrous, Alden Caron-O'Neill, Max Booth, Marcus Wallace April 2018.
+    Includes:
+        1. /signup (GET & POST)
+        2. /signup-details (GET & POST)
+        3. /signup-trees (GET & POST)
+
+
+testRoutes.js
+    Test routes.
+    Written by Mac Watrous April 2018.
+    Includes:
+        1. /deleteTest (GET)

@@ -67,27 +67,31 @@ var sessionChecker = (req, res, next) => {
 
 app.use(express.static(__dirname + '/views'));
 
-var userRoutes = require('./api/routes/userRoutes');
+var loginRoutes = require('./api/routes/loginRoutes');
 var homeRoutes = require('./api/routes/homeRoutes');
 var imageUploadRoutes = require('./api/routes/imageUploadRoutes');
 var profileUpdateRoutes = require('./api/routes/profileUpdateRoutes');
 var searchRoutes = require('./api/routes/searchRoutes');
-var addAttributeRoutes = require('./api/routes/addAttributeRoutes');
+var createAttributeRoutes = require('./api/routes/createAttributeRoutes');
 var deleteAttributeRoutes = require('./api/routes/deleteAttributeRoutes');
 var signupRoutes = require('./api/routes/signupRoutes');
+var passwordRoutes = require('./api/routes/passwordRoutes');
+var testRoutes = require('./api/routes/testRoutes');
+
 homeRoutes(app, sessionChecker);
-userRoutes(app, sessionChecker);
+loginRoutes(app, sessionChecker);
 imageUploadRoutes(app, sessionChecker);
 profileUpdateRoutes(app, sessionChecker);
 searchRoutes(app, sessionChecker);
-addAttributeRoutes(app, sessionChecker);
+createAttributeRoutes(app, sessionChecker);
 deleteAttributeRoutes(app, sessionChecker);
 signupRoutes(app, sessionChecker);
+passwordRoutes(app, sessionChecker);
+testRoutes(app, sessionChecker);
 
 
 app.listen(port);
 
-console.log('todo list RESTful API server started on: ' + port);
 
 module.exports = app;
 module.exports = sessionChecker;

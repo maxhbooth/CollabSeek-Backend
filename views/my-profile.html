@@ -33,10 +33,6 @@
             function (img) {
                 if(img.type === "error") {
                     console.log("Error loading image " + imageUrl);
-                    var icon = document.createElement("IMG");
-
-                    icon.src = "resources/profile-icon.png";
-                    document.getElementById("imageDiv").appendChild(icon);
                 } else {
                     document.getElementById("imageDiv").appendChild(img);
                 }
@@ -65,6 +61,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">Home</a></li>
                 <li class="active"><a href="/my-profile">Profile</a></li>
+                <li><a href="/about">About</a></li>
                 <li><a href="/logout">Log Out</a></li>
             </ul>
         </div><!--/.nav-collapse -->
@@ -82,7 +79,6 @@
                 <div class="image_container">
                     <div id="imageDiv" alt="Avatar" class="image"></div>
                     <div>
-                    <!--<img src="Images/<%=imagePath%>" onerror="this.src='resources/profile-icon.png'" width="200">-->
                     <div class="middle">
                             <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
                         </div>
@@ -106,7 +102,10 @@
                 <h5 style="text-align:center;"><%=first%> <%=last%></h5>
 
                 <h5><a href="/profile-reset">
-                    <button class="btn btn-primary" style="display: block; margin: 0 auto;" type="submit">Reset Password</button>
+                    <button class="btn btn-primary" style="display: block; margin: 0 auto;" type="submit">Change Password</button>
+                </a> </h5>
+                <h5><a href="/delete-profile">
+                    <button class="btn btn-warning" style="display: block; margin: 0 auto;">Delete Account</button>
                 </a> </h5>
 
                 <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>

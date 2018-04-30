@@ -1,7 +1,17 @@
-var db = require('../../database/database');
-var Profile = require('../../models/profile');
+/* Update various profile pieces, end points for editing on my-profile
+* Written by Alden Caron-O'Neill April 2018
+*  Includes:
+*  1. /update-info (POST)
+*  2. /update-position (POST)
+*  3. /update-name (POST)
+*  4. /update-intro (POST)
+*  5. /add-department (POST)
+*  6. /add-degree (POST)
+*  7. /add-specialty (POST), /add-specialty/:id (POST)
+*  8. /add-skill (POST), /add-skill/:id (POST)
+*  9. .add-facility (POST), /add-facility/:id (POST)
+* */
 
-const AttrRepository = require('./helpers/attributeRepository');
 const ProfileRepository = require('./helpers/profileRepository');
 
 module.exports = function (app, sessionChecker) {
