@@ -9,19 +9,7 @@ createAttributeRoutes.js
         5. /add-new-specialty (POST)
         6. /add-new-facility (POST)
 
-
-deleteAttributeRoutes.js
-    Delete various attributes from profile association
-    Written by Alden Caron-O'Neill April 2018
-    Includes:
-        1. /delete-department/:department (POST)
-        2. /delete-degree/:degree/:discipline (POST)
-        3. /delete-specialty/:specialty (POST), /delete-specialty-id/:id (POST)
-        4. /delete-skill/:skill (POST), /delete-skill-id/:id (POST)
-        5. /delete-facility/:facility (POST), /delete-facility-id/:id(POST)
-
-
-homeRoute.js
+homeRoutes.js
     Welcome, homepage, profile directions
     Written by Mac Watrous, Max Booth, Alden Caron-O'Neill April 2018.
     Includes:
@@ -49,6 +37,7 @@ loginRoutes.js
         1. /login (GET & POST)
         2. /verify (GET & POST)
         3. /logout (GET)
+        4. /verify/:hidden_token (POST)
 
 
 passwordRoutes.js
@@ -58,8 +47,7 @@ passwordRoutes.js
         1. /resetpassword (POST)
         2. /changepassword (GET & POST)
         3. /profile-reset (GET & POST)
-        4. /verify/:hidden_token (POST)
-        5. /changepassword/:password_token (GET
+        4. /changepassword/:password_token (GET)
 
 
 profileUpdateRoutes.js
@@ -74,7 +62,12 @@ profileUpdateRoutes.js
         6. /add-degree (POST)
         7. /add-specialty (POST), /add-specialty/:id (POST)
         8. /add-skill (POST), /add-skill/:id (POST)
-        9. .add-facility (POST), /add-facility/:id (POST)
+        9. /add-facility (POST), /add-facility/:id (POST)
+        10. /delete-department/:department (POST)
+        11. /delete-degree/:degree/:discipline (POST)
+        12. /delete-specialty/:specialty (POST), /delete-specialty-id/:id (POST)
+        13. /delete-skill/:skill (POST), /delete-skill-id/:id (POST)
+        14. /delete-facility/:facility (POST), /delete-facility-id/:id (POST)
 
 
 searchRoutes.js
