@@ -25,6 +25,7 @@ module.exports = function (app, sessionChecker) {
             Profile.findOne({where: {email: email}}).then(function (profile) {
                 if(profile==null){
                     res.render('login.html', {error: 'Invalid email.'});
+                    return;
                 }
                 let userConfirmed = profile.confirmed_user;
 

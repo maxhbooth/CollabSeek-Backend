@@ -68,3 +68,41 @@ h5 {
 .page-header {
     margin-top:20px;
 }
+
+#advSearch {
+    font-weight:bold;
+}
+
+.error {
+    clear:left;
+    text-align: center;
+    font-style: italic;
+    color:rgba(192, 57, 43,1.0);
+    font-weight: bold;
+    padding-left:12%;
+    padding-right:12%;
+}
+
+.profilebox {
+    max-height: 159px;
+    overflow: hidden;
+}
+
+.overflowed {
+    -webkit-box-shadow: inset 0 -30px 30px -14px rgba(0,0,0,0.4);
+    -moz-box-shadow: inset 0 -30px 30px -14px rgba(0,0,0,0.4);
+    box-shadow: inset 0 -30px 30px -14px rgba(0,0,0,0.4);
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+.overflowed:hover {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    overflow-y: hidden;
+    max-height: 300px;
+}
