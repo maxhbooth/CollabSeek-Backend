@@ -82,7 +82,25 @@
         </div>
         <div id="collapse4" class="panel-collapse collapse">
             <div class="panel-body">
-
+                <div class="col-sm-6">
+                    Current email restriction is that emails must end with: <%=locals.email%>
+                </div>
+                <div class="col-sm-6">
+                    <label>New Emails Must End With (comma separated list):</label>
+                    <input type="text" style="width:80%;" class="form-horizontal" id="email_req" name="email_req">
+                    <button id="change_email_req" class="btn btn-primary" style="display: inline-flex;">Change</button>
+                    Examples:
+                    <ul>
+                        <li>unc.edu</li>
+                        <li>edu</li>
+                        <li>edu, gov</li>
+                        <li>unc.edu, wfu.edu</li>
+                        <li>Leave blank for no restrictions</li>
+                    </ul>
+                    Note: When you change this value you change the entire field, so if you want to add another email,
+                    you must also type in any previous email allowments. I.e. to add gov ending emails to edu ending emails,
+                    type in "edu, gov".
+                </div>
             </div>
         </div>
     </div>
@@ -129,10 +147,10 @@
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <a data-toggle="collapse" href="#collapse4">Edit Degrees</a>
+                <a data-toggle="collapse" href="#collapse5">Edit Degrees</a>
             </h3>
         </div>
-        <div id="collapse4" class="panel-collapse collapse">
+        <div id="collapse5" class="panel-collapse collapse">
             <div class="panel-body">
 
             </div>
@@ -142,10 +160,10 @@
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <a data-toggle="collapse" href="#collapse4">Edit Disciplines</a>
+                <a data-toggle="collapse" href="#collapse6">Edit Disciplines</a>
             </h3>
         </div>
-        <div id="collapse4" class="panel-collapse collapse">
+        <div id="collapse6" class="panel-collapse collapse">
             <div class="panel-body">
 
             </div>
@@ -155,11 +173,27 @@
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <a data-toggle="collapse" href="#collapse4">Edit About</a>
+                <a data-toggle="collapse" href="#collapse7">Edit About</a>
             </h3>
         </div>
-        <div id="collapse4" class="panel-collapse collapse">
+        <div id="collapse7" class="panel-collapse collapse">
             <div class="panel-body">
+                <div class="col-sm-6">
+                    <label>What is CollabSeek?</label>
+                    <textarea class="form-control" id="about1" name="about1" rows="10" maxlength="3000"><%=locals.about.about1%></textarea>
+                    <br>
+                    <label>Who Made CollabSeek?</label>
+                    <textarea class="form-control" id="about3" name="about3" rows="10" maxlength="3000"><%=locals.about.about3%></textarea>
+                </div>
+                <div class="col-sm-6">
+                    <label>How Can I Use CollabSeek?</label>
+                    <textarea class="form-control" id="about2" name="about2" rows="10" maxlength="3000"><%=locals.about.about2%></textarea>
+                    <br>
+                    <label>Questions or Comments?</label>
+                    <textarea class="form-control" id="about4" name="about4" rows="10" maxlength="3000"><%=locals.about.about4%></textarea>
+                </div>
+                <br><br>
+                <button id="change_about" class="btn btn-primary pull-right">Save Changes</button>
 
             </div>
         </div>

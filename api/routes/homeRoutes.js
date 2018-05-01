@@ -82,7 +82,10 @@ module.exports = function (app, sessionChecker) {
     });
 
     app.get('/about', (req, res) => {
-       res.render('about.html');
+        let attrRepository = new AttributeRepository();
+        attrRepository.getAboutSection().then(function(models) {
+            res.render('about.html', models);
+        });
     });
 
     app.get('/delete-profile', (req, res) => {

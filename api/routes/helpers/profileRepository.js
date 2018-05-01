@@ -489,7 +489,8 @@ profileRepository.prototype.createProfile = async(function
         pronouns: pronouns,
         website: website,
         phone_number: phone,
-        availability: availability
+        availability: availability,
+        admin: false
     }, {
         returning: true,
         plain: true}).catch(errors => {

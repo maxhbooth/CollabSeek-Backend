@@ -235,7 +235,7 @@ repository.prototype.addNewSkill = async(function(skillName, parentID){
 repository.prototype.addNewFacility = async(function(facilityName, parentID){
     let facility = await(this.facility.create({name: facilityName, parent_id: parentID}, {plain: true}));
     return facility;
-})
+});
 
 module.exports = repository;
 
@@ -243,14 +243,45 @@ module.exports = repository;
 // =====================================================================================================================
 // ADMIN FUNCTIONS
 // =====================================================================================================================
-repository.prototype.changeEmailRequirement = async(email){
-
-}
-repository.prototype.getEmailRequirement = async(){
-    let email = await(this.email.findOne({where: {name: "email"}}));
+repository.prototype.changeEmailRequirement = async(function(email){
+    this.variables.update(
+        {value: email},
+        {where: {name: "email"}}
+    ).catch(error => {console.log(error);});
+});
+repository.prototype.getEmailRequirement = async(function(){
+    let email = await(this.variables.findOne({where: {name: "email"}}));
 
     if(email != null){
         return email.value;
     }
     return null;
-}
+});
+
+repository.prototype.getAboutSection = async(function(){
+    let about1 = await(this.variables.findOne({where: {name: "about1"}}));
+    let about2 = await(this.variables.findOne({where: {name: "about2"}}));
+    let about3 = await(this.variables.findOne({where: {name: "about3"}}));
+    let about4 = await(this.variables.findOne({where: {name: "about4"}}));
+
+    return({about1: about1.dataValues.value, about2: about2.dataValues.value, about3: about3.dataValues.value, about4: about4.dataValues.value});
+});
+
+repository.prototype.changeAbout = async(function(one, two, three, four){
+    this.variables.update(
+        {value: one},
+        {where: {name: "about1"}}
+    ).catch(error => {console.log(error);});
+    this.variables.update(
+        {value: two},
+        {where: {name: "about2"}}
+    ).catch(error => {console.log(error);});
+    this.variables.update(
+        {value: three},
+        {where: {name: "about3"}}
+    ).catch(error => {console.log(error);});
+    this.variables.update(
+        {value: four},
+        {where: {name: "about4"}}
+    ).catch(error => {console.log(error);});
+});

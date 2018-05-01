@@ -2,6 +2,12 @@ var Sequelize = require('sequelize');
 var sequelize = require('../database/database');
 
 module.exports = sequelize.define('variables', {
+    id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    },
     name: {
         type: Sequelize.STRING,
         unique: true,
@@ -20,5 +26,5 @@ module.exports = sequelize.define('variables', {
         allowNull: true
     }
 }, {
-    tableName: 'position'
+    tableName: 'variables'
 });

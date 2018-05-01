@@ -13,10 +13,15 @@ module.exports = function (app, sessionChecker) {
     app.get('/admin', (req, res) => {
         if(req.session.profile && req.cookies.user_sid && req.session.profile.admin){
             profileRepository = new ProfileRepository();
+            attrRepo = new AttributeRepository();
             profileRepository.getAdmins().then(function(admins){
-                models = {admins: admins};
-                console.log(models);
-                res.render('admin.html', models);
+                attrRepo.getEmailRequirement().then(function(email){
+                    attrRepo.getAboutSection().then(function(about){
+                        models = {admins: admins, email: email, about:about};
+                        console.log(models);
+                        res.render('admin.html', models);
+                    });
+                });
             });
         }
         else{
@@ -37,6 +42,24 @@ module.exports = function (app, sessionChecker) {
         if(req.session.profile && req.cookies.user_sid && req.session.profile.admin){
             profileRepository = new ProfileRepository();
             profileRepository.removeAdmin(req.body.email).then(function(){res.redirect('/admin')});
+        }else{
+            res.redirect('/welcome');
+        }
+    });
+
+    app.post('/change-email', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid && req.session.profile.admin){
+            attrRepo = new AttributeRepository();
+            attrRepo.changeEmailRequirement(req.body.email_req).then(function(){res.redirect('/admin')});
+        }else{
+            res.redirect('/welcome');
+        }
+    });
+
+    app.post('/change-about', (req,res) => {
+        if(req.session.profile && req.cookies.user_sid && req.session.profile.admin){
+            attrRepo = new AttributeRepository();
+            attrRepo.changeAbout(req.body.about1, req.body.about2, req.body.about3, req.body.about4).then(function(){res.redirect('/admin')});
         }else{
             res.redirect('/welcome');
         }
