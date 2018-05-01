@@ -81,6 +81,10 @@ var profile = sequelize.define('profile', {
     availability: {
         type: Sequelize.INTEGER,
         allowNull: true
+    },
+    admin:{
+        type: Sequelize.BOOLEAN,
+        allowNull: false
     }
 }, {
     hooks: {

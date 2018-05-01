@@ -264,6 +264,21 @@ profileRepository.prototype.addProfileSkillById = async(function (profileId, ski
     return 0;
 });
 
+profileRepository.prototype.addAdmin = async(function(profileEmail){
+   this.profile.update(
+        {admin: true},
+        {where: {email: profileEmail}}
+   ).catch(error => {
+        console.log(error);});
+});
+
+profileRepository.prototype.removeAdmin = async(function(profileEmail){
+    this.profile.update(
+        {admin: false},
+        {where: {email: profileEmail}}
+    ).catch(error => {
+        console.log(error);});
+});
 
 // =====================================================================================================================
 // UPDATE ATTRIBUTE OF PROFILE
@@ -598,13 +613,13 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
             imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
             hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
             facilities: facilities, pronouns: profile[j].pronouns, website: profile[j].website, phone: profile[j].phone_number,
-            availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents};
+            availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents, admin: profile[j].admin};
         if(profile.length === 1){
             return {id: ID, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position_name,
                 imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
                 hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
                 facilities: facilities, pronouns: profile[j].pronouns, website: profile[j].website, phone: profile[j].phone_number,
-                availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents};
+                availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents, admin: profile[j].admin};
         }
     }
    return profiles;
@@ -839,6 +854,13 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
         return profile_ids;
     }
     return null;
+});
+
+profileRepository.prototype.getAdmins = async(function(){
+    let profiles = await(this.profile.findAll({
+        where: {admin: true}
+    }));
+    return profiles;
 });
 
 module.exports = profileRepository;

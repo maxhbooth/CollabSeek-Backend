@@ -76,6 +76,7 @@ var createAttributeRoutes = require('./api/routes/createAttributeRoutes');
 var signupRoutes = require('./api/routes/signupRoutes');
 var passwordRoutes = require('./api/routes/passwordRoutes');
 var testRoutes = require('./api/routes/testRoutes');
+var adminRoutes = require('./api/routes/adminRoutes');
 
 homeRoutes(app, sessionChecker);
 loginRoutes(app, sessionChecker);
@@ -86,7 +87,7 @@ createAttributeRoutes(app, sessionChecker);
 signupRoutes(app, sessionChecker);
 passwordRoutes(app, sessionChecker);
 testRoutes(app, sessionChecker);
-
+adminRoutes(app, sessionChecker);
 
 app.listen(port);
 
