@@ -860,7 +860,15 @@ profileRepository.prototype.getAdmins = async(function(){
     let profiles = await(this.profile.findAll({
         where: {admin: true}
     }));
-    return profiles;
+    var profile_ids = [];
+    if(profiles != null) {
+        for (var i = 0; i < profiles.length; i++) {
+            profile_ids.push({id: profiles[i].dataValues.id, first_name: profiles[i].dataValues.first_name, last_name: profiles[i].dataValues.last_name,
+            email: profiles[i].dataValues.email});
+        }
+        return profile_ids;
+    }
+    return null;
 });
 
 module.exports = profileRepository;

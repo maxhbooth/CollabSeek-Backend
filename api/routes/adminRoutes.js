@@ -16,7 +16,7 @@ module.exports = function (app, sessionChecker) {
             profileRepository.getAdmins().then(function(admins){
                 models = {admins: admins};
                 console.log(models);
-                res.render('/admin', models);
+                res.render('admin.html', models);
             });
         }
         else{

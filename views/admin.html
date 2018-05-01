@@ -54,20 +54,35 @@
                 <div class="col-sm-6">
                     <h4>Current Admins</h4>
                     <ul>
-                        <%for(var i = 0; i < admins.length; i++) { %>
-                        <li><%=admins[i].dataValues.first_name =admins[i].dataValues.last_name, =admins[i].dataValues.email%></li>
+                        <% if(locals.admins){ %>
+                        <%for(var i = 0; i < locals.admins.length; i++) { %>
+                        <li><%=admins[i].first_name%> <%=admins[i].last_name%>, <%=admins[i].email%></li>
+                        <% } %>
                         <% } %>
                     </ul>
                 </div>
                 <div class="col-sm-6">
                     <label>Add New Admin by Email:</label>
-                    <input type="text" style="width:80%;" class="form-control" id="new_admin" name="new_admin">
+                    <input type="text" style="width:80%;" class="form-horizontal" id="new_admin" name="new_admin">
                     <button id="add_new_admin" class="btn btn-primary" style="display: inline-flex;">Add</button>
                     <br>
                     <label>Remove Admin by Email:</label>
-                    <input type="text" style="width:80%;" class="form-control" id="old_admin" name="old_admin">
+                    <input type="text" style="width:80%;" class="form-horizontal" id="old_admin" name="old_admin">
                     <button id="remove_admin" class="btn btn-primary" style="display: inline-flex;">Remove</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse4">Edit Email Restriction</a>
+            </h3>
+        </div>
+        <div id="collapse4" class="panel-collapse collapse">
+            <div class="panel-body">
+
             </div>
         </div>
     </div>
@@ -128,6 +143,19 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <a data-toggle="collapse" href="#collapse4">Edit Disciplines</a>
+            </h3>
+        </div>
+        <div id="collapse4" class="panel-collapse collapse">
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse4">Edit About</a>
             </h3>
         </div>
         <div id="collapse4" class="panel-collapse collapse">

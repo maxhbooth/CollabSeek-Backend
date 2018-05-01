@@ -12,6 +12,7 @@ const position = require('../../../models/position');
 const skill = require('../../../models/skill');
 const specialty = require('../../../models/specialty');
 const degree_discipline = require('../../../models/profile_degree');
+const variables = require('../../../models/variables')
 
 const repository = function repository(){
 
@@ -23,6 +24,7 @@ const repository = function repository(){
     this.skill = skill;
     this.specialty = specialty;
     this.degree_discipline = degree_discipline;
+    this.variables = variables;
 
 };
 
@@ -236,3 +238,19 @@ repository.prototype.addNewFacility = async(function(facilityName, parentID){
 })
 
 module.exports = repository;
+
+
+// =====================================================================================================================
+// ADMIN FUNCTIONS
+// =====================================================================================================================
+repository.prototype.changeEmailRequirement = async(email){
+
+}
+repository.prototype.getEmailRequirement = async(){
+    let email = await(this.email.findOne({where: {name: "email"}}));
+
+    if(email != null){
+        return email.value;
+    }
+    return null;
+}
