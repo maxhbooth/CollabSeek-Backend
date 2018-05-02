@@ -17,10 +17,8 @@ $("#searchButton").click(function(){
     }
 });
 
-
-
 $('.profilebox').each(function(i, obj) {
-    console.log($(this).prop('scrollHeight') + " and " +  $(this).height());
+    console.log($(this).prop('scrollHeight')-20 + " and " +  $(this).height());
     if ($(this).prop('scrollHeight')-20 > $(this).height() ) {
         $(this).addClass("overflowed")
     }
