@@ -12,7 +12,7 @@
 var Profile = require('../../models/profile');
 var bcrypt = require('bcrypt');
 var mailer = require('./helpers/mailer');
-
+var random = require('randomstring');
 module.exports = function (app, sessionChecker) {
     function extend(dest, src) {
         for(var key in src) {
@@ -139,6 +139,7 @@ module.exports = function (app, sessionChecker) {
 
             const salt = bcrypt.genSaltSync();
             user.password = bcrypt.hashSync(password, salt);
+            user.password_token = random.generate();
             user.save().then(function() {
                 req.session.profile = user.dataValues;
                 res.redirect('/my-profile')
