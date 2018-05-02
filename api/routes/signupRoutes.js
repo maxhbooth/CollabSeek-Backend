@@ -42,55 +42,78 @@ module.exports = function (app, sessionChecker) {
         req.checkBody('last', "Must enter a last name.").notEmpty();
 
         let errors = req.validationErrors();
-        if(!req.body.email.endsWith("unc.edu") ){
-            errors.push({msg:"Email must end with unc.edu", param:"email"});
-        }
-        if (!errors) {
-            let hidden_token = randomstring.generate();
-            let confirmed_user = false;
-            let password_token = randomstring.generate();
+        var error_end = "";
+        var attrRepository = new AttrRepository();
+        attrRepository.getEmailRequirement().then(function(email_req){
+            emails = email_req.split(",");
+            var pass = false;
+            for(var i = 0; i < emails.length; i++){
+                if(req.body.email.endsWith(emails[i].trim())){
+                    pass = true;
+                }
+            }
+            if(!pass){
+                error_end = "Email must end with one of the following: " + emails;
+            }
+            if (!errors && error_end === "") {
+                let hidden_token = randomstring.generate();
+                let confirmed_user = false;
+                let password_token = randomstring.generate();
 
 
-            var profileRepository = new ProfileRepository();
-            profileRepository.createProfile(req.body.first, req.body.last, req.body.degree, req.body.department, req.body.discipline,
-                req.body.position, null, null, null, req.body.email, req.body.password,
-                hidden_token, confirmed_user, password_token, req.body.intro, req.body.pronouns, req.body.website,
-                req.body.phone, req.body.availability).then(profile => {
-                req.session.profile = profile.dataValues;
+                var profileRepository = new ProfileRepository();
+                profileRepository.createProfile(req.body.first, req.body.last, req.body.degree, req.body.department, req.body.discipline,
+                    req.body.position, null, null, null, req.body.email, req.body.password,
+                    hidden_token, confirmed_user, password_token, req.body.intro, req.body.pronouns, req.body.website,
+                    req.body.phone, req.body.availability).then(profile => {
+                    req.session.profile = profile.dataValues;
                 var email = req.body.email;
                 //email compose
                 const html = 'Dear CollabSeek User, <br/><br/>  this email contains a link that will verify your account'+
                     '<br/><br/><a href =http://'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'>http://'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'</a>' +
                     '<br/><br/> Have a nice day, <br/> CollabSeek team';
                 mailer.sendEmail("collabuncseek@gmail.com",email , "Email Verification", html);
-            res.redirect('/signup-details');
-        })
-        .catch(profile_errors =>{
-            var attrRepository = new AttrRepository();
-            attrRepository.getAll().then(function (models){
-                var errors = {userErrors: [profile_errors], validated: req.body};
-                var data = extend(models, errors);
-                res.render('signup.html', data);
+                res.redirect('/signup-details');
+            })
+            .catch(profile_errors =>{
+                    var attrRepository = new AttrRepository();
+                    attrRepository.getAll().then(function (models){
+                    var errors = {userErrors: [profile_errors], validated: req.body};
+                    var data = extend(models, errors);
+                    res.render('signup.html', data);
+                });
             });
-        });
-        } else {
-            console.log(errors);
-            var userErrors = [];
-            var emailErrors = [];
-            var passwordErrors = [];
-            for (var i = 0; i < errors.length; i++) {
-                if (errors[i].param === 'email') {emailErrors.push(errors[i].msg);}
-                else if (errors[i].param === 'password') {passwordErrors.push(errors[i].msg);}
-                else{userErrors.push(errors[i].msg);}
+            } else {
+                console.log(errors);
+                var userErrors = [];
+                var emailErrors = [];
+                var passwordErrors = [];
+                for (var i = 0; i < errors.length; i++) {
+                    if (errors[i].param === 'email') {
+                        emailErrors.push(errors[i].msg);
+                    }
+                    else if (errors[i].param === 'password') {
+                        passwordErrors.push(errors[i].msg);
+                    }
+                    else {
+                        userErrors.push(errors[i].msg);
+                    }
+                }
+                if(error_end !== ""){
+                    emailErrors.push(error_end);
+                }
+                attrRepository = new AttrRepository();
+                attrRepository.getAll().then(function (models) {
+                    var errors = {
+                        userErrors: userErrors, emailErrors: emailErrors,
+                        passwordErrors: passwordErrors, validated: req.body
+                    };
+                    var data = extend(models, errors);
+                    res.render('signup.html', data);
+                })
             }
-            attrRepository = new AttrRepository();
-            attrRepository.getAll().then(function (models){
-                var errors = {userErrors: userErrors, emailErrors: emailErrors,
-                    passwordErrors: passwordErrors, validated: req.body};
-                var data = extend(models, errors);
-                res.render('signup.html', data);
-            });
-        }
+        });
+
     });
 
     app.get('/signup-details', (req, res) => {

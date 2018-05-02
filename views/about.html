@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Profile</title>
+    <title>About</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -49,19 +49,9 @@
         </div>
         <div id="collapse1" class="panel-collapse collapse">
             <div class="panel-body">
-                We know networking in academia can be a difficult, time consuming, and yet ultimately necessary procedure.
-                We aim to make this part of the research process a little easier. This website
-                will help users in the UNC system find collaborators for research projects.
-                <br><br>The way collaborators are often found
-                through UNC today is via email blasts that often go unanswered. We believe that the specificity of
-                connecting person to person will mitigate that problem, as people will be spared irrelevant email blasts
-                in favor of being emailed by people familiar with their skill set.
-                <br><br>This project is targeted towards the local community.
-                Interested participants will be able to sign up for an account on our webpage if they have a “unc.edu”
-                account. They will then complete a signup process and input their professional information,
-                qualifications, skills, specialties, and available resources. Then they can search using a variety
-                of fields for potential collaborators and reach out to them on their own via the contact information
-                listed on profiles.
+                <%if(locals.about1){%>
+                <%=about1%>
+                <%}%>
             </div>
         </div>
     </div>
@@ -73,10 +63,9 @@
         </div>
         <div id="collapse2" class="panel-collapse collapse">
             <div class="panel-body">
-                First you will need to sign up and create an account in order to use the site. When you create your account,
-                you will list your research discipline, specialties, skills, and available resources. Then, if you are looking
-                for a person with a particular skill set, you can search our database of other users to find anyone who
-                has that skill. This site will help you find people who you can then contact on your own.
+                <%if(locals.about2){%>
+                <%=about2%>
+                <%}%>
             </div>
         </div>
     </div>
@@ -88,11 +77,9 @@
         </div>
         <div id="collapse3" class="panel-collapse collapse">
             <div class="panel-body">
-            CollabSeek is the result of the UNC-CH class COMP 523: Software Development with David Stotts. This class pairs
-                groups of students with people on campus who have an idea for a piece of software to further their academic development.
-                The client for this project was <b>Wanda Bodnar</b>, PhD of UNC Gillings School of Global Public Health. The students who worked on
-                the project are all class of 2018 computer science majors: <b>Mac Watrous</b>, <b>Max Booth</b>,
-                <b>Marcus Wallace</b>, and <b>Alden Caron-O'Neill</b>.
+                <%if(locals.about3){%>
+                <%=about3%>
+                <%}%>
             </div>
         </div>
     </div>
@@ -104,9 +91,9 @@
         </div>
         <div id="collapse4" class="panel-collapse collapse">
             <div class="panel-body">
-                Because CollabSeek was a semester long project of now graduated students, the support base is now
-                relatively minimal. However, you may contact Wanda Bodnar <a href="mailto:wanda_bodnar@.unc.edu">here</a>
-                if you have concerns.
+                <%if(locals.about4){%>
+                <%=about4%>
+                <%}%>
             </div>
         </div>
     </div>
