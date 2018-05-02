@@ -33,10 +33,6 @@
             function (img) {
                 if(img.type === "error") {
                     console.log("Error loading image " + imageUrl);
-                    var icon = document.createElement("IMG");
-
-                    icon.src = "resources/profile-icon.png";
-                    document.getElementById("imageDiv").appendChild(icon);
                 } else {
                     document.getElementById("imageDiv").appendChild(img);
                 }
@@ -65,6 +61,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">Home</a></li>
                 <li class="active"><a href="/my-profile">Profile</a></li>
+                <li><a href="/about">About</a></li>
                 <li><a href="/logout">Log Out</a></li>
             </ul>
         </div><!--/.nav-collapse -->
@@ -75,339 +72,333 @@
         <h1 style="color: white">My Profile</h1>
     </div>
 
-    <div class="container row">
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="well well-sm clearfix">
-                    <% if(locals.imagePath){%>
-                    <form method="get" action="/upload-image">
-                        <div class="image_container">
-                            <div id="imageDiv" alt="Avatar" class="image"></div>
-                            <div>
-                            <!--<img src="Images/<%=imagePath%>" onerror="this.src='resources/profile-icon.png'" width="200">-->
-                            <div class="middle">
-                                    <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <%} else {%>
-                    <div class="image_container">
-                        <% var initials = first.charAt(0) + last.charAt(0); %>
-                        <div class="circle"><%=initials%>
-                            <div class="middle">
-                                <form method="get" action="/upload-image">
-                                    <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
-                                </form>
-                            </div>
+    <div class="col-sm-4">
+        <div class="well well-sm clearfix">
+            <% if(locals.imagePath){%>
+            <form method="get" action="/upload-image">
+                <div class="image_container">
+                    <div id="imageDiv" alt="Avatar" class="image"></div>
+                    <div>
+                    <div class="middle">
+                            <button class="btn btn-primary login" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
                         </div>
                     </div>
-                    <%}%>
-
-                    <div id="info-show" style="display: block;">
-                        <h5 style="text-align:center;"><%=first%> <%=last%></h5>
-
-                        <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
-
-
-                        <h5><a href="/profile-reset">
-                            <button>Reset password</button>
-                        </a> </h5>
-
-
-
-
-                        <h5><span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i></span>&nbsp;&nbsp;<a href="mailto:<%=locals.email%>"><%=locals.email%></a></h5>
-
-                        <% if(locals.phone){%>
-                        <h5><span style="color:#3498db"><i class="fas fa-phone-volume" title="Phone Number"></i></span>&nbsp;&nbsp;<%=locals.phone %></h5>
-                        <%}%>
-
-                        <% if(locals.website){%>
-                        <h5><span style="color:#3498db"><i class="fas fa-globe" title="Website"></i></span>&nbsp;&nbsp;<a href="<%=locals.website %>"><%=locals.website %></a></h5>
-                        <%}%>
-
-                        <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
-
-                        <% if(locals.pronouns){%>
-                        <h5><span style="color:#3498db"><i class="fas fa-user" title="Pronouns"></i></span>&nbsp;&nbsp;Pronouns: <%=locals.pronouns %></h5>
-                        <%}%>
-
-                        <% if(locals.availability){%>
-                        <h5><span style="color:#3498db"><i class="fas fa-calendar-check" title="Availability"></i></span>&nbsp;&nbsp;Availability: <%=locals.availability%>/5</h5>
-                        <%}%>
-
-
-                        <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
-
-
-                        <% if(locals.position){%>
-                        <h5><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=locals.position %></h5>
-                        <%}%>
-
-                        <% if(locals.departments){%>
-                        <%if (departments.length > 0){%>
-                        <h5><span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;Departments and Institutes</h5>
-                        <ul>
-                            <%departments.forEach(function(department){%>
-                            <li><%=department.name %></li>
-                            <%})%>
-                        </ul>
-                        <%}}%>
-                        <h5><button id="edit-info" class="btn btn-primary pull-right" style="display: inline-flex; vertical-align: middle;">
-                            <span style="color:white" class="glyphicon glyphicon-pencil" title="Edit your profile information."></span>&nbsp;Edit</button></h5>
-
-
-                    </div>
-                    <div id="info-edit" style="display: none;">
-                        <form method="post" action="/update-info">
-
-                            <label for="first">Preferred Name:</label>
-                            <input type="text" class="form-control" id="first" name="first" value="<%=first%>">
-                            <label  for="last">Last Name:</label>
-                            <input type="text" class="form-control" id="last" name="last" value="<%=last%>">
-
-                            <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
-
-                            <label for="phone"><span style="color:#3498db"><i class="fas fa-phone-volume" title="Phone Number"></i></span>&nbsp;&nbsp;Phone Number <small>ex. (555)555-5555</small>:</label>
-                            <% if(locals.phone){%>
-                            <input type="text" class="form-control" id="phone" name="phone" value="<%=phone%>">
-                            <%}%>
-                            <% if(!locals.phone){%>
-                            <input type="text" class="form-control" id="phone" name="phone">
-                            <%}%>
-
-                            <label for="website"><span style="color:#3498db"><i class="fas fa-globe" title="Website"></i></span>&nbsp;&nbsp;Website:</label>
-                            <% if(locals.website){%>
-                            <input type="text" class="form-control" id="website" name="website" value="<%=website%>">
-                            <%}%>
-                            <% if(!locals.website){%>
-                            <input type="text" class="form-control" id="website" name="website">
-                            <%}%>
-
-                            <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
-
-                            <label for="pronouns"><span style="color:#3498db"><i class="fas fa-user" title="Pronouns"></i></span>&nbsp;&nbsp;Pronouns:</label>
-                            <% if(locals.pronouns){%>
-                            <input type="text" class="form-control" id="pronouns" name="pronouns" value="<%=pronouns%>">
-                            <%}%>
-                            <% if(!locals.pronouns){%>
-                            <input type="text" class="form-control" id="pronouns" name="pronouns">
-                            <%}%>
-
-                            <br>
-
-                            <% if(locals.availability){%>
-                            <label><span style="color:#3498db"><i class="fas fa-calendar-check" title="Availability"></i></span>&nbsp;&nbsp;Availability: </label>
-                            <input type="range" min="1" max="5" value="<%=locals.availability%>" id="availability" name="availability">
-                            <label for="busy" class="pull-left"><small>Less Available</small></label>
-                            <label for="free" class="pull-right"><small>More Available</small></label>
-                            <%}%>
-
-                            <% if(!locals.availability){%>
-                            <label><span style="color:#3498db"><i class="fas fa-calendar-check" title="Availability"></i></span>&nbsp;&nbsp;Availability: </label>
-                            <input type="range" min="1" max="5" value="3" id="availability" name="availability">
-                            <label for="busy" class="pull-left"><small>Less Available</small></label>
-                            <label for="free" class="pull-right"><small>More Available</small></label>
-                            <%}%>
-                            <br>
-
-                            <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
-
-                            <label for="position"><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;Position:</label>
-                            <select id="position" name="position" class="form-control">
-                                <% if(locals.all_positions){%>
-                                <%if (locals.all_positions.length > 0){locals.all_positions.forEach(function(pos){%>
-                                <%if (locals.position == pos){%>
-                                <option selected><%= pos %></option>
-                                <%}else{%>
-                                <option><%= pos %></option>
-                                <%}})}}%>
-                            </select>
-
-                            <br>
-
-                            <label><span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;Department:</label>
-                            <table class="table">
-                                <tbody>
-                                <% if(locals.departments){%>
-                                <%if (departments.length > 0){%>
-                                <%departments.forEach(function(department){%>
-                                <form method="post" action="/delete-department/<%=department.name%>" class="form-inline">
-                                    <tr>
-                                        <td><%=department.name %></td>
-                                        <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                                            <span class="glyphicon glyphicon-minus"></span></button></td>
-                                    </tr>
-                                </form>
-                                <%})}}%>
-                                <form method="post" action="/add-department" class="form-inline">
-                                    <tr>
-                                        <td><select id="department" name="department" class="js-example-basic-single js-states form-control" style="width:95%;">
-                                            <option></option>
-                                            <% if(locals.all_departments){%>
-                                            <%if (all_departments.length > 0){all_departments.forEach(function(department){%>
-                                            <option><%=department%></option>
-                                            <%})}}%>
-                                        </select></td>
-                                        <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                                            <span class="glyphicon glyphicon-plus"></span></button></td>
-                                    </tr>
-                                </form>
-                                </tbody>
-                            </table>
-
-                            <button type="submit" class="btn btn-primary pull-right">Save</button>
+                </div>
+            </form>
+            <%} else {%>
+            <div class="image_container">
+                <% var initials = first.charAt(0) + last.charAt(0); %>
+                <div class="circle"><%=initials%>
+                    <div class="middle">
+                        <form method="get" action="/upload-image">
+                            <button class="btn btn-primary" style="display: block; margin: 0 auto;" type="submit">Change Profile Picture</button>
                         </form>
                     </div>
                 </div>
             </div>
+            <%}%>
 
-            <div class="col-sm-8">
-                <div class="well well-sm clearfix">
-                    <div id="intro-show" style="display: block;">
-                        <%if(locals.intro){%>
-                        <h5><%=intro%></h5>
+            <div id="info-show" style="display: block;">
+                <h5 style="text-align:center;"><%=first%> <%=last%></h5>
+
+                <h5><a href="/profile-reset">
+                    <button class="btn btn-primary" style="display: block; margin: 0 auto;" type="submit">Change Password</button>
+                </a> </h5>
+                <h5><a href="/delete-profile">
+                    <button class="btn btn-warning" style="display: block; margin: 0 auto;">Delete Account</button>
+                </a> </h5>
+
+                <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
+
+                <h5><span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i></span>&nbsp;&nbsp;<a href="mailto:<%=locals.email%>"><%=locals.email%></a></h5>
+
+                <% if(locals.phone){%>
+                <h5><span style="color:#3498db"><i class="fas fa-phone-volume" title="Phone Number"></i></span>&nbsp;&nbsp;<%=locals.phone %></h5>
+                <%}%>
+
+                <% if(locals.website){%>
+                <h5><span style="color:#3498db"><i class="fas fa-globe" title="Website"></i></span>&nbsp;&nbsp;<a href="<%=locals.website %>"><%=locals.website %></a></h5>
+                <%}%>
+
+                <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
+
+                <% if(locals.pronouns){%>
+                <h5><span style="color:#3498db"><i class="fas fa-user" title="Pronouns"></i></span>&nbsp;&nbsp;Pronouns: <%=locals.pronouns %></h5>
+                <%}%>
+
+                <% if(locals.availability){%>
+                <h5><span style="color:#3498db"><i class="fas fa-calendar-check" title="Availability"></i></span>&nbsp;&nbsp;Availability: <%=locals.availability%>/5</h5>
+                <%}%>
+
+
+                <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
+
+
+                <% if(locals.position){%>
+                <h5><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=locals.position %></h5>
+                <%}%>
+
+                <% if(locals.departments){%>
+                <%if (departments.length > 0){%>
+                <h5><span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;Departments and Institutes</h5>
+                <ul>
+                    <%departments.forEach(function(department){%>
+                    <li><%=department.name %></li>
+                    <%})%>
+                </ul>
+                <%}}%>
+                <h5><button id="edit-info" class="btn btn-primary pull-right" style="display: inline-flex; vertical-align: middle;">
+                    <span style="color:white" class="glyphicon glyphicon-pencil" title="Edit your profile information."></span>&nbsp;Edit</button></h5>
+
+
+            </div>
+            <div id="info-edit" style="display: none;">
+                <form method="post" action="/update-info">
+
+                    <label for="first">Preferred Name:</label>
+                    <input type="text" class="form-control" id="first" name="first" value="<%=first%>">
+                    <label  for="last">Last Name:</label>
+                    <input type="text" class="form-control" id="last" name="last" value="<%=last%>">
+
+                    <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
+
+                    <label for="phone"><span style="color:#3498db"><i class="fas fa-phone-volume" title="Phone Number"></i></span>&nbsp;&nbsp;Phone Number <small>ex. (555)555-5555</small>:</label>
+                    <% if(locals.phone){%>
+                    <input type="text" class="form-control" id="phone" name="phone" value="<%=phone%>">
+                    <%}%>
+                    <% if(!locals.phone){%>
+                    <input type="text" class="form-control" id="phone" name="phone">
+                    <%}%>
+
+                    <label for="website"><span style="color:#3498db"><i class="fas fa-globe" title="Website"></i></span>&nbsp;&nbsp;Website:</label>
+                    <% if(locals.website){%>
+                    <input type="text" class="form-control" id="website" name="website" value="<%=website%>">
+                    <%}%>
+                    <% if(!locals.website){%>
+                    <input type="text" class="form-control" id="website" name="website">
+                    <%}%>
+
+                    <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
+
+                    <label for="pronouns"><span style="color:#3498db"><i class="fas fa-user" title="Pronouns"></i></span>&nbsp;&nbsp;Pronouns:</label>
+                    <% if(locals.pronouns){%>
+                    <input type="text" class="form-control" id="pronouns" name="pronouns" value="<%=pronouns%>">
+                    <%}%>
+                    <% if(!locals.pronouns){%>
+                    <input type="text" class="form-control" id="pronouns" name="pronouns">
+                    <%}%>
+
+                    <br>
+
+                    <% if(locals.availability){%>
+                    <label><span style="color:#3498db"><i class="fas fa-calendar-check" title="Availability"></i></span>&nbsp;&nbsp;Availability: </label>
+                    <input type="range" min="1" max="5" value="<%=locals.availability%>" id="availability" name="availability">
+                    <label for="busy" class="pull-left"><small>Less Available</small></label>
+                    <label for="free" class="pull-right"><small>More Available</small></label>
+                    <%}%>
+
+                    <% if(!locals.availability){%>
+                    <label><span style="color:#3498db"><i class="fas fa-calendar-check" title="Availability"></i></span>&nbsp;&nbsp;Availability: </label>
+                    <input type="range" min="1" max="5" value="3" id="availability" name="availability">
+                    <label for="busy" class="pull-left"><small>Less Available</small></label>
+                    <label for="free" class="pull-right"><small>More Available</small></label>
+                    <%}%>
+                    <br>
+
+                    <hr style="width: 100%; color: #555555; height: 1px; background-color:#555555;"/>
+
+                    <label for="position"><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;Position:</label>
+                    <select id="position" name="position" class="form-control">
+                        <% if(locals.all_positions){%>
+                        <%if (locals.all_positions.length > 0){locals.all_positions.forEach(function(pos){%>
+                        <%if (locals.position == pos){%>
+                        <option selected><%= pos %></option>
                         <%}else{%>
-                        <h3>Add an introduction!</h3>
-                        <%}%>
-                        <h4><button id="edit-intro" class="btn btn-primary pull-right" style="display: inline-flex; vertical-align: middle;">
-                            <span style="color:white" class="glyphicon glyphicon-pencil" title="Edit your introduction."></span>&nbsp;Edit</button></span>
-                            </button></h4>
-                    </div>
-                    <div id="intro-edit" style="display: none;">
-                        <form method="post" action="/update-intro">
-                            <textarea class="form-control" name="intro" rows="8"><%if(locals.intro){%><%=intro %><%}else{%><%}%></textarea>
-                            <button type="submit" class="btn btn-primary pull-right">Save</button>
-                        </form>
-                    </div>
-                </div>
+                        <option><%= pos %></option>
+                        <%}})}}%>
+                    </select>
 
+                    <br>
 
-                <div class="well well-sm clearfix" id="degrees-show" style="display: block">
+                    <label><span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;Department:</label>
                     <table class="table">
-                        <thead>
-                        <th><h4 class="text-left">Degree</h4></th>
-                        <th><h4 class="text-left">Discipline</h4></th>
-                        <th></th>
-                        </thead>
-                        <% if(locals.degrees && locals.disciplines){%>
-                        <% if(degrees.length > 0){%>
-                            <tbody>
-                            <%for(var i = 0; i < degrees.length; i++){%>
+                        <tbody>
+                        <% if(locals.departments){%>
+                        <%if (departments.length > 0){%>
+                        <%departments.forEach(function(department){%>
+                        <form method="post" action="/delete-department/<%=department.name%>" class="form-inline">
                             <tr>
-                                <td><%= degrees[i] %></td>
-                                <td><%= disciplines[i] %></td>
-                                <td></td>
+                                <td><%=department.name %></td>
+                                <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                                    <span class="glyphicon glyphicon-minus"></span></button></td>
                             </tr>
-                            <%}}}%>
-                            </tbody>
+                        </form>
+                        <%})}}%>
+                        <form method="post" action="/add-department" class="form-inline">
+                            <tr>
+                                <td><select id="department" name="department" class="js-example-basic-single js-states form-control" style="width:95%;">
+                                    <option></option>
+                                    <% if(locals.all_departments){%>
+                                    <%if (all_departments.length > 0){all_departments.forEach(function(department){%>
+                                    <option><%=department%></option>
+                                    <%})}}%>
+                                </select></td>
+                                <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                                    <span class="glyphicon glyphicon-plus"></span></button></td>
+                            </tr>
+                        </form>
+                        </tbody>
                     </table>
-                    <button id="edit-degrees1" class="btn btn-primary pull-right" style="display: inline-flex; vertical-align: middle;">
-                        <span style="color:white" class="glyphicon glyphicon-pencil" title="Edit your education."></span>&nbsp;Edit</button>
-                </div>
 
-                <div class="well well-sm clearfix" id="degrees-edit" style="display: none;">
-                    <table class="table">
-                        <thead>
-                        <th><h4 class="text-left">Degree</h4></th>
-                        <th><h4 class="text-left">Discipline</h4></th>
-                        <th></th>
-                        </thead>
-                        <% if(locals.degrees && locals.disciplines){%>
-                        <% if(degrees.length > 0){%>
-                            <tbody>
-                            <%for(var i = 0; i < degrees.length; i++){%>
-                            <form method="post" action="/delete-degree/<%=degrees[i]%>/<%=disciplines[i]%>" class="form-inline">
-                                <tr>
-                                    <td><%= degrees[i] %></td>
-                                    <td><%= disciplines[i] %></td>
-                                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                                        <span class="glyphicon glyphicon-minus"></span></button></td>
-                                </tr>
-                            </form>
-                            <%}}}%>
-                            <form method="post" action="/add-degree" class="form-inline">
-                                <tr>
-                                    <td><select id="degree" name="degree" class="js-example-basic-single js-states form-control" style="width:95%;">
-                                        <% if(locals.all_degrees){%>
-                                        <%if (all_degrees.length > 0){all_degrees.forEach(function(degree){%>
-                                        <option><%=degree%></option>
-                                        <%})}}%>
-                                    </select></td>
-                                    <td><select id="discipline" name="discipline" class="js-example-basic-single js-states form-control" style="width:95%;">
-                                        <% if(locals.all_disciplines){%>
-                                        <%if (all_disciplines.length > 0){all_disciplines.forEach(function(discipline){%>
-                                        <option><%=discipline%></option>
-                                        <%})}}%>
-                                    </select></td>
-                                    <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                                        <span class="glyphicon glyphicon-plus"></span></button></td>
-                                </tr>
-                            </form>
-                            </tbody>
-                    </table>
-                    <button id="edit-degrees2" class="btn btn-primary pull-right" style="display: inline-flex; vertical-align: middle;">Save</button>
-                </div>
+                    <button type="submit" class="btn btn-primary pull-right">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        <% if(locals.specialties){%>
-                        <% var json_tree = []; %>
-                        <% for(var i = 0; i < specialties.length; i++){ %>
-                        <% json_tree.push({id: specialties[i].dataValues.id, parent_id: specialties[i].dataValues.parent_id, text:specialties[i].dataValues.name});%>
-                        <%}%>
-                        <div id="test" style="display:none;"><%=JSON.stringify(json_tree)%></div>
-                        <div class="well well-sm">
-                            <h4><span style="color:#3498db"><i class="fas fa-cogs" title="Specialties"></i></span>&nbsp;&nbsp;Specialties<div class="pull-right"><a href='/create-specialty'>
-                                <button class="btn btn-primary"><span class='glyphicon glyphicon-pencil'></span>&nbsp;Edit</button>
-                            </a></div></h4>
-                            <br>
-                            <div id="specialty_tree"></div>
-                        </div>
-                        <%}%>
-                    </div>
+    <div class="col-sm-8">
+        <div class="well well-sm clearfix">
+            <div id="intro-show" style="display: block;">
+                <%if(locals.intro){%>
+                <h5><%=intro%></h5>
+                <%}else{%>
+                <h3>Add an introduction!</h3>
+                <%}%>
+                <h4><button id="edit-intro" class="btn btn-primary pull-right" style="display: inline-flex; vertical-align: middle;">
+                    <span style="color:white" class="glyphicon glyphicon-pencil" title="Edit your introduction."></span>&nbsp;Edit</button></span>
+                    </button></h4>
+            </div>
+            <div id="intro-edit" style="display: none;">
+                <form method="post" action="/update-intro">
+                    <textarea class="form-control" name="intro" rows="8"><%if(locals.intro){%><%=intro %><%}else{%><%}%></textarea>
+                    <button type="submit" class="btn btn-primary pull-right">Save</button>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="well well-sm clearfix" id="degrees-show" style="display: block">
+            <table class="table">
+                <thead>
+                <th><h4 class="text-left">Degree</h4></th>
+                <th><h4 class="text-left">Discipline</h4></th>
+                <th></th>
+                </thead>
+                <% if(locals.degrees && locals.disciplines){%>
+                <% if(degrees.length > 0){%>
+                    <tbody>
+                    <%for(var i = 0; i < degrees.length; i++){%>
+                    <tr>
+                        <td><%= degrees[i] %></td>
+                        <td><%= disciplines[i] %></td>
+                        <td></td>
+                    </tr>
+                    <%}}}%>
+                    </tbody>
+            </table>
+            <button id="edit-degrees1" class="btn btn-primary pull-right" style="display: inline-flex; vertical-align: middle;">
+                <span style="color:white" class="glyphicon glyphicon-pencil" title="Edit your education."></span>&nbsp;Edit</button>
+        </div>
+
+        <div class="well well-sm clearfix" id="degrees-edit" style="display: none;">
+            <table class="table">
+                <thead>
+                <th><h4 class="text-left">Degree</h4></th>
+                <th><h4 class="text-left">Discipline</h4></th>
+                <th></th>
+                </thead>
+                <% if(locals.degrees && locals.disciplines){%>
+                <% if(degrees.length > 0){%>
+                    <tbody>
+                    <%for(var i = 0; i < degrees.length; i++){%>
+                    <form method="post" action="/delete-degree/<%=degrees[i]%>/<%=disciplines[i]%>" class="form-inline">
+                        <tr>
+                            <td><%= degrees[i] %></td>
+                            <td><%= disciplines[i] %></td>
+                            <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                                <span class="glyphicon glyphicon-minus"></span></button></td>
+                        </tr>
+                    </form>
+                    <%}}}%>
+                    <form method="post" action="/add-degree" class="form-inline">
+                        <tr>
+                            <td><select id="degree" name="degree" class="js-example-basic-single js-states form-control" style="width:95%;">
+                                <% if(locals.all_degrees){%>
+                                <%if (all_degrees.length > 0){all_degrees.forEach(function(degree){%>
+                                <option><%=degree%></option>
+                                <%})}}%>
+                            </select></td>
+                            <td><select id="discipline" name="discipline" class="js-example-basic-single js-states form-control" style="width:95%;">
+                                <% if(locals.all_disciplines){%>
+                                <%if (all_disciplines.length > 0){all_disciplines.forEach(function(discipline){%>
+                                <option><%=discipline%></option>
+                                <%})}}%>
+                            </select></td>
+                            <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
+                                <span class="glyphicon glyphicon-plus"></span></button></td>
+                        </tr>
+                    </form>
+                    </tbody>
+            </table>
+            <button id="edit-degrees2" class="btn btn-primary pull-right" style="display: inline-flex; vertical-align: middle;">Save</button>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <% if(locals.specialties){%>
+                <% var json_tree = []; %>
+                <% for(var i = 0; i < specialties.length; i++){ %>
+                <% json_tree.push({id: specialties[i].dataValues.id, parent_id: specialties[i].dataValues.parent_id, text:specialties[i].dataValues.name});%>
+                <%}%>
+                <div id="test" style="display:none;"><%=JSON.stringify(json_tree)%></div>
+                <div class="well well-sm">
+                    <h4><span style="color:#3498db"><i class="fas fa-cogs" title="Specialties"></i></span>&nbsp;&nbsp;Specialties<div class="pull-right"><a href='/create-specialty'>
+                        <button class="btn btn-primary"><span class='glyphicon glyphicon-pencil'></span>&nbsp;Edit</button>
+                    </a></div></h4>
+                    <br>
+                    <div id="specialty_tree"></div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <% if(locals.skills){%>
-                        <div class="well well-sm">
-                            <h4><span style="color:#3498db"><i class="fas fa-flask" title="Skills"></i></span>&nbsp;&nbsp;Skills<div class="pull-right"><a href='/create-skill'>
-                                <button class="btn btn-primary"><span class='glyphicon glyphicon-pencil'></span>&nbsp;Edit</button>
-                            </a></div></h4>
-                            <ul>
-                                <%if (skills.length > 0){%>
-                                <%skills.forEach(function(skill){%>
-                                <% var parent; %>
-                                <% for(var i = 0; i < skill_parents.length; i++){ %>
-                                <% if(skill.parent_id == skill_parents[i].id){parent = skill_parents[i].name}%>
-                                <% } %>
-                                <li><%= skill.name %> (<%=parent%>)</li>
-                                <%})}%>
-                            </ul>
-                            <%}%>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <% if(locals.facilities){%>
-                        <div class="well well-sm">
-                            <h4><span style="color:#3498db"><i class="fas fa-university" title="Resources and Facilities"></i></span>&nbsp;&nbsp;Resources and Facilities<div class="pull-right"><a href='/create-facility'>
-                                <button class="btn btn-primary"><span class='glyphicon glyphicon-pencil'></span>&nbsp;Edit</button>
-                            </a></div></h4>
-                            <ul>
-                                <%if (facilities.length > 0){%>
-                                <%facilities.forEach(function(facility){%>
-                                <% var parent; %>
-                                <% for(var i = 0; i < facility_parents.length; i++){ %>
-                                <% if(facility.parent_id == facility_parents[i].id){parent = facility_parents[i].name}%>
-                                <% } %>
-                                <li><%= facility.name %> (<%=parent%>)</li>
-                                <%})}%>
-                            </ul>
-                        </div>
-                        <%}%>
-                    </div>
+                <%}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <% if(locals.skills){%>
+                <div class="well well-sm">
+                    <h4><span style="color:#3498db"><i class="fas fa-flask" title="Skills"></i></span>&nbsp;&nbsp;Skills<div class="pull-right"><a href='/create-skill'>
+                        <button class="btn btn-primary"><span class='glyphicon glyphicon-pencil'></span>&nbsp;Edit</button>
+                    </a></div></h4>
+                    <ul>
+                        <%if (skills.length > 0){%>
+                        <%skills.forEach(function(skill){%>
+                        <% var parent; %>
+                        <% for(var i = 0; i < skill_parents.length; i++){ %>
+                        <% if(skill.parent_id == skill_parents[i].id){parent = skill_parents[i].name}%>
+                        <% } %>
+                        <li><%= skill.name %> (<%=parent%>)</li>
+                        <%})}%>
+                    </ul>
+                    <%}%>
                 </div>
+            </div>
+            <div class="col-sm-6">
+                <% if(locals.facilities){%>
+                <div class="well well-sm">
+                    <h4><span style="color:#3498db"><i class="fas fa-university" title="Resources and Facilities"></i></span>&nbsp;&nbsp;Resources and Facilities<div class="pull-right"><a href='/create-facility'>
+                        <button class="btn btn-primary"><span class='glyphicon glyphicon-pencil'></span>&nbsp;Edit</button>
+                    </a></div></h4>
+                    <ul>
+                        <%if (facilities.length > 0){%>
+                        <%facilities.forEach(function(facility){%>
+                        <% var parent; %>
+                        <% for(var i = 0; i < facility_parents.length; i++){ %>
+                        <% if(facility.parent_id == facility_parents[i].id){parent = facility_parents[i].name}%>
+                        <% } %>
+                        <li><%= facility.name %> (<%=parent%>)</li>
+                        <%})}%>
+                    </ul>
+                </div>
+                <%}%>
             </div>
         </div>
     </div>

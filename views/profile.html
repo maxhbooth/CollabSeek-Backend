@@ -62,6 +62,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">Home</a></li>
                 <li><a href="/my-profile">Profile</a></li>
+                <li><a href="/about">About</a></li>
                 <li><a href="/logout">Log Out</a></li>
             </ul>
         </div><!--/.nav-collapse -->
@@ -79,7 +80,6 @@
             <% if(locals.imagePath){%>
             <div id = "imageDiv"  style="text-align: center">
             </div>
-            <!--<img src="../Images/<%=imagePath%>" onerror="this.src='../resources/profile-icon.png'" width="200">-->
             <%} else {%>
             <% var initials = first.charAt(0) + last.charAt(0); %>
             <div class="circle"><%=initials%></div>

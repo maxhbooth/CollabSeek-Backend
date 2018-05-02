@@ -1,8 +1,18 @@
+/* Welcome, homepage, profile directions
+* Written by Mac Watrous, Max Booth, Alden Caron-O'Neill April 2018.
+*  Includes:
+*  1. / (GET)
+*  2. /welcome (GET)
+*  3. /profile/:id (GET)
+*  4. /my-profile (GET)
+*  5. /about (GET)
+*  6. /delete-profile (GET & POST)
+* */
+
 // route for Home-Page
 var Profile = require('../../models/profile');
 const ProfileRepository = require('./helpers/profileRepository');
 const AttributeRepository = require('./helpers/attributeRepository');
-
 
 module.exports = function (app, sessionChecker) {
     // set up the routes themselves
@@ -66,57 +76,26 @@ module.exports = function (app, sessionChecker) {
             });
         });
 
-    } else {
-        res.redirect('/login');
-    }
-});
-
-
-
-////////////////////// ROUTE FOR /VERIFY WITH WHICHEVER HIDDEN TOKEN ATTAHCED TO IT BY MARCUS///////////////////////////
-    app.get('/verify/:hidden_token',(req,res)=>{
-        if (req.session.profile && req.cookies.user_sid) {
-            var hidden_token = req.params.hidden_token;
-            console.log(hidden_token);
-            // next find account that matches hidden token
-            Profile.findOne({where:{'hidden_token': hidden_token}}).then(function(user) {
-                if (!user) {
-                    console.log("No user found");
-                    res.redirect('/login');
-                    return;
-                }
-                //change the user's properties if pass
-                console.log(user.email);
-                console.log(user.confirmed_user);
-                user.confirmed_user = true;
-                user.hidden_token = "";
-                user.save().then(res.redirect('/my-profile'));
-            });
-
+        } else {
+            res.redirect('/login');
         }
     });
-    //////////////////////ROUTE FOR THE /CHANGEPASSWORD PLUS WHICH EVER PASSWORD TOKEN ATTACHED BY MARCUS////////////////
-    app.get('/profile-reset', (req,res) =>{
-        if (req.session.profile && req.cookies.user_sid) {
-            res.render('ProfilePasswordChange.html');
+
+    app.get('/about', (req, res) => {
+       res.render('about.html');
+    });
+
+    app.get('/delete-profile', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+            res.render('delete-profile.html');
         }
-    } );
-    app.get('/changepassword/:password_token',(req,res)=>{
-
-            var password_token = req.params.password_token;
-            console.log(password_token);
-
-            Profile.findOne({where:{'password_token':password_token}}).then(function(user)
-            {
-                if (!user) {
-                    console.log("No user found");
-                    res.redirect('/login');
-                    return;
-                }
-                console.log(password_token);
-               res.render('changepassword.html');
-
-
+    });
+    app.post('/delete-profile', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid){
+            let profileRepository = new ProfileRepository();
+            profileRepository.deleteProfile(req.session.profile.id).then(function() {
+                res.redirect('/logout');
             });
-        });
+        }
+    });
 };

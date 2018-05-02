@@ -1,3 +1,10 @@
+/* Searching routes, advanced search and regular search routes.
+* Written by Mac Watrous April 2018.
+*  Includes:
+*  1. /advanced-search (GET & POST)
+*  2. /search (POST)
+* */
+
 fuzzysort = require('fuzzysort');
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
@@ -184,8 +191,18 @@ module.exports = function (app, sessionChecker) {
 
                 var compoundOP = async(function() {
                     let response = await([getDepartments(departments),getDisciplines(disciplines),getFacilities(facilities),getSkills(skills),getSpecialties(specialities), getFirstName(query),getLastName(query), getFirstAndLast(query)]);
+
+                    let responseTemp =[];
+                    responseTemp = responseTemp.concat(response);
+                    response = responseTemp;
                     for (let i =0; i<response.length;++i){
+                        responseTemp = [];
+                        responseTemp = responseTemp.concat(response[i]);
+                        response[i] = responseTemp;
+                        //console.log(response[i]);
+
                         for (let j = 0; j<response[i].length; ++j){
+                            //console.log(response[i][j]);
                             if (response[i][j].id == req.session.profile.id){
                                 response[i].splice(j,1)
                             }
@@ -219,7 +236,7 @@ module.exports = function (app, sessionChecker) {
         if (departments.length == 0){
             return [];
         }
-        for (var i = 0; i < departments.length && i <  10; ++i){
+        for (var i = 0; i < departments.length; ++i){
             let id = await(profileRepository.getProfileIDByDepartment(departments[i]));
             if (id !=null){
                 departmentProfileIds = departmentProfileIds.concat(id);
@@ -235,7 +252,7 @@ module.exports = function (app, sessionChecker) {
         if (disciplines.length == 0){
             return [];
         }
-        for (var i = 0; i < disciplines.length && i <  10; ++i){
+        for (var i = 0; i < disciplines.length; ++i){
             let id = await(profileRepository.getProfileIDByDiscipline(disciplines[i]));
             if (id !=null){
                 disciplineProfileIds = disciplineProfileIds.concat(id);
@@ -251,7 +268,7 @@ module.exports = function (app, sessionChecker) {
         if (facilities.length == 0){
             return [];
         }
-        for (var i = 0; i < facilities.length && i <  10; ++i){
+        for (var i = 0; i < facilities.length; ++i){
             let id = await(profileRepository.getProfileIDByFacility(facilities[i]));
             if (id !=null){
                 facilityProfileIds = facilityProfileIds.concat(id);
@@ -267,7 +284,7 @@ module.exports = function (app, sessionChecker) {
         if (skills.length == 0){
             return [];
         }
-        for (var i = 0; i < skills.length  && i <  10; ++i){
+        for (var i = 0; i < skills.length; ++i){
             let id = await(profileRepository.getProfileIDBySkill(skills[i]));
             if (id !=null){
                 skillProfileIds = skillProfileIds.concat(id);
@@ -283,7 +300,7 @@ module.exports = function (app, sessionChecker) {
         if (specialties.length == 0){
             return [];
         }
-        for (var i = 0; i < specialties.length && i <  10; ++i){
+        for (var i = 0; i < specialties.length; ++i){
             let id = await(profileRepository.getProfileIDBySpecialty(specialties[i]));
             if (id !=null){
                 specialtyProfileIds = specialtyProfileIds.concat(id);
@@ -299,7 +316,7 @@ module.exports = function (app, sessionChecker) {
         if (departments.length == 0){
             return [];
         }
-        for (var i = 0; i < departments.length && i <  10; ++i){
+        for (var i = 0; i < departments.length; ++i){
             let id = await(profileRepository.getProfileIDByDepartment(departments[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null){
@@ -322,7 +339,7 @@ module.exports = function (app, sessionChecker) {
         if (disciplines.length == 0){
             return [];
         }
-        for (var i = 0; i < disciplines.length && i <  10; ++i){
+        for (var i = 0; i < disciplines.length; ++i){
             let id = await(profileRepository.getProfileIDByDiscipline(disciplines[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
@@ -345,7 +362,7 @@ module.exports = function (app, sessionChecker) {
         if (facilities.length == 0){
             return [];
         }
-        for (var i = 0; i < facilities.length && i <  10; ++i){
+        for (var i = 0; i < facilities.length; ++i){
             let id = await(profileRepository.getProfileIDByFacility(facilities[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
@@ -368,8 +385,8 @@ module.exports = function (app, sessionChecker) {
         if (skills.length == 0){
             return [];
         }
-        for (var i = 0; i < skills.length && i <  10; ++i){
-            let id = await(profileRepository.getProfileIDBySkill(skills[i]))
+        for (var i = 0; i < skills.length; ++i){
+            let id = await(profileRepository.getProfileIDBySkill(skills[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
                 let profileArray = [];
@@ -391,7 +408,7 @@ module.exports = function (app, sessionChecker) {
         if (specialties.length == 0){
             return [];
         }
-        for (var i = 0; i < specialties.length && i <  10; ++i){
+        for (var i = 0; i < specialties.length; ++i){
             let id = await(profileRepository.getProfileIDBySpecialty(specialties[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
@@ -414,7 +431,7 @@ module.exports = function (app, sessionChecker) {
         if (positions.length == 0){
             return [];
         }
-        for (var i = 0; i < positions.length && i <  10; ++i){
+        for (var i = 0; i < positions.length; ++i){
             let id = await(profileRepository.getProfileIDByPosition(positions[i]));
             let profile = await(profileRepository.getProfileInformation(id));
             if (profile!=null) {
