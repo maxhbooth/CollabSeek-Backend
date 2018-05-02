@@ -264,6 +264,21 @@ profileRepository.prototype.addProfileSkillById = async(function (profileId, ski
     return 0;
 });
 
+profileRepository.prototype.addAdmin = async(function(profileEmail){
+   this.profile.update(
+        {admin: true},
+        {where: {email: profileEmail}}
+   ).catch(error => {
+        console.log(error);});
+});
+
+profileRepository.prototype.removeAdmin = async(function(profileEmail){
+    this.profile.update(
+        {admin: false},
+        {where: {email: profileEmail}}
+    ).catch(error => {
+        console.log(error);});
+});
 
 // =====================================================================================================================
 // UPDATE ATTRIBUTE OF PROFILE
@@ -474,7 +489,8 @@ profileRepository.prototype.createProfile = async(function
         pronouns: pronouns,
         website: website,
         phone_number: phone,
-        availability: availability
+        availability: availability,
+        admin: false
     }, {
         returning: true,
         plain: true}).catch(errors => {
@@ -598,13 +614,13 @@ profileRepository.prototype.getProfileInformation = async(function (profileId){
             imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
             hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
             facilities: facilities, pronouns: profile[j].pronouns, website: profile[j].website, phone: profile[j].phone_number,
-            availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents};
+            availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents, admin: profile[j].admin};
         if(profile.length === 1){
             return {id: ID, first: profile[j].first_name, last: profile[j].last_name, email: profile[j].email, position: position_name,
                 imagePath: profile[j].imagepath, skills: skills, departments: departments, degrees: degrees, specialties: specialties, disciplines: disciplines,
                 hidden_token: profile[j].hidden_token, confirmed_user: profile[j].confirmed_user, intro: profile[j].intro,
                 facilities: facilities, pronouns: profile[j].pronouns, website: profile[j].website, phone: profile[j].phone_number,
-                availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents};
+                availability: profile[j].availability, skill_parents: skill_parents, facility_parents: facility_parents, admin: profile[j].admin};
         }
     }
    return profiles;
@@ -623,6 +639,7 @@ profileRepository.prototype.deleteProfile = async(function(profileID){
     return 0;
 
 });
+
 
 profileRepository.prototype.getSpecialtiesIDs = async(function(profileID){
     let specialties = await(this.attrRepository.specialty.findAll({
@@ -835,6 +852,35 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
     if(profiles != null) {
         for (var i = 0; i < profiles.length; i++) {
             profile_ids.push(profiles[i].dataValues.id);
+        }
+        return profile_ids;
+    }
+    return null;
+});
+
+profileRepository.prototype.getAllUsers = async(function(){
+    let profiles = await(this.profile.findAll());
+    var profile_ids = [];
+    if(profiles != null) {
+        for (var i = 0; i < profiles.length; i++) {
+            profile_ids.push({id: profiles[i].dataValues.id, first_name: profiles[i].dataValues.first_name, last_name: profiles[i].dataValues.last_name,
+            email: profiles[i].dataValues.email, confirmed: profiles[i].dataValues.confirmed_user, admin: profiles[i].dataValues.admin});
+        }
+        profile_ids.sort(function(a,b) {return (a.last_name > b.last_name) ? 1 : ((b.last_name > a.last_name) ? -1 : 0);} );
+        return profile_ids;
+    }
+    return null;
+});
+
+profileRepository.prototype.getAdmins = async(function(){
+    let profiles = await(this.profile.findAll({
+        where: {admin: true}
+    }));
+    var profile_ids = [];
+    if(profiles != null) {
+        for (var i = 0; i < profiles.length; i++) {
+            profile_ids.push({id: profiles[i].dataValues.id, first_name: profiles[i].dataValues.first_name, last_name: profiles[i].dataValues.last_name,
+                email: profiles[i].dataValues.email});
         }
         return profile_ids;
     }

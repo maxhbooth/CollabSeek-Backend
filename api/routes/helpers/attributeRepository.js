@@ -12,6 +12,7 @@ const position = require('../../../models/position');
 const skill = require('../../../models/skill');
 const specialty = require('../../../models/specialty');
 const degree_discipline = require('../../../models/profile_degree');
+const variables = require('../../../models/variables')
 
 const repository = function repository(){
 
@@ -23,6 +24,7 @@ const repository = function repository(){
     this.skill = skill;
     this.specialty = specialty;
     this.degree_discipline = degree_discipline;
+    this.variables = variables;
 
 };
 
@@ -55,7 +57,7 @@ repository.prototype.getFacilitiesTree = async(function () {
 });
 
 repository.prototype.getPositions = async(function () {
-    return await(this.position.findAll()).map(position => position.dataValues.name)
+    return await(this.position.findAll()).map(position => position.dataValues.name);
 });
 
 repository.prototype.getSkills = async(function () {
@@ -233,6 +235,74 @@ repository.prototype.addNewSkill = async(function(skillName, parentID){
 repository.prototype.addNewFacility = async(function(facilityName, parentID){
     let facility = await(this.facility.create({name: facilityName, parent_id: parentID}, {plain: true}));
     return facility;
-})
+});
+
+repository.prototype.addNewPosition = async(function(positionName){
+    let position = await(this.position.create({name: positionName}, {plain: true}));
+    return position;
+});
+
+repository.prototype.addNewDegree = async(function(degreeName){
+    let degree = await(this.degree.create({name: degreeName}, {plain: true}));
+    return degree;
+});
+
+repository.prototype.addNewDepartment = async(function(departmentName){
+    let department = await(this.department.create({name: departmentName}, {plain: true}));
+    return department;
+});
+
+repository.prototype.addNewDiscipline = async(function(disciplineName){
+    let discipline = await(this.discipline.create({name: disciplineName}, {plain: true}));
+    return department;
+});
+
 
 module.exports = repository;
+
+
+// =====================================================================================================================
+// ADMIN FUNCTIONS
+// =====================================================================================================================
+repository.prototype.changeEmailRequirement = async(function(email){
+    this.variables.update(
+        {value: email},
+        {where: {name: "email"}}
+    ).catch(error => {console.log(error);});
+});
+repository.prototype.getEmailRequirement = async(function(){
+    let email = await(this.variables.findOne({where: {name: "email"}}));
+
+    if(email != null){
+        return email.value;
+    }
+    return null;
+});
+
+repository.prototype.getAboutSection = async(function(){
+    let about1 = await(this.variables.findOne({where: {name: "about1"}}));
+    let about2 = await(this.variables.findOne({where: {name: "about2"}}));
+    let about3 = await(this.variables.findOne({where: {name: "about3"}}));
+    let about4 = await(this.variables.findOne({where: {name: "about4"}}));
+
+    return({about1: about1.dataValues.value, about2: about2.dataValues.value, about3: about3.dataValues.value, about4: about4.dataValues.value});
+});
+
+repository.prototype.changeAbout = async(function(one, two, three, four){
+    this.variables.update(
+        {value: one},
+        {where: {name: "about1"}}
+    ).catch(error => {console.log(error);});
+    this.variables.update(
+        {value: two},
+        {where: {name: "about2"}}
+    ).catch(error => {console.log(error);});
+    this.variables.update(
+        {value: three},
+        {where: {name: "about3"}}
+    ).catch(error => {console.log(error);});
+    this.variables.update(
+        {value: four},
+        {where: {name: "about4"}}
+    ).catch(error => {console.log(error);});
+});

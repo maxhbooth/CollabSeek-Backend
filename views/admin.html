@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/homepage.css">
+    <script src="js/admin.js"></script>
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="resources/CollabSeek-Logo.png" alt="CollabSeek">
+            </a>
+        </div>
+        <div id="navbar5" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="/my-profile">Profile</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+<div class="container-fluid pad" style="padding-left: 75px; padding-right: 75px; padding-bottom: 30px;">
+    <div class="page-header">
+        <h1>Admin Page</h1>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse1">Edit Admins</a>
+            </h3>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="col-sm-6">
+                    <h4>Current Admins</h4>
+                    <ul>
+                        <% if(locals.admins){ %>
+                        <%for(var i = 0; i < locals.admins.length; i++) { %>
+                        <li><%=admins[i].first_name%> <%=admins[i].last_name%>, <%=admins[i].email%></li>
+                        <% } %>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Add New Admin by Email:</h4>
+                    <input type="text" style="width:80%;" class="form-horizontal" id="new_admin" name="new_admin">
+                    <button id="add_new_admin" class="btn btn-primary" style="display: inline-flex;">Add</button>
+                    <br>
+                    <h4>Remove Admin by Email:</h4>
+                    <input type="text" style="width:80%;" class="form-horizontal" id="old_admin" name="old_admin">
+                    <button id="remove_admin" class="btn btn-primary" style="display: inline-flex;">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse8">Edit Email Restriction</a>
+            </h3>
+        </div>
+        <div id="collapse8" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="col-sm-6">
+                    <h4>Current email restriction is that emails must end with: <%=locals.email%></h4>
+                </div>
+                <div class="col-sm-6">
+                    <h4>New Emails Must End With (comma separated list):</h4>
+                    <input type="text" style="width:80%;" class="form-horizontal" id="email_req" name="email_req">
+                    <button id="change_email_req" class="btn btn-primary" style="display: inline-flex;">Change</button>
+                    Examples:
+                    <ul>
+                        <li>unc.edu</li>
+                        <li>edu</li>
+                        <li>edu, gov</li>
+                        <li>unc.edu, wfu.edu</li>
+                        <li>Leave blank for no restrictions</li>
+                    </ul>
+                    Note: When you change this value you change the entire field, so if you want to add another email,
+                    you must also type in any previous email allowments. I.e. to add gov ending emails to edu ending emails,
+                    type in "edu, gov".
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse2">Edit Users</a>
+            </h3>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse9">All Emails</a>
+                    </h3>
+                </div>
+                <div class="panel-body">
+
+                <div id="collapse9" class="panel-collapse">
+                    <div class="panel-body">
+                        <%if (locals.users) {%>
+                        <%for (var i = 0; i < users.length; i++) { %>
+                        <%=users[i].email%><% if (i < users.length - 1) {%>,
+                        <% } %>
+                        <% } %>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse10">All Users</a>
+                    </h3>
+                </div>
+                <div id="collapse10" class="panel-collapse">
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <caption>List of CollabSeek Users</caption>
+                            <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Email Confirmed</th>
+                                <th scope="col">Admin</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                            </thead>
+                            <%if (locals.users) {%>
+                            <tbody>
+                            <%for (var i = 0; i < users.length; i++) { %>
+                            <tr>
+                                <td><a href="/profile/<%=users[i].id%>"><%=users[i].first_name%> <%=users[i].last_name%></a></td>
+                                <td><%=users[i].email%></td>
+                                <% if(users[i].confirmed) {%>
+                                <td>Yes</td>
+                                <%} else {%>
+                                <td>-</td>
+                                <% } %>
+                                <% if(users[i].admin) {%>
+                                <td>Yes</td>
+                                <%} else {%>
+                                <td>-</td>
+                                <% } %>
+                                <form method="post" action="/delete-profile/<%=users[i].id%>">
+                                    <td><button class="btn btn-primary" type="submit">Remove User</button></td>
+                                </form>
+                            </tr>
+                            <%}%>
+                            </tbody>
+                            <%}%>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse3">Edit Positions</a>
+            </h3>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="col-sm-6">
+                    <h4>Current Positions:</h4>
+                    <select id="position" name="position" class="form-control">
+                        <% if(locals.positions){%>
+                        <%if (locals.positions.length > 0){locals.positions.forEach(function(pos){%>
+                        <option><%= pos %></option>
+                        <%})}}%>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Add A Position:</h4>
+                    <form method="post" action="/add-new-position">
+                        <input type="text" style="width:80%;" class="form-horizontal" id="position" name="position">
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse4">Edit Departments</a>
+            </h3>
+        </div>
+        <div id="collapse4" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="col-sm-6">
+
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse5">Edit Degrees</a>
+            </h3>
+        </div>
+        <div id="collapse5" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="col-sm-6">
+
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse6">Edit Disciplines</a>
+            </h3>
+        </div>
+        <div id="collapse6" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="col-sm-6">
+
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse7">Edit About</a>
+            </h3>
+        </div>
+        <div id="collapse7" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="col-sm-6">
+                    <label>What is CollabSeek?</label>
+                    <textarea class="form-control" id="about1" name="about1" rows="10" maxlength="3000"><%=locals.about.about1%></textarea>
+                    <br>
+                    <label>Who Made CollabSeek?</label>
+                    <textarea class="form-control" id="about3" name="about3" rows="10" maxlength="3000"><%=locals.about.about3%></textarea>
+                </div>
+                <div class="col-sm-6">
+                    <label>How Can I Use CollabSeek?</label>
+                    <textarea class="form-control" id="about2" name="about2" rows="10" maxlength="3000"><%=locals.about.about2%></textarea>
+                    <br>
+                    <label>Questions or Comments?</label>
+                    <textarea class="form-control" id="about4" name="about4" rows="10" maxlength="3000"><%=locals.about.about4%></textarea>
+                </div>
+                <br><br>
+                <button id="change_about" class="btn btn-primary pull-right">Save Changes</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
