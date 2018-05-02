@@ -93,6 +93,7 @@ module.exports = function (app, sessionChecker) {
             res.render('delete-profile.html');
         }
     });
+
     app.post('/delete-profile', (req, res) => {
         if(req.session.profile && req.cookies.user_sid){
             let profileRepository = new ProfileRepository();
@@ -101,5 +102,6 @@ module.exports = function (app, sessionChecker) {
             });
         }
     });
+
 
 };

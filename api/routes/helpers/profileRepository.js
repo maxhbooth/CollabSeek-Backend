@@ -640,6 +640,7 @@ profileRepository.prototype.deleteProfile = async(function(profileID){
 
 });
 
+
 profileRepository.prototype.getSpecialtiesIDs = async(function(profileID){
     let specialties = await(this.attrRepository.specialty.findAll({
         include: [{
@@ -857,6 +858,20 @@ profileRepository.prototype.getProfileIDByFirstLastName = async(function(name){
     return null;
 });
 
+profileRepository.prototype.getAllUsers = async(function(){
+    let profiles = await(this.profile.findAll());
+    var profile_ids = [];
+    if(profiles != null) {
+        for (var i = 0; i < profiles.length; i++) {
+            profile_ids.push({id: profiles[i].dataValues.id, first_name: profiles[i].dataValues.first_name, last_name: profiles[i].dataValues.last_name,
+            email: profiles[i].dataValues.email, confirmed: profiles[i].dataValues.confirmed_user, admin: profiles[i].dataValues.admin});
+        }
+        profile_ids.sort(function(a,b) {return (a.last_name > b.last_name) ? 1 : ((b.last_name > a.last_name) ? -1 : 0);} );
+        return profile_ids;
+    }
+    return null;
+});
+
 profileRepository.prototype.getAdmins = async(function(){
     let profiles = await(this.profile.findAll({
         where: {admin: true}
@@ -865,7 +880,7 @@ profileRepository.prototype.getAdmins = async(function(){
     if(profiles != null) {
         for (var i = 0; i < profiles.length; i++) {
             profile_ids.push({id: profiles[i].dataValues.id, first_name: profiles[i].dataValues.first_name, last_name: profiles[i].dataValues.last_name,
-            email: profiles[i].dataValues.email});
+                email: profiles[i].dataValues.email});
         }
         return profile_ids;
     }
