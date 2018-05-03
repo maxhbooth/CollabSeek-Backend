@@ -1,3 +1,10 @@
+/* ORM layer to connect backend to the database using sequelize
+ * Has all functions needed to update, delete, get, add attributes to database
+ * Created/edited by MB, AC, MW, MSW
+ * Includes models: degree, discipline, facility, position, skill, specialty, profile_degree, variables
+ */
+
+
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 //asyncawait walkthrough at https://www.npmjs.com/package/asyncawait

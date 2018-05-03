@@ -1,3 +1,8 @@
+/* Sets up search for editing
+ * Sets up editing button hooks
+ * Sets up tree layout for specialty
+ */
+
 $(document).ready(function(){
     function matchStart(params, data) {
         params.term = params.term || '';

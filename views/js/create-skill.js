@@ -1,3 +1,5 @@
+// Add new skills to database and to profile
+// Make in tree format
 $(document).ready(function() {
 
     var database_data = (JSON.parse($("#test").text()));

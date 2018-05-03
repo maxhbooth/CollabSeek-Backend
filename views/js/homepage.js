@@ -1,3 +1,5 @@
+// Add functionality to search button
+
 $("#searchButton").click(function(){
     $(".error").hide();
     var hasError = false;

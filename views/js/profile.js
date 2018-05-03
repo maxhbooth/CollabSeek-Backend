@@ -1,3 +1,5 @@
+// Add tree layout to specialties section
+
 $(document).ready(function() {
 
     var database_data = (JSON.parse($("#test").text()));

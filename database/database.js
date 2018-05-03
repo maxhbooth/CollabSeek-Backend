@@ -1,3 +1,8 @@
+/* Database setup
+ * Links to environmental variables
+ * Sets database parameters like host, post, logging, type etc.
+ */
+
 var Sequelize = require('sequelize');
 var db;
 

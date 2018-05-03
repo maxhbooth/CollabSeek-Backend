@@ -1,3 +1,6 @@
+// Add new facilities to database and to profile
+// Make in tree format 
+
 $(document).ready(function() {
     var database_data = (JSON.parse($("#test").text()));
     var sorted = _queryTreeSort({q: database_data});
