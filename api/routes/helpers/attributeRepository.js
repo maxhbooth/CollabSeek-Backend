@@ -258,7 +258,64 @@ repository.prototype.addNewDiscipline = async(function(disciplineName){
 });
 
 
-module.exports = repository;
+// =====================================================================================================================
+// REMOVE FROM DATABASE
+// =====================================================================================================================
+repository.prototype.deletePosition = async(function(positionName){
+    let position = await(this.position.findOne({where: {name: positionName}}));
+    if(position != null){
+        this.position.destroy({
+            where: {name: positionName}
+        })
+
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
+repository.prototype.deleteDepartment = async(function(departmentName){
+    let department = await(this.department.findOne({where: {name: departmentName}}));
+    if(department != null){
+        this.department.destroy({
+            where: {name: departmentName}
+        })
+
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
+repository.prototype.deleteDegree = async(function(degreeName){
+    let degree = await(this.degree.findOne({where: {name: degreeName}}));
+    if(degree != null){
+        this.degree.destroy({
+            where: {name: degreeName}
+        })
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
+repository.prototype.deleteDiscipline = async(function(disciplineName){
+    let discipline = await(this.discipline.findOne({where: {name: disciplineName}}));
+    if(discipline != null){
+        this.discipline.destroy({
+            where: {name: disciplineName}
+        })
+
+            .catch(error => {
+            console.log(error);
+    });
+    }
+    return 0;
+});
+
 
 
 // =====================================================================================================================
@@ -306,3 +363,6 @@ repository.prototype.changeAbout = async(function(one, two, three, four){
         {where: {name: "about4"}}
     ).catch(error => {console.log(error);});
 });
+
+
+module.exports = repository;

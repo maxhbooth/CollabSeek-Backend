@@ -1,64 +1,64 @@
 $(document).ready(function() {
-
-
-    $("#add_new_admin").click(function(e){
-        var text =  $("#new_admin").val();
-        if( !text){
-            alert("Please fill in the email!");
-            e.preventDefault();
-            return false;
+    function matchStart(params, data) {
+        params.term = params.term || '';
+        if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) == 0) {
+            return data;
         }
-        else {
-            var data = {email: text};
-            $.ajax({
-                type: 'POST',
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                url: '/add-new-admin/'
-            });
+        var i = -1;
+        while ((i = data.text.indexOf(" ", i+1)) != -1){
+            if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) == i+1) {
+                return data;
+            }
         }
-        $("#new_admin").val('');
+        return false;
+    }
 
+    $("#discipline").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        }
     });
 
-    $("#remove_admin").click(function(e){
-        var text =  $("#old_admin").val();
-        if( !text){
-            alert("Please fill in the email!");
-            e.preventDefault();
-            return false;
+    $("#discipline_del").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
         }
-        else {
-            var data = {email: text};
-            $.ajax({
-                type: 'POST',
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                url: '/remove-admin/'
-            });
-        }
-        $("#old_admin").val('');
-
     });
 
-    $("#change_email_req").click(function(e){
-        var text =  $("#email_req").val();
-        if( !text){
-            alert("Please fill in the email requirement!");
-            e.preventDefault();
-            return false;
+    $("#department").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
         }
-        else {
-            var data = {email_req: text};
-            $.ajax({
-                type: 'POST',
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                url: '/change-email/'
-            });
-        }
-        $("#email_req").val('');
+    });
 
+    $("#department_del").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        }
+    });
+
+    $("#degree").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        }
+    });
+
+    $("#degree_del").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        }
+    });
+
+    $("#position").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        }
+    });
+
+    $("#position_del").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        }
     });
 
     $("#change_about").click(function(e){
