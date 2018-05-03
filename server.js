@@ -64,8 +64,9 @@ var sessionChecker = (req, res, next) => {
         next();
     }
 };
-
 app.use(express.static(__dirname + '/views'));
+app.use("/Images", express.static(__dirname + '/data'));
+
 
 var loginRoutes = require('./api/routes/loginRoutes');
 var homeRoutes = require('./api/routes/homeRoutes');
@@ -75,7 +76,6 @@ var searchRoutes = require('./api/routes/searchRoutes');
 var createAttributeRoutes = require('./api/routes/createAttributeRoutes');
 var signupRoutes = require('./api/routes/signupRoutes');
 var passwordRoutes = require('./api/routes/passwordRoutes');
-var testRoutes = require('./api/routes/testRoutes');
 var adminRoutes = require('./api/routes/adminRoutes');
 
 homeRoutes(app, sessionChecker);
@@ -86,7 +86,6 @@ searchRoutes(app, sessionChecker);
 createAttributeRoutes(app, sessionChecker);
 signupRoutes(app, sessionChecker);
 passwordRoutes(app, sessionChecker);
-testRoutes(app, sessionChecker);
 adminRoutes(app, sessionChecker);
 
 app.listen(port);
