@@ -84,6 +84,11 @@ module.exports = function (app, sessionChecker) {
     app.get('/about', (req, res) => {
         let attrRepository = new AttributeRepository();
         attrRepository.getAboutSection().then(function(models) {
+            if (req.session.profile && req.cookies.user_sid){
+                models['loggedIn'] = true;
+            } else {
+                models['loggedIn'] = false;
+            }
             res.render('about.html', models);
         });
     });
