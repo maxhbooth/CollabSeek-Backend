@@ -64,12 +64,12 @@ COLLAB_LINK = localhost:8080
 [sudo] npm install -g webdriverio
 ```
 #### Redeploying
-```
+
 To restart the service for any reason, go to the cloud apps command console and go to applications -> Deployments.  Choose the pod that you want to restart and click “Deploy” at the top of the page.
 
 To rebuild the service, go to Builds->builds in the cloud apps command console.  Again, choose the pod that you want to rebuild, and click “Build” at the top of the page.  This is required if you want to make any changes to the code, rather than just rebooting the server.
 
-```
+
 
 ## License
 
