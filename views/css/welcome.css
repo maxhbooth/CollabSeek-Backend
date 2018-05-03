@@ -72,16 +72,19 @@ html, body {
     font-weight: 400;
     font-style: normal;
     padding-top: 10px;
-
 }
 
-#linkedIn {
-    float: left;
-    padding-right: 10px;
+#loginDiv {
+    float: right;
 }
 
-#github {
+#signUpDiv {
+    float:right;
+    padding-left: 10px;
+}
 
+#aboutDiv {
+    float:left;
 }
 
 #login {
@@ -96,6 +99,17 @@ html, body {
 
 #signup {
     border-radius: 4px;
+    background-color: #2980b9;
+    border: none;
+    padding: 6px;
+    color: white;
+    font-size: 22px;
+    box-shadow: 1px 1px 6px #000000;
+    margin-right:16px;
+}
+
+#about {
+    border-radius: 4px;
     background-color: #2c3e50;
     border: none;
     padding: 6px;
@@ -109,6 +123,10 @@ html, body {
 }
 
 #signup:hover {
+    background-color: #3498db;
+}
+
+#about:hover {
     background-color: #34495e;
 }
 
