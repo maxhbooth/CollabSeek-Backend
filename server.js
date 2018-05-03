@@ -64,6 +64,7 @@ var sessionChecker = (req, res, next) => {
         next();
     }
 };
+
 app.use(express.static(__dirname + '/views'));
 app.use("/Images", express.static(__dirname + '/data'));
 
