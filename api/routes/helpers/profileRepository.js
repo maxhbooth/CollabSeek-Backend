@@ -1,3 +1,9 @@
+/* ORM layer to connect backend to the database using sequelize
+ * Has all functions needed connect profiles with attributes in attribute repository
+ * Created/edited by MB, AC, MW, MSW
+ * Includes models: profile, profile_specialty, profile_degree, profile_department, profile_facility, profile_skill
+ */
+
 const async = require('asyncawait/async');
 const await = require('asyncawait/await');
 //asyncawait walkthrough at https://www.npmjs.com/package/asyncawait
