@@ -1,3 +1,4 @@
+// Not ours, used for background animation
 var Delaunay;
 
 (function() {

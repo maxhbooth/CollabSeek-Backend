@@ -1,5 +1,6 @@
 // Grabbed from external source
 // https://gist.github.com/smrchy/7040377
+// Takes database output and puts it in format compatible with trees
 
 var _queryTreeSort = function(options) {
     var cfi, e, i, id, o, pid, rfi, ri, thisid, _i, _j, _len, _len1, _ref, _ref1;

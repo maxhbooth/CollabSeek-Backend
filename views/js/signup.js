@@ -1,3 +1,9 @@
+/* Attached to sign-up page
+ * Adds selecting/searching capabilities
+ * Tracks intro length
+ * Allows addition of degrees
+ */
+
 $(document).ready(function() {
     var current_degrees = 1;
 

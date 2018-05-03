@@ -1,3 +1,6 @@
+// Search button link
+// Make profile boxes have fancy overflow
+
 $("#searchButton").click(function(){
     $(".error").hide();
     var hasError = false;

@@ -1,3 +1,5 @@
+// Matches on all the parameters 
+
 $(document).ready(function() {
     // Add select functionality
 
