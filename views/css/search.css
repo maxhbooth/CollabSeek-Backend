@@ -84,8 +84,9 @@ h5 {
 }
 
 .profilebox {
-    max-height: 159px;
+    max-height: 139px;
     overflow: hidden;
+    box-sizing: content-box;
 }
 
 .overflowed {

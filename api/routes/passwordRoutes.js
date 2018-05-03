@@ -12,7 +12,7 @@
 var Profile = require('../../models/profile');
 var bcrypt = require('bcrypt');
 var mailer = require('./helpers/mailer');
-
+var random = require('randomstring');
 module.exports = function (app, sessionChecker) {
     function extend(dest, src) {
         for(var key in src) {
@@ -48,37 +48,40 @@ module.exports = function (app, sessionChecker) {
 
     app.route('/profile-reset')
     .post((req,res) =>{
+        if(req.session.profile && req.cookies.user_sid){
+            var password = req.body.current_password;
+            var user = req.session.profile;
+            Profile.findOne({where: {email: user.email}}).then(function (profile) {
+                if(!profile){
+                    return;
+                }
+                if (!profile.validPassword(req.body.current_password)) {
+                    res.render('profile-password-change.html', {error: 'Current password incorrect.'});
+                    return;
+                }
+                if(req.body.new_password !== req.body.confirm_password){
+                    res.render('profile-password-change.html', {saved_password: req.body.current_password, error: 'New passwords do not match.'});
+                    return;
+                }
+                if(req.body.new_password.length < 8 || req.body.new_password.length > 25){
+                    res.render('profile-password-change.html', {saved_password: req.body.current_password, error: 'Password must be between 8 and 25 characters.'});
+                    return;
+                }
+                var newpassword = req.body.new_password;
 
-        var password = req.body.current_password;
-        var user = req.session.profile;
-        Profile.findOne({where: {email: user.email}}).then(function (profile) {
-            if(!profile){
-                return;
-            }
-            if (!profile.validPassword(req.body.current_password)) {
-                res.render('profile-password-change.html', {error: 'Current password incorrect.'});
-                return;
-            }
-            if(req.body.new_password !== req.body.confirm_password){
-                res.render('profile-password-change.html', {saved_password: req.body.current_password, error: 'New passwords do not match.'});
-                return;
-            }
-            if(req.body.new_password.length < 8 || req.body.new_password.length > 25){
-                res.render('profile-password-change.html', {saved_password: req.body.current_password, error: 'Password must be between 8 and 25 characters.'});
-                return;
-            }
-            var newpassword = req.body.new_password;
+                const salt = bcrypt.genSaltSync();
+                profile.password = bcrypt.hashSync(newpassword, salt);
+                const html = 'Dear CollabSeek User, <br/><br/>  You are receiving this email because the password ' +
+                    'was changed for the account '+ user.first_name + " " + user.last_name +
+                    '. If you recently changed your password, ignore this message. Otherwise, click the Forgot Password link on the login page to change your password.<br/> <br/>'
+                    +'Regards <br/> The CollabSeek Team';
+                mailer.sendEmail("collabuncseek@gmail.com", user.email, "Password Reset", html);
+                profile.save().then(res.redirect('/my-profile'));
 
-            const salt = bcrypt.genSaltSync();
-            profile.password = bcrypt.hashSync(newpassword, salt);
-            const html = 'Dear CollabSeek User, <br/><br/>  You are receiving this email because the password ' +
-                'was changed for the account '+ user.first_name + " " + user.last_name +
-                '. If you recently changed your password, ignore this message. Otherwise, click the Forgot Password link on the login page to change your password.<br/> <br/>'
-                +'Regards <br/> The CollabSeek Team';
-            mailer.sendEmail("collabuncseek@gmail.com", user.email, "Password Reset", html);
-            profile.save().then(res.redirect('/my-profile'));
+            });
+        }
 
-        });
+
     });
 
     app.get('/verify/:hidden_token',(req,res)=>{
@@ -139,6 +142,7 @@ module.exports = function (app, sessionChecker) {
 
             const salt = bcrypt.genSaltSync();
             user.password = bcrypt.hashSync(password, salt);
+            user.password_token = random.generate();
             user.save().then(function() {
                 req.session.profile = user.dataValues;
                 res.redirect('/my-profile')
