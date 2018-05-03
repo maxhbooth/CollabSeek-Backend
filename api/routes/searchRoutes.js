@@ -47,6 +47,8 @@ module.exports = function (app, sessionChecker) {
                 let skills = [];
                 let facilities = [];
                 let positions = req.body.positions;
+
+                //Begin fuzzy matching search terms to values in database
                 if (req.body.positions == undefined) {
                     positions = [];
                 }
@@ -119,6 +121,7 @@ module.exports = function (app, sessionChecker) {
 
                 let response;
 
+                //Fire off async functions to get profileID's based on search terms fuzzymatched above
                 var compoundOP = async(function () {
                     if (req.body.first == '') {
                         if (req.body.last == '') {
@@ -139,8 +142,10 @@ module.exports = function (app, sessionChecker) {
                 });
 
                 compoundOP().then(function (result) {
+                    //Sort profile ID's by frequency (to get closest match first) and then remove duplicates
                     result = filter_array(result);
                     result = sortByFrequency(result);
+                    //Remove your own profile from listings
                     for (let j = 0; j < result.length; ++j) {
                         if (result[j] == req.session.profile.id) {
                             result.splice(j, 1)
@@ -152,7 +157,7 @@ module.exports = function (app, sessionChecker) {
                         let profileArray = [];
                         profiles = profileArray.concat(profiles);
                         profileIds = profiles.map(a => a.id);
-
+                        //Putting profiles in same order as the profile IDs were (necessary with async calls)
                         for (let i = 0; i < result.length; i++) {
                             let endPlace = result.indexOf(profileIds[i]);
                             orderedProfileArray[endPlace] = profiles[i]
@@ -175,8 +180,7 @@ module.exports = function (app, sessionChecker) {
             let attributeRepository = new AttributeRepository();
 
             attributeRepository.getAll().then(function (models) {
-                //return {degrees, departments, disciplines, facilities, positions, skills, specialties};
-
+                //Begin fuzzy matching search terms to values in database
                 let fuzzyDepartments = fuzzysort.go(query, models.departments, {threshold: -999});
                 let fuzzyDisciplines = fuzzysort.go(query, models.disciplines, {threshold: -999});
                 let fuzzyFacilities = fuzzysort.go(query, models.facilities, {threshold: -999});
@@ -190,6 +194,7 @@ module.exports = function (app, sessionChecker) {
                 let specialities = fuzzySpecialities.map(a => a.target);
 
                 var compoundOP = async(function() {
+                    //Fire off async calls to get profiles based on matched terms from database
                     let response = await([getDepartments(departments),getDisciplines(disciplines),getFacilities(facilities),getSkills(skills),getSpecialties(specialities), getFirstName(query),getLastName(query), getFirstAndLast(query)]);
 
                     let responseTemp =[];
@@ -199,10 +204,8 @@ module.exports = function (app, sessionChecker) {
                         responseTemp = [];
                         responseTemp = responseTemp.concat(response[i]);
                         response[i] = responseTemp;
-                        //console.log(response[i]);
-
+                        //Remove your own profile from listings
                         for (let j = 0; j<response[i].length; ++j){
-                            //console.log(response[i][j]);
                             if (response[i][j].id == req.session.profile.id){
                                 response[i].splice(j,1)
                             }
