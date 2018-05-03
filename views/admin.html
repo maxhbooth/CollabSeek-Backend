@@ -63,12 +63,16 @@
                 </div>
                 <div class="col-sm-6">
                     <h4>Add New Admin by Email:</h4>
-                    <input type="text" style="width:80%;" class="form-horizontal" id="new_admin" name="new_admin">
-                    <button id="add_new_admin" class="btn btn-primary" style="display: inline-flex;">Add</button>
+                    <form method="post" action="/add-new-admin">
+                        <input type="text" style="width:80%;" class="form-horizontal" id="new_admin" name="email">
+                        <button type="submit" class="btn btn-primary" style="display: inline-flex;">Add</button>
+                    </form>
                     <br>
                     <h4>Remove Admin by Email:</h4>
-                    <input type="text" style="width:80%;" class="form-horizontal" id="old_admin" name="old_admin">
-                    <button id="remove_admin" class="btn btn-primary" style="display: inline-flex;">Remove</button>
+                    <form method="post" action="/remove-admin">
+                        <input type="text" style="width:80%;" class="form-horizontal" id="old_admin" name="email">
+                        <button type="submit" class="btn btn-primary" style="display: inline-flex;">Remove</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -87,8 +91,10 @@
                 </div>
                 <div class="col-sm-6">
                     <h4>New Emails Must End With (comma separated list):</h4>
-                    <input type="text" style="width:80%;" class="form-horizontal" id="email_req" name="email_req">
-                    <button id="change_email_req" class="btn btn-primary" style="display: inline-flex;">Change</button>
+                    <form method="post" action="/change-email">
+                        <input type="text" style="width:80%;" class="form-horizontal" id="email_req" name="email_req">
+                        <button type="submit" class="btn btn-primary" style="display: inline-flex;">Change</button>
+                    </form>
                     Examples:
                     <ul>
                         <li>unc.edu</li>
@@ -98,7 +104,7 @@
                         <li>Leave blank for no restrictions</li>
                     </ul>
                     Note: When you change this value you change the entire field, so if you want to add another email,
-                    you must also type in any previous email allowments. I.e. to add gov ending emails to edu ending emails,
+                    you must also type in any previous email allowments, i.e. to add gov ending emails to edu ending emails,
                     type in "edu, gov".
                 </div>
             </div>
@@ -193,7 +199,7 @@
             <div class="panel-body">
                 <div class="col-sm-6">
                     <h4>Current Positions:</h4>
-                    <select id="position" name="position" class="form-control">
+                    <select id="position" name="position" class="form-control" style="width:80%;">
                         <% if(locals.positions){%>
                         <%if (locals.positions.length > 0){locals.positions.forEach(function(pos){%>
                         <option><%= pos %></option>
@@ -205,6 +211,16 @@
                     <form method="post" action="/add-new-position">
                         <input type="text" style="width:80%;" class="form-horizontal" id="position" name="position">
                         <button class="btn btn-primary" type="submit">Add</button>
+                    </form>
+                    <h4>Delete A Position: <small>(Can Only Delete Positions Not In Anyone's Profiles)</small></h4>
+                    <form method="post" action="/remove-position">
+                        <select id="position_del" name="position_del" class="form-control" style="width:80%;">
+                            <% if(locals.positions){%>
+                            <%if (locals.positions.length > 0){locals.positions.forEach(function(pos){%>
+                            <option><%= pos %></option>
+                            <%})}}%>
+                        </select>
+                        <button class="btn btn-primary" type="submit">Remove</button>
                     </form>
                 </div>
             </div>
@@ -220,10 +236,30 @@
         <div id="collapse4" class="panel-collapse collapse">
             <div class="panel-body">
                 <div class="col-sm-6">
-
+                    <h4>Current Departments:</h4>
+                    <select id="department" name="department" style="width:80%;" class="form-control">
+                        <% if(locals.departments){%>
+                        <%if (locals.departments.length > 0){locals.departments.forEach(function(dept){%>
+                        <option><%=dept%></option>
+                        <%})}}%>
+                    </select>
                 </div>
                 <div class="col-sm-6">
-
+                    <h4>Add A Department: <small>(Can Only Delete Departments Not In Anyone's Profiles)</small></h4>
+                    <form method="post" action="/add-new-department">
+                        <input type="text" style="width:80%;" class="form-horizontal" id="department" name="department">
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </form>
+                    <h4>Delete A Department:</h4>
+                    <form method="post" action="/remove-department">
+                        <select id="department_del" name="department_del" class="form-control" style="width:80%;">
+                            <% if(locals.departments){%>
+                            <%if (locals.departments.length > 0){locals.departments.forEach(function(dept){%>
+                            <option><%=dept%></option>
+                            <%})}}%>
+                        </select>
+                        <button class="btn btn-primary" type="submit">Remove</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -238,10 +274,30 @@
         <div id="collapse5" class="panel-collapse collapse">
             <div class="panel-body">
                 <div class="col-sm-6">
-
+                    <h4>Current Degrees:</h4>
+                    <select id="degree" name="degree" style="width:80%;" class="js-example-basic-single js-states form-control">
+                        <% if(locals.degrees){%>
+                        <%if (locals.degrees.length > 0){locals.degrees.forEach(function(deg){%>
+                        <option><%=deg%></option>
+                        <%})}}%>
+                    </select>
                 </div>
                 <div class="col-sm-6">
-
+                    <h4>Add A Degree:</h4>
+                    <form method="post" action="/add-new-degree">
+                        <input type="text" style="width:80%;" class="form-horizontal" id="degree" name="degree">
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </form>
+                    <h4>Delete A Degree: <small>(Can Only Delete Degrees Not In Anyone's Profiles)</small></h4>
+                    <form method="post" action="/remove-degree">
+                        <select id="degree_del" name="degree_del" class="form-control" style="width:80%;">
+                            <% if(locals.degrees){%>
+                            <%if (locals.degrees.length > 0){locals.degrees.forEach(function(deg){%>
+                            <option><%=deg%></option>
+                            <%})}}%>
+                        </select>
+                        <button class="btn btn-primary" type="submit">Remove</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -256,10 +312,30 @@
         <div id="collapse6" class="panel-collapse collapse">
             <div class="panel-body">
                 <div class="col-sm-6">
-
+                    <h4>Current Disciplines:</h4>
+                    <select id="discipline" name="discipline" style="width:80%;" class="form-control">
+                        <% if(locals.disciplines){%>
+                        <%if (locals.disciplines.length > 0){locals.disciplines.forEach(function(disc){%>
+                        <option><%=disc%></option>
+                        <%})}}%>
+                    </select>
                 </div>
                 <div class="col-sm-6">
-
+                    <h4>Add A Discipline:</h4>
+                    <form method="post" action="/add-new-discipline">
+                        <input type="text" style="width:80%;" class="form-horizontal" id="discipline" name="discipline">
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </form>
+                    <h4>Delete A Discipline <small>(Can Only Delete Disciplines Not In Anyone's Profiles)</small></h4>
+                    <form method="post" action="/remove-discipline">
+                        <select id="discipline_del" name="discipline_del" class="form-control" style="width:80%;">
+                            <% if(locals.disciplines){%>
+                            <%if (locals.disciplines.length > 0){locals.disciplines.forEach(function(disc){%>
+                            <option><%=disc%></option>
+                            <%})}}%>
+                        </select>
+                        <button class="btn btn-primary" type="submit">Remove</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -268,7 +344,7 @@
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <a data-toggle="collapse" href="#collapse7">Edit About</a>
+                <a data-toggle="collapse" href="#collapse7">Edit About Page</a>
             </h3>
         </div>
         <div id="collapse7" class="panel-collapse collapse">

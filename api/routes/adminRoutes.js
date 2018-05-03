@@ -121,5 +121,41 @@ module.exports = function (app, sessionChecker) {
         }
     });
 
+    app.post('/remove-position', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid && req.session.profile.admin){
+            var attrRepository = new AttributeRepository();
+            attrRepository.deletePosition(req.body.position_del).then(function(){res.redirect('/admin')});
+        }else{
+            res.redirect('/welcome');
+        }
+    });
+
+    app.post('/remove-department', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid && req.session.profile.admin){
+            var attrRepository = new AttributeRepository();
+            attrRepository.deleteDepartment(req.body.department_del).then(function(){res.redirect('/admin')});
+        }else{
+            res.redirect('/welcome');
+        }
+    });
+
+    app.post('/remove-discipline', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid && req.session.profile.admin){
+            var attrRepository = new AttributeRepository();
+            attrRepository.deleteDiscipline(req.body.discipline_del).then(function(){res.redirect('/admin')});
+        }else{
+            res.redirect('/welcome');
+        }
+    });
+
+    app.post('/remove-degree', (req, res) => {
+        if(req.session.profile && req.cookies.user_sid && req.session.profile.admin){
+            var attrRepository = new AttributeRepository();
+            attrRepository.deleteDegree(req.body.degree_del).then(function(){res.redirect('/admin')});
+        }else{
+            res.redirect('/welcome');
+        }
+    });
+
 
 };
