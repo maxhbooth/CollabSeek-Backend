@@ -70,7 +70,7 @@ module.exports = function (app, sessionChecker) {
                 var email = req.body.email;
                 //email compose
                 const html = 'Dear CollabSeek User, <br/><br/>  this email contains a link that will verify your account'+
-                    '<br/><br/><a href =http://'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'>http://'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'</a>' +
+                    '<br/><br/><a href ="'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'">'+process.env.COLLAB_LINK+'/verify/'+hidden_token+'</a>' +
                     '<br/><br/> Have a nice day, <br/> CollabSeek team';
                 mailer.sendEmail("collabuncseek@gmail.com",email , "Email Verification", html);
                 res.redirect('/signup-details');

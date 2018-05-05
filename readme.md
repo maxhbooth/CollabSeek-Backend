@@ -44,17 +44,7 @@ To run locally, we need to set some environmental variables.  You can either set
 
 
 #### Example Environmental Variables:
-```
-POSTGRESQL_NAME=collabseekdbtest
-POSTGRESQL_PASSWORD=Kl7wadMuPeVeqa2Y
-POSTGRESQL_USER=userJA5
-POSTGRESQL_SERVICE_HOST=localhost
-POSTGRESQL_SERVICE_PORT=15432
-NODE_EMAIL = collabuncseek@gmail.com
-NODE_PASS = collab123
-NODE_EMAIL_SERVICE = smtp.gmail.com
-COLLAB_LINK = localhost:8080
-```
+Environmental variables can be found: https://docs.google.com/document/d/1Zp2HcSQ-MoaiRavscWtnvwOzuatiHEEE4qbszJ7QJJY/edit?usp=sharing (with proper access, must be member of group, or stotts@cs.unc.edu, chrisrh@cs.unc.edu).  
 
 #### Installing CodeceptJS, Selenium, and WebDriverIO, all required to run tests
 ```
@@ -68,10 +58,4 @@ COLLAB_LINK = localhost:8080
 To restart the service for any reason, go to the cloud apps command console and go to applications -> Deployments.  Choose the pod that you want to restart and click “Deploy” at the top of the page.
 
 To rebuild the service, go to Builds->builds in the cloud apps command console.  Again, choose the pod that you want to rebuild, and click “Build” at the top of the page.  This is required if you want to make any changes to the code, rather than just rebooting the server.
-
-
-
-## License
-
-## Acknowledgments
 

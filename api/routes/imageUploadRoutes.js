@@ -26,7 +26,10 @@ module.exports = function (app) {
     const storage = multer.diskStorage({
         destination: function(req, file, callback) {
             console.log("2");
-            callback(null, 'views/Images')
+            if (process.env.COLLAB_LINK == "http://localhost:8080")
+                callback(null, 'views/Images')
+            else
+                callback(null, 'data')
         },
         filename: function(req, file, callback) {
             console.log("3");
