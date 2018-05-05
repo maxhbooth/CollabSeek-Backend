@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Search</title>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+            integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+            integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script type="text/javascript" src="js/advanced-search.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/search.css">
+
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="resources/CollabSeek-Logo.png" alt="CollabSeek">
+            </a>
+        </div>
+        <div id="navbar5" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/my-profile">Profile</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+<div class="container-fluid pad col-sm-10 col-sm-offset-2" style="padding-bottom: 45px;">
+    <h1 >Advanced Search</h1>
+    <h4 class="col-sm-10" style="padding-left: 0px">Fill in as many data fields below as desired for a more precisely matched search.</h4>
+    <form action="/advanced-search" method="POST">
+
+        <div class="row">
+            <div class="form-group col-sm-5">
+                <label for="first">First Name:</label>
+                <input type="text" class="form-control" id="first" name="first">
+            </div>
+            <div class="form-group col-sm-5">
+                <label  for="last">Last Name:</label>
+                <input type="text" class="form-control " id="last" name="last">
+            </div>
+        </div>
+        <div id="degree_set">
+            <div class="row">
+                <div class="form-group col-sm-10">
+                    <label for="discipline"><span style="color:#3498db"><i class="fas fa-graduation-cap" title="Degrees"></i></span>&nbsp;&nbsp;Discipline:</label>
+                    <select id="discipline" name="discipline" class="js-example-basic-single js-states form-control" multiple="multiple" style="width:100%">
+                        <% if(locals.disciplines){%>
+                        <%if (disciplines.length > 0){disciplines.forEach(function(discipline){%>
+                        <option><%= discipline %></option>
+                        <%})}}%>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-10">
+                <label for="position"><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;Position:</label>
+                <select id = "position" name = "position" class="js-example-basic-single js-states form-control" style="width:100%">
+                    <% if(locals.positions){%>
+                    <option></option>
+                    <%if (positions.length > 0){positions.forEach(function(position){%>
+                    <option><%= position %></option>
+                    <%})}}%>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-10">
+                <label for="department"><span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;Department/Institute:</label>
+                <select id="department" name="department" class="js-example-basic-single js-states form-control" multiple="multiple" style="width:100%">
+                    <% if(locals.departments){%>
+                    <%if (departments.length > 0){departments.forEach(function(department){%>
+                    <option><%= department %></option>
+                    <%})}}%>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-10">
+                <label for="specialty"><span style="color:#3498db"><i class="fas fa-cogs" title="Specialties"></i></span>&nbsp;&nbsp;Specialties:</label>
+                <select id = "specialty" name = "specialty" class="js-example-basic-single js-states form-control" multiple="multiple" style="width:100%">
+                    <% if(locals.specialties){%>
+                    <%if (specialties.length > 0){specialties.forEach(function(specialty){%>
+                    <option><%= specialty %></option>
+                    <%})}}%>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="form-group col-sm-10">
+                <label for="skill"><span style="color:#3498db"><i class="fas fa-flask" title="Skills"></i></span>&nbsp;&nbsp;Skills:</label>
+                <select id = "skill" name="skill" class="js-example-basic-single js-states form-control" multiple="multiple" style="width:100%">
+                    <% if(locals.skills){%>
+                    <%if (skills.length > 0){skills.forEach(function(skill){%>
+                    <option><%= skill %></option>
+                    <%})}}%>
+                </select>
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class="form-group col-sm-10">
+                <label for="facility"><span style="color:#3498db"><i class="fas fa-university" title="Resources and Facilities"></i></span>&nbsp;&nbsp;Resources and Facilities:</label>
+                <select id = "facility" name="facility" class="js-example-basic-single js-states form-control" multiple="multiple" style="width:100%">
+                    <% if(locals.facilities){%>
+                    <%if (facilities.length > 0){facilities.forEach(function(facility){%>
+                    <option><%= facility %></option>
+                    <%})}}%>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-sm-10" style="padding:0">
+            <button type="submit" id="searchButton" style="-webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px; float: right;"><i class="fas fa-search"></i></button>
+        </div>
+    </form>
+</div>
+    <!--<div id="prefetch">-->
+    <!--<input class="typeahead" type="text" placeholder="Search here" name="search">-->
+    <!--</div>-->
+
+</body>
+</html>

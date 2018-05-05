@@ -1,0 +1,181 @@
+<html>
+<head>
+    <title>Sign Up</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script type="text/javascript" src="js/signup.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+            integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+            integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+            crossorigin="anonymous"></script>
+</head>
+<body class="container">
+
+<div class="page-header">
+    <h1>CollabSeek Signup</h1>
+</div>
+
+<div class="container row">
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <div class="jumbotron">
+
+        <form id= 'User' action="/signup" method="post">
+            <div>
+                <% if (locals.userErrors) { %>
+                <%if (userErrors.length > 0){userErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
+
+                <label for="email"><span style="color:red">*</span>Email:</label>
+                <span class="glyphicon glyphicon-question-sign pull-right" title="You must use an email ending in 'unc.edu'."></span>
+                <% if (!locals.emailErrors) { %>
+                <input type="text" class="form-control" name="email" id="email"/>
+                <% } else { %>
+                <input type="text" class="form-control" name="email" value="<%=validated.email%>"/>
+                <%if (emailErrors.length > 0){emailErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
+            </div>
+            <div>
+                <label for="password"><span style="color:red">*</span>Password:</label>
+                <input class="form-control" type="password" name="password" id="password"/>
+                <% if (locals.passwordErrors) { %>
+                <%if (passwordErrors.length > 0){passwordErrors.forEach(function(error){%>
+                <div><%= error %></div>
+                <%})}%>
+                <% } %>
+            </div>
+            <div>
+                <label for="passwordconfirm"><span style="color:red">*</span>Retype Password:</label>
+                <input class="form-control" type="password" name="passwordconfirm" id="passwordconfirm"/>
+            </div>
+
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label for="first"><span style="color:red">*</span>Preferred Name:</label>
+                    <input type="text" class="form-control" id="first" name="first">
+                </div>
+                <div class="form-group col-sm-4">
+                    <label  for="last"><span style="color:red">*</span>Last Name:</label>
+                    <input type="text" class="form-control " id="last" name="last">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <label for="pronouns"><span style="color:#3498db"><i class="fas fa-user" title="Pronouns"></i></span>&nbsp;&nbsp;Pronouns:</label>
+                    <span class="glyphicon glyphicon-question-sign pull-right" title="This is an optional field, if filled out it will be visible on your profile. You can change this field at any time."></span>
+                    <input type="text" class="form-control" id="pronouns" name="pronouns">
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="phone"><span style="color:#3498db"><i class="fas fa-phone-volume" title="Phone Number"></i></span>&nbsp;&nbsp;Phone Number <small>ex. (555) 555-5555</small>:</label>
+                    <input type="text" class="form-control " id="phone" name="phone">
+                </div>
+            </div>
+
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+
+            <div id="degree_set">
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <label for="degree"><span style="color:#3498db"><i class="fas fa-graduation-cap" title="Degrees"></i></span>&nbsp;&nbsp;Degree:</label>
+                        <select id="degree" name="degree" class="js-example-basic-single js-states form-control" >
+                            <option></option>
+                            <% if(locals.degrees){%>
+                            <%if (degrees.length > 0){degrees.forEach(function(degree){%>
+                            <option><%= degree %></option>
+                            <%})}}%>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="discipline">Discipline:</label>
+                        <select id="discipline" name="discipline" class="js-example-basic-single js-states form-control" >
+                            <option></option>
+                            <% if(locals.disciplines){%>
+                            <%if (disciplines.length > 0){disciplines.forEach(function(discipline){%>
+                            <option><%= discipline %></option>
+                            <%})}}%>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <button type="button" id="add_degree" class="btn btn-default">Add Additional Degree</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label for="position"><span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;Position:</label>
+                    <select id = "position" name = "position" class="js-example-basic-single js-states form-control" data-placeholder="Select A Position">
+                        <option></option>
+                        <% if(locals.positions){%>
+                        <%if (positions.length > 0){positions.forEach(function(position){%>
+                        <option><%= position %></option>
+                        <%})}}%>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label for="department"><span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;Department/Institute:</label>
+                    <span class="glyphicon glyphicon-question-sign pull-right" title="Select as many as apply or none at all."></span>
+                    <select id="department" name="department" class="js-example-basic-single js-states form-control" multiple="multiple">
+                        <% if(locals.departments){%>
+                        <%if (departments.length > 0){departments.forEach(function(department){%>
+                        <option><%= department %></option>
+                        <%})}}%>
+                    </select>
+                </div>
+            </div>
+
+            <hr style="width: 100%; color: black; height: 1px; background-color:black;"/>
+
+            <div class="row">
+                <div class="range-slider">
+                    <div class="form-group col-sm-6">
+                        <label><span style="color:#3498db"><i class="fas fa-calendar-check" title="Availability"></i></span>&nbsp;&nbsp;Mark Your Availability for Collaboration from 1 to 5:<br><small>This will be visible on
+                            your profile for other people to view and consider before contacting you. You can update
+                            this at any time on your profile page.</small></label>
+                        <input type="range" min="1" max="5" value="3" id="availability" name="availability">
+                        <label for="busy" class="pull-left"><small>Less Available</small></label>
+                        <label for="free" class="pull-right"><small>More Available</small></label>
+                        </br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-8">
+                    <label for="website"><span style="color:#3498db"><i class="fas fa-globe" title="Website"></i></span>&nbsp;&nbsp;Your Website:</label>
+                    <input type="text" class="form-control" id="website" name="website">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-8">
+                        <label>Add an introduction for people viewing your profile:</label>
+                        <textarea class="form-control" id="intro" name="intro" rows="8" maxlength="300" placeholder="Introduce yourself!"></textarea>
+                        <h6 class="pull-right" id="intro_char_count"></h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-default">Next</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

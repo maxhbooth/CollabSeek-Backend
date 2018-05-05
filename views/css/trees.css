@@ -1,0 +1,26 @@
+@media (min-width: 768px) {
+    .affix {
+        position: fixed;
+    }
+}
+
+@media (max-width: 767px) {
+    .affix {
+        position: static;
+    }
+}
+
+@media (min-width: 768px) {
+    .pull-right-sm {
+        float: right;
+    }
+}
+
+.icon-button {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: 0;
+    background: transparent;
+}

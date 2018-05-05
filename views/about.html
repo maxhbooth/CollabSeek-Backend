@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/welcome.css">
+    <script type="text/javascript" src="js/delaunay.js"></script>
+</head>
+
+<body>
+<%if(locals.loggedIn == true){%>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="resources/CollabSeek-Logo.png" alt="CollabSeek">
+            </a>
+        </div>
+        <div id="navbar5" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li class="active"><a href="/about">About</a></li>
+                <li><a href="/my-profile">Profile</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+<%} else {%>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="resources/CollabSeek-Logo.png" alt="CollabSeek">
+            </a>
+        </div>
+        <div id="navbar5" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li class="active"><a href="/about">About</a></li>
+                <li><a href="/signup">Sign Up</a></li>
+                <li><a href="/login">Log In</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+<%}%>
+
+
+<div class="container-fluid pad-addition">
+    <div class="page-header">
+        <h1 style="color: white">About CollabSeek</h1>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse1">What is CollabSeek?</a>
+            </h3>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse">
+            <div class="panel-body">
+                <%if(locals.about1){%>
+                <%=about1%>
+                <%}%>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse2">How Can I Use CollabSeek?</a>
+            </h3>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body">
+                <%if(locals.about2){%>
+                <%=about2%>
+                <%}%>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse3">Who Made CollabSeek?</a>
+            </h3>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body">
+                <%if(locals.about3){%>
+                <%=about3%>
+                <%}%>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" href="#collapse4">Questions or Comments?</a>
+            </h3>
+        </div>
+        <div id="collapse4" class="panel-collapse collapse">
+            <div class="panel-body">
+                <%if(locals.about4){%>
+                <%=about4%>
+                <%}%>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<canvas id="stars" width="300" height="300"  style="position:fixed; top:0;left:0; z-index: -1;" ></canvas>
+<script type="text/javascript" src="js/welcome.js"></script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<html>
+<head>
+    <title>Search Results</title>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+            integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+            integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/search.css">
+
+    <script type="text/javascript">
+        function toggle_visibility(name, id) {
+            var elems = document.getElementsByName(name);
+            elems.forEach(function(elem){
+                if(elem.style.display == 'block') {
+                    elem.style.display = 'none';
+                }
+                else{
+                    elem.style.display = 'block';
+                }
+            });
+            var toggle = document.getElementById(id);
+            if(toggle.innerHTML === "Show All"){
+                toggle.innerHTML =  "Show Less";
+            }
+            else if(toggle.innerHTML === "Show Less"){
+                toggle.innerHTML =  "Show All";
+            }
+        }
+    </script>
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="resources/CollabSeek-Logo.png" alt="CollabSeek">
+            </a>
+        </div>
+        <div id="navbar5" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/my-profile">Profile</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div class="container">
+    <div class="page-header row notop">
+        <h1 style="float: left; padding-left: 3px; padding-right:12px;">Search Results</h1>
+        <% if (locals.pastQuery){%>
+        <h5>You searched for: <b><%=pastQuery%></b></h5>
+        <%}%>
+        <% if (!locals.departmentProfiles || (locals.departmentProfiles && departmentProfiles.length == 0)) { %>
+        <% if (!locals.disciplineProfiles || (locals.disciplineProfiles && disciplineProfiles.length == 0)) { %>
+        <% if (!locals.facilityProfiles || (locals.facilityProfiles && facilityProfiles.length == 0)) { %>
+        <% if (!locals.skillProfiles || (locals.skillProfiles && skillProfiles.length == 0)) { %>
+        <% if (!locals.specialtyProfiles || (locals.specialtyProfiles && specialtyProfiles.length == 0)) { %>
+        <% if (!locals.positionProfiles || (locals.positionProfiles && positionProfiles.length == 0)) { %>
+        <% if (!locals.firstNameProfiles || (locals.firstNameProfiles && firstNameProfiles.length == 0)) { %>
+        <% if (!locals.lastNameProfiles || (locals.lastNameProfiles && lastNameProfiles.length == 0)) { %>
+        <% if (!locals.fullNameProfiles || (locals.fullNameProfiles && fullNameProfiles.length == 0)) { %>
+        <% if (!locals.byClosestMatchProfiles || (locals.byClosestMatchProfiles && byClosestMatchProfiles.length == 0)) { %>
+        <h5>No results found for this search. Try again below or try <a href="/advanced-search" id="advSearch">Advanced Search</a>.</h5>
+        <%}}}}}}}}}}%>
+    </div>
+    <div class="row">
+        <form action="/search" method="POST" class="form-inline" id="searcher">
+            <input id="searchBar" type="text" placeholder="Enter a search term..." name="query" class="col-xs-7 col-xs-offset-2">
+            <button type="submit" id="searchButton"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+
+
+
+    <% if(locals.departmentProfiles){%>
+        <div class="row">
+            <% if (departmentProfiles.length > 0){%>
+            <%var i = 0;%>
+            <div class="page-header"><h3>Department: </h3><% if(departmentProfiles.length > 6) { %><a href="#" id="department_toggle" onclick="toggle_visibility('department_result', 'department_toggle');">Show Less</a><%}%></div>
+                <%departmentProfiles.forEach(function(profile){%>
+                <%i++;%>
+                <div class="jumbotron col-sm-3 col-xs-5 profilebox" <% if(i > 6) { %> name='department_result' <%}%> style="margin:10;padding:10;display:block; ">
+                    <div >
+                        <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                    </div>
+                    <div>
+                        <span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i>&nbsp;&nbsp;<a href="mailto:<%=profile.email%>"><%=profile.email%></a></span>
+                    </div>
+                    <div>
+                        <span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=profile.position %>
+                    </div>
+                    <div>
+                        <% if (profile.departments.length > 0) {%>
+                        <span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;<%=profile.departments[0].name %>
+                        <%}%>
+                    </div>
+                    <div>
+                        Matched Department: <strong> <%=profile.matchedQuery%></strong>
+                    </div>
+                </div>
+                <%})%>
+            <%}%>
+        </div>
+    <%}%>
+
+    <% if(locals.disciplineProfiles){%>
+    <div class="row">
+        <% if (disciplineProfiles.length > 0){%>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Discipline:</h3><% if(disciplineProfiles.length > 6) { %><a href="#" id="discipline_toggle" onclick="toggle_visibility('discipline_result', 'discipline_toggle');">Show Less</a><%}%></div>
+        <%disciplineProfiles.forEach(function(profile){%>
+        <%i++;%>
+            <div class="jumbotron col-sm-3 col-xs-5 profilebox" <% if(i > 6) { %> name='discipline_result' <%}%> style="margin:10;padding:10;display:block;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i>&nbsp;&nbsp;<a href="mailto:<%=profile.email%>"><%=profile.email%></a></span>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;<%=profile.departments[0].name %>
+                    <%}%>
+                </div>
+                <div>
+                    Matched Discipline: <strong> <%=profile.matchedQuery%></strong>
+                </div>
+            </div>
+            <%})%>
+        <%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.facilityProfiles){%>
+    <div class="row">
+        <% if (facilityProfiles.length > 0){%>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Facilities:</h3><% if(facilityProfiles.length > 6) { %><a href="#" id="facility_toggle" onclick="toggle_visibility('facility_result', 'facility_toggle');">Show Less</a><%}%></div>
+            <%facilityProfiles.forEach(function(profile){%>
+            <%i++;%>
+            <div class="jumbotron col-sm-3 col-xs-5 profilebox" <% if(i > 6) { %> name='facility_result' <%}%> style="margin:10;padding:10;display:block;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i>&nbsp;&nbsp;<a href="mailto:<%=profile.email%>"><%=profile.email%></a></span>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;<%=profile.departments[0].name %>
+                    <%}%>
+                </div>
+                <div>
+                    Matched Facility: <strong> <%=profile.matchedQuery%></strong>
+                </div>
+            </div>
+            <%})%>
+        <%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.skillProfiles){%>
+    <div class="row">
+        <% if (skillProfiles.length > 0){%>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Skills: </h3><% if(skillProfiles.length > 6) { %><a href="#" id="skill_toggle" onclick="toggle_visibility('skill_result', 'skill_toggle');">Show Less</a><%}%></div>
+            <%skillProfiles.forEach(function(profile){%>
+            <%i++;%>
+            <div class="jumbotron col-sm-3 col-xs-5 profilebox" <% if(i > 6) { %> name='skill_result' <%}%> style="margin:10;padding:10;display:block;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i>&nbsp;&nbsp;<a href="mailto:<%=profile.email%>"><%=profile.email%></a></span>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;<%=profile.departments[0].name %>
+                    <%}%>
+                </div>
+                <div>
+                    Matched Skill: <strong> <%=profile.matchedQuery%></strong>
+                </div>
+            </div>
+            <%})%>
+        <%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.specialtyProfiles){%>
+    <div class="row">
+        <% if (specialtyProfiles.length > 0){%>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Specialty: </h3><% if(specialtyProfiles.length > 6) { %><a href="#" id="specialty_toggle" onclick="toggle_visibility('specialty_result', 'specialty_toggle');">Show Less</a><%}%></div>
+            <%specialtyProfiles.forEach(function(profile){%>
+            <%i++;%>
+            <div class="jumbotron col-sm-3 col-xs-5 profilebox" <% if(i > 6) { %> name='specialty_result' <%}%> style="margin:10;padding:10;display:block;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i>&nbsp;&nbsp;<a href="mailto:<%=profile.email%>"><%=profile.email%></a></span>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;<%=profile.departments[0].name %>
+                    <%}%>
+                </div>
+                <div>
+                    Matched Specialty: <strong> <%=profile.matchedQuery%></strong>
+                </div>
+            </div>
+            <%})%>
+        <%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.positionProfiles){%>
+    <div class="row">
+        <% if (positionProfiles.length > 0){%>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Position: </h3><% if(positionProfiles.length > 6) { %><a href="#" id="position_toggle" onclick="toggle_visibility('position_result', 'position_toggle');">Show Less</a><%}%></div>
+        <%positionProfiles.forEach(function(profile){%>
+            <%i++;%>
+            <div class="jumbotron col-sm-3 col-xs-5 profilebox" <% if(i > 6) { %> name='position_result' <%}%> style="margin:10;padding:10;display:block;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i>&nbsp;&nbsp;<a href="mailto:<%=profile.email%>"><%=profile.email%></a></span>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;<%=profile.departments[0].name %>
+                    <%}%>
+                </div>
+                <div>
+                    Matched Position: <strong> <%=profile.matchedQuery%></strong>
+                </div>
+            </div>
+            <%})%>
+        <%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.firstNameProfiles){%>
+    <div class="row">
+        <% if (firstNameProfiles.length > 0){%>
+        <%var i = 0;%>
+        <div class="page-header"><h3>First Name: </h3><% if(firstNameProfiles.length > 6) { %><a href="#" id="first_toggle" onclick="toggle_visibility('first_result', 'first_toggle');">Show Less</a><%}%></div>
+            <%firstNameProfiles.forEach(function(profile){%>
+            <%i++;%>
+            <div class="jumbotron col-sm-3 col-xs-5 profilebox" <% if(i > 6) { %> name='first_result' <%}%> style="margin:10;padding:10;display:block;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i>&nbsp;&nbsp;<a href="mailto:<%=profile.email%>"><%=profile.email%></a></span>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;<%=profile.departments[0].name %>
+                    <%}%>
+                </div>
+            </div>
+            <%})%>
+        <%}%>
+    </div>
+    <%}%>
+
+
+    <% if(locals.lastNameProfiles){%>
+    <div class="row">
+        <% if (lastNameProfiles.length > 0){%>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Last Name: </h3><% if(lastNameProfiles.length > 6) { %><a href="#" id="last_toggle" onclick="toggle_visibility('last_result', 'last_toggle');">Show Less</a><%}%></div>
+            <%lastNameProfiles.forEach(function(profile){%>
+            <%i++;%>
+            <div class="jumbotron col-sm-3 col-xs-5 profilebox" <% if(i > 6) { %> name='last_result' <%}%> style="margin:10;padding:10;display:block;">
+
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i>&nbsp;&nbsp;<a href="mailto:<%=profile.email%>"><%=profile.email%></a></span>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;<%=profile.departments[0].name %>
+                    <%}%>
+                </div>
+            </div>
+            <%})%>
+        <%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.fullNameProfiles){%>
+    <div class="row">
+        <% if (fullNameProfiles.length > 0){%>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Full Name: </h3><% if(fullNameProfiles.length > 6) { %><a href="#" id="full_toggle" onclick="toggle_visibility('full_result', 'full_toggle');">Show Less</a><%}%></div>
+            <%fullNameProfiles.forEach(function(profile){%>
+            <%i++;%>
+            <div class="jumbotron col-sm-3 col-xs-5 profilebox" <% if(i > 6) { %> name='full_result' <%}%> style="margin:10;padding:10;display:block;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %>&nbsp;<%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i>&nbsp;&nbsp;<a href="mailto:<%=profile.email%>"><%=profile.email%></a></span>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;<%=profile.departments[0].name %>
+                    <%}%>
+                </div>
+            </div>
+            <%})%>
+        <%}%>
+    </div>
+    <%}%>
+
+    <% if(locals.byClosestMatchProfiles){%>
+    <div class="row">
+        <% if (byClosestMatchProfiles.length > 0){%>
+        <%var i = 0;%>
+        <div class="page-header"><h3>Closest Match: </h3><% if(byClosestMatchProfiles.length > 12) { %><a href="#" id="closest_toggle" onclick="toggle_visibility('closest_result', 'closest_toggle');">Show Less</a><%}%></div>
+        <%byClosestMatchProfiles.forEach(function(profile){%>
+            <%i++;%>
+            <div class="jumbotron col-sm-3 col-xs-5 profilebox" <% if(i > 12) { %> name='closest_result' <%}%> style="margin:10;padding:10;display:block;;">
+                <div >
+                    <h4><a href="/profile/<%=profile.id%>"><%=profile.first %> <%=profile.last%></a></h4>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-envelope" title="Email"></i>&nbsp;&nbsp;<a href="mailto:<%=profile.email%>"><%=profile.email%></a></span>
+                </div>
+                <div>
+                    <span style="color:#3498db"><i class="fas fa-id-card" title="Position"></i></span>&nbsp;&nbsp;<%=profile.position %>
+                </div>
+                <div>
+                    <% if (profile.departments.length > 0) {%>
+                    <span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;<%=profile.departments[0].name %>
+                    <%}%>
+                </div>
+            </div>
+            <%})%>
+        <%}%>
+    </div>
+    <%}%>
+</div>
+<script type="text/javascript" src="js/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+h3 {
+    display: inline;
+    padding-left:5px;
+}
+
+div>a {
+    float:right;
+    padding-right:5px;
+}
+
+h5 {
+    margin-bottom: 0px;
+    font-size:14px;
+    padding-top:29px;
+}
+
+.jumbotron {
+    background-color: #ecf0f1;
+}
+
+.newsearch {
+    float:right;
+    margin-right:3px;
+}
+
+@media (min-width: 1600px){
+    .container {
+        width: 1560px;
+    }
+}
+
+.notop {
+    margin-top: 15px;
+}
+
+#searchButton {
+    margin-right: auto;
+    margin-left: auto;
+    border-bottom-color: #4B9CD3;
+    background-color: #4B9CD3;
+    border: none;
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 8%;
+    padding-top: .805em;
+    padding-bottom: .805em;
+}
+
+#searchBar {
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border:none;
+    background-color:#ecf0f1;
+}
+
+#searcher {
+    line-height: 2.5;
+}
+
+.page-header {
+    margin-top:20px;
+}
+
+#advSearch {
+    font-weight:bold;
+}
+
+.error {
+    clear:left;
+    text-align: center;
+    font-style: italic;
+    color:rgba(192, 57, 43,1.0);
+    font-weight: bold;
+    padding-left:12%;
+    padding-right:12%;
+}
+
+.profilebox {
+    max-height: 139px;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+.overflowed {
+    -webkit-box-shadow: inset 0 -30px 30px -14px rgba(0,0,0,0.4);
+    -moz-box-shadow: inset 0 -30px 30px -14px rgba(0,0,0,0.4);
+    box-shadow: inset 0 -30px 30px -14px rgba(0,0,0,0.4);
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+.overflowed:hover {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    overflow-y: hidden;
+    max-height: 300px;
+}

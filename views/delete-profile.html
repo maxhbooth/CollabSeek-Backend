@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Profile</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+            integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+            integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/change-password.css">
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="../resources/CollabSeek-Logo.png" alt="CollabSeek">
+            </a>
+        </div>
+        <div id="navbar5" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/signup">Sign Up</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+<div class="container-fluid" style="margin-top:60px;">
+    <div class="row">
+        <h2 class="col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3" style="padding-left:9px">Delete Your Account</h2>
+    </div>
+    <div class="jumbotron col-xs-8 col-xs-offset-2 col-md-6 col-md-offset-3">
+        Are you sure you want to delete your profile? We will remove all of your data from our database. If later desired,
+        you can make a new account but you will have to go through the signup process again.
+        <br><br><br>
+        <div class="row">
+            <form action="/delete-profile" method="post" class="pull-left">
+                <input class="btn btn-warning" type="submit" value="Yes, Delete My Profile"/>
+            </form>
+            <a href="/my-profile" class="pull-right"><button class="btn btn-primary">No, Return to My Profile</button></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
