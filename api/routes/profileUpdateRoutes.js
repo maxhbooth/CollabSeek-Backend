@@ -19,8 +19,40 @@ module.exports = function (app, sessionChecker) {
     app.post('/update-info', (req, res) => {
         if (req.session.profile && req.cookies.user_sid) {
             profileRepository = new ProfileRepository();
+            var departments = [];
+            var depts_one = [];
+            var depts_two = [];
+            if(req.body.department_curr && Array.isArray(req.body.department_curr)){
+                depts_one = req.body.department_curr;
+            }
+            else if(req.body.department_curr){
+                depts_one[0] = req.body.department_curr;
+            }
+            if(req.body.department && Array.isArray(req.body.department)){
+                depts_two = req.body.department;
+            }
+            else if(req.body.department){
+                depts_two[0] = req.body.department;
+            }
+            if(req.body.department && req.body.department_curr){
+                for (var i = 0; i < depts_one.length; i++) {
+                    departments[i] = depts_one[i];
+                }
+                for(i = 0; i < depts_two.length; i++){
+                    departments[i + depts_one.length] = depts_two[i];
+                }
+            }
+            else if(req.body.department){
+                departments = depts_two;
+            }
+            else if(req.body.department_curr){
+                departments = depts_one;
+            }
+            else{
+                departments = null;
+            }
             profileRepository.updateInfo(req.session.profile.id, req.body.position, req.body.first, req.body.last,
-                req.body.pronouns, req.body.website, req.body.phone, req.body.availability, req.body.department).then(function(){
+                req.body.pronouns, req.body.website, req.body.phone, req.body.availability, departments).then(function(){
                 res.redirect('/my-profile');
         });
         }else {

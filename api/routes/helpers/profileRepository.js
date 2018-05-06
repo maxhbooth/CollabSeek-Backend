@@ -327,6 +327,20 @@ profileRepository.prototype.updateInfo = async(function(profileID, positionName,
         website: website, phone_number: phone, availability: availability},
         {where: {id: profileID}}
     ).catch(error => {console.log(error);});
+
+    let departments_now = await(this.attrRepository.department.findAll({
+        include: [{
+            model: this.profile,
+            where: {id: profileID},
+            through: {}
+        }]
+    }));
+    if(departments_now != null) {
+        for (var i = 0; i < departments_now.length; i++) {
+            this.removeProfileDepartment(profileID, departments_now[i].name);
+        }
+    }
+
     if(Array.isArray(departments)){
         for(i = 0; i < departments.length; i++){
             this.addProfileDepartment(profileID, departments[i]);

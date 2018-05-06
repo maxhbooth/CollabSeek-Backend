@@ -224,31 +224,23 @@
                     <br>
 
                     <label><span style="color:#3498db"><i class="fas fa-building" title="Departments"></i></span>&nbsp;&nbsp;Department:</label>
-                    <table class="table">
-                        <tbody>
+                    <label>Current Departments:</label>
+                    <select id="department_curr" name="department_curr" class="js-example-basic-single js-states form-control" multiple="multiple" style="width:95%;">
+                        <option></option>
                         <% if(locals.departments){%>
-                        <%if (departments.length > 0){%>
-                        <%departments.forEach(function(department){%>
-                        <form method="post" action="/delete-department/<%=department.name%>" class="form-inline">
-                            <tr>
-                                <td><%=department.name %></td>
-                                <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                                    <span class="glyphicon glyphicon-minus"></span></button></td>
-                            </tr>
-                        </form>
+                        <%if (departments.length > 0){departments.forEach(function(department){%>
+                        <option selected><%=department.name%></option>
                         <%})}}%>
-                        <tr>
-                            <td><select id="department" name="department" class="js-example-basic-single js-states form-control" multiple="multiple" style="width:95%;">
-                                <option></option>
-                                <% if(locals.all_departments){%>
-                                <%if (all_departments.length > 0){all_departments.forEach(function(department){%>
-                                <option><%=department%></option>
-                                <%})}}%>
-                            </select></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    </select>
 
+                    <label>Add New Department:</label>
+                    <select id="department" name="department" class="js-example-basic-single js-states form-control" multiple="multiple" style="width:95%;">
+                        <option></option>
+                        <% if(locals.all_departments){%>
+                        <%if (all_departments.length > 0){all_departments.forEach(function(department){%>
+                        <option><%=department%></option>
+                        <%})}}%>
+                    </select>
                     <button type="submit" class="btn btn-primary pull-right">Save</button>
                 </form>
             </div>
@@ -276,30 +268,7 @@
         </div>
 
 
-        <div class="well well-sm clearfix" id="degrees-show" style="display: block">
-            <table class="table">
-                <thead>
-                <th><h4 class="text-left">Degree</h4></th>
-                <th><h4 class="text-left">Discipline</h4></th>
-                <th></th>
-                </thead>
-                <% if(locals.degrees && locals.disciplines){%>
-                <% if(degrees.length > 0){%>
-                    <tbody>
-                    <%for(var i = 0; i < degrees.length; i++){%>
-                    <tr>
-                        <td><%= degrees[i] %></td>
-                        <td><%= disciplines[i] %></td>
-                        <td></td>
-                    </tr>
-                    <%}}}%>
-                    </tbody>
-            </table>
-            <button id="edit-degrees1" class="btn btn-primary pull-right" style="display: inline-flex; vertical-align: middle;">
-                <span style="color:white" class="glyphicon glyphicon-pencil" title="Edit your education."></span>&nbsp;Edit</button>
-        </div>
-
-        <div class="well well-sm clearfix" id="degrees-edit" style="display: none;">
+        <div class="well well-sm clearfix" id="degrees-edit">
             <table class="table">
                 <thead>
                 <th><h4 class="text-left">Degree</h4></th>
@@ -339,7 +308,6 @@
                     </form>
                     </tbody>
             </table>
-            <button id="edit-degrees2" class="btn btn-primary pull-right" style="display: inline-flex; vertical-align: middle;">Save</button>
         </div>
 
         <div class="row">

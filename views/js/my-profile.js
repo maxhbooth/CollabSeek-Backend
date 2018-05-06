@@ -29,6 +29,13 @@ $(document).ready(function(){
         },
         placeholder: "Select A Department",
     });
+    $("#department_curr").select2({
+        matcher: function(params, data) {
+            return matchStart(params, data);
+        },
+        placeholder: "Select A Department",
+    });
+
     $("#degree").select2({
         matcher: function(params, data) {
             return matchStart(params, data);
