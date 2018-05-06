@@ -320,13 +320,20 @@ profileRepository.prototype.updatePronouns = async(function(profileID, pronouns)
 });
 
 profileRepository.prototype.updateInfo = async(function(profileID, positionName, firstName, lastName, pronouns,
-                                                        website, phone, availability){
+                                                        website, phone, availability, departments){
     let positionId = await(this.attrRepository.getPositionId(positionName));
     this.profile.update(
         {position: positionId, first_name: firstName, last_name: lastName, pronouns: pronouns,
         website: website, phone_number: phone, availability: availability},
         {where: {id: profileID}}
     ).catch(error => {console.log(error);});
+    if(Array.isArray(departments)){
+        for(i = 0; i < departments.length; i++){
+            this.addProfileDepartment(profileID, departments[i]);
+        }
+    }else{
+        this.addProfileDepartment(profileID, departments);
+    }
 });
 
 profileRepository.prototype.addImage = async(function(profileId, imagePath){

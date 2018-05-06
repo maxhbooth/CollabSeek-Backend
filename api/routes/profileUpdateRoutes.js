@@ -20,7 +20,7 @@ module.exports = function (app, sessionChecker) {
         if (req.session.profile && req.cookies.user_sid) {
             profileRepository = new ProfileRepository();
             profileRepository.updateInfo(req.session.profile.id, req.body.position, req.body.first, req.body.last,
-                req.body.pronouns, req.body.website, req.body.phone, req.body.availability).then(function(){
+                req.body.pronouns, req.body.website, req.body.phone, req.body.availability, req.body.department).then(function(){
                 res.redirect('/my-profile');
         });
         }else {
