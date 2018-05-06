@@ -236,19 +236,15 @@
                             </tr>
                         </form>
                         <%})}}%>
-                        <form method="post" action="/add-department" class="form-inline">
-                            <tr>
-                                <td><select id="department" name="department" class="js-example-basic-single js-states form-control" style="width:95%;">
-                                    <option></option>
-                                    <% if(locals.all_departments){%>
-                                    <%if (all_departments.length > 0){all_departments.forEach(function(department){%>
-                                    <option><%=department%></option>
-                                    <%})}}%>
-                                </select></td>
-                                <td><button type="submit" class="icon-button pull-right" style="display: inline-flex;">
-                                    <span class="glyphicon glyphicon-plus"></span></button></td>
-                            </tr>
-                        </form>
+                        <tr>
+                            <td><select id="department" name="department" class="js-example-basic-single js-states form-control" multiple="multiple" style="width:95%;">
+                                <option></option>
+                                <% if(locals.all_departments){%>
+                                <%if (all_departments.length > 0){all_departments.forEach(function(department){%>
+                                <option><%=department%></option>
+                                <%})}}%>
+                            </select></td>
+                        </tr>
                         </tbody>
                     </table>
 
