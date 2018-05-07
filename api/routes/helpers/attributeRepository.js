@@ -230,38 +230,45 @@ repository.prototype.getSpecialtyName = async(function(specialtyID) {
 // =====================================================================================================================
 
 repository.prototype.addNewSpecialty = async(function(specialtyName, parentID){
-    let specialty = await(this.specialty.create({name: specialtyName, parent_id: parentID}, {plain: true}));
+    let id = await(this.specialty.max('id'));
+    let specialty = await(this.specialty.create({id: id+1, name: specialtyName, parent_id: parentID}));
     return specialty;
 });
 
 repository.prototype.addNewSkill = async(function(skillName, parentID){
-    let skill = await(this.skill.create({name: skillName, parent_id: parentID}, {plain: true}));
+    let id = await(this.skill.max('id'));
+    let skill = await(this.skill.create({id: id+1, name: skillName, parent_id: parentID}));
     return skill;
 });
 
 repository.prototype.addNewFacility = async(function(facilityName, parentID){
-    let facility = await(this.facility.create({name: facilityName, parent_id: parentID}, {plain: true}));
+    let id = await(this.facility.max('id'));
+    let facility = await(this.facility.create({id: id+1, name: facilityName, parent_id: parentID}));
     return facility;
 });
 
 repository.prototype.addNewPosition = async(function(positionName){
-    let position = await(this.position.create({name: positionName}, {plain: true}));
+    let id = await(this.position.max('id'));
+    let position = await(this.position.create({id: id+1, name: positionName}));
     return position;
 });
 
 repository.prototype.addNewDegree = async(function(degreeName){
-    let degree = await(this.degree.create({name: degreeName}, {plain: true}));
+    let id = await(this.degree.max('id'));
+    let degree = await(this.degree.create({id: id+1, name: degreeName}));
     return degree;
 });
 
 repository.prototype.addNewDepartment = async(function(departmentName){
-    let department = await(this.department.create({name: departmentName}, {plain: true}));
+    let id = await(this.department.max('id'));
+    let department = await(this.department.create({id: id+1, name: departmentName}));
     return department;
 });
 
 repository.prototype.addNewDiscipline = async(function(disciplineName){
-    let discipline = await(this.discipline.create({name: disciplineName}, {plain: true}));
-    return department;
+    let id = await(this.discipline.max('id'));
+    let discipline = await(this.discipline.create({id: id+1, name: disciplineName}));
+    return discipline;
 });
 
 
